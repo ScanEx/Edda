@@ -1,0 +1,80 @@
+.favorites-header {
+    padding: 15px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+}
+.favorites-header > *,
+.favorites-footer > *{
+    display: inline-block;
+}
+
+.favorites-header .favorites-buttons {
+    float: right;
+}
+
+.favorites-header * i {
+    display: inline-block;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;    
+    background-color: transparent;
+    margin-left: 10px;
+}
+
+.favorites-header .favorites-delete-button-active {
+    background-image: url('../../assets/results/delete-active.png');
+}
+.favorites-header .favorites-delete-button-passive {
+    background-image: url('../../assets/results/delete-passive.png');
+}
+
+.favorites-list {
+    width: 395px;
+}
+.favorites-list td {
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+}
+.favorites-list .table-list-body tr:hover,
+.favorites-list .hilite {
+    background-color: lightsteelblue;
+}
+.favorites-pane .table-list-header .table-list-col[data-field=cloudness] span::after {
+    content: '%';
+}
+.favorites-pane .table-list-header .table-list-col[data-field=tilt] span::after {
+    content: '\00b0';
+}
+.favorites-footer {
+    text-align: center;
+    background-color: #d9e1e6;
+    height: 75px;
+    width: 395px;
+}
+.iconSidebarControl [data-pane-id=favorites] .favorites-select-quicklooks-normal {
+    background-image: url('../../assets/search.png');
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-position: -512px -5px;
+}
+.iconSidebarControl [data-pane-id=favorites] .favorites-select-quicklooks-active {    
+    background-image: url('../../assets/search.png');
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-position: -512px -5px;
+}
+.iconSidebarControl [data-pane-id=favorites] .favorites-select-quicklooks-passive {
+    background-image: url('../../assets/search.png');
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-position: -512px -5px;
+}

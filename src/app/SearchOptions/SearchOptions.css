@@ -1,0 +1,190 @@
+.leaflet-ext-search, 
+.leaflet-ext-search-list,
+.search-options-content,
+.search-options-footer {
+    width: 395px;
+}
+.leaflet-ext-search {
+    box-shadow: none;
+    border-radius: 0px;
+}
+.leaflet-ext-search input {
+    display: inline-block;
+    width: 323px;    
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;    
+}
+.leaflet-ext-search .leaflet-ext-search-button {
+    display: inline-block;
+    width: 30px;
+}
+.range-widget-content input{
+    background-color: transparent;
+}
+.search-options {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    padding-top: 15px;
+    color: #4c5567;
+}
+.search-options-content {        
+    background-color:#eef2f5;
+}
+.search-options-period-title,
+.search-options-period-section,
+.search-options-clouds,
+.search-options-angle,
+.search-options-resolution,
+.search-options-satellites-number-section,
+.search-options-satellites
+{
+    padding-left: 25px;
+    padding-right: 25px;
+}
+.search-options-period-section {
+    margin-top: 15px;
+}
+.search-options-period-title {    
+    font-weight: 500;
+}
+.search-options-period-from, 
+.search-options-period-from-value, 
+.search-options-period-to, 
+.search-options-period-to-value,
+.search-options-period-annually,
+.search-options-period-annually-value,
+.search-options-satellites-title,
+.search-options-satellites-number,
+.search-options-satellites-button {
+    display: inline-block;
+}
+.search-options-satellites-number {
+    color: #3ca1d0;
+}
+.search-options-satellites-number {
+    width: 32px;
+}
+.search-options-period-from {
+    margin-left: 0px;
+    margin-right: 10px;
+}
+.search-options-period-to {
+    margin-left: 15px;
+    margin-right: 15px;
+}
+.search-options-period-from-value, .search-options-period-to-value {    
+    height: 25px;
+}
+.search-options-period-from-value,
+.search-options-period-to-value,
+.search-options-satellites-archive select {    
+    width: 115px;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;    
+    border: 1px solid #d9e1e6;
+}
+.search-options-period-annually {
+    white-space: nowrap;    
+    margin-top: 15px;    
+}
+.search-options-period-annually label {
+    margin-left: 10px;
+}
+.search-options-period-annually-value {
+    vertical-align: top;
+}
+.search-options-clouds {
+    clear: left;        
+}
+.search-options-clouds,
+.search-options-satellites-number-section {
+    margin-top: 20px;
+    border-top: 1px solid #d9e1e6;
+}
+.search-options-period {
+    cursor: default;
+}
+
+.search-options .slider-widget{
+    height: 37px;
+}
+
+.search-options-clouds,
+.search-options-angle,
+.search-options-resolution {
+    cursor: default;
+}
+.search-options-clouds > div,
+.search-options-angle > div,
+.search-options-resolution > div { 
+    display: inline-block;
+}
+.search-options-clouds-title,
+.search-options-angle-title,
+.search-options-resolution-title{
+    position: relative;
+    top: 20px;
+    font-weight: 500;
+}
+.search-options-clouds-value,
+.search-options-angle-value,
+.search-options-resolution-value{
+    width: 100%;
+}
+.search-options-clouds-value input,
+.search-options-angle-value input,
+.search-options-resolution-value input {    
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    border: 1px solid #d9e1e6;
+    text-align: center;
+}
+.search-options-satellites-archive {    
+    display: inline-block;
+}
+.search-options-satellites-archive select{
+    height: 27px;
+}
+.search-options-satellites-archive-title {
+    margin-right: 3px;
+}
+.search-options input[type=checkbox] {
+    vertical-align: middle;
+    margin-left: 0px;
+    margin-right: 0px
+}
+.search-options-satellites {    
+    cursor: default;
+    overflow-y: auto;
+}
+.search-options-satellites .satellite-col {
+    margin-top: 8px;
+}
+.search-options-satellites .satellite-col:first-child {
+    margin-top: 15px;
+}
+.search-options-satellites .satellite-col label {
+    margin-left: 10px;
+}
+.search-options-satellites fieldset {
+    border-style: none;
+    margin: 0px;
+    padding: 0px;
+    display: inline-block;
+    width: 150px;
+}
+.search-options-satellites fieldset legend {
+    font-weight: 500;
+    font-size: 12px;
+    font-family: 'Roboto', sans-serif;    
+}
+.table-list-header {
+    border-bottom: 1px solid lightgrey;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.table-list-body {    
+    overflow-y: auto;
+}

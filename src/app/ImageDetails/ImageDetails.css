@@ -1,0 +1,23 @@
+.image-info {    
+    position: absolute;
+    background-color: #eef2f5;    
+    color: #8394a8;
+    text-align: left;      
+    padding: 10px;
+    box-shadow: 0px 1px 7.84px 0.16px rgba(0, 0, 0, 0.16);
+    border-radius: 4px;
+    z-index: 400;
+}
+.image-info td {
+    vertical-align: top;
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+}
+.image-info .image-info-id-label {
+    font-weight: 500;    
+}
+.image-info .image-info-id-value {    
+    max-width: 160px;
+    padding-left: 10px;
+    overflow-wrap: break-word;
+}

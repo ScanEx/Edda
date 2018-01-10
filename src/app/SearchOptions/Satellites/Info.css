@@ -1,0 +1,38 @@
+.satellite-info {
+    position: absolute;
+    background-color: #ffffff;
+    z-index: 2002;
+    border-radius: 4px;
+    width: 210px;
+    box-shadow: 0px 1px 5.6px 1.4px rgba(88, 88, 88, 0.52);
+}
+.satellite-info table {
+    table-layout: fixed; 
+    width: 100%;
+}
+.satellite-info td {    
+    padding: 5px 0px 5px 10px;
+}
+.satellite-info td:nth-child(1){
+    width: 100px;
+}
+.satellite-info td:nth-child(2) {
+    text-align: right;    
+}
+.satellite-info td,
+.satellite-info div {
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+}
+.satellite-info div {
+    padding: 5px 10px 5px 10px;
+}
+.satellite-info div:nth-child(2) {
+    border-top: 1px solid black;
+    color: #8394a8;
+    width: auto;
+}
+.satellite-info div:nth-child(3) {
+    color: #4c5567;
+}

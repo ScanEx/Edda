@@ -1,0 +1,80 @@
+.dropdownWidget { cursor: pointer; position: relative; }
+.dropdownWidget.dropdownWidget-item { border: none; }
+.dropdownWidget.dropdownWidget-item:last-child { border: none; }
+
+.dropdownWidget-dropdown { position: absolute; z-index: 100; background: #fff; box-shadow: 0 0 10px hsla(0,0%,0%,0.3); }
+.dropdownWidget_direction-up .dropdownWidget-dropdown { bottom: 0; }
+.dropdownWidget_direction-down .dropdownWidget-dropdown { top: 0; }
+
+.dropdownWidget-item { padding: 4px 8px; border-top: 1px solid hsl(0, 0%, 90%); white-space: nowrap; }
+.dropdownWidget-item:last-child { border-bottom: 1px solid hsl(0, 0%, 90%); }
+
+.dropdownWidget-dropdownItem:hover { background: hsl(0, 0%, 95%); }
+.dropdownWidget-dropdownTitle { cursor: pointer; }
+.dropdownMenuWidget {
+    display: table;    
+}
+
+.dropdownMenuWidget-item {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 0px 10px;
+    white-space: nowrap;
+}
+
+.dropdownMenuWidget-item a {
+    color: #303030;
+    text-decoration: none;
+}
+
+.dropdownMenuWidget-item a img, 
+.dropdownMenuWidget-item a span,
+.dropdownMenuWidget-item a i {
+    border: none;
+    vertical-align: middle;
+}
+
+.dropdownMenuWidget-item a:hover {
+    color: #000000;
+}
+
+.dropdownMenuWidget-itemDropdown {
+    position: absolute;
+    z-index: 1000;
+    min-width: 120px;
+}
+
+.dropdownMenuWidget-dropdownMenu {
+    background: white;
+    border: 1px solid #efefef;
+    border-bottom: none;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+.dropdownMenuWidget-dropdownMenuIcon {
+    float: right;
+}
+
+.dropdownMenuWidget-dropdownMenuItem {
+    display: block;
+    border-bottom: 1px solid #efefef;
+    padding: 5px 10px;
+}
+
+.dropdownMenuWidget-dropdownMenuItem a {
+    width: 100%;
+    display: block;
+}
+
+.dropdownMenuWidget-dropdownItemAnchor_newWindow {
+    margin-right: 20px;
+}
+
+.dropdownMenuWidget-dropdownMenuItem:hover {
+    background: #efefef;
+}
+/*# sourceMappingURL=dropdownWidget.css.map*/

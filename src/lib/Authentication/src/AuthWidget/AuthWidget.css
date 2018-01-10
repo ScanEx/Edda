@@ -1,0 +1,26 @@
+.authWidget { font-size: 12px; }
+
+.authWidget-userPanel { display: table; }
+.authWidget-userPanel-iconCell { display: table-cell; vertical-align: middle; }
+.authWidget-userPanel-userMenuCell { display: table-cell; vertical-align: middle; }
+
+.authWidget-loginButton { cursor: pointer; }
+.authWidget-userPanel { 
+    display: table;
+}
+.authWidget-userPanel-iconCell { 
+    display: table-cell;
+    vertical-align: middle;
+}
+.authWidget-userPanel-userMenuCell {
+    display: table-cell;
+    vertical-align: middle;
+}
+.authWidget .authWidget-loginButton, .authWidget .authWidget-userPanel-userIcon { 
+    cursor: pointer;
+}
+.authWidget .dropdownMenuWidget { position:relative; }
+/*.authWidget .dropdownMenuWidget-item { padding-right: 0; }*/
+.authWidget .dropdownMenuWidget-itemDropdown { right: 0; min-width: 150px; }
+.authWidget-iframeContainer.ui-dialog-content.ui-widget-content { box-sizing: border-box; overflow: hidden; }
+.authWidget-iframeContainer .authorizationIframe { width: 100%; height: 100%; border: none; }

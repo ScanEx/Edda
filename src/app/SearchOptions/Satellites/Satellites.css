@@ -1,0 +1,31 @@
+.search-options-satellites-ms, .search-options-satellites-pc {
+    vertical-align: top;
+}
+.search-options-satellites-ms > div, .search-options-satellites-pc > div {
+    vertical-align: middle;
+}
+.search-options-satellites-ms div label, .search-options-satellites-pc div label {
+    vertical-align: middle;
+    font-weight: 300;
+    font-size: 12px;
+}
+.search-options-satellites-ms legend label,
+.search-options-satellites-pc legend label {
+    vertical-align: middle;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+}
+.search-options-satellites-ms legend,
+.search-options-satellites-pc legend{
+    margin: 0px;
+    padding: 0px;
+}
+.search-options-satellites-ms legend input[type="checkbox"],
+.search-options-satellites-pc legend input[type="checkbox"]{
+    margin-right: 5px;
+}
+div.satellite-col {
+    float: left;
+    width: 113px;
+}

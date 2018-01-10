@@ -1,0 +1,108 @@
+.drawn-objects {
+    box-shadow: 0px 1px 7.84px 0.16px rgba(0, 0, 0, 0.16);
+    background-color: #eef2f5;
+    border-radius: 6px;
+    margin-top: 10px !important;
+    margin-left: 10px !important;
+}
+.drawn-objects-header {
+    padding: 10px;
+    border-bottom: 1px solid lightgrey;
+}
+.drawn-objects-number {
+    margin-left: 10px;
+    color: #3ca1d0;
+}
+.drawn-objects-number::before {
+    content: '(';
+}
+.drawn-objects-number::after {
+    content: ')';
+}
+.drawn-objects .drawn-objects-minimize {
+    width: 10px;
+    height: 10px;    
+    border-bottom: 1px solid #5e6877;
+    float: right;
+    cursor: pointer;
+    margin-left: 10px;
+}
+.drawn-objects-list-color {
+    display: none;
+}
+.square{
+    vertical-align: super;
+    font-size: xx-small;
+}
+.color-picker {
+    z-index: 3000;
+    position: absolute;    
+    visibility: hidden;
+    border-radius: 3px;
+}
+.color-picker .color-area canvas,
+.color-picker .color-slider canvas,
+.color-picker .alpha-slider canvas,
+.color-picker .slider .slider-bar {
+    z-index: 3001;
+}
+.color-picker .color-area .picker,
+.color-picker .slider .slider-tick {
+    z-index: 3002;
+}
+.color-picker .slider .slider-tip {
+    z-index: 3003;
+}
+.drawn-objects .table-list-header .delete-all {
+    background-image: url('../../assets/results/delete-active.png');
+    display: inline-block;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    padding-left: 3px;
+}
+.drawn-objects .cell-edit {
+    visibility: hidden;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+.drawn-objects .table-list-body td i.drawing-edit {
+    background-image: url('../../assets/edit.png');    
+    cursor: pointer;    
+    background-repeat: no-repeat;
+    background-color: transparent;
+    visibility: visible;
+}
+.drawn-objects .table-list-body td input {
+    background-color: #ffffff;
+}
+
+.drawn-objects .table-list-header .drawn-objects-visible {
+    background-image: url('../../assets/search.png');
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-position: -512px -5px;
+}
+
+.drawn-objects .table-list-header .drawn-objects-hidden {
+    background-image: url('../../assets/search.png');
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-position: -512px -5px;
+}
+
+.leaflet-drawing-points,
+.leaflet-drawing-lines,
+.leaflet-drawing-lines-fill {
+    z-index: 2005;
+}

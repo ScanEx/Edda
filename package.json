@@ -1,0 +1,25 @@
+{
+  "name": "scanex-edda",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/bundle.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.24.0",
+    "babel-loader": "^6.4.1",
+    "babel-preset-es2015": "^6.24.0",
+    "copy-webpack-plugin": "^4.0.1",
+    "css-loader": "^0.27.3",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "file-loader": "^0.10.1",
+    "image-webpack-loader": "^3.2.0",
+    "pikaday": "^1.6.1",
+    "style-loader": "^0.14.1",
+    "webpack": "^2.3.1"
+  },
+  "dependencies": {}
+}
