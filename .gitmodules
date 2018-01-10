@@ -40,3 +40,6 @@
 [submodule "src/lib/TristateCheckbox"]
 	path = src/lib/TristateCheckbox
 	url = https://github.com/ScanEx/TristateCheckbox.git
+[submodule "src/lib/Authentication"]
+	path = src/lib/Authentication
+	url = https://github.com/Scanex/Authentication.git
