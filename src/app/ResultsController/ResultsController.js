@@ -17,33 +17,36 @@ const Colors = {
     CartHilite: 0xef4e70,
 };
 
+const layerAttributes = ["hover", "selected", "visible", "result", "cart", "sceneid", "acqdate", "acqtime", "cloudness", "tilt", "sunelev", "stereo", "url", "x1", "y1", "x2", "y2", "x3", "y3", "x4", "y4", "volume", "platform", "spot5_a_exists", "spot5_b_exists", "islocal", "product", "gmx_id", "sensor", "local_exists", "spot5id", "stidx"]
+const layerAttrTypes = ["boolean", "boolean", "boolean", "boolean", "boolean", "string", "date", "time", "float", "float", "float", "string", "string", "float", "float", "float", "float", "float", "float", "float", "float", "string", "string", "boolean", "boolean", "boolean", "boolean", "integer", "string", "boolean", "string", "integer"];
+
+function properties_to_item (properties) {
+    return properties.slice(1, properties.length - 1).reduce((a,v,i) => {
+        let f = layerAttributes[i];
+        switch (layerAttrTypes[i]){
+            case 'date':
+                switch (typeof v) {
+                    case 'string':
+                        a[f] = new Date(v);
+                        break;
+                    case 'number':
+                        a[f] = new Date(v * 1000);
+                        break;
+                    default:
+                        break;
+                }             
+                break;                
+            default:
+                a[f] = v;
+                break;
+        }           
+        return a;
+    },{});
+}
+
 L.gmx.VectorLayer.prototype.toItemList = function () {
     let items = this.getDataManager()._items;    
-    return Object.keys (items)
-        .map(id => items[id].properties)
-        .map(values => {        
-            return values.slice(1, values.length - 1).reduce((a,v,i) => {
-                let f = layerAttributes[i];
-                switch (layerAttrTypes[i]){
-                    case 'date':
-                        switch (typeof v) {
-                            case 'string':
-                                a[f] = new Date(v);
-                                break;
-                            case 'number':
-                                a[f] = new Date(v * 1000);
-                                break;
-                            default:
-                                break;
-                        }             
-                        break;                
-                    default:
-                        a[f] = v;
-                        break;
-                }           
-                return a;
-            },{});
-        });
+    return Object.keys (items).map(id => items[id].properties).map(properties_to_item);
 }
 
 L.gmx.VectorLayer.prototype.getFilteredItems = function(filter) {
@@ -105,9 +108,6 @@ L.gmx.DataManager.prototype.removeData = function (data) {
     return vTile;
 };
 
-const layerAttributes = ["hover", "selected", "visible", "result", "cart", "sceneid", "acqdate", "acqtime", "cloudness", "tilt", "sunelev", "stereo", "url", "x1", "y1", "x2", "y2", "x3", "y3", "x4", "y4", "volume", "platform", "spot5_a_exists", "spot5_b_exists", "islocal", "product", "gmx_id", "sensor", "local_exists", "spot5id", "stidx"]
-const layerAttrTypes = ["boolean", "boolean", "boolean", "boolean", "boolean", "string", "date", "time", "float", "float", "float", "string", "string", "float", "float", "float", "float", "float", "float", "float", "float", "string", "string", "boolean", "boolean", "boolean", "boolean", "integer", "string", "boolean", "string", "integer"];
-
 const result_index = layerAttributes.indexOf('result') + 1;
 const cart_index = layerAttributes.indexOf('cart') + 1;
 const selected_index = layerAttributes.indexOf('selected') + 1;
@@ -162,11 +162,19 @@ class ResultsController extends EventTarget {
         }).addTo(this._map);
         this._layer.disableFlip();
         this._layer.setFilter (item => {
+            let obj = properties_to_item(item.properties);
+            let filtered = false;
+            if(typeof this._filter === 'function') {
+                filtered = this._filter(obj);
+            }
+            else {
+                filtered = true;
+            }            
             switch (this._currentTab) {
                 case 'results':                    
-                    return item.properties[result_index];                                        
+                    return item.properties[result_index] && filtered;
                 case 'favorites':                 
-                    return item.properties[cart_index];
+                    return item.properties[cart_index] && filtered;
                 case 'search':
                     return false;
                 default:
@@ -571,12 +579,22 @@ class ResultsController extends EventTarget {
     hideContours() {
         this._currentTab = 'search';
         this._layer.repaint();
-    }
+    }    
     get resultsCount () {
         return this._layer.getFilteredItems(item => item.result).length;
     }
     get favoritesCount () {
         return this._layer.getFilteredItems(item => item.cart).length;
+    }
+    get count () {
+        switch (this._currentTab) {
+            case 'results':
+                return this._resultList.count;
+            case 'favorites':
+                return this._favoritesList.count;
+            default:
+                return 0;
+        }
     }   
     showResults () {
         this._currentTab = 'results';
@@ -852,6 +870,16 @@ class ResultsController extends EventTarget {
         let objects =  Object.keys(this._drawings).map(id => this._drawings[id]);
         this._requestAdapter.geometries = objects.filter(obj => obj.visible).reduce((a, {geoJSON}) => a.concat(geoJSON.geometry), []);
         this._drawnObjects.items = objects;
+    }  
+    enableFilter (enable) {
+        this._resultList.enableFilter (enable);
+        this._favoritesList.enableFilter (enable);
+    }
+    set filter (value) {
+        this._filter = value;
+        this._resultList.filter = value;
+        this._favoritesList.filter = value;
+        this._layer.repaint();
     }    
 }
 

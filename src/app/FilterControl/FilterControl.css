@@ -1,0 +1,10 @@
+.filter-control .range-widget-label {    
+    float: left;
+}
+.filter-control .cloudiness-slider,
+.filter-control .angle-slider {
+    display: inline-block;
+}
+.filter-control .angle-slider {
+    margin-left: 10px;
+}

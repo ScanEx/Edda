@@ -104,9 +104,6 @@ class RequestAdapter {
             this.st_index,
             this.spatial,     
             this.date,
-            this.clouds,            
-            this.angle,
-            this.stereo,
             this.satellites,                   
         ]
         .filter(x => x.trim() !== '')

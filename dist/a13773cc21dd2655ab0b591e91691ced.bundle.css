@@ -1887,6 +1887,15 @@ http://nicolasgallagher.com/micro-clearfix-hack/
 }
 .language-widget select {
     cursor: pointer;
+}.filter-control .range-widget-label {    
+    float: left;
+}
+.filter-control .cloudiness-slider,
+.filter-control .angle-slider {
+    display: inline-block;
+}
+.filter-control .angle-slider {
+    margin-left: 10px;
 }.noselect {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -2308,6 +2317,20 @@ html, body {
 
 .search-pane .leaflet-ext-search .leaflet-ext-search-list-selected {
     background-color: #d9e1e6;
+}
+
+.filter-control {
+    top: 5px;
+    left: 600px;
+    background-color: rgba(255,255,255,0.75);
+    padding: 10px;
+    border-radius: 5px;
+    height: 40px;
+}
+.filter-control input {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    border: 1px solid #d9e1e6;
 }.iconSidebarControl-controlCorner_noie { padding: 10px; background-color: hsla(0, 0%, 100%, 0); transition: background-color .5s ease; }
 .iconSidebarControl-controlCorner_locked { pointer-events: auto; }
 .iconSidebarControl-controlCorner_ie9 { padding: 10px; } /* в IE9 background не даёт кликнуть по слоям */
@@ -2471,4 +2494,4 @@ html, body {
 .leaflet-iconLayers-layerCell_hidden { display: none; }
 .leaflet-iconLayers-layerCell_active .leaflet-iconLayers-layer { cursor: default; }
 .leaflet-iconLayers-layerCell_active .leaflet-iconLayers-layerCheckIcon { display: block; }
-/*# sourceMappingURL=1fe96b0b28465ea3107efa3909ee8fd1.bundle.css.map*/
+/*# sourceMappingURL=a13773cc21dd2655ab0b591e91691ced.bundle.css.map*/

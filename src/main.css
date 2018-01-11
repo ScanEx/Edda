@@ -420,3 +420,17 @@ html, body {
 .search-pane .leaflet-ext-search .leaflet-ext-search-list-selected {
     background-color: #d9e1e6;
 }
+
+.filter-control {
+    top: 5px;
+    left: 600px;
+    background-color: rgba(255,255,255,0.75);
+    padding: 10px;
+    border-radius: 5px;
+    height: 40px;
+}
+.filter-control input {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    border: 1px solid #d9e1e6;
+}

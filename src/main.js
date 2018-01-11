@@ -27,6 +27,7 @@ import { ShapeLoader } from 'app/ShapeLoader/ShapeLoader.js';
 import { copy } from 'lib/Object.Extensions/src/Extensions.js';
 import { GmxLayerDataProvider } from 'app/GmxLayerDataProvider/GmxLayerDataProvider.js';
 import { LanguageWidget } from 'lib/LanguageWidget/src/LanguageWidget.js';
+import { FilterControl } from 'app/FilterControl/FilterControl.js';
 
 require('lib/IconSidebarControl/dist/iconSidebarControl.css');
 let IconSidebarControl = require('lib/IconSidebarControl/dist/iconSidebarControl.js');
@@ -851,7 +852,28 @@ function init_sidebar (state) {
             window.Catalog.resultsController.clear();
             window.Catalog.searchSidebar.enable ('results', false);
             update_results_number(window.Catalog.resultsController.resultsCount);
-        });        
+        });  
+        
+        window.Catalog.filterControl = new FilterControl ({position: 'topleft'});
+        map.addControl (window.Catalog.filterControl);
+        window.Catalog.filterControl.getContainer().style.visibility = 'hidden';
+        window.Catalog.filterControl.clouds.values = [0, 100];
+        window.Catalog.filterControl.angle.values = [0, 60];
+        window.Catalog.resultsController.enableFilter(true);
+        let showFilter = false;
+        let apply_filter = (clouds, angle) => {
+            window.Catalog.resultsController.filter = item => {
+                return clouds[0] <= item.cloudness && item.cloudness <= clouds[1] &&
+                    angle[0] <= item.tilt && item.tilt <= angle[1];
+            };
+            window.Catalog.resultsController.enableFilter(true);
+            resize_results(window.Catalog.resultsContainer);
+            update_results_number(window.Catalog.resultsController.count);
+        };
+        window.Catalog.filterControl.on ('change', e => {
+            let {clouds, angle} = e;
+            apply_filter (clouds, angle);
+        });
 
         window.Catalog.searchSidebar.on('opened', e => {            
             switch(e.id) {
@@ -859,15 +881,37 @@ function init_sidebar (state) {
                     window.Catalog.searchOptions.refresh();
                     resize_search_options(searchContainer);                    
                     window.Catalog.resultsController.hideContours();
+                    if (showFilter) {
+                        window.Catalog.filterControl.getContainer().style.visibility = 'hidden';
+                        showFilter = false;
+                    }
                     break;
                 case 'results':
                     window.Catalog.resultsController.showResults();
-                    resize_results(window.Catalog.resultsContainer);                    
+                    resize_results(window.Catalog.resultsContainer);  
+                    if (!showFilter) {
+                        window.Catalog.filterControl.getContainer().style.visibility = 'visible';
+                        let clouds = [0, 100];
+                        let angle = [0, 60];
+                        window.Catalog.filterControl.clouds.values = clouds;
+                        window.Catalog.filterControl.angle.values = angle;
+                        apply_filter (clouds, angle);
+                        showFilter = true;
+                    }
                     break;
                 case 'favorites':
                     window.Catalog.resultsController.showFavorites();                    
                     resize_favorites(window.Catalog.favoritesContainer);                    
                     enable_cart (window.Catalog.resultsController.hasFavoritesSelected);
+                    if (!showFilter) {
+                        window.Catalog.filterControl.getContainer().style.visibility = 'visible';
+                        let clouds = [0, 100];
+                        let angle = [0, 60];
+                        window.Catalog.filterControl.clouds.values = clouds;
+                        window.Catalog.filterControl.angle.values = angle;
+                        apply_filter (clouds, angle);
+                        showFilter = true;
+                    }
                     break;
                 default:
                     break;

@@ -84,24 +84,11 @@ class SearchOptions extends EventTarget {
           <input id="period_annually" class="search-options-period-annually-value" type="checkbox" />
           <label for="period_annually" class="search-options-period-annually-title">${T.getText('period.annually')}</label>
         </div>    
-      </div>
-      <div class="search-options-clouds">      
-        <div class="search-options-clouds-title">${T.getText('clouds')}</div>
-        <div class="search-options-clouds-value"></div>      
-      </div>    
-      <div class="search-options-angle">      
-        <div class="search-options-angle-title">${T.getText('angle')}</div>
-        <div class="search-options-angle-value"></div>      
-      </div>
-      <div class="search-options-resolution">      
-        <div class="search-options-resolution-title">${T.getText('resolution.title')}</div>
-        <div class="search-options-resolution-value"></div>      
-      </div>    
+      </div>      
       <div class="search-options-satellites-number-section">
         <div class="search-options-satellites-title">${T.getText('satellites')}</div>
         <div class="search-options-satellites-number"></div>
-        <div class="search-options-satellites-archive">
-            <!-- label class="search-options-satellites-archive-title">${T.getText('archive.title')}</label -->
+        <div class="search-options-satellites-archive">            
             <select>
                 <option value="global">${T.getText('archive.global')}</option>
                 <option value="local">${T.getText('archive.local')}</option>
@@ -118,7 +105,6 @@ class SearchOptions extends EventTarget {
     this._satellitesContainer = this._container.querySelector('.search-options-satellites');    
     this._initDatePickers();
     this._initAnnually();    
-    this._initSliders();
     this._initSatellites(restricted);
     this._initArchive(restricted);
     this._stopPropagation = this._stopPropagation.bind(this);
@@ -130,9 +116,7 @@ class SearchOptions extends EventTarget {
   }
   set criteria ({
     date: [startDate = new Date(), endDate = new Date()],
-    annually = false,
-    clouds: [minClouds = 0, maxClouds = 100],
-    angle: [minAngle = 0, maxAngle = 60],    
+    annually = false,    
     satellites = {},
     stereo = false,
   }){    
@@ -140,20 +124,14 @@ class SearchOptions extends EventTarget {
     this._endDate.setDate(endDate);
     this._annually.checked = annually;
     // this._stereo.checked = stereo;
-
-    this._cloudSlider.values = [minClouds, maxClouds];    
-    this._angleSlider.values = [minAngle, maxAngle];
     
-    this._satellites.data = satellites;
-    this._updateResolution();
+    this._satellites.data = satellites;    
     this._updateSatelliteNumber();
   }
   get criteria (){    
     return {
       date: [this._startDate.getDate(), this._endDate.getDate()],
       annually: this._annually.checked,
-      clouds: this._cloudSlider.values,
-      angle:  this._angleSlider.values,
       satellites: this._satellites.data,
       stereo: false,
       archive: this._archive.value,
@@ -219,44 +197,17 @@ class SearchOptions extends EventTarget {
       this._archive.value = 'global';
     }
   }
-  _initSliders(){    
-    this._cloudSlider = new RangeWidget(this._container.querySelector('.search-options-clouds-value'), {min: 0, max: 100});
-    this._cloudSlider.values = [0, 100];   
-
-    this._angleSlider = new RangeWidget( this._container.querySelector('.search-options-angle-value'), {min: 0, max: 60});
-    this._angleSlider.values = [0, 60];
-
-    this._resolutionSlider = new RangeWidget(this._container.querySelector('.search-options-resolution-value'), {min: 0.3, max: 20, mode: 'float'});
-    this._resolutionSlider.values = [0.3, 20];
-    this._resolutionSlider.addEventListener('change', e => {      
-      this._satellites.range = e.detail;
-    });    
-  }
   _initSatellites(restricted) {    
     this._satelliteNumber = this._container.querySelector('.search-options-satellites-number'); 
     this._satellites = new Satellites (this._satellitesContainer, {restricted: restricted});
     this._satellites.addEventListener('change', e => {      
-      this._updateResolution();      
       this._updateSatelliteNumber();
 
       let event = document.createEvent('Event');
       event.initEvent('change', false, false);
       this.dispatchEvent(event);
-
     });
-  }
-  _updateResolution () {
-    let range = this._satellites.range;
-    let values = this._resolutionSlider.values;    
-    if(range.length === 2) {
-      let [lo, hi] = range;
-      let [min, max] = values;
-      this._resolutionSlider.values = [min > lo ? lo : min, max < hi ? hi : max];
-    }
-    else {
-      this._resolutionSlider.values = values;
-    }
-  }
+  }  
   _satellitesVisible () {
     return this._satellitesContainer.style.display == 'block';
   }
@@ -279,9 +230,7 @@ class SearchOptions extends EventTarget {
     event.initEvent('search', false, false);
     event.detail = {
       date: [this._startDate.getDate(), this._endDate.getDate()],
-      annually: this._annually.checked,
-      clouds: this._cloudSlider.values,
-      angle:  this._angleSlider.values,
+      annually: this._annually.checked,      
       satellites: this._satellites.items,
     };
     this.dispatchEvent(event);

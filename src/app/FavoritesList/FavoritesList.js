@@ -323,6 +323,12 @@ class FavoritesList extends EventTarget {
     adjustWidth () {
         this._grid.adjustHeader();
     }
+    set filter (value) {
+        this._grid.filter = value;
+    }
+    get count () {
+        return this._grid.count;
+    }
 }
 
 export { FavoritesList };
