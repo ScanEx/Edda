@@ -1889,6 +1889,7 @@ http://nicolasgallagher.com/micro-clearfix-hack/
     cursor: pointer;
 }.filter-control .range-widget-label {    
     float: left;
+    margin-right: 5px;
 }
 .filter-control .cloudiness-slider,
 .filter-control .angle-slider {
@@ -2494,4 +2495,4 @@ html, body {
 .leaflet-iconLayers-layerCell_hidden { display: none; }
 .leaflet-iconLayers-layerCell_active .leaflet-iconLayers-layer { cursor: default; }
 .leaflet-iconLayers-layerCell_active .leaflet-iconLayers-layerCheckIcon { display: block; }
-/*# sourceMappingURL=a13773cc21dd2655ab0b591e91691ced.bundle.css.map*/
+/*# sourceMappingURL=03dd71164874cdaf2ad61699ffb29433.bundle.css.map*/

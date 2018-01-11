@@ -28201,7 +28201,7 @@ function init_sidebar(state) {
         window.Catalog.filterControl.clouds.values = [0, 100];
         window.Catalog.filterControl.angle.values = [0, 60];
         window.Catalog.resultsController.enableFilter(true);
-        var showFilter = false;
+        var filterVisible = false;
         var apply_filter = function apply_filter(clouds, angle) {
             window.Catalog.resultsController.filter = function (item) {
                 return clouds[0] <= item.cloudness && item.cloudness <= clouds[1] && angle[0] <= item.tilt && item.tilt <= angle[1];
@@ -28217,43 +28217,43 @@ function init_sidebar(state) {
             apply_filter(clouds, angle);
         });
 
+        var show_filter = function show_filter() {
+            if (!filterVisible) {
+                window.Catalog.filterControl.getContainer().style.visibility = 'visible';
+                var clouds = [0, 100];
+                var angle = [0, 60];
+                window.Catalog.filterControl.clouds.values = clouds;
+                window.Catalog.filterControl.angle.values = angle;
+                apply_filter(clouds, angle);
+                filterVisible = true;
+            }
+        };
+
+        var hide_filter = function hide_filter() {
+            if (filterVisible) {
+                window.Catalog.filterControl.getContainer().style.visibility = 'hidden';
+                filterVisible = false;
+            }
+        };
+
         window.Catalog.searchSidebar.on('opened', function (e) {
             switch (e.id) {
                 case 'search':
                     window.Catalog.searchOptions.refresh();
                     resize_search_options(searchContainer);
                     window.Catalog.resultsController.hideContours();
-                    if (showFilter) {
-                        window.Catalog.filterControl.getContainer().style.visibility = 'hidden';
-                        showFilter = false;
-                    }
+                    hide_filter();
                     break;
                 case 'results':
                     window.Catalog.resultsController.showResults();
                     resize_results(window.Catalog.resultsContainer);
-                    if (!showFilter) {
-                        window.Catalog.filterControl.getContainer().style.visibility = 'visible';
-                        var clouds = [0, 100];
-                        var angle = [0, 60];
-                        window.Catalog.filterControl.clouds.values = clouds;
-                        window.Catalog.filterControl.angle.values = angle;
-                        apply_filter(clouds, angle);
-                        showFilter = true;
-                    }
+                    show_filter();
                     break;
                 case 'favorites':
                     window.Catalog.resultsController.showFavorites();
                     resize_favorites(window.Catalog.favoritesContainer);
                     enable_cart(window.Catalog.resultsController.hasFavoritesSelected);
-                    if (!showFilter) {
-                        window.Catalog.filterControl.getContainer().style.visibility = 'visible';
-                        var _clouds = [0, 100];
-                        var _angle = [0, 60];
-                        window.Catalog.filterControl.clouds.values = _clouds;
-                        window.Catalog.filterControl.angle.values = _angle;
-                        apply_filter(_clouds, _angle);
-                        showFilter = true;
-                    }
+                    show_filter();
                     break;
                 default:
                     break;
@@ -30693,4 +30693,4 @@ webpackContext.id = 211;
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=main.82673833c8c242feae52.bundle.js.map
+//# sourceMappingURL=main.d7025ce9f4b697d62632.bundle.js.map

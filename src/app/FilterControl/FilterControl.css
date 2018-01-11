@@ -1,5 +1,6 @@
 .filter-control .range-widget-label {    
     float: left;
+    margin-right: 5px;
 }
 .filter-control .cloudiness-slider,
 .filter-control .angle-slider {

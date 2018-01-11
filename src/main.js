@@ -860,7 +860,7 @@ function init_sidebar (state) {
         window.Catalog.filterControl.clouds.values = [0, 100];
         window.Catalog.filterControl.angle.values = [0, 60];
         window.Catalog.resultsController.enableFilter(true);
-        let showFilter = false;
+        let filterVisible = false;
         let apply_filter = (clouds, angle) => {
             window.Catalog.resultsController.filter = item => {
                 return clouds[0] <= item.cloudness && item.cloudness <= clouds[1] &&
@@ -875,43 +875,43 @@ function init_sidebar (state) {
             apply_filter (clouds, angle);
         });
 
+        let show_filter = () => {
+            if (!filterVisible) {
+                window.Catalog.filterControl.getContainer().style.visibility = 'visible';
+                let clouds = [0, 100];
+                let angle = [0, 60];
+                window.Catalog.filterControl.clouds.values = clouds;
+                window.Catalog.filterControl.angle.values = angle;
+                apply_filter (clouds, angle);
+                filterVisible = true;
+            }
+        };
+
+        let hide_filter = () => {
+            if (filterVisible) {
+                window.Catalog.filterControl.getContainer().style.visibility = 'hidden';
+                filterVisible = false;
+            }
+        };
+
         window.Catalog.searchSidebar.on('opened', e => {            
             switch(e.id) {
                 case 'search':
                     window.Catalog.searchOptions.refresh();
                     resize_search_options(searchContainer);                    
-                    window.Catalog.resultsController.hideContours();
-                    if (showFilter) {
-                        window.Catalog.filterControl.getContainer().style.visibility = 'hidden';
-                        showFilter = false;
-                    }
+                    window.Catalog.resultsController.hideContours(); 
+                    hide_filter();                  
                     break;
                 case 'results':
                     window.Catalog.resultsController.showResults();
                     resize_results(window.Catalog.resultsContainer);  
-                    if (!showFilter) {
-                        window.Catalog.filterControl.getContainer().style.visibility = 'visible';
-                        let clouds = [0, 100];
-                        let angle = [0, 60];
-                        window.Catalog.filterControl.clouds.values = clouds;
-                        window.Catalog.filterControl.angle.values = angle;
-                        apply_filter (clouds, angle);
-                        showFilter = true;
-                    }
+                    show_filter();                   
                     break;
                 case 'favorites':
                     window.Catalog.resultsController.showFavorites();                    
                     resize_favorites(window.Catalog.favoritesContainer);                    
                     enable_cart (window.Catalog.resultsController.hasFavoritesSelected);
-                    if (!showFilter) {
-                        window.Catalog.filterControl.getContainer().style.visibility = 'visible';
-                        let clouds = [0, 100];
-                        let angle = [0, 60];
-                        window.Catalog.filterControl.clouds.values = clouds;
-                        window.Catalog.filterControl.angle.values = angle;
-                        apply_filter (clouds, angle);
-                        showFilter = true;
-                    }
+                    show_filter();                   
                     break;
                 default:
                     break;
