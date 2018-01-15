@@ -2,7 +2,7 @@ import { EventTarget } from 'lib/EventTarget/src/EventTarget.js';
 import { Quicklook } from 'app/Quicklook/Quicklook.js';
 import { ENUM_ID } from 'lib/DataGrid/src/DataGrid.js';
 import { Translations } from 'lib/Translations/src/Translations.js';
-import { is_geojson_feature, from_gmx, normalize_geometry, normalize_geometry_type } from 'app/Utils/Utils.js';
+import { is_geojson_feature, from_gmx, normalize_geometry, normalize_geometry_type, chain } from 'app/Utils/Utils.js';
 import { copy } from 'lib/Object.Extensions/src/Extensions.js';
 import './ResultsController.css';
 import { flatten, get_bbox } from '../Utils/Utils';
@@ -87,32 +87,52 @@ function getBounds (items) {
     }, null);
 }
 
-L.gmx.DataManager.prototype.removeData = function (data) {
-    this._itemsBounds = null;
-    var vTile = this.processingTile;
-    if (vTile) {                
-        var chkKeys = (data || vTile.data).reduce(function(a,item) {
-            var id = item[0];
-            a[id] = true;
-            delete this._items[id];
-            return a;
-        }.bind(this), {});
+// L.gmx.DataManager.prototype.removeData = function (data) {
+//     this._itemsBounds = null;
+//     var vTile = this.processingTile;
+//     if (vTile) {                
+//         var chkKeys = (data || vTile.data).reduce(function(a,item) {
+//             var id = item[0];
+//             a[id] = true;
+//             delete this._items[id];
+//             return a;
+//         }.bind(this), {});
         
-        this._removeDataFromObservers(chkKeys);
-        vTile.removeData(chkKeys, true);
-        this._updateItemsFromTile(vTile);
+//         this._removeDataFromObservers(chkKeys);
+//         vTile.removeData(chkKeys, true);
+//         this._updateItemsFromTile(vTile);
 
-        this._triggerObservers();
-    }
+//         this._triggerObservers();
+//     }
 
-    return vTile;
-};
+//     return vTile;
+// };
 
+const sceneid_index = layerAttributes.indexOf('sceneid') + 1;
 const result_index = layerAttributes.indexOf('result') + 1;
 const cart_index = layerAttributes.indexOf('cart') + 1;
 const selected_index = layerAttributes.indexOf('selected') + 1;
 const visible_index = layerAttributes.indexOf('visible') + 1;
 const hover_index = layerAttributes.indexOf('hover') + 1;
+
+let qlCache = {};
+
+function prefetchQL  (sceneid) {
+    return new Promise((resolve, reject) => {
+        
+        let img = new Image();
+        img.crossOrigin = "Anonymous";
+        img.onload = () => {   
+            qlCache[sceneid] = true;
+            resolve();
+        };
+        img.onerror = () => {              
+            delete qlCache[sceneid];
+            resolve();
+        };                
+        img.src = `http://wikimixer.kosmosnimki.ru/QuickLookImage.ashx?id=${sceneid}&srs=3857`;
+    });                            
+}
 
 class ResultsController extends EventTarget {
     constructor({map, requestAdapter, sidebar, resultList, favoritesList, imageDetails, drawnObjects}){
@@ -135,7 +155,7 @@ class ResultsController extends EventTarget {
                 GeometryType: 'polygon',
                 // IsRasterCatalog: true,
                 RCMinZoomForRasters: 3,
-                Quicklook: '{"template":"//search.kosmosnimki.ru/QuickLookImage.ashx?id=[sceneid]","minZoom":3,"X1":"x1","Y1":"y1","X2":"x2","Y2":"y2","X3":"x3","Y3":"y3","X4":"x4","Y4":"y4"}',
+                Quicklook: '{"template":"http://wikimixer.kosmosnimki.ru/QuickLookImage.ashx?id=[sceneid]","minZoom":3,"X1":"x1","Y1":"y1","X2":"x2","Y2":"y2","X3":"x3","Y3":"y3","X4":"x4","Y4":"y4"}',
                 MetaProperties: {
                     quicklookPlatform: {
                         Type: "String",
@@ -191,23 +211,44 @@ class ResultsController extends EventTarget {
             else {
                 color = item.properties[cart_index] ? Colors.Cart : Colors.Default;                
             }
-            return { skipRasters: !item.properties[visible_index], strokeStyle: color, lineWidth };
-        });
-        let showQL = (id, show) => {
-            let item = this._layer.getDataManager()._items[id];
-            if (item.properties[visible_index] != show){
-                item.properties[visible_index] = show;
-                this._layer.redrawItem(id);
-            }                        
-            if (show) {
-                this._layer.bringToTopItem(id);
+            let sceneid = item.properties[sceneid_index];
+            let skipRasters = !item.properties[visible_index];
+            if (!qlCache[sceneid] && !skipRasters) {
+                skipRasters = true;
+            }
+            return { skipRasters, strokeStyle: color, lineWidth };
+        });         
+                
+        let showQL = (id, show) => {            
+            let item = this._layer.getDataManager()._items[id]; 
+
+            let process_ql = () => {
+                
+                if (item.properties[visible_index] != show){
+                    item.properties[visible_index] = show;
+                    // this._layer.redrawItem(id);
+
+                    if (show) {
+                        this._layer.bringToTopItem(id);
+                    }
+                    else {
+                        this._layer.bringToBottomItem(id);
+                    } 
+                    let event = document.createEvent('Event');
+                    event.initEvent('visible', false, false);
+                    this.dispatchEvent(event); 
+                }                
+
+            };
+
+            if (show)  {
+                prefetchQL (item.properties[sceneid_index]).then(() => {                    
+                    process_ql();
+                });
             }
             else {
-                this._layer.bringToBottomItem(id);
-            } 
-            let event = document.createEvent('Event');
-            event.initEvent('visible', false, false);
-            this.dispatchEvent(event);           
+                process_ql();
+            }              
         };      
         this._layer
         .on('click', e => {
@@ -360,14 +401,26 @@ class ResultsController extends EventTarget {
 
         this._favoritesList.addEventListener('visible:all', e => {            
             let visible = e.detail;            
-    
-            let items = this._layer.getDataManager()._items;        
-            Object.keys(items).forEach(id => {
-                let item = items[id];
+            let process_ql = item => {
                 if (item.properties[cart_index]) {
                     item.properties[visible_index] = visible;
                     this._layer.redrawItem(item.id);
                 }
+            };
+    
+            let items = this._layer.getDataManager()._items;        
+            Object.keys(items).forEach(id => {
+                let item = items[id];
+
+                if (visible) {
+                    prefetchQL(item.properties[sceneid_index]).then (() => {
+                        process_ql (item);
+                    })
+                }
+                else {
+                    process_ql (item);
+                }
+               
             });            
             
             this._resultList.items = this._layer.getFilteredItems(item => item.result);
@@ -539,6 +592,7 @@ class ResultsController extends EventTarget {
     }
     setLayer ({fields, values, types}) {  
         // "hover", "selected", "visible", "result", "cart"
+        qlCache = {};
         const gmx_id_index = fields.indexOf('gmx_id');        
         let data = values.reduce((a,item) => {            
             let value = layerAttributes.reduce((b,k) => {
@@ -880,7 +934,26 @@ class ResultsController extends EventTarget {
         this._resultList.filter = value;
         this._favoritesList.filter = value;
         this._layer.repaint();
-    }    
+    } 
+    get platforms () {
+        let get_platforms = items => {
+            let ps = items.reduce((a,{platform}) => {
+                a[platform] = true;
+                return a;
+            }, {});
+            return Object.keys(ps).map(platform => {
+                return {platform, checked: true};
+            });
+        };
+        switch (this._currentTab) {
+            case 'results':
+                return get_platforms (this._layer.getFilteredItems(item => item.result));
+            case 'favorites':                
+                return get_platforms (this._layer.getFilteredItems(item => item.cart));
+            default:
+                return [];
+        }
+    }   
 }
 
 export { ResultsController, layerAttributes, layerAttrTypes };

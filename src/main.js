@@ -882,6 +882,7 @@ function init_sidebar (state) {
                 let angle = [0, 60];
                 window.Catalog.filterControl.clouds.values = clouds;
                 window.Catalog.filterControl.angle.values = angle;
+                // window.Catalog.filterControl.satellites.items = window.Catalog.resultsController.platforms;
                 apply_filter (clouds, angle);
                 filterVisible = true;
             }

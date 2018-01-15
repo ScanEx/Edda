@@ -1892,11 +1892,26 @@ http://nicolasgallagher.com/micro-clearfix-hack/
     margin-right: 5px;
 }
 .filter-control .cloudiness-slider,
-.filter-control .angle-slider {
+.filter-control .angle-slider,
+.filter-control .satellite-filter {
     display: inline-block;
 }
-.filter-control .angle-slider {
+.filter-control .angle-slider,
+.filter-control .satellite-filter {
     margin-left: 10px;
+}
+.filter-control .satellite-filter-header .satellite-filter-label,
+.filter-control .satellite-filter-header .satellite-filter-button {
+    display: inline-block;
+}
+.filter-control .satellite-filter-header .satellite-filter-button {
+    cursor: pointer;
+}
+.filter-control .satellite-filter-body{
+    position: relative;
+    top: 0px;
+    left: 0px;
+    z-index: 900;
 }.noselect {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -2495,4 +2510,4 @@ html, body {
 .leaflet-iconLayers-layerCell_hidden { display: none; }
 .leaflet-iconLayers-layerCell_active .leaflet-iconLayers-layer { cursor: default; }
 .leaflet-iconLayers-layerCell_active .leaflet-iconLayers-layerCheckIcon { display: block; }
-/*# sourceMappingURL=03dd71164874cdaf2ad61699ffb29433.bundle.css.map*/
+/*# sourceMappingURL=6387ded0c4533c431ed184e6926acf17.bundle.css.map*/

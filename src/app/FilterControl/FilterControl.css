@@ -3,9 +3,24 @@
     margin-right: 5px;
 }
 .filter-control .cloudiness-slider,
-.filter-control .angle-slider {
+.filter-control .angle-slider,
+.filter-control .satellite-filter {
     display: inline-block;
 }
-.filter-control .angle-slider {
+.filter-control .angle-slider,
+.filter-control .satellite-filter {
     margin-left: 10px;
+}
+.filter-control .satellite-filter-header .satellite-filter-label,
+.filter-control .satellite-filter-header .satellite-filter-button {
+    display: inline-block;
+}
+.filter-control .satellite-filter-header .satellite-filter-button {
+    cursor: pointer;
+}
+.filter-control .satellite-filter-body{
+    position: relative;
+    top: 0px;
+    left: 0px;
+    z-index: 900;
 }
