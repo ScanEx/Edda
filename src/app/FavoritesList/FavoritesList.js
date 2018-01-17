@@ -329,6 +329,9 @@ class FavoritesList extends EventTarget {
     get count () {
         return this._grid.count;
     }
+    getRow (rowId) {
+        return this._grid.getRow (rowId);
+    }
 }
 
 export { FavoritesList };

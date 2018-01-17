@@ -108,6 +108,7 @@ function getBounds (items) {
 //     return vTile;
 // };
 
+const gmx_id_index = 0;
 const sceneid_index = layerAttributes.indexOf('sceneid') + 1;
 const result_index = layerAttributes.indexOf('result') + 1;
 const cart_index = layerAttributes.indexOf('cart') + 1;
@@ -117,7 +118,7 @@ const hover_index = layerAttributes.indexOf('hover') + 1;
 
 let qlCache = {};
 
-function prefetchQL  (sceneid) {
+function prefetch_ql  (sceneid) {
     return new Promise((resolve, reject) => {
         
         let img = new Image();
@@ -128,7 +129,7 @@ function prefetchQL  (sceneid) {
         };
         img.onerror = () => {              
             delete qlCache[sceneid];
-            resolve();
+            reject();
         };                
         img.src = `http://wikimixer.kosmosnimki.ru/QuickLookImage.ashx?id=${sceneid}&srs=3857`;
     });                            
@@ -217,76 +218,145 @@ class ResultsController extends EventTarget {
                 skipRasters = true;
             }
             return { skipRasters, strokeStyle: color, lineWidth };
-        });         
-                
-        let showQL = (id, show) => {            
-            let item = this._layer.getDataManager()._items[id]; 
+        }); 
 
-            let process_ql = () => {
-                
-                if (item.properties[visible_index] != show){
-                    item.properties[visible_index] = show;
-                    // this._layer.redrawItem(id);
-
-                    if (show) {
-                        this._layer.bringToTopItem(id);
-                    }
-                    else {
-                        this._layer.bringToBottomItem(id);
-                    } 
-                    let event = document.createEvent('Event');
-                    event.initEvent('visible', false, false);
-                    this.dispatchEvent(event); 
-                }                
-
+        let show_ql_progress = (gmx_id, visible) => {
+            let get_row = gmx_id => {
+                let item = null;
+                switch (this._currentTab) {
+                    case 'results':
+                        item = this._resultList.getItemByIndex(gmx_id);
+                        return this._resultList.getRow(item[ENUM_ID]);
+                    case 'favorites':
+                        item = this._favoritesList.getItemByIndex(gmx_id);
+                        return this._favoritesList.getRow(item[ENUM_ID]);
+                    default:
+                        return null;
+                }
             };
+            let row = get_row(gmx_id);
+            if (row) {
+                let icon = row.querySelector('i');
+                if (visible) {
+                    icon.classList.remove('search');
+                    icon.classList.remove('search-visibility-off');
+                    icon.classList.add('ql-loader');
+                }
+                else {
+                    icon.classList.remove('ql-loader');
+                    icon.classList.add('search');
+                    icon.classList.add('search-visibility-off');                
+                }
+            }     
+        };
 
-            if (show)  {
-                prefetchQL (item.properties[sceneid_index]).then(() => {                    
-                    process_ql();
-                });
+        let process_ql = (id, show) => {
+            this._layer.redrawItem(id);
+            if (show) {
+                this._layer.bringToTopItem(id);
             }
             else {
-                process_ql();
-            }              
-        };      
+                this._layer.bringToBottomItem(id);
+            } 
+            let event = document.createEvent('Event');
+            event.initEvent('visible', false, false);
+            this.dispatchEvent(event);                                
+        };
+                
+        let show_ql = (id, show) => {     
+            return new Promise ((resolve,reject) => {
+                let item = this._layer.getDataManager()._items[id]; 
+                item.properties[visible_index] = show;
+                if (show)  {                
+                    show_ql_progress (id, true);          
+                    prefetch_ql(item.properties[sceneid_index])
+                    .then(() => {                    
+                        process_ql(id, show);
+                        show_ql_progress (id, false);
+                        resolve();
+                    })
+                    .catch(() => {
+                        process_ql(id, show);
+                        show_ql_progress (id, false);
+                        resolve();
+                    });
+                }
+                else {
+                    process_ql(id, show);
+                    show_ql_progress (id, false);
+                    resolve();
+                } 
+            });                         
+        };
+
+        let update_row = (gmx_id, hover) => {
+            let item = null;            
+            let rowId = null;
+            switch (this._currentTab) {
+                case 'results':
+                    item = this._resultList.getItemByIndex(gmx_id);
+                    rowId = item[ENUM_ID];
+                    if (hover) {
+                        this._resultList.hilite(rowId);
+                    }
+                    else {
+                        this._resultList.dim(rowId);
+                    }                    
+                    break;
+                case 'favorites':
+                    item = this._favoritesList.getItemByIndex(gmx_id);                    
+                    rowId = item[ENUM_ID];
+                    if (hover) {
+                        this._favoritesList.hilite(rowId);
+                    }
+                    else {
+                        this._favoritesList.dim(rowId);
+                    }                    
+                    break;
+                default:
+                    return null;
+            }
+        };
         this._layer
         .on('click', e => {
             let { gmx: {id, layer, target} } = e;            
             let visible = !target.properties[visible_index];
-            showQL (id, visible);
-
-            let item = null;
-            switch (this._currentTab) {
-                case 'results':
-                    item = this.resultList.getItemByIndex(id);
-                    item.visible = visible;
-                    this.resultList.refresh();
-                    if (visible) {
-                        this.resultList.scrollToRow(item[ENUM_ID]);
-                    }
-                    break;
-                case 'favorites':                    
-                    item = this.favoritesList.getItemByIndex(id);
-                    item.visible = visible;
-                    this.favoritesList.refresh();
-                    if (visible) {
-                        this.favoritesList.scrollToRow(item[ENUM_ID]);
-                    }
-                    break;
-                default:
-                    break;
-            }
+            show_ql (id, visible)
+            .then(() => {
+                let item = null;
+                switch (this._currentTab) {
+                    case 'results':
+                        item = this.resultList.getItemByIndex(id);
+                        item.visible = visible;
+                        this.resultList.refresh();
+                        if (visible) {
+                            this.resultList.scrollToRow(item[ENUM_ID]);
+                        }
+                        break;
+                    case 'favorites':                    
+                        item = this.favoritesList.getItemByIndex(id);
+                        item.visible = visible;
+                        this.favoritesList.refresh();
+                        if (visible) {
+                            this.favoritesList.scrollToRow(item[ENUM_ID]);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            });            
         })
         .on('mouseover', e => {
             let { gmx: {id, layer, target} } = e;
-            target.properties[hover_index] = true;
-            this._layer.redrawItem(id);            
+            target.properties[hover_index] = true;            
+            this._layer.redrawItem(id); 
+            update_row(id, true);
         })
         .on('mouseout', e => {
             let { gmx: {id, layer, target} } = e;
             target.properties[hover_index] = false;
             this._layer.redrawItem(id);
+            update_row(id, false);
         });        
         this._resultList.addEventListener('cart', e => {            
             const { gmx_id } = e.detail;
@@ -303,13 +373,13 @@ class ResultsController extends EventTarget {
         });          
         this._resultList.addEventListener('visible', e => {            
             let {gmx_id, visible} = e.detail;            
-            showQL(gmx_id, visible);
-
-            this._favoritesList.items = this._layer.getFilteredItems(item => item.cart);
-
-            let event = document.createEvent('Event');
-            event.initEvent('visible', false, false);
-            this.dispatchEvent(event);
+            show_ql(gmx_id, visible)
+            .then(() => {
+                this._favoritesList.items = this._layer.getFilteredItems(item => item.cart);
+                let event = document.createEvent('Event');
+                event.initEvent('visible', false, false);
+                this.dispatchEvent(event);
+            });            
         });       
         this._resultList.addEventListener('info', e => {
             let {item, top, button} = e.detail;
@@ -342,11 +412,13 @@ class ResultsController extends EventTarget {
 
         this._resultList.addEventListener('click', e => {
             let {item: {gmx_id, x2, y2, x4, y4}} = e.detail;            
-            showQL(gmx_id, true);
-            let ne = L.latLng(y2, x2);
-            let sw = L.latLng(y4, x4);
-            this._map.fitBounds(L.latLngBounds(sw, ne), { animate: false });
-            this._map.invalidateSize();            
+            show_ql(gmx_id, true)
+            .then (() => {
+                let ne = L.latLng(y2, x2);
+                let sw = L.latLng(y4, x4);
+                this._map.fitBounds(L.latLngBounds(sw, ne), { animate: false });
+                this._map.invalidateSize();
+            });            
         });        
 
         this._resultList.addEventListener('cart:all', e => {
@@ -360,8 +432,7 @@ class ResultsController extends EventTarget {
                 this._layer.redrawItem(id);
             });
 
-            this._resultList.items = this._layer.getFilteredItems(item => item.result);
-            this._favoritesList.items = this._layer.getFilteredItems(item => item.cart);
+            this.refreshLists();
 
             let event = document.createEvent('Event');
             event.initEvent('cart', false, false);
@@ -390,40 +461,40 @@ class ResultsController extends EventTarget {
 
         this._favoritesList.addEventListener('visible', e => {            
             let {gmx_id, visible} = e.detail;            
-            showQL(gmx_id, visible);
-
-            this._resultList.items = this._layer.getFilteredItems(item => item.result);
-
-            let event = document.createEvent('Event');
-            event.initEvent('visible', false, false);
-            this.dispatchEvent(event);
+            show_ql(gmx_id, visible)
+            .then (() => {
+                this._resultList.items = this._layer.getFilteredItems(item => item.result);
+                let event = document.createEvent('Event');
+                event.initEvent('visible', false, false);
+                this.dispatchEvent(event);
+            });            
         });
 
         this._favoritesList.addEventListener('visible:all', e => {            
-            let visible = e.detail;            
-            let process_ql = item => {
-                if (item.properties[cart_index]) {
-                    item.properties[visible_index] = visible;
-                    this._layer.redrawItem(item.id);
-                }
-            };
-    
+            let visible = e.detail;    
             let items = this._layer.getDataManager()._items;        
-            Object.keys(items).forEach(id => {
+            Object.keys(items)
+            .filter(id => items[id].properties[cart_index])
+            .forEach(id => {
                 let item = items[id];
-
-                if (visible) {
-                    prefetchQL(item.properties[sceneid_index]).then (() => {
-                        process_ql (item);
+                item.properties[visible_index] = visible;
+                if (visible) {                    
+                    show_ql_progress (id, true);
+                    prefetch_ql(item.properties[sceneid_index])
+                    .then (() => {
+                        process_ql(id, true);
+                        show_ql_progress (id, false);
                     })
+                    .catch(() => {
+                        process_ql(id, true);
+                        show_ql_progress (id, false);
+                    });
                 }
                 else {
-                    process_ql (item);
-                }
-               
-            });            
-            
-            this._resultList.items = this._layer.getFilteredItems(item => item.result);
+                    process_ql(id, false);
+                    show_ql_progress (id, false);
+                }               
+            });
 
             let event = document.createEvent('Event');
             event.initEvent('visible', false, false);
@@ -462,11 +533,13 @@ class ResultsController extends EventTarget {
 
         this._favoritesList.addEventListener('click', e => {
             let {item: {gmx_id, x2, y2, x4, y4}} = e.detail;            
-            showQL(gmx_id, true);
-            let ne = L.latLng(y2, x2);
-            let sw = L.latLng(y4, x4);
-            this._map.fitBounds(L.latLngBounds(sw, ne), { animate: false });
-            this._map.invalidateSize();            
+            show_ql(gmx_id, true)
+            .then(() => {
+                let ne = L.latLng(y2, x2);
+                let sw = L.latLng(y4, x4);
+                this._map.fitBounds(L.latLngBounds(sw, ne), { animate: false });
+                this._map.invalidateSize();
+            });
         });
 
         // this._favoritesList.addEventListener('sort', e => this.setQuicklooks(this._favoritesList.sortedItems));
@@ -624,8 +697,7 @@ class ResultsController extends EventTarget {
         // this._layer.removeData();
         // this._layer.addData(data);
         this._layer.mergeData(data);
-        this.resultList.items = this._layer.getFilteredItems(item => item.result);
-        this.favoritesList.items = this._layer.getFilteredItems(item => item.cart);
+        this.refreshLists()
         let event = document.createEvent('Event');
         event.initEvent('result:done', false, false);
         this.dispatchEvent(event);
@@ -653,6 +725,7 @@ class ResultsController extends EventTarget {
     showResults () {
         this._currentTab = 'results';
         this._layer.repaint();
+        this.resultList.items = this._layer.getFilteredItems(item => item.result);        
     } 
     zoomToResults () {
         let bounds = getBounds(this._layer.getFilteredItems(item => item.result));
@@ -666,7 +739,8 @@ class ResultsController extends EventTarget {
     } 
     showFavorites() {
         this._currentTab = 'favorites';
-        this._layer.repaint();
+        this._layer.repaint();        
+        this.favoritesList.items = this._layer.getFilteredItems(item => item.cart);
     }
     get hasResults () {        
         let items = this._layer.getDataManager()._items;
@@ -713,15 +787,18 @@ class ResultsController extends EventTarget {
                 this._layer.redrawItem(item.id);
             }
         });        
-
-        this._resultList.items = this._layer.getFilteredItems(item => item.result);
-        this._favoritesList.items = this._layer.getFilteredItems(item => item.cart);
+    
+        this.refreshLists();
 
         this.showResults();
         
         let event = document.createEvent('Event');
         event.initEvent('cart', false, false);        
         this.dispatchEvent(event);        
+    }
+    refreshLists() {
+        this._resultList.items = this._layer.getFilteredItems(item => item.result);
+        this._favoritesList.items = this._layer.getFilteredItems(item => item.cart);
     }
     removeSelectedFavorites () {
         let items = this._layer.getDataManager()._items;        
@@ -733,8 +810,7 @@ class ResultsController extends EventTarget {
                 this._layer.redrawItem(item.id);
             }
         });
-        this._resultList.items = this._layer.getFilteredItems(item => item.result);
-        this._favoritesList.items = this._layer.getFilteredItems(item => item.cart);
+        this.refreshLists();
     }
     get results () {
         let items = this._layer.getDataManager()._items;

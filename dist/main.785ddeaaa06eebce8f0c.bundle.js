@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 183);
+/******/ 	return __webpack_require__(__webpack_require__.s = 182);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1914,7 +1914,7 @@ function loadLocale(name) {
         try {
             oldLocale = globalLocale._abbr;
             var aliasedRequire = require;
-            __webpack_require__(211)("./" + name);
+            __webpack_require__(209)("./" + name);
             getSetGlobalLocale(oldLocale);
         } catch (e) {}
     }
@@ -4606,7 +4606,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(140)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(139)(module)))
 
 /***/ }),
 /* 1 */
@@ -5002,7 +5002,7 @@ exports.DEFAULT_LANGUAGE = exports.Translations = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Extensions = __webpack_require__(181);
+var _Extensions = __webpack_require__(180);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5741,11 +5741,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(204);
+__webpack_require__(202);
 
-var _Tristate = __webpack_require__(176);
+var _Tristate = __webpack_require__(174);
 
-var _EventTarget2 = __webpack_require__(175);
+var _EventTarget2 = __webpack_require__(173);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6411,11 +6411,11 @@ exports.Panel = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(206);
+__webpack_require__(204);
 
 var _Translations = __webpack_require__(2);
 
-var _EventTarget2 = __webpack_require__(178);
+var _EventTarget2 = __webpack_require__(176);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6895,7 +6895,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-__webpack_require__(185);
+__webpack_require__(184);
 
 var _Panel2 = __webpack_require__(6);
 
@@ -7232,7 +7232,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _DataGrid = __webpack_require__(5);
 
-__webpack_require__(186);
+__webpack_require__(185);
 
 var _EventTarget2 = __webpack_require__(3);
 
@@ -7240,7 +7240,7 @@ var _Panel = __webpack_require__(6);
 
 var _Translations = __webpack_require__(2);
 
-var _ColorPicker = __webpack_require__(173);
+var _ColorPicker = __webpack_require__(171);
 
 var _Utils = __webpack_require__(1);
 
@@ -7600,7 +7600,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _EventTarget2 = __webpack_require__(3);
 
-__webpack_require__(189);
+__webpack_require__(187);
 
 var _Translations = __webpack_require__(2);
 
@@ -7736,7 +7736,7 @@ exports.ResultList = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(190);
+__webpack_require__(188);
 
 var _DataGrid = __webpack_require__(5);
 
@@ -8183,6 +8183,11 @@ var ResultList = function (_EventTarget) {
             this._grid.adjustHeader();
         }
     }, {
+        key: 'getRow',
+        value: function getRow(rowId) {
+            return this._grid.getRow(rowId);
+        }
+    }, {
         key: 'fields',
         get: function get() {
             return this._fields;
@@ -8608,7 +8613,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _Server2 = __webpack_require__(169);
+var _Server2 = __webpack_require__(167);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8856,7 +8861,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _EventTarget2 = __webpack_require__(9);
 
-__webpack_require__(203);
+__webpack_require__(201);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9172,149 +9177,6 @@ exports.Utils = utils;
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.RangeWidget = undefined;
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _set = function set(object, property, value, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent !== null) { set(parent, property, value, receiver); } } else if ("value" in desc && desc.writable) { desc.value = value; } else { var setter = desc.set; if (setter !== undefined) { setter.call(receiver, value); } } return value; };
-
-var _SliderWidget2 = __webpack_require__(179);
-
-__webpack_require__(209);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var RangeWidget = function (_SliderWidget) {
-    _inherits(RangeWidget, _SliderWidget);
-
-    function RangeWidget(container) {
-        var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : { mode: 'integer' };
-
-        _classCallCheck(this, RangeWidget);
-
-        var _this = _possibleConstructorReturn(this, (RangeWidget.__proto__ || Object.getPrototypeOf(RangeWidget)).call(this, container, options));
-
-        _this.options.mode = _this.options.mode || 'integer';
-        if (!_this._container.classList.contains('range-widget')) {
-            _this._container.classList.add('range-widget');
-            var html = '<div class="range-widget-content">\n                <input type="text" value="" />\n                <i>-</i>\n                <input type="text" value="" />\n            </div>';
-            _this._bar.insertAdjacentHTML('beforebegin', html);
-            _this._leftInput = _this._container.querySelector('.range-widget-content input:first-child');
-            _this._rightInput = _this._container.querySelector('.range-widget-content input:last-child');
-            _this._handleLeftInput = _this._handleLeftInput.bind(_this);
-            _this._handleRightInput = _this._handleRightInput.bind(_this);
-            _this._handleRange = _this._handleRange.bind(_this);
-            _this._leftInput.addEventListener('change', _this._handleLeftInput);
-            _this._leftInput.addEventListener('focus', function (e) {
-                return _this._leftInput.select();
-            });
-            _this._rightInput.addEventListener('change', _this._handleRightInput);
-            _this._rightInput.addEventListener('focus', function (e) {
-                return _this._rightInput.select();
-            });
-            _this.addEventListener('change', _this._handleRange);
-            _this.values = [_this.options.min, _this.options.max];
-        }
-        return _this;
-    }
-
-    _createClass(RangeWidget, [{
-        key: '_handleLeftInput',
-        value: function _handleLeftInput(e) {
-            var lo = this.options.mode === 'integer' ? parseInt(this._leftInput.value, 10) : parseFloat(this._leftInput.value);
-            var hi = this.options.mode === 'integer' ? parseInt(this._rightInput.value, 10) : parseFloat(this._rightInput.value);
-            if (!isNaN(lo) && this.options.min <= lo && lo <= this.options.max) {
-                this.values = [lo, hi];
-            } else {
-                this._leftInput.value = this.options.mode === 'integer' ? Math.round(this._lo) : this._lo.toFixed(1);
-            }
-
-            // this.dispatchEvent(new CustomEvent('change', { detail: [this._lo, this._hi]}));
-
-            var event = document.createEvent('Event');
-            event.initEvent('change', false, false);
-            event.detail = [this._lo, this._hi];
-            this.dispatchEvent(event);
-
-            event.initEvent('stop', false, false);
-            event.detail = [this._lo, this._hi];
-            this.dispatchEvent(event);
-        }
-    }, {
-        key: '_handleRightInput',
-        value: function _handleRightInput(e) {
-            var lo = this.options.mode === 'integer' ? parseInt(this._leftInput.value, 10) : parseFloat(this._leftInput.value);
-            var hi = this.options.mode === 'integer' ? parseInt(this._rightInput.value, 10) : parseFloat(this._rightInput.value);
-            if (!isNaN(hi) && this.options.min <= hi && hi <= this.options.max) {
-                this.values = [lo, hi];
-            } else {
-                this._rightInput.value = this.options.mode === 'integer' ? Math.round(this._hi) : this._hi.toFixed(1);
-            }
-
-            // this.dispatchEvent(new CustomEvent('change', { detail: [this._lo, this._hi]}));
-
-            var event = document.createEvent('Event');
-            event.initEvent('change', false, false);
-            event.detail = [this._lo, this._hi];
-            this.dispatchEvent(event);
-
-            event.initEvent('stop', false, false);
-            event.detail = [this._lo, this._hi];
-            this.dispatchEvent(event);
-        }
-    }, {
-        key: '_handleRange',
-        value: function _handleRange(e) {
-            var _e$detail = _slicedToArray(e.detail, 2),
-                lo = _e$detail[0],
-                hi = _e$detail[1];
-
-            this._leftInput.value = this.options.mode === 'integer' ? Math.round(lo) : lo.toFixed(1);
-            this._rightInput.value = this.options.mode === 'integer' ? Math.round(hi) : hi.toFixed(1);
-        }
-    }, {
-        key: 'values',
-        set: function set(_ref) {
-            var _ref2 = _slicedToArray(_ref, 2),
-                lo = _ref2[0],
-                hi = _ref2[1];
-
-            if (!isNaN(lo) && this.options.min <= lo && lo <= this.options.max && !isNaN(hi) && this.options.min <= hi && hi <= this.options.max) {
-                _set(RangeWidget.prototype.__proto__ || Object.getPrototypeOf(RangeWidget.prototype), 'values', [lo, hi], this);
-            }
-            this._leftInput.value = this.options.mode === 'integer' ? Math.round(this._lo) : this._lo.toFixed(1);
-            this._rightInput.value = this.options.mode === 'integer' ? Math.round(this._hi) : this._hi.toFixed(1);
-
-            // this.dispatchEvent(new CustomEvent('change', { detail: [lo, hi]}));
-        },
-        get: function get() {
-            return _get(RangeWidget.prototype.__proto__ || Object.getPrototypeOf(RangeWidget.prototype), 'values', this);
-        }
-    }]);
-
-    return RangeWidget;
-}(_SliderWidget2.SliderWidget);
-
-exports.RangeWidget = RangeWidget;
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
 //! moment.js locale configuration
 //! locale : Afrikaans [af]
 //! author : Werner Mollentze : https://github.com/wernerm
@@ -9391,7 +9253,7 @@ return af;
 
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -9456,7 +9318,7 @@ return arDz;
 
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -9521,7 +9383,7 @@ return arKw;
 
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -9653,7 +9515,7 @@ return arLy;
 
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -9719,7 +9581,7 @@ return arMa;
 
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -9830,7 +9692,7 @@ return arSa;
 
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -9895,7 +9757,7 @@ return arTn;
 
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -10043,7 +9905,7 @@ return ar;
 
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -10154,7 +10016,7 @@ return az;
 
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -10294,7 +10156,7 @@ return be;
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -10390,7 +10252,7 @@ return bg;
 
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -10455,7 +10317,7 @@ return bm;
 
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -10580,7 +10442,7 @@ return bn;
 
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -10705,7 +10567,7 @@ return bo;
 
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -10819,7 +10681,7 @@ return br;
 
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -10977,7 +10839,7 @@ return bs;
 
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -11071,7 +10933,7 @@ return ca;
 
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -11256,7 +11118,7 @@ return cs;
 
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -11325,7 +11187,7 @@ return cv;
 
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -11412,7 +11274,7 @@ return cy;
 
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -11478,7 +11340,7 @@ return da;
 
 
 /***/ }),
-/* 42 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -11563,7 +11425,7 @@ return deAt;
 
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -11647,7 +11509,7 @@ return deCh;
 
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -11731,7 +11593,7 @@ return de;
 
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -11837,7 +11699,7 @@ return dv;
 
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -11943,7 +11805,7 @@ return el;
 
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12016,7 +11878,7 @@ return enAu;
 
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12085,7 +11947,7 @@ return enCa;
 
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12158,7 +12020,7 @@ return enGb;
 
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12231,7 +12093,7 @@ return enIe;
 
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12304,7 +12166,7 @@ return enNz;
 
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12383,7 +12245,7 @@ return eo;
 
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12480,7 +12342,7 @@ return esDo;
 
 
 /***/ }),
-/* 54 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12569,7 +12431,7 @@ return esUs;
 
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12667,7 +12529,7 @@ return es;
 
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12754,7 +12616,7 @@ return et;
 
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12826,7 +12688,7 @@ return eu;
 
 
 /***/ }),
-/* 58 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12939,7 +12801,7 @@ return fa;
 
 
 /***/ }),
-/* 59 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13054,7 +12916,7 @@ return fi;
 
 
 /***/ }),
-/* 60 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13120,7 +12982,7 @@ return fo;
 
 
 /***/ }),
-/* 61 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13200,7 +13062,7 @@ return frCa;
 
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13284,7 +13146,7 @@ return frCh;
 
 
 /***/ }),
-/* 63 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13373,7 +13235,7 @@ return fr;
 
 
 /***/ }),
-/* 64 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13454,7 +13316,7 @@ return fy;
 
 
 /***/ }),
-/* 65 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13536,7 +13398,7 @@ return gd;
 
 
 /***/ }),
-/* 66 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13619,7 +13481,7 @@ return gl;
 
 
 /***/ }),
-/* 67 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13748,7 +13610,7 @@ return gomLatn;
 
 
 /***/ }),
-/* 68 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13878,7 +13740,7 @@ return gu;
 
 
 /***/ }),
-/* 69 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13983,7 +13845,7 @@ return he;
 
 
 /***/ }),
-/* 70 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14113,7 +13975,7 @@ return hi;
 
 
 /***/ }),
-/* 71 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14273,7 +14135,7 @@ return hr;
 
 
 /***/ }),
-/* 72 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14389,7 +14251,7 @@ return hu;
 
 
 /***/ }),
-/* 73 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14490,7 +14352,7 @@ return hyAm;
 
 
 /***/ }),
-/* 74 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14579,7 +14441,7 @@ return id;
 
 
 /***/ }),
-/* 75 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14717,7 +14579,7 @@ return is;
 
 
 /***/ }),
-/* 76 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14793,7 +14655,7 @@ return it;
 
 
 /***/ }),
-/* 77 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14879,7 +14741,7 @@ return ja;
 
 
 /***/ }),
-/* 78 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14968,7 +14830,7 @@ return jv;
 
 
 /***/ }),
-/* 79 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15063,7 +14925,7 @@ return ka;
 
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15156,7 +15018,7 @@ return kk;
 
 
 /***/ }),
-/* 81 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15220,7 +15082,7 @@ return km;
 
 
 /***/ }),
-/* 82 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15352,7 +15214,7 @@ return kn;
 
 
 /***/ }),
-/* 83 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15440,7 +15302,7 @@ return ko;
 
 
 /***/ }),
-/* 84 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15534,7 +15396,7 @@ return ky;
 
 
 /***/ }),
-/* 85 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15677,7 +15539,7 @@ return lb;
 
 
 /***/ }),
-/* 86 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15753,7 +15615,7 @@ return lo;
 
 
 /***/ }),
-/* 87 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15877,7 +15739,7 @@ return lt;
 
 
 /***/ }),
-/* 88 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15981,7 +15843,7 @@ return lv;
 
 
 /***/ }),
-/* 89 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16099,7 +15961,7 @@ return me;
 
 
 /***/ }),
-/* 90 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16169,7 +16031,7 @@ return mi;
 
 
 /***/ }),
-/* 91 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16265,7 +16127,7 @@ return mk;
 
 
 /***/ }),
-/* 92 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16352,7 +16214,7 @@ return ml;
 
 
 /***/ }),
-/* 93 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16519,7 +16381,7 @@ return mr;
 
 
 /***/ }),
-/* 94 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16608,7 +16470,7 @@ return msMy;
 
 
 /***/ }),
-/* 95 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16696,7 +16558,7 @@ return ms;
 
 
 /***/ }),
-/* 96 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16762,7 +16624,7 @@ return mt;
 
 
 /***/ }),
-/* 97 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16864,7 +16726,7 @@ return my;
 
 
 /***/ }),
-/* 98 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16933,7 +16795,7 @@ return nb;
 
 
 /***/ }),
-/* 99 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17062,7 +16924,7 @@ return ne;
 
 
 /***/ }),
-/* 100 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17156,7 +17018,7 @@ return nlBe;
 
 
 /***/ }),
-/* 101 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17250,7 +17112,7 @@ return nl;
 
 
 /***/ }),
-/* 102 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17316,7 +17178,7 @@ return nn;
 
 
 /***/ }),
-/* 103 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17446,7 +17308,7 @@ return paIn;
 
 
 /***/ }),
-/* 104 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17578,7 +17440,7 @@ return pl;
 
 
 /***/ }),
-/* 105 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17645,7 +17507,7 @@ return ptBr;
 
 
 /***/ }),
-/* 106 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17716,7 +17578,7 @@ return pt;
 
 
 /***/ }),
-/* 107 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17798,7 +17660,7 @@ return ro;
 
 
 /***/ }),
-/* 108 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17988,7 +17850,7 @@ return ru;
 
 
 /***/ }),
-/* 109 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18092,7 +17954,7 @@ return sd;
 
 
 /***/ }),
-/* 110 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18159,7 +18021,7 @@ return se;
 
 
 /***/ }),
-/* 111 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18236,7 +18098,7 @@ return si;
 
 
 /***/ }),
-/* 112 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18399,7 +18261,7 @@ return sk;
 
 
 /***/ }),
-/* 113 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18578,7 +18440,7 @@ return sl;
 
 
 /***/ }),
-/* 114 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18654,7 +18516,7 @@ return sq;
 
 
 /***/ }),
-/* 115 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18771,7 +18633,7 @@ return srCyrl;
 
 
 /***/ }),
-/* 116 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18888,7 +18750,7 @@ return sr;
 
 
 /***/ }),
-/* 117 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18983,7 +18845,7 @@ return ss;
 
 
 /***/ }),
-/* 118 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19058,7 +18920,7 @@ return sv;
 
 
 /***/ }),
-/* 119 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19123,7 +18985,7 @@ return sw;
 
 
 /***/ }),
-/* 120 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19259,7 +19121,7 @@ return ta;
 
 
 /***/ }),
-/* 121 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19354,7 +19216,7 @@ return te;
 
 
 /***/ }),
-/* 122 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19428,7 +19290,7 @@ return tet;
 
 
 /***/ }),
-/* 123 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19501,7 +19363,7 @@ return th;
 
 
 /***/ }),
-/* 124 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19569,7 +19431,7 @@ return tlPh;
 
 
 /***/ }),
-/* 125 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19697,7 +19559,7 @@ return tlh;
 
 
 /***/ }),
-/* 126 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19793,7 +19655,7 @@ return tr;
 
 
 /***/ }),
-/* 127 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19891,7 +19753,7 @@ return tzl;
 
 
 /***/ }),
-/* 128 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19955,7 +19817,7 @@ return tzmLatn;
 
 
 /***/ }),
-/* 129 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20019,7 +19881,7 @@ return tzm;
 
 
 /***/ }),
-/* 130 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20177,7 +20039,7 @@ return uk;
 
 
 /***/ }),
-/* 131 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20282,7 +20144,7 @@ return ur;
 
 
 /***/ }),
-/* 132 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20346,7 +20208,7 @@ return uzLatn;
 
 
 /***/ }),
-/* 133 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20410,7 +20272,7 @@ return uz;
 
 
 /***/ }),
-/* 134 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20495,7 +20357,7 @@ return vi;
 
 
 /***/ }),
-/* 135 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20569,7 +20431,7 @@ return xPseudo;
 
 
 /***/ }),
-/* 136 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20635,7 +20497,7 @@ return yo;
 
 
 /***/ }),
-/* 137 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20752,7 +20614,7 @@ return zhCn;
 
 
 /***/ }),
-/* 138 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20863,7 +20725,7 @@ return zhHk;
 
 
 /***/ }),
-/* 139 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20973,7 +20835,7 @@ return zhTw;
 
 
 /***/ }),
-/* 140 */
+/* 139 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -21001,13 +20863,13 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 141 */
+/* 140 */
 /***/ (function(module, exports) {
 
 module.exports = L;
 
 /***/ }),
-/* 142 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21020,7 +20882,7 @@ exports.FavoritesList = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(187);
+__webpack_require__(186);
 
 var _DataGrid = __webpack_require__(5);
 
@@ -21387,6 +21249,11 @@ var FavoritesList = function (_EventTarget) {
             this._grid.adjustHeader();
         }
     }, {
+        key: 'getRow',
+        value: function getRow(rowId) {
+            return this._grid.getRow(rowId);
+        }
+    }, {
         key: 'fields',
         get: function get() {
             return this._fields;
@@ -21434,128 +21301,7 @@ var FavoritesList = function (_EventTarget) {
 exports.FavoritesList = FavoritesList;
 
 /***/ }),
-/* 143 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.FilterControl = undefined;
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _EventTarget = __webpack_require__(3);
-
-var _RangeWidget2 = __webpack_require__(20);
-
-var _Satellites = __webpack_require__(4);
-
-__webpack_require__(188);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var T = window.Catalog.translations;
-
-var CompactRangeWidget = function (_RangeWidget) {
-    _inherits(CompactRangeWidget, _RangeWidget);
-
-    function CompactRangeWidget(container, options) {
-        _classCallCheck(this, CompactRangeWidget);
-
-        var _this = _possibleConstructorReturn(this, (CompactRangeWidget.__proto__ || Object.getPrototypeOf(CompactRangeWidget)).call(this, container, options));
-
-        var label = document.createElement('label');
-        label.className = 'range-widget-label';
-        label.innerText = options.label;
-        var content = _this._container.querySelector('.range-widget-content');
-        content.insertBefore(label, _this._container.querySelector('.range-widget-content input'));
-        return _this;
-    }
-
-    return CompactRangeWidget;
-}(_RangeWidget2.RangeWidget);
-
-var SatelliteFilter = function () {
-    function SatelliteFilter(container, options) {
-        _classCallCheck(this, SatelliteFilter);
-
-        this._container = container;
-        this._options = options;
-        this._container.innerHTML = '<div class="satellite-filter-header">\n            <label class="satellite-filter-label">' + this._options.label + '</label>\n            <div class="satellite-filter-button">\n                <label></label>\n                <span>&#x025bc;</span>\n            </div>\n        </div>\n        <div class="satellite-filter-body"></div>';
-    }
-
-    _createClass(SatelliteFilter, [{
-        key: 'items',
-        set: function set(values) {
-            this._container.querySelector('.satellite-filter-body').innerHTML = values.map(function (_ref) {
-                var platform = _ref.platform,
-                    checked = _ref.checked;
-
-                return '<div class="satellite-item">\n                    <input type="checkbox"' + (checked ? ' checked' : '') + ' value="' + platform + '" /><label>' + (0, _Satellites.getSatelliteName)(platform) + '</label>\n                </div>';
-            }).join('');
-        }
-    }]);
-
-    return SatelliteFilter;
-}();
-
-var FilterControl = L.Control.extend({
-    includes: L.Evented ? L.Evented.prototype : L.Mixin.Events,
-    initialize: function initialize(options) {
-        L.setOptions(this, options);
-    },
-    onAdd: function onAdd(map) {
-        var _this2 = this;
-
-        this._container = L.DomUtil.create('div', 'filter-control');
-        this._container.innerHTML = '<div class="cloudiness-slider"></div><div class="angle-slider"></div><div class="satellite-filter"></div>';
-        this.clouds = new CompactRangeWidget(this._container.querySelector('.cloudiness-slider'), { min: 0, max: 100, label: T.getText('clouds') });
-        this.clouds.values = this.options.clouds && this.options.clouds.values || [0, 100];
-
-        this.angle = new CompactRangeWidget(this._container.querySelector('.angle-slider'), { min: 0, max: 60, label: T.getText('angle') });
-        this.angle.values = this.options.angle && this.options.angle.values || [0, 60];
-
-        // this.satellites = new SatelliteFilter(this._container.querySelector('.satellite-filter'), {label: T.getText('satellites')});
-
-        L.DomEvent.disableClickPropagation(this._container);
-        L.DomEvent.disableScrollPropagation(this._container);
-        // L.DomEvent.on(this._container, 'mousemove', L.DomEvent.stopPropagation);
-
-        this.clouds.addEventListener('stop', function (e) {
-            var _e$detail = _slicedToArray(e.detail, 2),
-                lo = _e$detail[0],
-                hi = _e$detail[1];
-
-            _this2.fireEvent('change', { clouds: [lo, hi], angle: _this2.angle.values });
-        });
-
-        this.angle.addEventListener('stop', function (e) {
-            var _e$detail2 = _slicedToArray(e.detail, 2),
-                lo = _e$detail2[0],
-                hi = _e$detail2[1];
-
-            _this2.fireEvent('change', { clouds: _this2.clouds.values, angle: [lo, hi] });
-        });
-
-        return this._container;
-    },
-
-    onRemove: function onRemove(map) {}
-});
-
-exports.FilterControl = FilterControl;
-
-/***/ }),
-/* 144 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21669,7 +21415,7 @@ var GmxLayerDataProvider = function (_EventTarget) {
 exports.GmxLayerDataProvider = GmxLayerDataProvider;
 
 /***/ }),
-/* 145 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21684,7 +21430,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Index = __webpack_require__(168);
+var _Index = __webpack_require__(166);
 
 var _Utils = __webpack_require__(1);
 
@@ -21720,1660 +21466,6 @@ var RequestAdapter = function () {
             return new Promise(function (resolve, reject) {
                 var rq = _this.request;
                 rq.pagesize = limit;
-                // var response = {
-                //     "Status": "ok",
-                //     "Result": {
-                //       "fields": [
-                //         "sceneid",
-                //         "acqdate",
-                //         "acqtime",
-                //         "cloudness",
-                //         "tilt",
-                //         "sunelev",
-                //         "stereo",
-                //         "url",
-                //         "x1",
-                //         "y1",
-                //         "x2",
-                //         "y2",
-                //         "x3",
-                //         "y3",
-                //         "x4",
-                //         "y4",
-                //         "volume",
-                //         "platform",
-                //         "spot5_a_exists",
-                //         "spot5_b_exists",
-                //         "islocal",
-                //         "product",
-                //         "gmx_id",
-                //         "sensor",
-                //         "local_exists",
-                //         "spot5id",
-                //         "stidx",
-                //         "geomixergeojson"
-                //       ],
-                //       "types": [
-                //         "string",
-                //         "date",
-                //         "time",
-                //         "float",
-                //         "float",
-                //         "float",
-                //         "string",
-                //         "string",
-                //         "float",
-                //         "float",
-                //         "float",
-                //         "float",
-                //         "float",
-                //         "float",
-                //         "float",
-                //         "float",
-                //         "string",
-                //         "string",
-                //         "boolean",
-                //         "boolean",
-                //         "boolean",
-                //         "boolean",
-                //         "integer",
-                //         "string",
-                //         "boolean",
-                //         "string",
-                //         "integer",
-                //         "geometry"
-                //       ],
-                //       "Count": 16,
-                //       "values": [
-                //         [
-                //           "1030010078060700",
-                //           1515542400,
-                //           0,
-                //           27,
-                //           6,
-                //           12.27728,
-                //           "NONE",
-                //           "https://browse.digitalglobe.com/imagefinder/showBrowseImage?catalogId=1030010078060700&imageHeight=1024&imageWidth=1024",
-                //           37.59754650000001,
-                //           56.03957199999999,
-                //           38.6478925,
-                //           56.03957199999999,
-                //           38.6478925,
-                //           54.989226,
-                //           37.59754650000001,
-                //           54.989226,
-                //           null,
-                //           "WV02",
-                //           false,
-                //           false,
-                //           false,
-                //           false,
-                //           126098644,
-                //           null,
-                //           false,
-                //           null,
-                //           12661147,
-                //           {
-                //             "type": "POLYGON",
-                //             "coordinates": [
-                //               [
-                //                 [
-                //                   4258172.95,
-                //                   7359775.53
-                //                 ],
-                //                 [
-                //                   4229431.91,
-                //                   7359842.04
-                //                 ],
-                //                 [
-                //                   4229418.42,
-                //                   7367964.66
-                //                 ],
-                //                 [
-                //                   4229407.38,
-                //                   7376085.14
-                //                 ],
-                //                 [
-                //                   4229393.38,
-                //                   7384213.07
-                //                 ],
-                //                 [
-                //                   4229375.54,
-                //                   7392346.4
-                //                 ],
-                //                 [
-                //                   4229359.57,
-                //                   7400491.26
-                //                 ],
-                //                 [
-                //                   4229339.61,
-                //                   7408642.91
-                //                 ],
-                //                 [
-                //                   4229320.65,
-                //                   7416808.99
-                //                 ],
-                //                 [
-                //                   4229299.72,
-                //                   7424988.65
-                //                 ],
-                //                 [
-                //                   4229273.74,
-                //                   7433185.03
-                //                 ],
-                //                 [
-                //                   4229244.3,
-                //                   7441401.52
-                //                 ],
-                //                 [
-                //                   4229217.06,
-                //                   7449640
-                //                 ],
-                //                 [
-                //                   4229184.82,
-                //                   7457899.83
-                //                 ],
-                //                 [
-                //                   4229157.7,
-                //                   7466192.72
-                //                 ],
-                //                 [
-                //                   4229122.65,
-                //                   7474501.97
-                //                 ],
-                //                 [
-                //                   4229089.06,
-                //                   7482845.86
-                //                 ],
-                //                 [
-                //                   4229046.8,
-                //                   7491215.42
-                //                 ],
-                //                 [
-                //                   4229007.73,
-                //                   7499626.77
-                //                 ],
-                //                 [
-                //                   4228965.86,
-                //                   7508063.76
-                //                 ],
-                //                 [
-                //                   4228919.18,
-                //                   7516543.46
-                //                 ],
-                //                 [
-                //                   4228870.41,
-                //                   7525065.86
-                //                 ],
-                //                 [
-                //                   4228824.09,
-                //                   7533636.03
-                //                 ],
-                //                 [
-                //                   4228773.44,
-                //                   7542251.73
-                //                 ],
-                //                 [
-                //                   4228716.41,
-                //                   7550902.21
-                //                 ],
-                //                 [
-                //                   4228658.44,
-                //                   7559604.79
-                //                 ],
-                //                 [
-                //                   4228620.56,
-                //                   7565681.69
-                //                 ],
-                //                 [
-                //                   4258982.97,
-                //                   7566297.39
-                //                 ],
-                //                 [
-                //                   4258941.56,
-                //                   7560177.16
-                //                 ],
-                //                 [
-                //                   4258892.69,
-                //                   7551435.44
-                //                 ],
-                //                 [
-                //                   4258841.77,
-                //                   7542734.27
-                //                 ],
-                //                 [
-                //                   4258795.18,
-                //                   7534088.86
-                //                 ],
-                //                 [
-                //                   4258745.56,
-                //                   7525483.3
-                //                 ],
-                //                 [
-                //                   4258701.51,
-                //                   7516924.22
-                //                 ],
-                //                 [
-                //                   4258658.25,
-                //                   7508406.65
-                //                 ],
-                //                 [
-                //                   4258611.02,
-                //                   7499927.09
-                //                 ],
-                //                 [
-                //                   4258572.12,
-                //                   7491489.47
-                //                 ],
-                //                 [
-                //                   4258535.28,
-                //                   7483085.48
-                //                 ],
-                //                 [
-                //                   4258501.03,
-                //                   7474722.27
-                //                 ],
-                //                 [
-                //                   4258467.98,
-                //                   7466385.73
-                //                 ],
-                //                 [
-                //                   4258433.28,
-                //                   7458072.65
-                //                 ],
-                //                 [
-                //                   4258402.94,
-                //                   7449785.71
-                //                 ],
-                //                 [
-                //                   4258370.08,
-                //                   7441520.69
-                //                 ],
-                //                 [
-                //                   4258341.4,
-                //                   7433277.41
-                //                 ],
-                //                 [
-                //                   4258319.11,
-                //                   7425060.94
-                //                 ],
-                //                 [
-                //                   4258292.76,
-                //                   7416860.03
-                //                 ],
-                //                 [
-                //                   4258272.17,
-                //                   7408675.49
-                //                 ],
-                //                 [
-                //                   4258250.11,
-                //                   7400503.77
-                //                 ],
-                //                 [
-                //                   4258230.5,
-                //                   7392340.66
-                //                 ],
-                //                 [
-                //                   4258211.35,
-                //                   7384190.6
-                //                 ],
-                //                 [
-                //                   4258196.78,
-                //                   7376046.72
-                //                 ],
-                //                 [
-                //                   4258181.34,
-                //                   7367911.57
-                //                 ],
-                //                 [
-                //                   4258172.95,
-                //                   7359775.53
-                //                 ]
-                //               ]
-                //             ]
-                //           }
-                //         ],
-                //         [
-                //           "1030010077314900",
-                //           1515542400,
-                //           0,
-                //           37,
-                //           14,
-                //           12.35806,
-                //           "NONE",
-                //           "https://browse.digitalglobe.com/imagefinder/showBrowseImage?catalogId=1030010077314900&imageHeight=1024&imageWidth=1024",
-                //           37.82859400000001,
-                //           56.04288799999999,
-                //           38.888645,
-                //           56.04288799999999,
-                //           38.888645,
-                //           54.982837,
-                //           37.82859400000001,
-                //           54.982837,
-                //           null,
-                //           "WV02",
-                //           false,
-                //           false,
-                //           false,
-                //           false,
-                //           126098646,
-                //           null,
-                //           false,
-                //           null,
-                //           12661147,
-                //           {
-                //             "type": "POLYGON",
-                //             "coordinates": [
-                //               [
-                //                 [
-                //                   4254551.02,
-                //                   7565812.33
-                //                 ],
-                //                 [
-                //                   4285573.06,
-                //                   7566958.36
-                //                 ],
-                //                 [
-                //                   4285541.68,
-                //                   7557881.04
-                //                 ],
-                //                 [
-                //                   4285519.06,
-                //                   7548844.06
-                //                 ],
-                //                 [
-                //                   4285501.12,
-                //                   7539827.11
-                //                 ],
-                //                 [
-                //                   4285480.24,
-                //                   7530826.84
-                //                 ],
-                //                 [
-                //                   4285452.9,
-                //                   7521835.23
-                //                 ],
-                //                 [
-                //                   4285431.14,
-                //                   7512877.22
-                //                 ],
-                //                 [
-                //                   4285413.63,
-                //                   7503948.06
-                //                 ],
-                //                 [
-                //                   4285385.9,
-                //                   7495018.78
-                //                 ],
-                //                 [
-                //                   4285362.02,
-                //                   7486118.24
-                //                 ],
-                //                 [
-                //                   4285347.98,
-                //                   7477250.88
-                //                 ],
-                //                 [
-                //                   4285328.67,
-                //                   7468394.78
-                //                 ],
-                //                 [
-                //                   4285307.19,
-                //                   7459551.64
-                //                 ],
-                //                 [
-                //                   4285293.45,
-                //                   7450740.63
-                //                 ],
-                //                 [
-                //                   4285279.22,
-                //                   7441952.31
-                //                 ],
-                //                 [
-                //                   4285258.46,
-                //                   7433167.05
-                //                 ],
-                //                 [
-                //                   4285233.94,
-                //                   7424395.82
-                //                 ],
-                //                 [
-                //                   4285211.87,
-                //                   7415647.86
-                //                 ],
-                //                 [
-                //                   4285192.25,
-                //                   7406919.96
-                //                 ],
-                //                 [
-                //                   4285185.05,
-                //                   7398226.53
-                //                 ],
-                //                 [
-                //                   4285157.53,
-                //                   7389524.01
-                //                 ],
-                //                 [
-                //                   4285127.24,
-                //                   7380836.3
-                //                 ],
-                //                 [
-                //                   4285107.31,
-                //                   7372178.98
-                //                 ],
-                //                 [
-                //                   4285092.98,
-                //                   7363546.43
-                //                 ],
-                //                 [
-                //                   4285087.22,
-                //                   7359679.25
-                //                 ],
-                //                 [
-                //                   4255020.57,
-                //                   7358535.85
-                //                 ],
-                //                 [
-                //                   4255011.74,
-                //                   7362420.56
-                //                 ],
-                //                 [
-                //                   4254997.3,
-                //                   7371060.65
-                //                 ],
-                //                 [
-                //                   4254983,
-                //                   7379718.77
-                //                 ],
-                //                 [
-                //                   4254967.44,
-                //                   7388390.26
-                //                 ],
-                //                 [
-                //                   4254953.52,
-                //                   7397084.96
-                //                 ],
-                //                 [
-                //                   4254936.44,
-                //                   7405797.82
-                //                 ],
-                //                 [
-                //                   4254914.21,
-                //                   7414516.67
-                //                 ],
-                //                 [
-                //                   4254892.78,
-                //                   7423254.39
-                //                 ],
-                //                 [
-                //                   4254877.03,
-                //                   7432022.66
-                //                 ],
-                //                 [
-                //                   4254854.02,
-                //                   7440798.29
-                //                 ],
-                //                 [
-                //                   4254844.8,
-                //                   7449616.24
-                //                 ],
-                //                 [
-                //                   4254822.29,
-                //                   7458433.53
-                //                 ],
-                //                 [
-                //                   4254799.43,
-                //                   7467269.86
-                //                 ],
-                //                 [
-                //                   4254772.4,
-                //                   7476114.32
-                //                 ],
-                //                 [
-                //                   4254748.07,
-                //                   7484986.48
-                //                 ],
-                //                 [
-                //                   4254729.74,
-                //                   7493887.54
-                //                 ],
-                //                 [
-                //                   4254707.35,
-                //                   7502802.64
-                //                 ],
-                //                 [
-                //                   4254687.91,
-                //                   7511744.78
-                //                 ],
-                //                 [
-                //                   4254665.8,
-                //                   7520703.12
-                //                 ],
-                //                 [
-                //                   4254644.63,
-                //                   7529688.19
-                //                 ],
-                //                 [
-                //                   4254617.17,
-                //                   7538680.29
-                //                 ],
-                //                 [
-                //                   4254595.84,
-                //                   7547711.71
-                //                 ],
-                //                 [
-                //                   4254574.88,
-                //                   7556755.03
-                //                 ],
-                //                 [
-                //                   4254551.02,
-                //                   7565812.33
-                //                 ]
-                //               ]
-                //             ]
-                //           }
-                //         ],
-                //         [
-                //           "102001006C128E00",
-                //           1515542400,
-                //           0,
-                //           94,
-                //           28,
-                //           6.564217,
-                //           "NONE",
-                //           "https://browse.digitalglobe.com/imagefinder/showBrowseImage?catalogId=102001006C128E00&imageHeight=1024&imageWidth=1024",
-                //           38.29481200000001,
-                //           56.03061700000001,
-                //           38.675825,
-                //           56.03061700000001,
-                //           38.675825,
-                //           55.649604,
-                //           38.29481200000001,
-                //           55.649604,
-                //           null,
-                //           "WV01",
-                //           false,
-                //           false,
-                //           false,
-                //           false,
-                //           126099363,
-                //           null,
-                //           false,
-                //           null,
-                //           12661147,
-                //           {
-                //             "type": "POLYGON",
-                //             "coordinates": [
-                //               [
-                //                 [
-                //                   4305174.91,
-                //                   7506710.69
-                //                 ],
-                //                 [
-                //                   4262973.71,
-                //                   7510057.03
-                //                 ],
-                //                 [
-                //                   4262981.56,
-                //                   7520290.56
-                //                 ],
-                //                 [
-                //                   4262973.32,
-                //                   7530506.39
-                //                 ],
-                //                 [
-                //                   4262959,
-                //                   7540709.17
-                //                 ],
-                //                 [
-                //                   4262962.77,
-                //                   7546644.8
-                //                 ],
-                //                 [
-                //                   4305373.21,
-                //                   7544483.08
-                //                 ],
-                //                 [
-                //                   4305337.87,
-                //                   7538352.15
-                //                 ],
-                //                 [
-                //                   4305270.05,
-                //                   7527822.2
-                //                 ],
-                //                 [
-                //                   4305236.7,
-                //                   7517272.64
-                //                 ],
-                //                 [
-                //                   4305174.91,
-                //                   7506710.69
-                //                 ]
-                //               ]
-                //             ]
-                //           }
-                //         ],
-                //         [
-                //           "102001006B28B400",
-                //           1515542400,
-                //           0,
-                //           0,
-                //           27,
-                //           6.305054,
-                //           "NONE",
-                //           "https://browse.digitalglobe.com/imagefinder/showBrowseImage?catalogId=102001006B28B400&imageHeight=1024&imageWidth=1024",
-                //           37.784495,
-                //           56.514241000000005,
-                //           38.162978,
-                //           56.514241000000005,
-                //           38.162978,
-                //           56.135758,
-                //           37.784495,
-                //           56.135758,
-                //           null,
-                //           "WV01",
-                //           false,
-                //           false,
-                //           false,
-                //           false,
-                //           126099364,
-                //           null,
-                //           false,
-                //           null,
-                //           12660891,
-                //           {
-                //             "type": "POLYGON",
-                //             "coordinates": [
-                //               [
-                //                 [
-                //                   4247844.82,
-                //                   7605415.77
-                //                 ],
-                //                 [
-                //                   4206400.5,
-                //                   7604177.61
-                //                 ],
-                //                 [
-                //                   4206333.3,
-                //                   7614260.25
-                //                 ],
-                //                 [
-                //                   4206258.7,
-                //                   7624413.61
-                //                 ],
-                //                 [
-                //                   4206181.63,
-                //                   7634613.88
-                //                 ],
-                //                 [
-                //                   4206150.82,
-                //                   7640251.06
-                //                 ],
-                //                 [
-                //                   4248283.35,
-                //                   7642646.45
-                //                 ],
-                //                 [
-                //                   4248207.57,
-                //                   7636828.11
-                //                 ],
-                //                 [
-                //                   4248048.01,
-                //                   7626291.69
-                //                 ],
-                //                 [
-                //                   4247954.38,
-                //                   7615817.8
-                //                 ],
-                //                 [
-                //                   4247844.82,
-                //                   7605415.77
-                //                 ]
-                //               ]
-                //             ]
-                //           }
-                //         ],
-                //         [
-                //           "1040010035A7E600",
-                //           1515283200,
-                //           10800,
-                //           96,
-                //           28,
-                //           11.51893,
-                //           "NONE",
-                //           "https://browse.digitalglobe.com/imagefinder/showBrowseImage?catalogId=1040010035A7E600&imageHeight=1024&imageWidth=1024",
-                //           37.165093999999996,
-                //           56.450342500000005,
-                //           37.451634,
-                //           56.450342500000005,
-                //           37.451634,
-                //           56.1638025,
-                //           37.165093999999996,
-                //           56.1638025,
-                //           null,
-                //           "WV03",
-                //           false,
-                //           false,
-                //           false,
-                //           false,
-                //           125525417,
-                //           null,
-                //           false,
-                //           null,
-                //           12660891,
-                //           {
-                //             "type": "POLYGON",
-                //             "coordinates": [
-                //               [
-                //                 [
-                //                   4137269.77,
-                //                   7630488.29
-                //                 ],
-                //                 [
-                //                   4169070.07,
-                //                   7632703.44
-                //                 ],
-                //                 [
-                //                   4169019.08,
-                //                   7626168.05
-                //                 ],
-                //                 [
-                //                   4169025.88,
-                //                   7619651.58
-                //                 ],
-                //                 [
-                //                   4169060.93,
-                //                   7613141.85
-                //                 ],
-                //                 [
-                //                   4169096.86,
-                //                   7609151.26
-                //                 ],
-                //                 [
-                //                   4137199.43,
-                //                   7606897.48
-                //                 ],
-                //                 [
-                //                   4137224.89,
-                //                   7610947.05
-                //                 ],
-                //                 [
-                //                   4137266.07,
-                //                   7617467.34
-                //                 ],
-                //                 [
-                //                   4137242.19,
-                //                   7623968.87
-                //                 ],
-                //                 [
-                //                   4137269.77,
-                //                   7630488.29
-                //                 ]
-                //               ]
-                //             ]
-                //           }
-                //         ],
-                //         [
-                //           "102001006DAF4800",
-                //           1515196800,
-                //           10800,
-                //           99,
-                //           25,
-                //           6.621264,
-                //           "NONE",
-                //           "https://browse.digitalglobe.com/imagefinder/showBrowseImage?catalogId=102001006DAF4800&imageHeight=1024&imageWidth=1024",
-                //           37.945327,
-                //           55.8203995,
-                //           38.274644,
-                //           55.8203995,
-                //           38.274644,
-                //           55.4910825,
-                //           37.945327,
-                //           55.4910825,
-                //           null,
-                //           "WV01",
-                //           false,
-                //           false,
-                //           false,
-                //           false,
-                //           125528742,
-                //           null,
-                //           false,
-                //           null,
-                //           12661147,
-                //           {
-                //             "type": "POLYGON",
-                //             "coordinates": [
-                //               [
-                //                 [
-                //                   4260713.94,
-                //                   7468608.86
-                //                 ],
-                //                 [
-                //                   4224054.53,
-                //                   7473121.09
-                //                 ],
-                //                 [
-                //                   4224141.61,
-                //                   7483987.58
-                //                 ],
-                //                 [
-                //                   4224222.38,
-                //                   7494733.42
-                //                 ],
-                //                 [
-                //                   4224288.07,
-                //                   7505377.4
-                //                 ],
-                //                 [
-                //                   4224325.05,
-                //                   7511824.69
-                //                 ],
-                //                 [
-                //                   4260433.55,
-                //                   7508021.59
-                //                 ],
-                //                 [
-                //                   4260470.2,
-                //                   7501473.76
-                //                 ],
-                //                 [
-                //                   4260546.99,
-                //                   7490643.44
-                //                 ],
-                //                 [
-                //                   4260627.24,
-                //                   7479691.37
-                //                 ],
-                //                 [
-                //                   4260713.94,
-                //                   7468608.86
-                //                 ]
-                //               ]
-                //             ]
-                //           }
-                //         ],
-                //         [
-                //           "102001006E600C00",
-                //           1515196800,
-                //           10800,
-                //           99,
-                //           18,
-                //           6.037898,
-                //           "NONE",
-                //           "https://browse.digitalglobe.com/imagefinder/showBrowseImage?catalogId=102001006E600C00&imageHeight=1024&imageWidth=1024",
-                //           37.98276799999999,
-                //           56.47936,
-                //           38.300185,
-                //           56.47936,
-                //           38.300185,
-                //           56.161942999999994,
-                //           37.98276799999999,
-                //           56.161942999999994,
-                //           null,
-                //           "WV01",
-                //           false,
-                //           false,
-                //           false,
-                //           false,
-                //           125528744,
-                //           null,
-                //           false,
-                //           null,
-                //           12660891,
-                //           {
-                //             "type": "POLYGON",
-                //             "coordinates": [
-                //               [
-                //                 [
-                //                   4263557.09,
-                //                   7604165.05
-                //                 ],
-                //                 [
-                //                   4228222.49,
-                //                   7606399.79
-                //                 ],
-                //                 [
-                //                   4228248.79,
-                //                   7616081.13
-                //                 ],
-                //                 [
-                //                   4228246.84,
-                //                   7625740.05
-                //                 ],
-                //                 [
-                //                   4228274.6,
-                //                   7635337.81
-                //                 ],
-                //                 [
-                //                   4228273.11,
-                //                   7640908.99
-                //                 ],
-                //                 [
-                //                   4263536.41,
-                //                   7639273.66
-                //                 ],
-                //                 [
-                //                   4263533.68,
-                //                   7633610.03
-                //                 ],
-                //                 [
-                //                   4263532.98,
-                //                   7623836.16
-                //                 ],
-                //                 [
-                //                   4263537.16,
-                //                   7614024.1
-                //                 ],
-                //                 [
-                //                   4263557.09,
-                //                   7604165.05
-                //                 ]
-                //               ]
-                //             ]
-                //           }
-                //         ],
-                //         [
-                //           "105001000DA40F00",
-                //           1515110400,
-                //           10800,
-                //           85,
-                //           22,
-                //           10.96014,
-                //           "NONE",
-                //           "https://browse.digitalglobe.com/imagefinder/showBrowseImage?catalogId=105001000DA40F00&imageHeight=1024&imageWidth=1024",
-                //           36.77262900000001,
-                //           55.670512,
-                //           37.051126,
-                //           55.670512,
-                //           37.051126,
-                //           55.392015,
-                //           36.77262900000001,
-                //           55.392015,
-                //           null,
-                //           "GE01",
-                //           false,
-                //           false,
-                //           false,
-                //           false,
-                //           125517724,
-                //           null,
-                //           false,
-                //           null,
-                //           12661146,
-                //           {
-                //             "type": "POLYGON",
-                //             "coordinates": [
-                //               [
-                //                 [
-                //                   4124277.35,
-                //                   7451499.83
-                //                 ],
-                //                 [
-                //                   4093773.22,
-                //                   7453992.82
-                //                 ],
-                //                 [
-                //                   4093688.17,
-                //                   7462476.31
-                //                 ],
-                //                 [
-                //                   4093597.65,
-                //                   7471063.17
-                //                 ],
-                //                 [
-                //                   4093511.16,
-                //                   7479742.9
-                //                 ],
-                //                 [
-                //                   4093510.38,
-                //                   7479854.04
-                //                 ],
-                //                 [
-                //                   4124512.51,
-                //                   7476994.13
-                //                 ],
-                //                 [
-                //                   4124511.7,
-                //                   7476901.56
-                //                 ],
-                //                 [
-                //                   4124421.43,
-                //                   7468342.98
-                //                 ],
-                //                 [
-                //                   4124353.28,
-                //                   7459859.87
-                //                 ],
-                //                 [
-                //                   4124277.35,
-                //                   7451499.83
-                //                 ]
-                //               ]
-                //             ]
-                //           }
-                //         ],
-                //         [
-                //           "1040010037C27700",
-                //           1515110400,
-                //           10800,
-                //           99,
-                //           13,
-                //           11.03315,
-                //           "NONE",
-                //           "https://browse.digitalglobe.com/imagefinder/showBrowseImage?catalogId=1040010037C27700&imageHeight=1024&imageWidth=1024",
-                //           38.190956,
-                //           56.338558000000006,
-                //           38.414342000000005,
-                //           56.338558000000006,
-                //           38.414342000000005,
-                //           56.115172,
-                //           38.190956,
-                //           56.115172,
-                //           null,
-                //           "WV03",
-                //           false,
-                //           false,
-                //           false,
-                //           false,
-                //           125522408,
-                //           null,
-                //           false,
-                //           null,
-                //           12660891,
-                //           {
-                //             "type": "POLYGON",
-                //             "coordinates": [
-                //               [
-                //                 [
-                //                   4251397.84,
-                //                   7614734.94
-                //                 ],
-                //                 [
-                //                   4276265.01,
-                //                   7613929.78
-                //                 ],
-                //                 [
-                //                   4276258.28,
-                //                   7608044.14
-                //                 ],
-                //                 [
-                //                   4276237.57,
-                //                   7602179.22
-                //                 ],
-                //                 [
-                //                   4276219.21,
-                //                   7596318.44
-                //                 ],
-                //                 [
-                //                   4276211.64,
-                //                   7592703.6
-                //                 ],
-                //                 [
-                //                   4251460.61,
-                //                   7593482.47
-                //                 ],
-                //                 [
-                //                   4251448.1,
-                //                   7597095.82
-                //                 ],
-                //                 [
-                //                   4251429.1,
-                //                   7602972.37
-                //                 ],
-                //                 [
-                //                   4251413.58,
-                //                   7608852.03
-                //                 ],
-                //                 [
-                //                   4251397.84,
-                //                   7614734.94
-                //                 ]
-                //               ]
-                //             ]
-                //           }
-                //         ],
-                //         [
-                //           "1040010037426500",
-                //           1515110400,
-                //           10800,
-                //           99,
-                //           11,
-                //           11.10345,
-                //           "NONE",
-                //           "https://browse.digitalglobe.com/imagefinder/showBrowseImage?catalogId=1040010037426500&imageHeight=1024&imageWidth=1024",
-                //           38.091453,
-                //           56.2558945,
-                //           38.31425899999999,
-                //           56.2558945,
-                //           38.31425899999999,
-                //           56.033088500000005,
-                //           38.091453,
-                //           56.033088500000005,
-                //           null,
-                //           "WV03",
-                //           false,
-                //           false,
-                //           false,
-                //           false,
-                //           125522404,
-                //           null,
-                //           false,
-                //           null,
-                //           12660891,
-                //           {
-                //             "type": "POLYGON",
-                //             "coordinates": [
-                //               [
-                //                 [
-                //                   4265072.4,
-                //                   7576780.44
-                //                 ],
-                //                 [
-                //                   4240343.74,
-                //                   7576957.42
-                //                 ],
-                //                 [
-                //                   4240343.81,
-                //                   7582682.03
-                //                 ],
-                //                 [
-                //                   4240331.61,
-                //                   7588423.15
-                //                 ],
-                //                 [
-                //                   4240323.54,
-                //                   7594171.8
-                //                 ],
-                //                 [
-                //                   4240321.15,
-                //                   7597701.35
-                //                 ],
-                //                 [
-                //                   4265123.8,
-                //                   7597297.12
-                //                 ],
-                //                 [
-                //                   4265104.35,
-                //                   7593824.97
-                //                 ],
-                //                 [
-                //                   4265095.38,
-                //                   7588131.41
-                //                 ],
-                //                 [
-                //                   4265090.06,
-                //                   7582447.08
-                //                 ],
-                //                 [
-                //                   4265072.4,
-                //                   7576780.44
-                //                 ]
-                //               ]
-                //             ]
-                //           }
-                //         ],
-                //         [
-                //           "10400100364C1000",
-                //           1515110400,
-                //           10800,
-                //           99,
-                //           24,
-                //           11.27932,
-                //           "NONE",
-                //           "https://browse.digitalglobe.com/imagefinder/showBrowseImage?catalogId=10400100364C1000&imageHeight=1024&imageWidth=1024",
-                //           37.926345,
-                //           56.068524999999994,
-                //           38.17559399999999,
-                //           56.068524999999994,
-                //           38.17559399999999,
-                //           55.819276,
-                //           37.926345,
-                //           55.819276,
-                //           null,
-                //           "WV03",
-                //           false,
-                //           false,
-                //           false,
-                //           false,
-                //           125522397,
-                //           null,
-                //           false,
-                //           null,
-                //           12660891,
-                //           {
-                //             "type": "POLYGON",
-                //             "coordinates": [
-                //               [
-                //                 [
-                //                   4221942.16,
-                //                   7557521.61
-                //                 ],
-                //                 [
-                //                   4249687.79,
-                //                   7560825.37
-                //                 ],
-                //                 [
-                //                   4249675.11,
-                //                   7554225.71
-                //                 ],
-                //                 [
-                //                   4249647.48,
-                //                   7547615.31
-                //                 ],
-                //                 [
-                //                   4249615.61,
-                //                   7541005.38
-                //                 ],
-                //                 [
-                //                   4249587.2,
-                //                   7536939.34
-                //                 ],
-                //                 [
-                //                   4221992.99,
-                //                   7533710.69
-                //                 ],
-                //                 [
-                //                   4221985.53,
-                //                   7537725.29
-                //                 ],
-                //                 [
-                //                   4221964.26,
-                //                   7544309.95
-                //                 ],
-                //                 [
-                //                   4221941.47,
-                //                   7550898.82
-                //                 ],
-                //                 [
-                //                   4221942.16,
-                //                   7557521.61
-                //                 ]
-                //               ]
-                //             ]
-                //           }
-                //         ],
-                //         [
-                //           "104001003730C400",
-                //           1515110400,
-                //           10800,
-                //           99,
-                //           22,
-                //           11.82606,
-                //           "NONE",
-                //           "https://browse.digitalglobe.com/imagefinder/showBrowseImage?catalogId=104001003730C400&imageHeight=1024&imageWidth=1024",
-                //           37.351469,
-                //           55.4702175,
-                //           37.593539,
-                //           55.4702175,
-                //           37.593539,
-                //           55.2281475,
-                //           37.351469,
-                //           55.2281475,
-                //           null,
-                //           "WV03",
-                //           false,
-                //           false,
-                //           false,
-                //           false,
-                //           125522401,
-                //           null,
-                //           false,
-                //           null,
-                //           12661147,
-                //           {
-                //             "type": "POLYGON",
-                //             "coordinates": [
-                //               [
-                //                 [
-                //                   4157946.55,
-                //                   7439884.95
-                //                 ],
-                //                 [
-                //                   4184893.63,
-                //                   7442519.37
-                //                 ],
-                //                 [
-                //                   4184870.1,
-                //                   7436252.52
-                //                 ],
-                //                 [
-                //                   4184852.13,
-                //                   7429996.85
-                //                 ],
-                //                 [
-                //                   4184831.51,
-                //                   7423749.9
-                //                 ],
-                //                 [
-                //                   4184822.65,
-                //                   7419934.15
-                //                 ],
-                //                 [
-                //                   4158026.69,
-                //                   7417365.91
-                //                 ],
-                //                 [
-                //                   4158018.7,
-                //                   7421153.12
-                //                 ],
-                //                 [
-                //                   4157996.52,
-                //                   7427389.05
-                //                 ],
-                //                 [
-                //                   4157972.92,
-                //                   7433635.05
-                //                 ],
-                //                 [
-                //                   4157946.55,
-                //                   7439884.95
-                //                 ]
-                //               ]
-                //             ]
-                //           }
-                //         ],
-                //         [
-                //           "10300100773C3800",
-                //           1514851200,
-                //           10800,
-                //           99,
-                //           8,
-                //           11.25067,
-                //           "NONE",
-                //           "https://browse.digitalglobe.com/imagefinder/showBrowseImage?catalogId=10300100773C3800&imageHeight=1024&imageWidth=1024",
-                //           37.976686,
-                //           55.697672,
-                //           38.242312,
-                //           55.697672,
-                //           38.242312,
-                //           55.432046,
-                //           37.976686,
-                //           55.432046,
-                //           null,
-                //           "WV02",
-                //           false,
-                //           false,
-                //           false,
-                //           false,
-                //           125518665,
-                //           null,
-                //           false,
-                //           null,
-                //           12661147,
-                //           {
-                //             "type": "POLYGON",
-                //             "coordinates": [
-                //               [
-                //                 [
-                //                   4227545.43,
-                //                   7484716.35
-                //                 ],
-                //                 [
-                //                   4257114.79,
-                //                   7484407.33
-                //                 ],
-                //                 [
-                //                   4257086.72,
-                //                   7475983.79
-                //                 ],
-                //                 [
-                //                   4257058.33,
-                //                   7467576.51
-                //                 ],
-                //                 [
-                //                   4257035.32,
-                //                   7459853.12
-                //                 ],
-                //                 [
-                //                   4227604.9,
-                //                   7460116.38
-                //                 ],
-                //                 [
-                //                   4227585.25,
-                //                   7467851.26
-                //                 ],
-                //                 [
-                //                   4227568.83,
-                //                   7476269.33
-                //                 ],
-                //                 [
-                //                   4227545.43,
-                //                   7484716.35
-                //                 ]
-                //               ]
-                //             ]
-                //           }
-                //         ],
-                //         [
-                //           "1030010076644000",
-                //           1514851200,
-                //           10800,
-                //           99,
-                //           27,
-                //           10.55517,
-                //           "NONE",
-                //           "https://browse.digitalglobe.com/imagefinder/showBrowseImage?catalogId=1030010076644000&imageHeight=1024&imageWidth=1024",
-                //           37.980653,
-                //           56.3931325,
-                //           38.300019,
-                //           56.3931325,
-                //           38.300019,
-                //           56.0737665,
-                //           37.980653,
-                //           56.0737665,
-                //           null,
-                //           "WV02",
-                //           false,
-                //           false,
-                //           false,
-                //           false,
-                //           125518650,
-                //           null,
-                //           false,
-                //           null,
-                //           12660891,
-                //           {
-                //             "type": "POLYGON",
-                //             "coordinates": [
-                //               [
-                //                 [
-                //                   4227987.01,
-                //                   7618281.8
-                //                 ],
-                //                 [
-                //                   4263538.62,
-                //                   7623473.19
-                //                 ],
-                //                 [
-                //                   4263533.49,
-                //                   7612664.14
-                //                 ],
-                //                 [
-                //                   4263515.9,
-                //                   7601811.7
-                //                 ],
-                //                 [
-                //                   4263491.96,
-                //                   7591832.15
-                //                 ],
-                //                 [
-                //                   4228003.23,
-                //                   7586631.15
-                //                 ],
-                //                 [
-                //                   4228000.65,
-                //                   7596573.47
-                //                 ],
-                //                 [
-                //                   4227993.35,
-                //                   7607435.59
-                //                 ],
-                //                 [
-                //                   4227987.01,
-                //                   7618281.8
-                //                 ]
-                //               ]
-                //             ]
-                //           }
-                //         ],
-                //         [
-                //           "1030010076464500",
-                //           1514851200,
-                //           10800,
-                //           99,
-                //           8,
-                //           10.56452,
-                //           "NONE",
-                //           "https://browse.digitalglobe.com/imagefinder/showBrowseImage?catalogId=1030010076464500&imageHeight=1024&imageWidth=1024",
-                //           37.834001,
-                //           56.3689915,
-                //           38.107889,
-                //           56.3689915,
-                //           38.107889,
-                //           56.0951035,
-                //           37.834001,
-                //           56.0951035,
-                //           null,
-                //           "WV02",
-                //           false,
-                //           false,
-                //           false,
-                //           false,
-                //           125518661,
-                //           null,
-                //           false,
-                //           null,
-                //           12660891,
-                //           {
-                //             "type": "POLYGON",
-                //             "coordinates": [
-                //               [
-                //                 [
-                //                   4211661.74,
-                //                   7617071.81
-                //                 ],
-                //                 [
-                //                   4242150.82,
-                //                   7617328.48
-                //                 ],
-                //                 [
-                //                   4242128.46,
-                //                   7608824.37
-                //                 ],
-                //                 [
-                //                   4242104.17,
-                //                   7600330.42
-                //                 ],
-                //                 [
-                //                   4242074.95,
-                //                   7592448.78
-                //                 ],
-                //                 [
-                //                   4211742.01,
-                //                   7592190.4
-                //                 ],
-                //                 [
-                //                   4211716.69,
-                //                   7600061.56
-                //                 ],
-                //                 [
-                //                   4211689.49,
-                //                   7608561.2
-                //                 ],
-                //                 [
-                //                   4211661.74,
-                //                   7617071.81
-                //                 ]
-                //               ]
-                //             ]
-                //           }
-                //         ],
-                //         [
-                //           "104001003554D600",
-                //           1514764800,
-                //           10800,
-                //           99,
-                //           28,
-                //           11.03993,
-                //           "NONE",
-                //           "https://browse.digitalglobe.com/imagefinder/showBrowseImage?catalogId=104001003554D600&imageHeight=1024&imageWidth=1024",
-                //           37.197933,
-                //           56.311617500000004,
-                //           37.489646,
-                //           56.311617500000004,
-                //           37.489646,
-                //           56.0199045,
-                //           37.197933,
-                //           56.0199045,
-                //           null,
-                //           "WV03",
-                //           false,
-                //           false,
-                //           false,
-                //           false,
-                //           125515159,
-                //           null,
-                //           false,
-                //           null,
-                //           12660891,
-                //           {
-                //             "type": "POLYGON",
-                //             "coordinates": [
-                //               [
-                //                 [
-                //                   4140914.53,
-                //                   7603935.16
-                //                 ],
-                //                 [
-                //                   4173270.28,
-                //                   7602537.63
-                //                 ],
-                //                 [
-                //                   4173269.79,
-                //                   7596041.26
-                //                 ],
-                //                 [
-                //                   4173309.04,
-                //                   7589528.72
-                //                 ],
-                //                 [
-                //                   4173315.36,
-                //                   7583022.22
-                //                 ],
-                //                 [
-                //                   4173328.37,
-                //                   7579055.09
-                //                 ],
-                //                 [
-                //                   4140879.63,
-                //                   7580449.68
-                //                 ],
-                //                 [
-                //                   4140855.02,
-                //                   7584459.85
-                //                 ],
-                //                 [
-                //                   4140866.49,
-                //                   7590955.45
-                //                 ],
-                //                 [
-                //                   4140877.35,
-                //                   7597452.35
-                //                 ],
-                //                 [
-                //                   4140914.53,
-                //                   7603935.16
-                //                 ]
-                //               ]
-                //             ]
-                //           }
-                //         ]
-                //       ]
-                //     },
-                //     "CallbackName": "id0.59126934539093431"
-                //   };
-                // resolve(response.Result);
                 _this._gmxResourceServer.sendPostRequest('VectorLayer/Search.ashx', rq).then(function (response) {
                     if (response.Status === 'ok') {
                         resolve(response.Result);
@@ -23533,7 +21625,7 @@ var RequestAdapter = function () {
     }, {
         key: 'query',
         get: function get() {
-            return [this.st_index, this.spatial, this.date, this.satellites].filter(function (x) {
+            return [this.st_index, this.spatial, this.date, this.clouds, this.angle, this.stereo, this.satellites].filter(function (x) {
                 return x.trim() !== '';
             }).join(' AND ');
         }
@@ -23541,7 +21633,6 @@ var RequestAdapter = function () {
         key: 'request',
         get: function get() {
             return {
-                out_cs: 'EPSG:3857',
                 layer: this._layer,
                 orderby: 'acqdate',
                 orderdirection: 'desc',
@@ -23549,6 +21640,7 @@ var RequestAdapter = function () {
                 page: 0,
                 pagesize: 0,
                 count: 'add',
+                out_cs: 'EPSG:3857',
                 query: this.query
             };
         }
@@ -23560,7 +21652,7 @@ var RequestAdapter = function () {
 exports.RequestAdapter = RequestAdapter;
 
 /***/ }),
-/* 146 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23579,7 +21671,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _EventTarget2 = __webpack_require__(3);
 
-var _Quicklook = __webpack_require__(164);
+var _Quicklook = __webpack_require__(162);
 
 var _DataGrid = __webpack_require__(5);
 
@@ -23589,7 +21681,7 @@ var _Utils = __webpack_require__(1);
 
 var _Extensions = __webpack_require__(7);
 
-__webpack_require__(191);
+__webpack_require__(189);
 
 var _Utils2 = __webpack_require__(1);
 
@@ -23688,27 +21780,28 @@ function getBounds(items) {
     }, null);
 }
 
-L.gmx.DataManager.prototype.removeData = function (data) {
-    this._itemsBounds = null;
-    var vTile = this.processingTile;
-    if (vTile) {
-        var chkKeys = (data || vTile.data).reduce(function (a, item) {
-            var id = item[0];
-            a[id] = true;
-            delete this._items[id];
-            return a;
-        }.bind(this), {});
+// L.gmx.DataManager.prototype.removeData = function (data) {
+//     this._itemsBounds = null;
+//     var vTile = this.processingTile;
+//     if (vTile) {                
+//         var chkKeys = (data || vTile.data).reduce(function(a,item) {
+//             var id = item[0];
+//             a[id] = true;
+//             delete this._items[id];
+//             return a;
+//         }.bind(this), {});
 
-        this._removeDataFromObservers(chkKeys);
-        vTile.removeData(chkKeys, true);
-        this._updateItemsFromTile(vTile);
+//         this._removeDataFromObservers(chkKeys);
+//         vTile.removeData(chkKeys, true);
+//         this._updateItemsFromTile(vTile);
 
-        this._triggerObservers();
-    }
+//         this._triggerObservers();
+//     }
 
-    return vTile;
-};
+//     return vTile;
+// };
 
+var gmx_id_index = 0;
 var sceneid_index = layerAttributes.indexOf('sceneid') + 1;
 var result_index = layerAttributes.indexOf('result') + 1;
 var cart_index = layerAttributes.indexOf('cart') + 1;
@@ -23718,7 +21811,7 @@ var hover_index = layerAttributes.indexOf('hover') + 1;
 
 var qlCache = {};
 
-function prefetchQL(sceneid) {
+function prefetch_ql(sceneid) {
     return new Promise(function (resolve, reject) {
 
         var img = new Image();
@@ -23729,7 +21822,7 @@ function prefetchQL(sceneid) {
         };
         img.onerror = function () {
             delete qlCache[sceneid];
-            resolve();
+            reject();
         };
         img.src = 'http://wikimixer.kosmosnimki.ru/QuickLookImage.ashx?id=' + sceneid + '&srs=3857';
     });
@@ -23829,32 +21922,94 @@ var ResultsController = function (_EventTarget) {
             return { skipRasters: skipRasters, strokeStyle: color, lineWidth: lineWidth };
         });
 
-        var showQL = function showQL(id, show) {
-            var item = _this._layer.getDataManager()._items[id];
-
-            var process_ql = function process_ql() {
-
-                if (item.properties[visible_index] != show) {
-                    item.properties[visible_index] = show;
-                    // this._layer.redrawItem(id);
-
-                    if (show) {
-                        _this._layer.bringToTopItem(id);
-                    } else {
-                        _this._layer.bringToBottomItem(id);
-                    }
-                    var event = document.createEvent('Event');
-                    event.initEvent('visible', false, false);
-                    _this.dispatchEvent(event);
+        var show_ql_progress = function show_ql_progress(gmx_id, visible) {
+            var get_row = function get_row(gmx_id) {
+                var item = null;
+                switch (_this._currentTab) {
+                    case 'results':
+                        item = _this._resultList.getItemByIndex(gmx_id);
+                        return _this._resultList.getRow(item[_DataGrid.ENUM_ID]);
+                    case 'favorites':
+                        item = _this._favoritesList.getItemByIndex(gmx_id);
+                        return _this._favoritesList.getRow(item[_DataGrid.ENUM_ID]);
+                    default:
+                        return null;
                 }
             };
+            var row = get_row(gmx_id);
+            if (row) {
+                var icon = row.querySelector('i');
+                if (visible) {
+                    icon.classList.remove('search');
+                    icon.classList.remove('search-visibility-off');
+                    icon.classList.add('ql-loader');
+                } else {
+                    icon.classList.remove('ql-loader');
+                    icon.classList.add('search');
+                    icon.classList.add('search-visibility-off');
+                }
+            }
+        };
 
+        var process_ql = function process_ql(id, show) {
+            _this._layer.redrawItem(id);
             if (show) {
-                prefetchQL(item.properties[sceneid_index]).then(function () {
-                    process_ql();
-                });
+                _this._layer.bringToTopItem(id);
             } else {
-                process_ql();
+                _this._layer.bringToBottomItem(id);
+            }
+            var event = document.createEvent('Event');
+            event.initEvent('visible', false, false);
+            _this.dispatchEvent(event);
+        };
+
+        var show_ql = function show_ql(id, show) {
+            return new Promise(function (resolve, reject) {
+                var item = _this._layer.getDataManager()._items[id];
+                item.properties[visible_index] = show;
+                if (show) {
+                    show_ql_progress(id, true);
+                    prefetch_ql(item.properties[sceneid_index]).then(function () {
+                        process_ql(id, show);
+                        show_ql_progress(id, false);
+                        resolve();
+                    }).catch(function () {
+                        process_ql(id, show);
+                        show_ql_progress(id, false);
+                        resolve();
+                    });
+                } else {
+                    process_ql(id, show);
+                    show_ql_progress(id, false);
+                    resolve();
+                }
+            });
+        };
+
+        var update_row = function update_row(gmx_id, hover) {
+            var item = null;
+            var rowId = null;
+            switch (_this._currentTab) {
+                case 'results':
+                    item = _this._resultList.getItemByIndex(gmx_id);
+                    rowId = item[_DataGrid.ENUM_ID];
+                    if (hover) {
+                        _this._resultList.hilite(rowId);
+                    } else {
+                        _this._resultList.dim(rowId);
+                    }
+                    break;
+                case 'favorites':
+                    item = _this._favoritesList.getItemByIndex(gmx_id);
+                    rowId = item[_DataGrid.ENUM_ID];
+                    if (hover) {
+                        _this._favoritesList.hilite(rowId);
+                    } else {
+                        _this._favoritesList.dim(rowId);
+                    }
+                    break;
+                default:
+                    return null;
             }
         };
         _this._layer.on('click', function (e) {
@@ -23864,29 +22019,29 @@ var ResultsController = function (_EventTarget) {
                 target = _e$gmx.target;
 
             var visible = !target.properties[visible_index];
-            showQL(id, visible);
-
-            var item = null;
-            switch (_this._currentTab) {
-                case 'results':
-                    item = _this.resultList.getItemByIndex(id);
-                    item.visible = visible;
-                    _this.resultList.refresh();
-                    if (visible) {
-                        _this.resultList.scrollToRow(item[_DataGrid.ENUM_ID]);
-                    }
-                    break;
-                case 'favorites':
-                    item = _this.favoritesList.getItemByIndex(id);
-                    item.visible = visible;
-                    _this.favoritesList.refresh();
-                    if (visible) {
-                        _this.favoritesList.scrollToRow(item[_DataGrid.ENUM_ID]);
-                    }
-                    break;
-                default:
-                    break;
-            }
+            show_ql(id, visible).then(function () {
+                var item = null;
+                switch (_this._currentTab) {
+                    case 'results':
+                        item = _this.resultList.getItemByIndex(id);
+                        item.visible = visible;
+                        _this.resultList.refresh();
+                        if (visible) {
+                            _this.resultList.scrollToRow(item[_DataGrid.ENUM_ID]);
+                        }
+                        break;
+                    case 'favorites':
+                        item = _this.favoritesList.getItemByIndex(id);
+                        item.visible = visible;
+                        _this.favoritesList.refresh();
+                        if (visible) {
+                            _this.favoritesList.scrollToRow(item[_DataGrid.ENUM_ID]);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            });
         }).on('mouseover', function (e) {
             var _e$gmx2 = e.gmx,
                 id = _e$gmx2.id,
@@ -23895,6 +22050,7 @@ var ResultsController = function (_EventTarget) {
 
             target.properties[hover_index] = true;
             _this._layer.redrawItem(id);
+            update_row(id, true);
         }).on('mouseout', function (e) {
             var _e$gmx3 = e.gmx,
                 id = _e$gmx3.id,
@@ -23903,6 +22059,7 @@ var ResultsController = function (_EventTarget) {
 
             target.properties[hover_index] = false;
             _this._layer.redrawItem(id);
+            update_row(id, false);
         });
         _this._resultList.addEventListener('cart', function (e) {
             var gmx_id = e.detail.gmx_id;
@@ -23925,15 +22082,14 @@ var ResultsController = function (_EventTarget) {
                 gmx_id = _e$detail.gmx_id,
                 visible = _e$detail.visible;
 
-            showQL(gmx_id, visible);
-
-            _this._favoritesList.items = _this._layer.getFilteredItems(function (item) {
-                return item.cart;
+            show_ql(gmx_id, visible).then(function () {
+                _this._favoritesList.items = _this._layer.getFilteredItems(function (item) {
+                    return item.cart;
+                });
+                var event = document.createEvent('Event');
+                event.initEvent('visible', false, false);
+                _this.dispatchEvent(event);
             });
-
-            var event = document.createEvent('Event');
-            event.initEvent('visible', false, false);
-            _this.dispatchEvent(event);
         });
         _this._resultList.addEventListener('info', function (e) {
             var _e$detail2 = e.detail,
@@ -23979,11 +22135,12 @@ var ResultsController = function (_EventTarget) {
                 x4 = _e$detail$item.x4,
                 y4 = _e$detail$item.y4;
 
-            showQL(gmx_id, true);
-            var ne = L.latLng(y2, x2);
-            var sw = L.latLng(y4, x4);
-            _this._map.fitBounds(L.latLngBounds(sw, ne), { animate: false });
-            _this._map.invalidateSize();
+            show_ql(gmx_id, true).then(function () {
+                var ne = L.latLng(y2, x2);
+                var sw = L.latLng(y4, x4);
+                _this._map.fitBounds(L.latLngBounds(sw, ne), { animate: false });
+                _this._map.invalidateSize();
+            });
         });
 
         _this._resultList.addEventListener('cart:all', function (e) {
@@ -23998,12 +22155,7 @@ var ResultsController = function (_EventTarget) {
                 _this._layer.redrawItem(id);
             });
 
-            _this._resultList.items = _this._layer.getFilteredItems(function (item) {
-                return item.result;
-            });
-            _this._favoritesList.items = _this._layer.getFilteredItems(function (item) {
-                return item.cart;
-            });
+            _this.refreshLists();
 
             var event = document.createEvent('Event');
             event.initEvent('cart', false, false);
@@ -24036,41 +22188,37 @@ var ResultsController = function (_EventTarget) {
                 gmx_id = _e$detail4.gmx_id,
                 visible = _e$detail4.visible;
 
-            showQL(gmx_id, visible);
-
-            _this._resultList.items = _this._layer.getFilteredItems(function (item) {
-                return item.result;
+            show_ql(gmx_id, visible).then(function () {
+                _this._resultList.items = _this._layer.getFilteredItems(function (item) {
+                    return item.result;
+                });
+                var event = document.createEvent('Event');
+                event.initEvent('visible', false, false);
+                _this.dispatchEvent(event);
             });
-
-            var event = document.createEvent('Event');
-            event.initEvent('visible', false, false);
-            _this.dispatchEvent(event);
         });
 
         _this._favoritesList.addEventListener('visible:all', function (e) {
             var visible = e.detail;
-            var process_ql = function process_ql(item) {
-                if (item.properties[cart_index]) {
-                    item.properties[visible_index] = visible;
-                    _this._layer.redrawItem(item.id);
-                }
-            };
-
             var items = _this._layer.getDataManager()._items;
-            Object.keys(items).forEach(function (id) {
+            Object.keys(items).filter(function (id) {
+                return items[id].properties[cart_index];
+            }).forEach(function (id) {
                 var item = items[id];
-
+                item.properties[visible_index] = visible;
                 if (visible) {
-                    prefetchQL(item.properties[sceneid_index]).then(function () {
-                        process_ql(item);
+                    show_ql_progress(id, true);
+                    prefetch_ql(item.properties[sceneid_index]).then(function () {
+                        process_ql(id, true);
+                        show_ql_progress(id, false);
+                    }).catch(function () {
+                        process_ql(id, true);
+                        show_ql_progress(id, false);
                     });
                 } else {
-                    process_ql(item);
+                    process_ql(id, false);
+                    show_ql_progress(id, false);
                 }
-            });
-
-            _this._resultList.items = _this._layer.getFilteredItems(function (item) {
-                return item.result;
             });
 
             var event = document.createEvent('Event');
@@ -24123,11 +22271,12 @@ var ResultsController = function (_EventTarget) {
                 x4 = _e$detail$item2.x4,
                 y4 = _e$detail$item2.y4;
 
-            showQL(gmx_id, true);
-            var ne = L.latLng(y2, x2);
-            var sw = L.latLng(y4, x4);
-            _this._map.fitBounds(L.latLngBounds(sw, ne), { animate: false });
-            _this._map.invalidateSize();
+            show_ql(gmx_id, true).then(function () {
+                var ne = L.latLng(y2, x2);
+                var sw = L.latLng(y4, x4);
+                _this._map.fitBounds(L.latLngBounds(sw, ne), { animate: false });
+                _this._map.invalidateSize();
+            });
         });
 
         // this._favoritesList.addEventListener('sort', e => this.setQuicklooks(this._favoritesList.sortedItems));
@@ -24285,12 +22434,7 @@ var ResultsController = function (_EventTarget) {
             // this._layer.removeData();
             // this._layer.addData(data);
             this._layer.mergeData(data);
-            this.resultList.items = this._layer.getFilteredItems(function (item) {
-                return item.result;
-            });
-            this.favoritesList.items = this._layer.getFilteredItems(function (item) {
-                return item.cart;
-            });
+            this.refreshLists();
             var event = document.createEvent('Event');
             event.initEvent('result:done', false, false);
             this.dispatchEvent(event);
@@ -24306,6 +22450,9 @@ var ResultsController = function (_EventTarget) {
         value: function showResults() {
             this._currentTab = 'results';
             this._layer.repaint();
+            this.resultList.items = this._layer.getFilteredItems(function (item) {
+                return item.result;
+            });
         }
     }, {
         key: 'zoomToResults',
@@ -24330,6 +22477,9 @@ var ResultsController = function (_EventTarget) {
         value: function showFavorites() {
             this._currentTab = 'favorites';
             this._layer.repaint();
+            this.favoritesList.items = this._layer.getFilteredItems(function (item) {
+                return item.cart;
+            });
         }
     }, {
         key: 'addVisibleToCart',
@@ -24354,18 +22504,23 @@ var ResultsController = function (_EventTarget) {
                 }
             });
 
-            this._resultList.items = this._layer.getFilteredItems(function (item) {
-                return item.result;
-            });
-            this._favoritesList.items = this._layer.getFilteredItems(function (item) {
-                return item.cart;
-            });
+            this.refreshLists();
 
             this.showResults();
 
             var event = document.createEvent('Event');
             event.initEvent('cart', false, false);
             this.dispatchEvent(event);
+        }
+    }, {
+        key: 'refreshLists',
+        value: function refreshLists() {
+            this._resultList.items = this._layer.getFilteredItems(function (item) {
+                return item.result;
+            });
+            this._favoritesList.items = this._layer.getFilteredItems(function (item) {
+                return item.cart;
+            });
         }
     }, {
         key: 'removeSelectedFavorites',
@@ -24381,12 +22536,7 @@ var ResultsController = function (_EventTarget) {
                     _this3._layer.redrawItem(item.id);
                 }
             });
-            this._resultList.items = this._layer.getFilteredItems(function (item) {
-                return item.result;
-            });
-            this._favoritesList.items = this._layer.getFilteredItems(function (item) {
-                return item.cart;
-            });
+            this.refreshLists();
         }
     }, {
         key: 'clear',
@@ -24765,7 +22915,7 @@ exports.layerAttributes = layerAttributes;
 exports.layerAttrTypes = layerAttrTypes;
 
 /***/ }),
-/* 147 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24780,9 +22930,9 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(194);
+__webpack_require__(192);
 
-var _RangeWidget = __webpack_require__(20);
+var _RangeWidget = __webpack_require__(177);
 
 var _ResultList = __webpack_require__(13);
 
@@ -24792,7 +22942,7 @@ var _Cart = __webpack_require__(10);
 
 var _ImageDetails = __webpack_require__(12);
 
-var _Satellites = __webpack_require__(166);
+var _Satellites = __webpack_require__(164);
 
 var _EventTarget2 = __webpack_require__(3);
 
@@ -24804,8 +22954,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-__webpack_require__(184);
-var Pikaday = __webpack_require__(212);
+__webpack_require__(183);
+var Pikaday = __webpack_require__(210);
 
 window.Catalog.translations = window.Catalog.translations || new _Translations.Translations();
 var T = window.Catalog.translations;
@@ -24873,12 +23023,13 @@ var SearchOptions = function (_EventTarget) {
     _this._container = container;
     _this._container.classList.add('search-options');
     _this._content = _this._container;
-    _this._content.innerHTML = '<div class="no-select search-options-fixed-section">\n      <div class="search-options-period-title">' + T.getText('period.title') + '</div>\n      <div class="search-options-period-section">\n        <div class="search-options-period">\n          <div class="search-options-period-from">' + T.getText('period.from') + '</div>\n          <input class="search-options-period-from-value" type="text"/>      \n          <div class="search-options-period-to">' + T.getText('period.to') + '</div>\n          <input class="search-options-period-to-value" type="text" />\n        </div>\n        <div class="search-options-period-annually">\n          <input id="period_annually" class="search-options-period-annually-value" type="checkbox" />\n          <label for="period_annually" class="search-options-period-annually-title">' + T.getText('period.annually') + '</label>\n        </div>    \n      </div>      \n      <div class="search-options-satellites-number-section">\n        <div class="search-options-satellites-title">' + T.getText('satellites') + '</div>\n        <div class="search-options-satellites-number"></div>\n        <div class="search-options-satellites-archive">            \n            <select>\n                <option value="global">' + T.getText('archive.global') + '</option>\n                <option value="local">' + T.getText('archive.local') + '</option>\n                <option value="all">' + T.getText('archive.all') + '</option>\n            </select>\n            <!-- input id="satellite_stereo" type="checkbox" value="stereo" / -->\n            <!-- label for="satellite_stereo">' + T.getText('stereo') + '</label -->\n        </div>\n      </div>\n    </div>\n    <div class="no-select search-options-satellites"></div>';
+    _this._content.innerHTML = '<div class="no-select search-options-fixed-section">\n      <div class="search-options-period-title">' + T.getText('period.title') + '</div>\n      <div class="search-options-period-section">\n        <div class="search-options-period">\n          <div class="search-options-period-from">' + T.getText('period.from') + '</div>\n          <input class="search-options-period-from-value" type="text"/>      \n          <div class="search-options-period-to">' + T.getText('period.to') + '</div>\n          <input class="search-options-period-to-value" type="text" />\n        </div>\n        <div class="search-options-period-annually">\n          <input id="period_annually" class="search-options-period-annually-value" type="checkbox" />\n          <label for="period_annually" class="search-options-period-annually-title">' + T.getText('period.annually') + '</label>\n        </div>    \n      </div>\n      <div class="search-options-clouds">      \n        <div class="search-options-clouds-title">' + T.getText('clouds') + '</div>\n        <div class="search-options-clouds-value"></div>      \n      </div>    \n      <div class="search-options-angle">      \n        <div class="search-options-angle-title">' + T.getText('angle') + '</div>\n        <div class="search-options-angle-value"></div>      \n      </div>\n      <div class="search-options-resolution">      \n        <div class="search-options-resolution-title">' + T.getText('resolution.title') + '</div>\n        <div class="search-options-resolution-value"></div>      \n      </div>    \n      <div class="search-options-satellites-number-section">\n        <div class="search-options-satellites-title">' + T.getText('satellites') + '</div>\n        <div class="search-options-satellites-number"></div>\n        <div class="search-options-satellites-archive">\n            <!-- label class="search-options-satellites-archive-title">' + T.getText('archive.title') + '</label -->\n            <select>\n                <option value="global">' + T.getText('archive.global') + '</option>\n                <option value="local">' + T.getText('archive.local') + '</option>\n                <option value="all">' + T.getText('archive.all') + '</option>\n            </select>\n            <!-- input id="satellite_stereo" type="checkbox" value="stereo" / -->\n            <!-- label for="satellite_stereo">' + T.getText('stereo') + '</label -->\n        </div>\n      </div>\n    </div>\n    <div class="no-select search-options-satellites"></div>';
 
     _this._content.classList.add('search-options-content');
     _this._satellitesContainer = _this._container.querySelector('.search-options-satellites');
     _this._initDatePickers();
     _this._initAnnually();
+    _this._initSliders();
     _this._initSatellites(restricted);
     _this._initArchive(restricted);
     _this._stopPropagation = _this._stopPropagation.bind(_this);
@@ -24958,19 +23109,56 @@ var SearchOptions = function (_EventTarget) {
       }
     }
   }, {
+    key: '_initSliders',
+    value: function _initSliders() {
+      var _this2 = this;
+
+      this._cloudSlider = new _RangeWidget.RangeWidget(this._container.querySelector('.search-options-clouds-value'), { min: 0, max: 100 });
+      this._cloudSlider.values = [0, 100];
+
+      this._angleSlider = new _RangeWidget.RangeWidget(this._container.querySelector('.search-options-angle-value'), { min: 0, max: 60 });
+      this._angleSlider.values = [0, 60];
+
+      this._resolutionSlider = new _RangeWidget.RangeWidget(this._container.querySelector('.search-options-resolution-value'), { min: 0.3, max: 20, mode: 'float' });
+      this._resolutionSlider.values = [0.3, 20];
+      this._resolutionSlider.addEventListener('change', function (e) {
+        _this2._satellites.range = e.detail;
+      });
+    }
+  }, {
     key: '_initSatellites',
     value: function _initSatellites(restricted) {
-      var _this2 = this;
+      var _this3 = this;
 
       this._satelliteNumber = this._container.querySelector('.search-options-satellites-number');
       this._satellites = new _Satellites.Satellites(this._satellitesContainer, { restricted: restricted });
       this._satellites.addEventListener('change', function (e) {
-        _this2._updateSatelliteNumber();
+        _this3._updateResolution();
+        _this3._updateSatelliteNumber();
 
         var event = document.createEvent('Event');
         event.initEvent('change', false, false);
-        _this2.dispatchEvent(event);
+        _this3.dispatchEvent(event);
       });
+    }
+  }, {
+    key: '_updateResolution',
+    value: function _updateResolution() {
+      var range = this._satellites.range;
+      var values = this._resolutionSlider.values;
+      if (range.length === 2) {
+        var _range = _slicedToArray(range, 2),
+            lo = _range[0],
+            hi = _range[1];
+
+        var _values = _slicedToArray(values, 2),
+            min = _values[0],
+            max = _values[1];
+
+        this._resolutionSlider.values = [min > lo ? lo : min, max < hi ? hi : max];
+      } else {
+        this._resolutionSlider.values = values;
+      }
     }
   }, {
     key: '_satellitesVisible',
@@ -25007,6 +23195,8 @@ var SearchOptions = function (_EventTarget) {
       event.detail = {
         date: [this._startDate.getDate(), this._endDate.getDate()],
         annually: this._annually.checked,
+        clouds: this._cloudSlider.values,
+        angle: this._angleSlider.values,
         satellites: this._satellites.items
       };
       this.dispatchEvent(event);
@@ -25032,6 +23222,16 @@ var SearchOptions = function (_EventTarget) {
           endDate = _ref2$date$2 === undefined ? new Date() : _ref2$date$2,
           _ref2$annually = _ref2.annually,
           annually = _ref2$annually === undefined ? false : _ref2$annually,
+          _ref2$clouds = _slicedToArray(_ref2.clouds, 2),
+          _ref2$clouds$ = _ref2$clouds[0],
+          minClouds = _ref2$clouds$ === undefined ? 0 : _ref2$clouds$,
+          _ref2$clouds$2 = _ref2$clouds[1],
+          maxClouds = _ref2$clouds$2 === undefined ? 100 : _ref2$clouds$2,
+          _ref2$angle = _slicedToArray(_ref2.angle, 2),
+          _ref2$angle$ = _ref2$angle[0],
+          minAngle = _ref2$angle$ === undefined ? 0 : _ref2$angle$,
+          _ref2$angle$2 = _ref2$angle[1],
+          maxAngle = _ref2$angle$2 === undefined ? 60 : _ref2$angle$2,
           _ref2$satellites = _ref2.satellites,
           satellites = _ref2$satellites === undefined ? {} : _ref2$satellites,
           _ref2$stereo = _ref2.stereo,
@@ -25042,13 +23242,19 @@ var SearchOptions = function (_EventTarget) {
       this._annually.checked = annually;
       // this._stereo.checked = stereo;
 
+      this._cloudSlider.values = [minClouds, maxClouds];
+      this._angleSlider.values = [minAngle, maxAngle];
+
       this._satellites.data = satellites;
+      this._updateResolution();
       this._updateSatelliteNumber();
     },
     get: function get() {
       return {
         date: [this._startDate.getDate(), this._endDate.getDate()],
         annually: this._annually.checked,
+        clouds: this._cloudSlider.values,
+        angle: this._angleSlider.values,
         satellites: this._satellites.data,
         stereo: false,
         archive: this._archive.value
@@ -25076,7 +23282,7 @@ exports.ResultList = _ResultList.ResultList;
 exports.DrawnObjects = _DrawnObjects.DrawnObjects;
 
 /***/ }),
-/* 148 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25095,7 +23301,7 @@ var _Extensions = __webpack_require__(7);
 
 var _Utils = __webpack_require__(1);
 
-var _Formats = __webpack_require__(167);
+var _Formats = __webpack_require__(165);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -25342,7 +23548,7 @@ var ShapeLoader = function () {
 exports.ShapeLoader = ShapeLoader;
 
 /***/ }),
-/* 149 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25353,7 +23559,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.createTab = undefined;
 
-__webpack_require__(195);
+__webpack_require__(193);
 
 function createTab(_ref) {
     var icon = _ref.icon,
@@ -25382,7 +23588,7 @@ function createTab(_ref) {
 exports.createTab = createTab;
 
 /***/ }),
-/* 150 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25469,7 +23675,7 @@ exports.getAuthManager = getAuthManager;
 exports.getResourceServer = getResourceServer;
 
 /***/ }),
-/* 151 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25482,13 +23688,13 @@ exports.AuthWidget = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _DropdownMenuWidget = __webpack_require__(170);
+var _DropdownMenuWidget = __webpack_require__(168);
 
 var _EventTarget2 = __webpack_require__(16);
 
-__webpack_require__(197);
+__webpack_require__(195);
 
-__webpack_require__(196);
+__webpack_require__(194);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -25671,7 +23877,7 @@ var AuthWidget = function (_EventTarget) {
 exports.AuthWidget = AuthWidget;
 
 /***/ }),
-/* 152 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25681,7 +23887,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 (function (factory) {
     if (( false ? 'undefined' : _typeof(module)) === 'object' && module && module.exports) {
-        module.exports = factory(__webpack_require__(141));
+        module.exports = factory(__webpack_require__(140));
     } else {
         window.nsGmx = window.nsGmx || {};
         window.nsGmx.IconSidebarControl = factory(window.L);
@@ -25908,10 +24114,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         }
     });
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(140)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(139)(module)))
 
 /***/ }),
-/* 153 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25924,9 +24130,9 @@ exports.LanguageWidget = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(205);
+__webpack_require__(203);
 
-var _EventTarget2 = __webpack_require__(177);
+var _EventTarget2 = __webpack_require__(175);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -25985,7 +24191,7 @@ var LanguageWidget = function (_EventTarget) {
 exports.LanguageWidget = LanguageWidget;
 
 /***/ }),
-/* 154 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25994,7 +24200,7 @@ exports.LanguageWidget = LanguageWidget;
 /*eslint-env commonjs, browser */
 (function (factory) {
     if (typeof module !== 'undefined' && module.exports) {
-        module.exports = factory(__webpack_require__(141));
+        module.exports = factory(__webpack_require__(140));
     } else {
         window.L.control.iconLayers = factory(window.L);
         window.L.Control.IconLayers = window.L.control.iconLayers.Constructor;
@@ -26303,7 +24509,7 @@ exports.LanguageWidget = LanguageWidget;
 });
 
 /***/ }),
-/* 155 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26316,7 +24522,7 @@ exports.LoaderWidget = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(207);
+__webpack_require__(205);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26371,7 +24577,7 @@ var LoaderWidget = function () {
 exports.LoaderWidget = LoaderWidget;
 
 /***/ }),
-/* 156 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26384,7 +24590,7 @@ exports.NotificationWidget = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(208);
+__webpack_require__(206);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26433,6 +24639,18 @@ var NotificationWidget = function () {
 exports.NotificationWidget = NotificationWidget;
 
 /***/ }),
+/* 155 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 156 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
 /* 157 */
 /***/ (function(module, exports) {
 
@@ -26464,18 +24682,6 @@ exports.NotificationWidget = NotificationWidget;
 
 /***/ }),
 /* 162 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 163 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26684,7 +24890,7 @@ var Quicklook = function (_EventTarget) {
 exports.Quicklook = Quicklook;
 
 /***/ }),
-/* 165 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26697,7 +24903,7 @@ exports.Info = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(192);
+__webpack_require__(190);
 
 var _Translations = __webpack_require__(2);
 
@@ -26771,7 +24977,7 @@ var Info = function () {
 exports.Info = Info;
 
 /***/ }),
-/* 166 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26786,15 +24992,15 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(193);
+__webpack_require__(191);
 
 var _EventTarget2 = __webpack_require__(3);
 
 var _Translations = __webpack_require__(2);
 
-var _Tristate = __webpack_require__(182);
+var _Tristate = __webpack_require__(181);
 
-var _Info = __webpack_require__(165);
+var _Info = __webpack_require__(163);
 
 var _Utils = __webpack_require__(1);
 
@@ -27049,7 +25255,7 @@ var Satellites = function (_EventTarget) {
 exports.Satellites = Satellites;
 
 /***/ }),
-/* 167 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27119,7 +25325,7 @@ var Formats = {
 exports.Formats = Formats;
 
 /***/ }),
-/* 168 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27204,7 +25410,7 @@ exports.st_range = st_range;
 exports.to_query = to_query;
 
 /***/ }),
-/* 169 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27439,7 +25645,7 @@ var Server = function () {
 exports.Server = Server;
 
 /***/ }),
-/* 170 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27452,7 +25658,7 @@ exports.DropdownMenuWidget = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(198);
+__webpack_require__(196);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -27538,7 +25744,7 @@ var DropdownMenuWidget = function () {
 exports.DropdownMenuWidget = DropdownMenuWidget;
 
 /***/ }),
-/* 171 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27553,7 +25759,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Slider2 = __webpack_require__(18);
 
-__webpack_require__(199);
+__webpack_require__(197);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -27658,7 +25864,7 @@ var AlphaSlider = function (_Slider) {
 exports.AlphaSlider = AlphaSlider;
 
 /***/ }),
-/* 172 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27675,7 +25881,7 @@ var _EventTarget2 = __webpack_require__(9);
 
 var _Color = __webpack_require__(8);
 
-__webpack_require__(200);
+__webpack_require__(198);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -27901,7 +26107,7 @@ var ColorArea = function (_EventTarget) {
 exports.ColorArea = ColorArea;
 
 /***/ }),
-/* 173 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27920,13 +26126,13 @@ var _Utils = __webpack_require__(19);
 
 var _Color = __webpack_require__(8);
 
-var _ColorSlider = __webpack_require__(174);
+var _ColorSlider = __webpack_require__(172);
 
-var _AlphaSlider = __webpack_require__(171);
+var _AlphaSlider = __webpack_require__(169);
 
-var _ColorArea = __webpack_require__(172);
+var _ColorArea = __webpack_require__(170);
 
-__webpack_require__(201);
+__webpack_require__(199);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -28129,7 +26335,7 @@ var ColorPicker = function (_EventTarget) {
 exports.ColorPicker = ColorPicker;
 
 /***/ }),
-/* 174 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28148,7 +26354,7 @@ var _Slider2 = __webpack_require__(18);
 
 var _Color = __webpack_require__(8);
 
-__webpack_require__(202);
+__webpack_require__(200);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -28294,7 +26500,7 @@ var ColorSlider = function (_Slider) {
 exports.ColorSlider = ColorSlider;
 
 /***/ }),
-/* 175 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28357,7 +26563,7 @@ var EventTarget = function () {
 exports.EventTarget = EventTarget;
 
 /***/ }),
-/* 176 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28440,6 +26646,132 @@ var Tristate = function () {
 exports.Tristate = Tristate;
 
 /***/ }),
+/* 175 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var EventTarget = function () {
+    function EventTarget() {
+        _classCallCheck(this, EventTarget);
+
+        this.listeners = {};
+    }
+
+    _createClass(EventTarget, [{
+        key: "addEventListener",
+        value: function addEventListener(type, callback) {
+            if (!(type in this.listeners)) {
+                this.listeners[type] = [];
+            }
+            this.listeners[type].push(callback);
+        }
+    }, {
+        key: "removeEventListener",
+        value: function removeEventListener(type, callback) {
+            if (!(type in this.listeners)) {
+                return;
+            }
+            var stack = this.listeners[type];
+            for (var i = 0, l = stack.length; i < l; i++) {
+                if (stack[i] === callback) {
+                    stack.splice(i, 1);
+                    return this.removeEventListener(type, callback);
+                }
+            }
+        }
+    }, {
+        key: "dispatchEvent",
+        value: function dispatchEvent(event) {
+            if (!(event.type in this.listeners)) {
+                return;
+            }
+            var stack = this.listeners[event.type];
+            // event.target = this;
+            for (var i = 0, l = stack.length; i < l; i++) {
+                stack[i].call(this, event);
+            }
+        }
+    }]);
+
+    return EventTarget;
+}();
+
+exports.EventTarget = EventTarget;
+
+/***/ }),
+/* 176 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var EventTarget = function () {
+    function EventTarget() {
+        _classCallCheck(this, EventTarget);
+
+        this.listeners = {};
+    }
+
+    _createClass(EventTarget, [{
+        key: "addEventListener",
+        value: function addEventListener(type, callback) {
+            if (!(type in this.listeners)) {
+                this.listeners[type] = [];
+            }
+            this.listeners[type].push(callback);
+        }
+    }, {
+        key: "removeEventListener",
+        value: function removeEventListener(type, callback) {
+            if (!(type in this.listeners)) {
+                return;
+            }
+            var stack = this.listeners[type];
+            for (var i = 0, l = stack.length; i < l; i++) {
+                if (stack[i] === callback) {
+                    stack.splice(i, 1);
+                    return this.removeEventListener(type, callback);
+                }
+            }
+        }
+    }, {
+        key: "dispatchEvent",
+        value: function dispatchEvent(event) {
+            if (!(event.type in this.listeners)) {
+                return;
+            }
+            var stack = this.listeners[event.type];
+            // event.target = this;
+            for (var i = 0, l = stack.length; i < l; i++) {
+                stack[i].call(this, event);
+            }
+        }
+    }]);
+
+    return EventTarget;
+}();
+
+exports.EventTarget = EventTarget;
+
+/***/ }),
 /* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -28449,124 +26781,141 @@ exports.Tristate = Tristate;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.RangeWidget = undefined;
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _set = function set(object, property, value, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent !== null) { set(parent, property, value, receiver); } } else if ("value" in desc && desc.writable) { desc.value = value; } else { var setter = desc.set; if (setter !== undefined) { setter.call(receiver, value); } } return value; };
+
+var _SliderWidget2 = __webpack_require__(178);
+
+__webpack_require__(207);
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var EventTarget = function () {
-    function EventTarget() {
-        _classCallCheck(this, EventTarget);
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-        this.listeners = {};
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var RangeWidget = function (_SliderWidget) {
+    _inherits(RangeWidget, _SliderWidget);
+
+    function RangeWidget(container) {
+        var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : { mode: 'integer' };
+
+        _classCallCheck(this, RangeWidget);
+
+        var _this = _possibleConstructorReturn(this, (RangeWidget.__proto__ || Object.getPrototypeOf(RangeWidget)).call(this, container, options));
+
+        _this.options.mode = _this.options.mode || 'integer';
+        if (!_this._container.classList.contains('range-widget')) {
+            _this._container.classList.add('range-widget');
+            var html = '<div class="range-widget-content">\n                <input type="text" value="" />\n                <i>-</i>\n                <input type="text" value="" />\n            </div>';
+            _this._bar.insertAdjacentHTML('beforebegin', html);
+            _this._leftInput = _this._container.querySelector('.range-widget-content input:first-child');
+            _this._rightInput = _this._container.querySelector('.range-widget-content input:last-child');
+            _this._handleLeftInput = _this._handleLeftInput.bind(_this);
+            _this._handleRightInput = _this._handleRightInput.bind(_this);
+            _this._handleRange = _this._handleRange.bind(_this);
+            _this._leftInput.addEventListener('change', _this._handleLeftInput);
+            _this._leftInput.addEventListener('focus', function (e) {
+                return _this._leftInput.select();
+            });
+            _this._rightInput.addEventListener('change', _this._handleRightInput);
+            _this._rightInput.addEventListener('focus', function (e) {
+                return _this._rightInput.select();
+            });
+            _this.addEventListener('change', _this._handleRange);
+            _this.values = [_this.options.min, _this.options.max];
+        }
+        return _this;
     }
 
-    _createClass(EventTarget, [{
-        key: "addEventListener",
-        value: function addEventListener(type, callback) {
-            if (!(type in this.listeners)) {
-                this.listeners[type] = [];
+    _createClass(RangeWidget, [{
+        key: '_handleLeftInput',
+        value: function _handleLeftInput(e) {
+            var lo = this.options.mode === 'integer' ? parseInt(this._leftInput.value, 10) : parseFloat(this._leftInput.value);
+            var hi = this.options.mode === 'integer' ? parseInt(this._rightInput.value, 10) : parseFloat(this._rightInput.value);
+            if (!isNaN(lo) && this.options.min <= lo && lo <= this.options.max) {
+                this.values = [lo, hi];
+            } else {
+                this._leftInput.value = this.options.mode === 'integer' ? Math.round(this._lo) : this._lo.toFixed(1);
             }
-            this.listeners[type].push(callback);
+
+            // this.dispatchEvent(new CustomEvent('change', { detail: [this._lo, this._hi]}));
+
+            var event = document.createEvent('Event');
+            event.initEvent('change', false, false);
+            event.detail = [this._lo, this._hi];
+            this.dispatchEvent(event);
+
+            event.initEvent('stop', false, false);
+            event.detail = [this._lo, this._hi];
+            this.dispatchEvent(event);
         }
     }, {
-        key: "removeEventListener",
-        value: function removeEventListener(type, callback) {
-            if (!(type in this.listeners)) {
-                return;
+        key: '_handleRightInput',
+        value: function _handleRightInput(e) {
+            var lo = this.options.mode === 'integer' ? parseInt(this._leftInput.value, 10) : parseFloat(this._leftInput.value);
+            var hi = this.options.mode === 'integer' ? parseInt(this._rightInput.value, 10) : parseFloat(this._rightInput.value);
+            if (!isNaN(hi) && this.options.min <= hi && hi <= this.options.max) {
+                this.values = [lo, hi];
+            } else {
+                this._rightInput.value = this.options.mode === 'integer' ? Math.round(this._hi) : this._hi.toFixed(1);
             }
-            var stack = this.listeners[type];
-            for (var i = 0, l = stack.length; i < l; i++) {
-                if (stack[i] === callback) {
-                    stack.splice(i, 1);
-                    return this.removeEventListener(type, callback);
-                }
-            }
+
+            // this.dispatchEvent(new CustomEvent('change', { detail: [this._lo, this._hi]}));
+
+            var event = document.createEvent('Event');
+            event.initEvent('change', false, false);
+            event.detail = [this._lo, this._hi];
+            this.dispatchEvent(event);
+
+            event.initEvent('stop', false, false);
+            event.detail = [this._lo, this._hi];
+            this.dispatchEvent(event);
         }
     }, {
-        key: "dispatchEvent",
-        value: function dispatchEvent(event) {
-            if (!(event.type in this.listeners)) {
-                return;
+        key: '_handleRange',
+        value: function _handleRange(e) {
+            var _e$detail = _slicedToArray(e.detail, 2),
+                lo = _e$detail[0],
+                hi = _e$detail[1];
+
+            this._leftInput.value = this.options.mode === 'integer' ? Math.round(lo) : lo.toFixed(1);
+            this._rightInput.value = this.options.mode === 'integer' ? Math.round(hi) : hi.toFixed(1);
+        }
+    }, {
+        key: 'values',
+        set: function set(_ref) {
+            var _ref2 = _slicedToArray(_ref, 2),
+                lo = _ref2[0],
+                hi = _ref2[1];
+
+            if (!isNaN(lo) && this.options.min <= lo && lo <= this.options.max && !isNaN(hi) && this.options.min <= hi && hi <= this.options.max) {
+                _set(RangeWidget.prototype.__proto__ || Object.getPrototypeOf(RangeWidget.prototype), 'values', [lo, hi], this);
             }
-            var stack = this.listeners[event.type];
-            // event.target = this;
-            for (var i = 0, l = stack.length; i < l; i++) {
-                stack[i].call(this, event);
-            }
+            this._leftInput.value = this.options.mode === 'integer' ? Math.round(this._lo) : this._lo.toFixed(1);
+            this._rightInput.value = this.options.mode === 'integer' ? Math.round(this._hi) : this._hi.toFixed(1);
+
+            // this.dispatchEvent(new CustomEvent('change', { detail: [lo, hi]}));
+        },
+        get: function get() {
+            return _get(RangeWidget.prototype.__proto__ || Object.getPrototypeOf(RangeWidget.prototype), 'values', this);
         }
     }]);
 
-    return EventTarget;
-}();
+    return RangeWidget;
+}(_SliderWidget2.SliderWidget);
 
-exports.EventTarget = EventTarget;
+exports.RangeWidget = RangeWidget;
 
 /***/ }),
 /* 178 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var EventTarget = function () {
-    function EventTarget() {
-        _classCallCheck(this, EventTarget);
-
-        this.listeners = {};
-    }
-
-    _createClass(EventTarget, [{
-        key: "addEventListener",
-        value: function addEventListener(type, callback) {
-            if (!(type in this.listeners)) {
-                this.listeners[type] = [];
-            }
-            this.listeners[type].push(callback);
-        }
-    }, {
-        key: "removeEventListener",
-        value: function removeEventListener(type, callback) {
-            if (!(type in this.listeners)) {
-                return;
-            }
-            var stack = this.listeners[type];
-            for (var i = 0, l = stack.length; i < l; i++) {
-                if (stack[i] === callback) {
-                    stack.splice(i, 1);
-                    return this.removeEventListener(type, callback);
-                }
-            }
-        }
-    }, {
-        key: "dispatchEvent",
-        value: function dispatchEvent(event) {
-            if (!(event.type in this.listeners)) {
-                return;
-            }
-            var stack = this.listeners[event.type];
-            // event.target = this;
-            for (var i = 0, l = stack.length; i < l; i++) {
-                stack[i].call(this, event);
-            }
-        }
-    }]);
-
-    return EventTarget;
-}();
-
-exports.EventTarget = EventTarget;
-
-/***/ }),
-/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28581,9 +26930,9 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(210);
+__webpack_require__(208);
 
-var _EventTarget2 = __webpack_require__(180);
+var _EventTarget2 = __webpack_require__(179);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -28869,7 +27218,7 @@ var SliderWidget = function (_EventTarget) {
 exports.SliderWidget = SliderWidget;
 
 /***/ }),
-/* 180 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28932,7 +27281,7 @@ var EventTarget = function () {
 exports.EventTarget = EventTarget;
 
 /***/ }),
-/* 181 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28989,7 +27338,7 @@ exports.copy = copy;
 exports.extend = extend;
 
 /***/ }),
-/* 182 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29072,7 +27421,7 @@ var Tristate = function () {
 exports.Tristate = Tristate;
 
 /***/ }),
-/* 183 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29080,17 +27429,17 @@ exports.Tristate = Tristate;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
+__webpack_require__(155);
+
 __webpack_require__(157);
 
-__webpack_require__(159);
+__webpack_require__(156);
 
 __webpack_require__(158);
 
-__webpack_require__(160);
-
 var _Translations = __webpack_require__(2);
 
-var _SearchOptions = __webpack_require__(147);
+var _SearchOptions = __webpack_require__(145);
 
 var _ImageDetails = __webpack_require__(12);
 
@@ -29100,49 +27449,50 @@ var _Cart = __webpack_require__(10);
 
 var _ResultList = __webpack_require__(13);
 
-var _FavoritesList = __webpack_require__(142);
+var _FavoritesList = __webpack_require__(141);
 
 var _Satellites = __webpack_require__(4);
 
-var _AuthWidget = __webpack_require__(151);
+var _AuthWidget = __webpack_require__(149);
 
 var _AuthManager = __webpack_require__(14);
 
 var _ResourceServer = __webpack_require__(15);
 
-var _api = __webpack_require__(150);
+var _api = __webpack_require__(148);
 
 var _Panel = __webpack_require__(6);
 
-var _RequestAdapter = __webpack_require__(145);
+var _RequestAdapter = __webpack_require__(143);
 
-var _ResultsController = __webpack_require__(146);
+var _ResultsController = __webpack_require__(144);
 
-var _TabFactory = __webpack_require__(149);
+var _TabFactory = __webpack_require__(147);
 
 var _Utils = __webpack_require__(1);
 
-var _NotificationWidget = __webpack_require__(156);
+var _NotificationWidget = __webpack_require__(154);
 
-var _LoaderWidget = __webpack_require__(155);
+var _LoaderWidget = __webpack_require__(153);
 
-var _ShapeLoader = __webpack_require__(148);
+var _ShapeLoader = __webpack_require__(146);
 
 var _Extensions = __webpack_require__(7);
 
-var _GmxLayerDataProvider = __webpack_require__(144);
+var _GmxLayerDataProvider = __webpack_require__(142);
 
-var _LanguageWidget = __webpack_require__(153);
-
-var _FilterControl = __webpack_require__(143);
-
-__webpack_require__(163);
+var _LanguageWidget = __webpack_require__(151);
 
 __webpack_require__(161);
-var IconSidebarControl = __webpack_require__(152);
 
-__webpack_require__(162);
-var IconLayers = __webpack_require__(154);
+// import { Progress } from 'app/Progress/Progress.js';
+// import { FilterControl } from 'app/FilterControl/FilterControl.js';
+
+__webpack_require__(159);
+var IconSidebarControl = __webpack_require__(150);
+
+__webpack_require__(160);
+var IconLayers = __webpack_require__(152);
 
 // import './animate.css';
 
@@ -29645,7 +27995,7 @@ function init_sidebar(state) {
                 window.Catalog.searchSidebar.enable('results', true);
                 window.Catalog.searchSidebar.open('results');
                 window.Catalog.resultsController.setLayer({ fields: fields, values: values, types: types });
-                update_results_number(Count);
+                update_results_number(count);
             }
         });
 
@@ -29952,47 +28302,49 @@ function init_sidebar(state) {
             update_results_number(window.Catalog.resultsController.resultsCount);
         });
 
-        window.Catalog.filterControl = new _FilterControl.FilterControl({ position: 'topleft' });
-        map.addControl(window.Catalog.filterControl);
-        window.Catalog.filterControl.getContainer().style.visibility = 'hidden';
-        window.Catalog.filterControl.clouds.values = [0, 100];
-        window.Catalog.filterControl.angle.values = [0, 60];
-        window.Catalog.resultsController.enableFilter(true);
-        var filterVisible = false;
-        var apply_filter = function apply_filter(clouds, angle) {
-            window.Catalog.resultsController.filter = function (item) {
-                return clouds[0] <= item.cloudness && item.cloudness <= clouds[1] && angle[0] <= item.tilt && item.tilt <= angle[1];
-            };
-            window.Catalog.resultsController.enableFilter(true);
-            resize_results(window.Catalog.resultsContainer);
-            update_results_number(window.Catalog.resultsController.count);
-        };
-        window.Catalog.filterControl.on('change', function (e) {
-            var clouds = e.clouds,
-                angle = e.angle;
+        // window.Catalog.filterControl = new FilterControl ({position: 'topleft'});
+        // map.addControl (window.Catalog.filterControl);
+        // window.Catalog.filterControl.getContainer().style.visibility = 'hidden';
+        // window.Catalog.filterControl.clouds.values = [0, 100];
+        // window.Catalog.filterControl.angle.values = [0, 60];
+        // window.Catalog.resultsController.enableFilter(true);
+        // let filterVisible = false;
+        // let apply_filter = (clouds, angle) => {
+        //     window.Catalog.resultsController.filter = item => {
+        //         return clouds[0] <= item.cloudness && item.cloudness <= clouds[1] &&
+        //             angle[0] <= item.tilt && item.tilt <= angle[1];
+        //     };
+        //     window.Catalog.resultsController.enableFilter(true);
+        //     resize_results(window.Catalog.resultsContainer);            
+        //     update_results_number(window.Catalog.resultList.count);
+        //     update_cart_number(window.Catalog.favoritesList.count);
+        // };
+        // window.Catalog.filterControl.on ('change', e => {
+        //     let {clouds, angle} = e;
+        //     apply_filter (clouds, angle);
+        // });
 
-            apply_filter(clouds, angle);
-        });
+        // let show_filter = () => {
+        //     if (!filterVisible) {
+        //         window.Catalog.filterControl.getContainer().style.visibility = 'visible';
+        //         let clouds = [0, 100];
+        //         let angle = [0, 60];
+        //         window.Catalog.filterControl.clouds.values = clouds;
+        //         window.Catalog.filterControl.angle.values = angle;
+        //         // window.Catalog.filterControl.satellites.items = window.Catalog.resultsController.platforms;
+        //         apply_filter (clouds, angle);
+        //         filterVisible = true;
+        //     }
+        // };
 
-        var show_filter = function show_filter() {
-            if (!filterVisible) {
-                window.Catalog.filterControl.getContainer().style.visibility = 'visible';
-                var clouds = [0, 100];
-                var angle = [0, 60];
-                window.Catalog.filterControl.clouds.values = clouds;
-                window.Catalog.filterControl.angle.values = angle;
-                // window.Catalog.filterControl.satellites.items = window.Catalog.resultsController.platforms;
-                apply_filter(clouds, angle);
-                filterVisible = true;
-            }
-        };
+        // let hide_filter = () => {
+        //     if (filterVisible) {
+        //         window.Catalog.filterControl.getContainer().style.visibility = 'hidden';
+        //         filterVisible = false;
+        //     }
+        // };
 
-        var hide_filter = function hide_filter() {
-            if (filterVisible) {
-                window.Catalog.filterControl.getContainer().style.visibility = 'hidden';
-                filterVisible = false;
-            }
-        };
+        // window.Catalog.progressWidget = new Progress(document.getElementById('progress-icon'));
 
         window.Catalog.searchSidebar.on('opened', function (e) {
             switch (e.id) {
@@ -30000,18 +28352,18 @@ function init_sidebar(state) {
                     window.Catalog.searchOptions.refresh();
                     resize_search_options(searchContainer);
                     window.Catalog.resultsController.hideContours();
-                    hide_filter();
+                    // hide_filter();
                     break;
                 case 'results':
                     window.Catalog.resultsController.showResults();
                     resize_results(window.Catalog.resultsContainer);
-                    show_filter();
+                    // show_filter();
                     break;
                 case 'favorites':
                     window.Catalog.resultsController.showFavorites();
                     resize_favorites(window.Catalog.favoritesContainer);
                     enable_cart(window.Catalog.resultsController.hasFavoritesSelected);
-                    show_filter();
+                    // show_filter();
                     break;
                 default:
                     break;
@@ -30416,9 +28768,9 @@ function init_upload(shapeLoader) {
                         var fields = results.fields,
                             values = results.values,
                             types = results.types,
-                            _Count = results.Count;
+                            Count = results.Count;
 
-                        if (_Count) {
+                        if (Count) {
 
                             var geometry_index = fields.length - 1;
                             values.forEach(function (item) {
@@ -30426,7 +28778,7 @@ function init_upload(shapeLoader) {
                             });
 
                             window.Catalog.resultsController.setLayer(results);
-                            update_results_number(_Count);
+                            update_results_number(Count);
                         }
                         break;
                     default:
@@ -30786,6 +29138,12 @@ function load_presets(state) {
 });
 
 /***/ }),
+/* 183 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
 /* 184 */
 /***/ (function(module, exports) {
 
@@ -30937,259 +29295,247 @@ function load_presets(state) {
 
 /***/ }),
 /* 209 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 210 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 21,
-	"./af.js": 21,
-	"./ar": 28,
-	"./ar-dz": 22,
-	"./ar-dz.js": 22,
-	"./ar-kw": 23,
-	"./ar-kw.js": 23,
-	"./ar-ly": 24,
-	"./ar-ly.js": 24,
-	"./ar-ma": 25,
-	"./ar-ma.js": 25,
-	"./ar-sa": 26,
-	"./ar-sa.js": 26,
-	"./ar-tn": 27,
-	"./ar-tn.js": 27,
-	"./ar.js": 28,
-	"./az": 29,
-	"./az.js": 29,
-	"./be": 30,
-	"./be.js": 30,
-	"./bg": 31,
-	"./bg.js": 31,
-	"./bm": 32,
-	"./bm.js": 32,
-	"./bn": 33,
-	"./bn.js": 33,
-	"./bo": 34,
-	"./bo.js": 34,
-	"./br": 35,
-	"./br.js": 35,
-	"./bs": 36,
-	"./bs.js": 36,
-	"./ca": 37,
-	"./ca.js": 37,
-	"./cs": 38,
-	"./cs.js": 38,
-	"./cv": 39,
-	"./cv.js": 39,
-	"./cy": 40,
-	"./cy.js": 40,
-	"./da": 41,
-	"./da.js": 41,
-	"./de": 44,
-	"./de-at": 42,
-	"./de-at.js": 42,
-	"./de-ch": 43,
-	"./de-ch.js": 43,
-	"./de.js": 44,
-	"./dv": 45,
-	"./dv.js": 45,
-	"./el": 46,
-	"./el.js": 46,
-	"./en-au": 47,
-	"./en-au.js": 47,
-	"./en-ca": 48,
-	"./en-ca.js": 48,
-	"./en-gb": 49,
-	"./en-gb.js": 49,
-	"./en-ie": 50,
-	"./en-ie.js": 50,
-	"./en-nz": 51,
-	"./en-nz.js": 51,
-	"./eo": 52,
-	"./eo.js": 52,
-	"./es": 55,
-	"./es-do": 53,
-	"./es-do.js": 53,
-	"./es-us": 54,
-	"./es-us.js": 54,
-	"./es.js": 55,
-	"./et": 56,
-	"./et.js": 56,
-	"./eu": 57,
-	"./eu.js": 57,
-	"./fa": 58,
-	"./fa.js": 58,
-	"./fi": 59,
-	"./fi.js": 59,
-	"./fo": 60,
-	"./fo.js": 60,
-	"./fr": 63,
-	"./fr-ca": 61,
-	"./fr-ca.js": 61,
-	"./fr-ch": 62,
-	"./fr-ch.js": 62,
-	"./fr.js": 63,
-	"./fy": 64,
-	"./fy.js": 64,
-	"./gd": 65,
-	"./gd.js": 65,
-	"./gl": 66,
-	"./gl.js": 66,
-	"./gom-latn": 67,
-	"./gom-latn.js": 67,
-	"./gu": 68,
-	"./gu.js": 68,
-	"./he": 69,
-	"./he.js": 69,
-	"./hi": 70,
-	"./hi.js": 70,
-	"./hr": 71,
-	"./hr.js": 71,
-	"./hu": 72,
-	"./hu.js": 72,
-	"./hy-am": 73,
-	"./hy-am.js": 73,
-	"./id": 74,
-	"./id.js": 74,
-	"./is": 75,
-	"./is.js": 75,
-	"./it": 76,
-	"./it.js": 76,
-	"./ja": 77,
-	"./ja.js": 77,
-	"./jv": 78,
-	"./jv.js": 78,
-	"./ka": 79,
-	"./ka.js": 79,
-	"./kk": 80,
-	"./kk.js": 80,
-	"./km": 81,
-	"./km.js": 81,
-	"./kn": 82,
-	"./kn.js": 82,
-	"./ko": 83,
-	"./ko.js": 83,
-	"./ky": 84,
-	"./ky.js": 84,
-	"./lb": 85,
-	"./lb.js": 85,
-	"./lo": 86,
-	"./lo.js": 86,
-	"./lt": 87,
-	"./lt.js": 87,
-	"./lv": 88,
-	"./lv.js": 88,
-	"./me": 89,
-	"./me.js": 89,
-	"./mi": 90,
-	"./mi.js": 90,
-	"./mk": 91,
-	"./mk.js": 91,
-	"./ml": 92,
-	"./ml.js": 92,
-	"./mr": 93,
-	"./mr.js": 93,
-	"./ms": 95,
-	"./ms-my": 94,
-	"./ms-my.js": 94,
-	"./ms.js": 95,
-	"./mt": 96,
-	"./mt.js": 96,
-	"./my": 97,
-	"./my.js": 97,
-	"./nb": 98,
-	"./nb.js": 98,
-	"./ne": 99,
-	"./ne.js": 99,
-	"./nl": 101,
-	"./nl-be": 100,
-	"./nl-be.js": 100,
-	"./nl.js": 101,
-	"./nn": 102,
-	"./nn.js": 102,
-	"./pa-in": 103,
-	"./pa-in.js": 103,
-	"./pl": 104,
-	"./pl.js": 104,
-	"./pt": 106,
-	"./pt-br": 105,
-	"./pt-br.js": 105,
-	"./pt.js": 106,
-	"./ro": 107,
-	"./ro.js": 107,
-	"./ru": 108,
-	"./ru.js": 108,
-	"./sd": 109,
-	"./sd.js": 109,
-	"./se": 110,
-	"./se.js": 110,
-	"./si": 111,
-	"./si.js": 111,
-	"./sk": 112,
-	"./sk.js": 112,
-	"./sl": 113,
-	"./sl.js": 113,
-	"./sq": 114,
-	"./sq.js": 114,
-	"./sr": 116,
-	"./sr-cyrl": 115,
-	"./sr-cyrl.js": 115,
-	"./sr.js": 116,
-	"./ss": 117,
-	"./ss.js": 117,
-	"./sv": 118,
-	"./sv.js": 118,
-	"./sw": 119,
-	"./sw.js": 119,
-	"./ta": 120,
-	"./ta.js": 120,
-	"./te": 121,
-	"./te.js": 121,
-	"./tet": 122,
-	"./tet.js": 122,
-	"./th": 123,
-	"./th.js": 123,
-	"./tl-ph": 124,
-	"./tl-ph.js": 124,
-	"./tlh": 125,
-	"./tlh.js": 125,
-	"./tr": 126,
-	"./tr.js": 126,
-	"./tzl": 127,
-	"./tzl.js": 127,
-	"./tzm": 129,
-	"./tzm-latn": 128,
-	"./tzm-latn.js": 128,
-	"./tzm.js": 129,
-	"./uk": 130,
-	"./uk.js": 130,
-	"./ur": 131,
-	"./ur.js": 131,
-	"./uz": 133,
-	"./uz-latn": 132,
-	"./uz-latn.js": 132,
-	"./uz.js": 133,
-	"./vi": 134,
-	"./vi.js": 134,
-	"./x-pseudo": 135,
-	"./x-pseudo.js": 135,
-	"./yo": 136,
-	"./yo.js": 136,
-	"./zh-cn": 137,
-	"./zh-cn.js": 137,
-	"./zh-hk": 138,
-	"./zh-hk.js": 138,
-	"./zh-tw": 139,
-	"./zh-tw.js": 139
+	"./af": 20,
+	"./af.js": 20,
+	"./ar": 27,
+	"./ar-dz": 21,
+	"./ar-dz.js": 21,
+	"./ar-kw": 22,
+	"./ar-kw.js": 22,
+	"./ar-ly": 23,
+	"./ar-ly.js": 23,
+	"./ar-ma": 24,
+	"./ar-ma.js": 24,
+	"./ar-sa": 25,
+	"./ar-sa.js": 25,
+	"./ar-tn": 26,
+	"./ar-tn.js": 26,
+	"./ar.js": 27,
+	"./az": 28,
+	"./az.js": 28,
+	"./be": 29,
+	"./be.js": 29,
+	"./bg": 30,
+	"./bg.js": 30,
+	"./bm": 31,
+	"./bm.js": 31,
+	"./bn": 32,
+	"./bn.js": 32,
+	"./bo": 33,
+	"./bo.js": 33,
+	"./br": 34,
+	"./br.js": 34,
+	"./bs": 35,
+	"./bs.js": 35,
+	"./ca": 36,
+	"./ca.js": 36,
+	"./cs": 37,
+	"./cs.js": 37,
+	"./cv": 38,
+	"./cv.js": 38,
+	"./cy": 39,
+	"./cy.js": 39,
+	"./da": 40,
+	"./da.js": 40,
+	"./de": 43,
+	"./de-at": 41,
+	"./de-at.js": 41,
+	"./de-ch": 42,
+	"./de-ch.js": 42,
+	"./de.js": 43,
+	"./dv": 44,
+	"./dv.js": 44,
+	"./el": 45,
+	"./el.js": 45,
+	"./en-au": 46,
+	"./en-au.js": 46,
+	"./en-ca": 47,
+	"./en-ca.js": 47,
+	"./en-gb": 48,
+	"./en-gb.js": 48,
+	"./en-ie": 49,
+	"./en-ie.js": 49,
+	"./en-nz": 50,
+	"./en-nz.js": 50,
+	"./eo": 51,
+	"./eo.js": 51,
+	"./es": 54,
+	"./es-do": 52,
+	"./es-do.js": 52,
+	"./es-us": 53,
+	"./es-us.js": 53,
+	"./es.js": 54,
+	"./et": 55,
+	"./et.js": 55,
+	"./eu": 56,
+	"./eu.js": 56,
+	"./fa": 57,
+	"./fa.js": 57,
+	"./fi": 58,
+	"./fi.js": 58,
+	"./fo": 59,
+	"./fo.js": 59,
+	"./fr": 62,
+	"./fr-ca": 60,
+	"./fr-ca.js": 60,
+	"./fr-ch": 61,
+	"./fr-ch.js": 61,
+	"./fr.js": 62,
+	"./fy": 63,
+	"./fy.js": 63,
+	"./gd": 64,
+	"./gd.js": 64,
+	"./gl": 65,
+	"./gl.js": 65,
+	"./gom-latn": 66,
+	"./gom-latn.js": 66,
+	"./gu": 67,
+	"./gu.js": 67,
+	"./he": 68,
+	"./he.js": 68,
+	"./hi": 69,
+	"./hi.js": 69,
+	"./hr": 70,
+	"./hr.js": 70,
+	"./hu": 71,
+	"./hu.js": 71,
+	"./hy-am": 72,
+	"./hy-am.js": 72,
+	"./id": 73,
+	"./id.js": 73,
+	"./is": 74,
+	"./is.js": 74,
+	"./it": 75,
+	"./it.js": 75,
+	"./ja": 76,
+	"./ja.js": 76,
+	"./jv": 77,
+	"./jv.js": 77,
+	"./ka": 78,
+	"./ka.js": 78,
+	"./kk": 79,
+	"./kk.js": 79,
+	"./km": 80,
+	"./km.js": 80,
+	"./kn": 81,
+	"./kn.js": 81,
+	"./ko": 82,
+	"./ko.js": 82,
+	"./ky": 83,
+	"./ky.js": 83,
+	"./lb": 84,
+	"./lb.js": 84,
+	"./lo": 85,
+	"./lo.js": 85,
+	"./lt": 86,
+	"./lt.js": 86,
+	"./lv": 87,
+	"./lv.js": 87,
+	"./me": 88,
+	"./me.js": 88,
+	"./mi": 89,
+	"./mi.js": 89,
+	"./mk": 90,
+	"./mk.js": 90,
+	"./ml": 91,
+	"./ml.js": 91,
+	"./mr": 92,
+	"./mr.js": 92,
+	"./ms": 94,
+	"./ms-my": 93,
+	"./ms-my.js": 93,
+	"./ms.js": 94,
+	"./mt": 95,
+	"./mt.js": 95,
+	"./my": 96,
+	"./my.js": 96,
+	"./nb": 97,
+	"./nb.js": 97,
+	"./ne": 98,
+	"./ne.js": 98,
+	"./nl": 100,
+	"./nl-be": 99,
+	"./nl-be.js": 99,
+	"./nl.js": 100,
+	"./nn": 101,
+	"./nn.js": 101,
+	"./pa-in": 102,
+	"./pa-in.js": 102,
+	"./pl": 103,
+	"./pl.js": 103,
+	"./pt": 105,
+	"./pt-br": 104,
+	"./pt-br.js": 104,
+	"./pt.js": 105,
+	"./ro": 106,
+	"./ro.js": 106,
+	"./ru": 107,
+	"./ru.js": 107,
+	"./sd": 108,
+	"./sd.js": 108,
+	"./se": 109,
+	"./se.js": 109,
+	"./si": 110,
+	"./si.js": 110,
+	"./sk": 111,
+	"./sk.js": 111,
+	"./sl": 112,
+	"./sl.js": 112,
+	"./sq": 113,
+	"./sq.js": 113,
+	"./sr": 115,
+	"./sr-cyrl": 114,
+	"./sr-cyrl.js": 114,
+	"./sr.js": 115,
+	"./ss": 116,
+	"./ss.js": 116,
+	"./sv": 117,
+	"./sv.js": 117,
+	"./sw": 118,
+	"./sw.js": 118,
+	"./ta": 119,
+	"./ta.js": 119,
+	"./te": 120,
+	"./te.js": 120,
+	"./tet": 121,
+	"./tet.js": 121,
+	"./th": 122,
+	"./th.js": 122,
+	"./tl-ph": 123,
+	"./tl-ph.js": 123,
+	"./tlh": 124,
+	"./tlh.js": 124,
+	"./tr": 125,
+	"./tr.js": 125,
+	"./tzl": 126,
+	"./tzl.js": 126,
+	"./tzm": 128,
+	"./tzm-latn": 127,
+	"./tzm-latn.js": 127,
+	"./tzm.js": 128,
+	"./uk": 129,
+	"./uk.js": 129,
+	"./ur": 130,
+	"./ur.js": 130,
+	"./uz": 132,
+	"./uz-latn": 131,
+	"./uz-latn.js": 131,
+	"./uz.js": 132,
+	"./vi": 133,
+	"./vi.js": 133,
+	"./x-pseudo": 134,
+	"./x-pseudo.js": 134,
+	"./yo": 135,
+	"./yo.js": 135,
+	"./zh-cn": 136,
+	"./zh-cn.js": 136,
+	"./zh-hk": 137,
+	"./zh-hk.js": 137,
+	"./zh-tw": 138,
+	"./zh-tw.js": 138
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -31205,10 +29551,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 211;
+webpackContext.id = 209;
 
 /***/ }),
-/* 212 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -32451,4 +30797,4 @@ webpackContext.id = 211;
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=main.cbaee45a5608728d402d.bundle.js.map
+//# sourceMappingURL=main.785ddeaaa06eebce8f0c.bundle.js.map

@@ -79,20 +79,21 @@ public class QuickLookImage : IHttpHandler
             string imagePath = GetFileName(platform, date, sceneid);            
             if (File.Exists(imagePath))
             {
+                Trace.TraceInformation ("Image exists {0}", imagePath);
                 return File.ReadAllBytes(imagePath);
             }            
             if (!String.IsNullOrWhiteSpace(url))
             {
+                Trace.TraceWarning ("Trying to get image {0} from url={1}", imagePath, url);
                 //imageContent = ReadImage(url); 
-                try
-                {
-                    imageContent = ReadImage(url);
-                }
-                catch {
-                    imageContent = WebHelper.ReadContent(url, 30);                
-                }               
-                
-                
+                // try
+                // {
+                //     imageContent = ReadImage(url);
+                // }
+                // catch {
+                    imageContent = WebHelper.ReadContent(url, 30);
+                // }               
+                                
                 var imageRoot = new DirectoryInfo(DownloadedImagesCatalog);
                 imageRoot.CreateDirIfNotExists();
                 var satelliteFolder = new DirectoryInfo(Path.Combine(imageRoot.FullName, platform));
@@ -200,31 +201,35 @@ public class QuickLookImage : IHttpHandler
         {
 
             var url = q["url"].ToString();
-            
-            
+                        
             var sceneid = q["sceneid"].ToString();
             var platform = q["platform"].ToString();
             var acqdate = FromUnixDate(Convert.ToDouble(q["acqdate"]) * 1000);
-            var img = GetImage(sceneid, platform, acqdate, url);
-            if (img != null)
-            {
-                int width = 0;
-                int height = 0;
-                if (Int32.TryParse(context.Request.GetValue("width"), out width) && Int32.TryParse (context.Request.GetValue("height"), out height))
+            try {
+                Trace.TraceInformation("Getting image url={0}", url);
+                var img = GetImage(sceneid, platform, acqdate, url);
+                if (img != null)
                 {
-                    var src = new MemoryStream();
-                    src.Write(img, 0, img.Length);
-                    src.Seek(0, SeekOrigin.Begin);
-                    var dst = new MemoryStream();
-                    ScaleImage(src, dst, width, height);
-                    context.Response.WriteImage(dst.ToArray());
+                    int width = 0;
+                    int height = 0;
+                    if (Int32.TryParse(context.Request.GetValue("width"), out width) && Int32.TryParse (context.Request.GetValue("height"), out height))
+                    {
+                        var src = new MemoryStream();
+                        src.Write(img, 0, img.Length);
+                        src.Seek(0, SeekOrigin.Begin);
+                        var dst = new MemoryStream();
+                        ScaleImage(src, dst, width, height);
+                        context.Response.WriteImage(dst.ToArray());
+                    }
+                    else {
+                        context.Response.WriteImage(img);                   
+                    }
+                    
                 }
-                else {
-                    context.Response.WriteImage(img);                   
-                }
-                
+            } 
+            catch (Exception ex) {
+                Trace.TraceError("Failed to get image url={0}, {1}", url, ex);
             }
-            
         }              
     }
 

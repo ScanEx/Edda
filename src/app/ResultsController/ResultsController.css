@@ -1,3 +1,17 @@
 .disable-events {
     pointer-events: none;
 }
+
+.ql-loader {
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-image: url('../../assets/results/loader.gif');
+}
+
+.ql-loader-fail {
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-image: url('../../assets/results/loader.gif');
+}

@@ -1751,6 +1751,20 @@ http://nicolasgallagher.com/micro-clearfix-hack/
 .authWidget-iframeContainer.ui-dialog-content.ui-widget-content { box-sizing: border-box; overflow: hidden; }
 .authWidget-iframeContainer .authorizationIframe { width: 100%; height: 100%; border: none; }.disable-events {
     pointer-events: none;
+}
+
+.ql-loader {
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-image: url(bbf990f8b8bc072c6cf8519abde1aad1.gif);
+}
+
+.ql-loader-fail {
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-image: url(bbf990f8b8bc072c6cf8519abde1aad1.gif);
 }.tab-icon {
     width: 100%;
     height: 100%;
@@ -1887,31 +1901,6 @@ http://nicolasgallagher.com/micro-clearfix-hack/
 }
 .language-widget select {
     cursor: pointer;
-}.filter-control .range-widget-label {    
-    float: left;
-    margin-right: 5px;
-}
-.filter-control .cloudiness-slider,
-.filter-control .angle-slider,
-.filter-control .satellite-filter {
-    display: inline-block;
-}
-.filter-control .angle-slider,
-.filter-control .satellite-filter {
-    margin-left: 10px;
-}
-.filter-control .satellite-filter-header .satellite-filter-label,
-.filter-control .satellite-filter-header .satellite-filter-button {
-    display: inline-block;
-}
-.filter-control .satellite-filter-header .satellite-filter-button {
-    cursor: pointer;
-}
-.filter-control .satellite-filter-body{
-    position: relative;
-    top: 0px;
-    left: 0px;
-    z-index: 900;
 }.noselect {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -2510,4 +2499,4 @@ html, body {
 .leaflet-iconLayers-layerCell_hidden { display: none; }
 .leaflet-iconLayers-layerCell_active .leaflet-iconLayers-layer { cursor: default; }
 .leaflet-iconLayers-layerCell_active .leaflet-iconLayers-layerCheckIcon { display: block; }
-/*# sourceMappingURL=6387ded0c4533c431ed184e6926acf17.bundle.css.map*/
+/*# sourceMappingURL=28064cf75afadd6b48d3e4df5ee157a9.bundle.css.map*/
