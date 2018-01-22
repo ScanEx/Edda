@@ -61,7 +61,10 @@ L.gmx.VectorLayer.prototype.mergeData = function(data) {
     }, {});
     let items = data.reduce((a,value) => {
         const gmx_id = value[0];
-        if (!cache[gmx_id]){
+        if (cache[gmx_id]){
+            cache[gmx_id][result_index] = true;
+        }
+        else {
             a[gmx_id] = value;
         }        
         return a;

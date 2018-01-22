@@ -21773,7 +21773,9 @@ L.gmx.VectorLayer.prototype.mergeData = function (data) {
     }, {});
     var items = data.reduce(function (a, value) {
         var gmx_id = value[0];
-        if (!cache[gmx_id]) {
+        if (cache[gmx_id]) {
+            cache[gmx_id][result_index] = true;
+        } else {
             a[gmx_id] = value;
         }
         return a;
@@ -30816,4 +30818,4 @@ webpackContext.id = 209;
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=main.3de2d2b87c2c1ddd6330.bundle.js.map
+//# sourceMappingURL=main.97a7bc6ac4d3bf4f0e45.bundle.js.map
