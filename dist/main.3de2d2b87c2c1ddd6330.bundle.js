@@ -5495,6 +5495,7 @@ var DataGrid = function (_EventTarget) {
                 if (_field.tristate) {
                     var items = this._body.querySelectorAll('td:nth-child(' + (i + 1) + ') input[type="checkbox"]');
                     _field.tristate.state = items;
+                    break;
                 }
             }
         }
@@ -5728,6 +5729,7 @@ var DataGrid = function (_EventTarget) {
                 row.insertAdjacentHTML('afterend', this._renderRow(item));
                 row.parentElement.removeChild(row);
                 this._attachRowEvents(this.getRow(id), item);
+                this._updateSelector();
             }
         }
     }, {
@@ -27510,7 +27512,7 @@ var IconLayers = __webpack_require__(152);
 // import './animate.css';
 
 
-window.L.Icon.Default.imagePath = './dist';
+// window.L.Icon.Default.imagePath = './dist/';
 
 window.DIALOG_PLACE = { left: 600, top: 150 };
 window.RESULT_MAX_COUNT = 1000;
@@ -28625,7 +28627,11 @@ function init_drawing() {
 
     var drawControls = ['point', 'polyline', 'polygon', 'rectangle'].map(function (id) {
         var control = new L.Control.gmxIcon({
-            id: id, position: 'drawControls', title: T.getText('controls.' + id), togglable: true
+            id: id,
+            position: 'drawControls',
+            title: T.getText('controls.' + id),
+            togglable: true,
+            imagePath: './dist/'
         });
         control.on('statechange', handleStateChange);
         map.gmxControlsManager.add(control);
@@ -30810,4 +30816,4 @@ webpackContext.id = 209;
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=main.93891209dcaf0ace783b.bundle.js.map
+//# sourceMappingURL=main.3de2d2b87c2c1ddd6330.bundle.js.map

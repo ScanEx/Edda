@@ -39,7 +39,7 @@ let IconLayers = require ('lib/Leaflet-IconLayers/dist/iconLayers.js');
 // import './animate.css';
 import './main.css';
 
-window.L.Icon.Default.imagePath = './dist';
+// window.L.Icon.Default.imagePath = './dist/';
 
 window.DIALOG_PLACE = {left: 600, top: 150};
 window.RESULT_MAX_COUNT = 1000;
@@ -1175,7 +1175,11 @@ function init_drawing () {
 
     let drawControls  = ['point','polyline','polygon','rectangle'].map(id => {
         let control = new L.Control.gmxIcon({
-            id, position: 'drawControls', title: T.getText(`controls.${id}`), togglable: true
+            id, 
+            position: 'drawControls', 
+            title: T.getText(`controls.${id}`), 
+            togglable: true,
+            imagePath: './dist/',
         });
         control.on ('statechange', handleStateChange);
         map.gmxControlsManager.add(control);

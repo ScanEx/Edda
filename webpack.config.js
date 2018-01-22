@@ -89,6 +89,6 @@ module.exports = {
 
     plugins: [   
         new ExtractTextPlugin("[contenthash].bundle.css"),
-        new CopyWebpackPlugin([{ from: './src/assets/leaflet' }])
+        new CopyWebpackPlugin([{ from: './src/assets/leaflet/' }])
     ]
 };

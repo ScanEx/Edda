@@ -446,7 +446,7 @@ class ResultsController extends EventTarget {
             let {gmx_id, selected} = e.detail;
             let item = this._layer.getDataManager()._items[gmx_id];
             item.properties[selected_index] = selected;
-            this._layer.redrawItem(gmx_id);
+            this._layer.redrawItem(gmx_id);            
 
             let event = document.createEvent('Event');
             event.initEvent('selected', false, false);
