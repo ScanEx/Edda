@@ -714,7 +714,7 @@ class ResultsController extends EventTarget {
     showResults () {
         this._currentTab = 'results';
         this._layer.repaint();
-        this.resultList.items = this._layer.getFilteredItems(item => item.result);        
+        this.resultList.items = this._layer.getFilteredItems(item => item.result);
     } 
     zoomToResults () {
         let bounds = getBounds(this._layer.getFilteredItems(item => item.result));

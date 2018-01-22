@@ -5271,7 +5271,7 @@ var DataGrid = function (_EventTarget) {
         value: function refresh() {
             var _this2 = this;
 
-            if (this._sortBy.field && this._sortBy.asc) {
+            if (this._sortBy.hasOwnProperty('field') && this._sortBy.hasOwnProperty('asc')) {
                 var i = -1;
                 var keys = Object.keys(this._fields);
                 for (var k = 0; k < keys.length; ++k) {
@@ -5735,7 +5735,7 @@ var DataGrid = function (_EventTarget) {
         set: function set(value) {
             if (Array.isArray(value) && value.length > 0) {
                 this._index = create_index(value, this._indexBy);
-                if (this._sortBy.field && this._sortBy.asc) {
+                if (this._sortBy.hasOwnProperty('field') && this._sortBy.hasOwnProperty('asc')) {
                     var i = -1;
                     var keys = Object.keys(this._fields);
                     for (var k = 0; k < keys.length; ++k) {
@@ -30810,4 +30810,4 @@ webpackContext.id = 209;
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=main.43a88ba150e5abe0c434.bundle.js.map
+//# sourceMappingURL=main.93891209dcaf0ace783b.bundle.js.map
