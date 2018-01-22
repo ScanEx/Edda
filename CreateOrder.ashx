@@ -208,7 +208,7 @@ public class CreateOrder : IHttpHandler, System.Web.SessionState.IRequiresSessio
         else
         {
             mes.Subject = string.Format(@"Заказ № {0} на kosmosnimki.ru", order.Number.ToString());
-            mes.BodyEncoding = Encoding.GetEncoding("KOI8-R");
+            mes.BodyEncoding = Encoding.GetEncoding("UTF-8");
 
             mes.Body = string.Join(Environment.NewLine, new [] {
                 string.Format ("Вы сделали заказ № {0}.{1}Детали заказа: {2}", order.Number.ToString(), Environment.NewLine, order.TinyReferenceUrl),

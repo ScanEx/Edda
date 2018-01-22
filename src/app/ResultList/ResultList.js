@@ -1,11 +1,10 @@
 import './ResultList.css';
-// import { Panel } from 'lib/Leaflet.Panel/src/Panel.js';
 import { DataGrid } from 'lib/DataGrid/src/DataGrid.js';
-// import { Panel } from 'lib/Leaflet.Panel/src/Panel.js';
 import { getSatelliteName } from 'res/Satellites.js';
 import { EventTarget } from 'lib/EventTarget/src/EventTarget.js';
 import { create_container } from 'app/Utils/Utils.js';
 import { Translations } from 'lib/Translations/src/Translations.js';
+import { ENUM_ID } from '../../lib/DataGrid/src/DataGrid';
 
 window.Catalog.translations = window.Catalog.translations || new Translations();
 let T = window.Catalog.translations
@@ -59,12 +58,24 @@ class ResultList extends EventTarget {
         this._activeInfo = null;
         this._fields = {             
             'visible': {                
-                type: 'boolean',                    
+                type: 'string',                    
                 icon: 'search',
-                yes: 'search-visibility-off',
-                no: 'search-visibility-on',
                 default: false,
-                width: 30,             
+                width: 30,
+                styler: item => {
+                    switch (item.visible) {
+                        case 'visible':
+                            return 'search search-visibility-off';
+                        case 'hidden':
+                            return 'search search-visibility-on';
+                        case 'loading':
+                            return 'search-visibility-loading';
+                        case 'failed':
+                            return 'search-visibility-failed';
+                        default:
+                            return '';
+                    }                    
+                }            
             },
             'stereo': {
                 columnIcon: 'search search-stereo',
@@ -80,7 +91,7 @@ class ResultList extends EventTarget {
                 type: 'string',
                 name: T.getText('results.satellite'),
                 sortable: true,
-                formatter: (item) =>  {                    
+                formatter: item =>  {                    
                     switch(item.platform) {
                         case 'SPOT6':                        
                         case 'SPOT 6':
@@ -216,7 +227,7 @@ class ResultList extends EventTarget {
     _onSort (e) {
         let event = document.createEvent('Event');
         event.initEvent('sort', false, false);
-        event.detail = this._grid.sortedItems;
+        event.detail = this._grid.items;
         this.dispatchEvent(event);
     }
 
@@ -245,19 +256,7 @@ class ResultList extends EventTarget {
                 event.detail = item;
                 this.dispatchEvent(event);
                 break;
-            case 'visible':
-                k = Object.keys(this._fields).indexOf('visible');
-                btn = row.querySelectorAll('td')[k].querySelector('i');
-                if (btn.classList.contains('search-visibility-on')) {
-                    btn.classList.remove('search-visibility-on');
-                    btn.classList.add('search-visibility-off');
-                    item.visible = true;
-                }
-                else {
-                    btn.classList.remove('search-visibility-off');
-                    btn.classList.add('search-visibility-on');
-                    item.visible = false;
-                }
+            case 'visible':                
                 event.initEvent('visible', false, false);
                 event.detail = item;
                 this.dispatchEvent(event);
@@ -367,10 +366,7 @@ class ResultList extends EventTarget {
     }
     get items() {
         return this._grid.items;
-    }
-    get sortedItems () {        
-        return this._grid.sortedItems;
-    }
+    }    
     hilite (id) {                
         this._grid.getRow(id).classList.add('hilite');
     }
@@ -409,9 +405,11 @@ class ResultList extends EventTarget {
     get count () {
         return this._grid.count;
     }
-
     getRow (rowId) {
         return this._grid.getRow (rowId);
+    }
+    redrawItem (id, item) {        
+        this._grid.redrawRow(id, item);
     }
 }
 

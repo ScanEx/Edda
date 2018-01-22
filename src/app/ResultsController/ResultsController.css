@@ -2,14 +2,14 @@
     pointer-events: none;
 }
 
-.ql-loader {
+.search-visibility-loading {
     width: 20px;
     height: 20px;
     background-repeat: no-repeat;
     background-image: url('../../assets/results/loader.gif');
 }
 
-.ql-loader-fail {
+.search-visibility-failed {
     width: 20px;
     height: 20px;
     background-repeat: no-repeat;

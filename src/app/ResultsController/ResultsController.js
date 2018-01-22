@@ -202,7 +202,7 @@ class ResultsController extends EventTarget {
                     return true;
             }
         });
-        this._layer.setStyleHook (item => {            
+        this._layer.setStyleHook (item => {
             let color = Colors.Default;
             let lineWidth = 1;            
             if (item.properties[hover_index]) {
@@ -213,41 +213,28 @@ class ResultsController extends EventTarget {
                 color = item.properties[cart_index] ? Colors.Cart : Colors.Default;                
             }
             let sceneid = item.properties[sceneid_index];
-            let skipRasters = !item.properties[visible_index];
+            let skipRasters = item.properties[visible_index] === 'hidden';
             if (!qlCache[sceneid] && !skipRasters) {
                 skipRasters = true;
             }
             return { skipRasters, strokeStyle: color, lineWidth };
         }); 
 
-        let show_ql_progress = (gmx_id, visible) => {
-            let get_row = gmx_id => {
-                let item = null;
-                switch (this._currentTab) {
-                    case 'results':
-                        item = this._resultList.getItemByIndex(gmx_id);
-                        return this._resultList.getRow(item[ENUM_ID]);
-                    case 'favorites':
-                        item = this._favoritesList.getItemByIndex(gmx_id);
-                        return this._favoritesList.getRow(item[ENUM_ID]);
-                    default:
-                        return null;
-                }
-            };
-            let row = get_row(gmx_id);
-            if (row) {
-                let icon = row.querySelector('i');
-                if (visible) {
-                    icon.classList.remove('search');
-                    icon.classList.remove('search-visibility-off');
-                    icon.classList.add('ql-loader');
-                }
-                else {
-                    icon.classList.remove('ql-loader');
-                    icon.classList.add('search');
-                    icon.classList.add('search-visibility-off');                
-                }
-            }     
+        let update_list_item = (item, state) => {
+            const gmx_id = item.properties[gmx_id_index];
+            item.properties[visible_index] = state;
+            // this._layer.redrawItem(gmx_id);
+            let obj = properties_to_item (item.properties);            
+            switch (this._currentTab) {
+                case 'results':                    
+                    this._resultList.redrawItem(gmx_id, obj);
+                    break;
+                case 'favorites':                    
+                    this._favoritesList.redrawItem(gmx_id, obj);
+                    break;
+                default:
+                    break;
+            }
         };
 
         let process_ql = (id, show) => {
@@ -265,27 +252,25 @@ class ResultsController extends EventTarget {
                 
         let show_ql = (id, show) => {     
             return new Promise ((resolve,reject) => {
-                let item = this._layer.getDataManager()._items[id]; 
-                item.properties[visible_index] = show;
+                let item = this._layer.getDataManager()._items[id];                
                 if (show)  {                
-                    show_ql_progress (id, true);          
+                    update_list_item (item, 'loading');
                     prefetch_ql(item.properties[sceneid_index])
-                    .then(() => {                    
+                    .then(() => {                        
+                        update_list_item (item, 'visible');
                         process_ql(id, show);
-                        show_ql_progress (id, false);
                         resolve();
                     })
-                    .catch(() => {
-                        process_ql(id, show);
-                        show_ql_progress (id, false);
+                    .catch(() => {                        
+                        update_list_item (item, 'failed');
                         resolve();
                     });
                 }
-                else {
+                else {                                   
+                    update_list_item (item, 'hidden');
                     process_ql(id, show);
-                    show_ql_progress (id, false);
                     resolve();
-                } 
+                }
             });                         
         };
 
@@ -293,24 +278,20 @@ class ResultsController extends EventTarget {
             let item = null;            
             let rowId = null;
             switch (this._currentTab) {
-                case 'results':
-                    item = this._resultList.getItemByIndex(gmx_id);
-                    rowId = item[ENUM_ID];
+                case 'results':                    
                     if (hover) {
-                        this._resultList.hilite(rowId);
+                        this._resultList.hilite(gmx_id);
                     }
                     else {
-                        this._resultList.dim(rowId);
+                        this._resultList.dim(gmx_id);
                     }                    
                     break;
-                case 'favorites':
-                    item = this._favoritesList.getItemByIndex(gmx_id);                    
-                    rowId = item[ENUM_ID];
+                case 'favorites':                   
                     if (hover) {
-                        this._favoritesList.hilite(rowId);
+                        this._favoritesList.hilite(gmx_id);
                     }
                     else {
-                        this._favoritesList.dim(rowId);
+                        this._favoritesList.dim(gmx_id);
                     }                    
                     break;
                 default:
@@ -320,25 +301,29 @@ class ResultsController extends EventTarget {
         this._layer
         .on('click', e => {
             let { gmx: {id, layer, target} } = e;            
-            let visible = !target.properties[visible_index];
-            show_ql (id, visible)
+            let show = null;            
+            switch (target.properties[visible_index]) {
+                case 'visible':
+                case 'loading':
+                    show = false;
+                    break;                
+                case 'hidden':
+                default:
+                    show = true;
+                    break;
+            }
+            show_ql (id, show)
             .then(() => {
-                let item = null;
+                let item = null;                
                 switch (this._currentTab) {
-                    case 'results':
-                        item = this.resultList.getItemByIndex(id);
-                        item.visible = visible;
-                        this.resultList.refresh();
-                        if (visible) {
-                            this.resultList.scrollToRow(item[ENUM_ID]);
+                    case 'results':                        
+                        if (show) {
+                            this.resultList.scrollToRow(id);
                         }
                         break;
-                    case 'favorites':                    
-                        item = this.favoritesList.getItemByIndex(id);
-                        item.visible = visible;
-                        this.favoritesList.refresh();
-                        if (visible) {
-                            this.favoritesList.scrollToRow(item[ENUM_ID]);
+                    case 'favorites':                                            
+                        if (show) {
+                            this.favoritesList.scrollToRow(id);
                         }
                         break;
                     default:
@@ -372,8 +357,19 @@ class ResultsController extends EventTarget {
             this.dispatchEvent(event);
         });          
         this._resultList.addEventListener('visible', e => {            
-            let {gmx_id, visible} = e.detail;            
-            show_ql(gmx_id, visible)
+            let {gmx_id, visible} = e.detail;
+            let show = false;
+            switch (visible) {
+                case 'visible':
+                case 'loading':
+                    show = false;
+                    break;                
+                case 'hidden':
+                default:
+                    show = true;
+                    break;
+            }
+            show_ql(gmx_id, show)
             .then(() => {
                 this._favoritesList.items = this._layer.getFilteredItems(item => item.cart);
                 let event = document.createEvent('Event');
@@ -447,8 +443,8 @@ class ResultsController extends EventTarget {
         });
 
         this._favoritesList.addEventListener ('selected', e => {
-            let {gmx_id, selected} = e.detail;            
-            let item = this._layer.getDataManager()._items[gmx_id];            
+            let {gmx_id, selected} = e.detail;
+            let item = this._layer.getDataManager()._items[gmx_id];
             item.properties[selected_index] = selected;
             this._layer.redrawItem(gmx_id);
 
@@ -459,41 +455,35 @@ class ResultsController extends EventTarget {
         });
 
 
-        this._favoritesList.addEventListener('visible', e => {            
-            let {gmx_id, visible} = e.detail;            
-            show_ql(gmx_id, visible)
+        this._favoritesList.addEventListener('visible', e => {
+            let {gmx_id, visible} = e.detail;
+            let show = false;
+            switch (visible) {
+                case 'visible':
+                case 'loading':
+                    show = false;
+                    break;                
+                case 'hidden':
+                default:
+                    show = true;
+                    break;
+            }
+            show_ql(gmx_id, show)
             .then (() => {
                 this._resultList.items = this._layer.getFilteredItems(item => item.result);
                 let event = document.createEvent('Event');
                 event.initEvent('visible', false, false);
                 this.dispatchEvent(event);
-            });            
+            });
         });
 
-        this._favoritesList.addEventListener('visible:all', e => {            
-            let visible = e.detail;    
-            let items = this._layer.getDataManager()._items;        
+        this._favoritesList.addEventListener('visible:all', e => {
+            let show = e.detail;
+            let items = this._layer.getDataManager()._items;
             Object.keys(items)
             .filter(id => items[id].properties[cart_index])
             .forEach(id => {
-                let item = items[id];
-                item.properties[visible_index] = visible;
-                if (visible) {                    
-                    show_ql_progress (id, true);
-                    prefetch_ql(item.properties[sceneid_index])
-                    .then (() => {
-                        process_ql(id, true);
-                        show_ql_progress (id, false);
-                    })
-                    .catch(() => {
-                        process_ql(id, true);
-                        show_ql_progress (id, false);
-                    });
-                }
-                else {
-                    process_ql(id, false);
-                    show_ql_progress (id, false);
-                }               
+                show_ql(id, show);
             });
 
             let event = document.createEvent('Event');
@@ -541,8 +531,6 @@ class ResultsController extends EventTarget {
                 this._map.invalidateSize();
             });
         });
-
-        // this._favoritesList.addEventListener('sort', e => this.setQuicklooks(this._favoritesList.sortedItems));
 
         this._drawnObjects = drawnObjects;
         this.createDrawing = this.createDrawing.bind(this);
@@ -673,14 +661,15 @@ class ResultsController extends EventTarget {
                 if (i < 0) {
                     switch (k) {
                         case 'hover':                            
-                        case 'selected':
-                        case 'visible':
+                        case 'selected':                        
                         case 'cart':
                             return b.concat(false);
                         case 'result':
                             return b.concat(true);                        
                         case 'acqtime':
                             return b.concat(null);
+                        case 'visible':
+                            return b.concat('hidden');
                     }
                 }
                 else {
@@ -772,7 +761,7 @@ class ResultsController extends EventTarget {
     }
     addVisibleToCart () {                
 
-        if (this._layer.getFilteredItems(item => item.result && item.visible || item.cart).length > window.MAX_CART_SIZE) {
+        if (this._layer.getFilteredItems(item => item.result && item.visible === 'visible' || item.cart).length > window.MAX_CART_SIZE) {
             let event = document.createEvent('Event');
             event.initEvent('cart:limit', false, false);            
             this.dispatchEvent(event);
@@ -782,13 +771,11 @@ class ResultsController extends EventTarget {
         let items = this._layer.getDataManager()._items;        
         Object.keys(items).forEach(id => {
             let item = items[id];
-            if (item.properties[visible_index]) {
+            if (item.properties[visible_index] === 'visible') {
                 item.properties[cart_index] = true;                
                 this._layer.redrawItem(item.id);
             }
         });        
-    
-        this.refreshLists();
 
         this.showResults();
         

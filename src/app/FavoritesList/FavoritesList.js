@@ -4,6 +4,7 @@ import { getSatelliteName } from 'res/Satellites.js';
 import { EventTarget } from 'lib/EventTarget/src/EventTarget.js';
 import { create_container } from 'app/Utils/Utils.js';
 import { Translations } from 'lib/Translations/src/Translations.js';
+import { ENUM_ID } from '../../lib/DataGrid/src/DataGrid';
 
 window.Catalog.translations = window.Catalog.translations || new Translations();
 let T = window.Catalog.translations
@@ -26,13 +27,25 @@ class FavoritesList extends EventTarget {
                 type: 'selector',
                 default: false,
             },           
-            'visible': {
-                type: 'boolean',
-                columnIcon: 'favorites-select-quicklooks-active',
-                icon: 'search',
-                yes: 'search-visibility-off',
-                no: 'search-visibility-on',
+            'visible': {                
+                type: 'string',                    
+                columnIcon: 'search search-visibility-off',
                 default: false,
+                width: 30,
+                styler: item => {
+                    switch (item.visible) {
+                        case 'visible':
+                            return 'search search-visibility-off';
+                        case 'hidden':
+                            return 'search search-visibility-on';
+                        case 'loading':
+                            return 'search-visibility-loading';
+                        case 'failed':
+                            return 'search-visibility-failed';
+                        default:
+                            return '';
+                    }                    
+                }            
             },
             'stereo': {
                 columnIcon: 'search search-stereo',
@@ -152,7 +165,7 @@ class FavoritesList extends EventTarget {
     _onSort (e) {
         let event = document.createEvent('Event');
         event.initEvent('sort', false, false);
-        event.detail = this._grid.sortedItems;
+        event.detail = this._grid.items;
         this.dispatchEvent(event);
     }
 
@@ -181,20 +194,7 @@ class FavoritesList extends EventTarget {
                 event.detail = item;
                 this.dispatchEvent(event);
                 break;
-            case 'visible':
-                k = Object.keys(this._fields).indexOf('visible');
-                btn = row.querySelectorAll('td')[k].querySelector('i');
-                if (btn.classList.contains('search-visibility-on')) {
-                    btn.classList.remove('search-visibility-on');
-                    btn.classList.add('search-visibility-off');
-                    item.visible = true;
-                }
-                else {
-                    btn.classList.remove('search-visibility-off');
-                    btn.classList.add('search-visibility-on');
-                    item.visible = false;
-                }
-
+            case 'visible':               
                 event.initEvent('visible', false, false);
                 event.detail = item;
                 this.dispatchEvent(event);
@@ -238,17 +238,15 @@ class FavoritesList extends EventTarget {
         switch (name) {
             case 'visible':
                 let state = false;
-                if (this._grid.items.every(x => x.visible)) {
+                if (this._grid.items.every(x => x.visible !== 'hidden')) {
                     state = false;
                 }
-                else if (this._grid.items.every(x => !x.visible)) {
+                else if (this._grid.items.every(x => x.visible === 'hidden')) {
                     state = true;
                 }
                 else {
                     state = col.querySelector('i').classList.contains('favorites-select-quicklooks-active');
                 }                
-                this._grid.items.forEach(item => item.visible = state);
-                this._grid.refresh();
                 let btn = this._grid.getCol(name).querySelector('i');
                 if (state) {                   
                     btn.classList.add('favorites-select-quicklooks-passive');
@@ -286,10 +284,7 @@ class FavoritesList extends EventTarget {
     }
     get items() {
         return this._grid.items;
-    }
-    get sortedItems () {        
-        return this._grid.sortedItems;
-    }
+    }    
     hilite (id) {                
         this._grid.getRow(id).classList.add('hilite');
     }
@@ -331,6 +326,9 @@ class FavoritesList extends EventTarget {
     }
     getRow (rowId) {
         return this._grid.getRow (rowId);
+    }
+    redrawItem (id, item) {        
+        this._grid.redrawRow(id, item);
     }
 }
 
