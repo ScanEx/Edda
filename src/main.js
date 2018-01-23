@@ -1114,8 +1114,10 @@ function show_cart () {
 
 function init_drawing () {
 
+    let activeIcon = null;  
+
     let setActive = id => {
-        map.gmxDrawing.bringToFront();            
+        map.gmxDrawing.bringToFront();        
         switch (id) {
             case 'point':
                 map.gmxDrawing.create('Point');
@@ -1134,8 +1136,6 @@ function init_drawing () {
         }
     };  
 
-    let activeIcon = null;  
-    
     let handleStateChange = e => {
         const opt = e.target.options;
         const id = opt.id;
@@ -1144,23 +1144,15 @@ function init_drawing () {
         } else if (opt.isActive) {
             setActive(id);            
         }
-        setActiveIcon(e.target);
+        setActiveIcon(e.target, opt.isActive);
     };  
 
-    map.gmxDrawing
-    // .on('drawstart', e => {
-    //     window.Catalog.preventShowQuicklook = true;
-    // })
-    .on('drawstop', e => {
+    map.gmxDrawing.on('drawstop', e => {
         const opt = e.object._obj.options || {};
-        if (!opt.ctrlKey && !opt.shiftKey) {
-            if (!window.Catalog.searchSidebar.isOpened()) {
-                setActiveIcon(e.object);
-                window.Catalog.searchSidebar.open('search');
-            }            
-        } else {
-            setActive(e.object.options.type);            
-        }        
+        setActiveIcon(e.object, false);
+        if (!window.Catalog.searchSidebar.isOpened()) {                
+            window.Catalog.searchSidebar.open('search');
+        }
     });
 
     map._controlCorners.searchControls = document.querySelector('#search-controls');                
@@ -1181,7 +1173,7 @@ function init_drawing () {
             togglable: true,
             imagePath: './dist/',
         });
-        control.on ('statechange', handleStateChange);
+        control.on ('statechange', handleStateChange);        
         map.gmxControlsManager.add(control);
         map.addControl(control);
         return control;

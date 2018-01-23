@@ -21827,7 +21827,6 @@ function getBounds(items) {
 //     return vTile;
 // };
 
-var gmx_id_index = 0;
 var sceneid_index = layerAttributes.indexOf('sceneid') + 1;
 var result_index = layerAttributes.indexOf('result') + 1;
 var cart_index = layerAttributes.indexOf('cart') + 1;
@@ -21949,7 +21948,7 @@ var ResultsController = function (_EventTarget) {
         });
 
         var update_list_item = function update_list_item(item, state) {
-            var gmx_id = item.properties[gmx_id_index];
+            var gmx_id = item.properties[0];
             item.properties[visible_index] = state;
             // this._layer.redrawItem(gmx_id);
             var obj = properties_to_item(item.properties);
@@ -22423,7 +22422,7 @@ var ResultsController = function (_EventTarget) {
 
             // "hover", "selected", "visible", "result", "cart"
             qlCache = {};
-            var gmx_id_index = fields.indexOf('gmx_id');
+            var idx = fields.indexOf('gmx_id');
             var data = values.reduce(function (a, item) {
                 var value = layerAttributes.reduce(function (b, k) {
                     var i = fields.indexOf(k);
@@ -22444,7 +22443,7 @@ var ResultsController = function (_EventTarget) {
                         return b.concat(item[i]);
                     }
                 }, []);
-                value.unshift(item[gmx_id_index]);
+                value.unshift(item[idx]);
                 value.push(item[item.length - 1]);
                 a.push(value);
                 return a;
@@ -28568,6 +28567,8 @@ function show_cart() {
 
 function init_drawing() {
 
+    var activeIcon = null;
+
     var setActive = function setActive(id) {
         map.gmxDrawing.bringToFront();
         switch (id) {
@@ -28588,8 +28589,6 @@ function init_drawing() {
         }
     };
 
-    var activeIcon = null;
-
     var handleStateChange = function handleStateChange(e) {
         var opt = e.target.options;
         var id = opt.id;
@@ -28598,22 +28597,14 @@ function init_drawing() {
         } else if (opt.isActive) {
             setActive(id);
         }
-        setActiveIcon(e.target);
+        setActiveIcon(e.target, opt.isActive);
     };
 
-    map.gmxDrawing
-    // .on('drawstart', e => {
-    //     window.Catalog.preventShowQuicklook = true;
-    // })
-    .on('drawstop', function (e) {
+    map.gmxDrawing.on('drawstop', function (e) {
         var opt = e.object._obj.options || {};
-        if (!opt.ctrlKey && !opt.shiftKey) {
-            if (!window.Catalog.searchSidebar.isOpened()) {
-                setActiveIcon(e.object);
-                window.Catalog.searchSidebar.open('search');
-            }
-        } else {
-            setActive(e.object.options.type);
+        setActiveIcon(e.object, false);
+        if (!window.Catalog.searchSidebar.isOpened()) {
+            window.Catalog.searchSidebar.open('search');
         }
     });
 
@@ -30818,4 +30809,4 @@ webpackContext.id = 209;
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=main.97a7bc6ac4d3bf4f0e45.bundle.js.map
+//# sourceMappingURL=main.de5946c953b576e4cfd2.bundle.js.map

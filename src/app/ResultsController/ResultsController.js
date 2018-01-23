@@ -111,7 +111,6 @@ function getBounds (items) {
 //     return vTile;
 // };
 
-const gmx_id_index = 0;
 const sceneid_index = layerAttributes.indexOf('sceneid') + 1;
 const result_index = layerAttributes.indexOf('result') + 1;
 const cart_index = layerAttributes.indexOf('cart') + 1;
@@ -224,7 +223,7 @@ class ResultsController extends EventTarget {
         }); 
 
         let update_list_item = (item, state) => {
-            const gmx_id = item.properties[gmx_id_index];
+            const gmx_id = item.properties[0];
             item.properties[visible_index] = state;
             // this._layer.redrawItem(gmx_id);
             let obj = properties_to_item (item.properties);            
@@ -656,8 +655,8 @@ class ResultsController extends EventTarget {
     }
     setLayer ({fields, values, types}) {  
         // "hover", "selected", "visible", "result", "cart"
-        qlCache = {};
-        const gmx_id_index = fields.indexOf('gmx_id');        
+        qlCache = {};         
+        const idx = fields.indexOf('gmx_id');
         let data = values.reduce((a,item) => {            
             let value = layerAttributes.reduce((b,k) => {
                 const i = fields.indexOf(k);
@@ -680,7 +679,7 @@ class ResultsController extends EventTarget {
                 }
                 
             }, []);
-            value.unshift(item[gmx_id_index]);
+            value.unshift(item[idx]);
             value.push(item[item.length - 1]);
             a.push(value);
             return a;
