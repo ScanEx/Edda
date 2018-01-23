@@ -21947,78 +21947,6 @@ var ResultsController = function (_EventTarget) {
             return { skipRasters: skipRasters, strokeStyle: color, lineWidth: lineWidth };
         });
 
-        var update_list_item = function update_list_item(item, state) {
-            var gmx_id = item.properties[0];
-            item.properties[visible_index] = state;
-            // this._layer.redrawItem(gmx_id);
-            var obj = properties_to_item(item.properties);
-            switch (_this._currentTab) {
-                case 'results':
-                    _this._resultList.redrawItem(gmx_id, obj);
-                    break;
-                case 'favorites':
-                    _this._favoritesList.redrawItem(gmx_id, obj);
-                    break;
-                default:
-                    break;
-            }
-        };
-
-        var process_ql = function process_ql(id, show) {
-            _this._layer.redrawItem(id);
-            if (show) {
-                _this._layer.bringToTopItem(id);
-            } else {
-                _this._layer.bringToBottomItem(id);
-            }
-            var event = document.createEvent('Event');
-            event.initEvent('visible', false, false);
-            _this.dispatchEvent(event);
-        };
-
-        var show_ql = function show_ql(id, show) {
-            return new Promise(function (resolve, reject) {
-                var item = _this._layer.getDataManager()._items[id];
-                if (show) {
-                    update_list_item(item, 'loading');
-                    prefetch_ql(item.properties[sceneid_index]).then(function () {
-                        update_list_item(item, 'visible');
-                        process_ql(id, show);
-                        resolve();
-                    }).catch(function () {
-                        update_list_item(item, 'failed');
-                        resolve();
-                    });
-                } else {
-                    update_list_item(item, 'hidden');
-                    process_ql(id, show);
-                    resolve();
-                }
-            });
-        };
-
-        var update_row = function update_row(gmx_id, hover) {
-            var item = null;
-            var rowId = null;
-            switch (_this._currentTab) {
-                case 'results':
-                    if (hover) {
-                        _this._resultList.hilite(gmx_id);
-                    } else {
-                        _this._resultList.dim(gmx_id);
-                    }
-                    break;
-                case 'favorites':
-                    if (hover) {
-                        _this._favoritesList.hilite(gmx_id);
-                    } else {
-                        _this._favoritesList.dim(gmx_id);
-                    }
-                    break;
-                default:
-                    return null;
-            }
-        };
         _this._layer.on('click', function (e) {
             var _e$gmx = e.gmx,
                 id = _e$gmx.id,
@@ -22036,7 +21964,7 @@ var ResultsController = function (_EventTarget) {
                     show = true;
                     break;
             }
-            show_ql(id, show).then(function () {
+            _this.show_ql(id, show).then(function () {
                 var item = null;
                 switch (_this._currentTab) {
                     case 'results':
@@ -22061,7 +21989,7 @@ var ResultsController = function (_EventTarget) {
 
             target.properties[hover_index] = true;
             _this._layer.redrawItem(id);
-            update_row(id, true);
+            _this.update_row(id, true);
         }).on('mouseout', function (e) {
             var _e$gmx3 = e.gmx,
                 id = _e$gmx3.id,
@@ -22070,7 +21998,7 @@ var ResultsController = function (_EventTarget) {
 
             target.properties[hover_index] = false;
             _this._layer.redrawItem(id);
-            update_row(id, false);
+            _this.update_row(id, false);
         });
         _this._resultList.addEventListener('cart', function (e) {
             var gmx_id = e.detail.gmx_id;
@@ -22104,7 +22032,7 @@ var ResultsController = function (_EventTarget) {
                     show = true;
                     break;
             }
-            show_ql(gmx_id, show).then(function () {
+            _this.show_ql(gmx_id, show).then(function () {
                 _this._favoritesList.items = _this._layer.getFilteredItems(function (item) {
                     return item.cart;
                 });
@@ -22157,7 +22085,7 @@ var ResultsController = function (_EventTarget) {
                 x4 = _e$detail$item.x4,
                 y4 = _e$detail$item.y4;
 
-            show_ql(gmx_id, true).then(function () {
+            _this.show_ql(gmx_id, true).then(function () {
                 var ne = L.latLng(y2, x2);
                 var sw = L.latLng(y4, x4);
                 _this._map.fitBounds(L.latLngBounds(sw, ne), { animate: false });
@@ -22221,7 +22149,7 @@ var ResultsController = function (_EventTarget) {
                     show = true;
                     break;
             }
-            show_ql(gmx_id, show).then(function () {
+            _this.show_ql(gmx_id, show).then(function () {
                 _this._resultList.items = _this._layer.getFilteredItems(function (item) {
                     return item.result;
                 });
@@ -22237,7 +22165,7 @@ var ResultsController = function (_EventTarget) {
             Object.keys(items).filter(function (id) {
                 return items[id].properties[cart_index];
             }).forEach(function (id) {
-                show_ql(id, show);
+                _this.show_ql(id, show);
             });
 
             var event = document.createEvent('Event');
@@ -22290,7 +22218,7 @@ var ResultsController = function (_EventTarget) {
                 x4 = _e$detail$item2.x4,
                 y4 = _e$detail$item2.y4;
 
-            show_ql(gmx_id, true).then(function () {
+            _this.show_ql(gmx_id, true).then(function () {
                 var ne = L.latLng(y2, x2);
                 var sw = L.latLng(y4, x4);
                 _this._map.fitBounds(L.latLngBounds(sw, ne), { animate: false });
@@ -22414,6 +22342,85 @@ var ResultsController = function (_EventTarget) {
     }
 
     _createClass(ResultsController, [{
+        key: 'process_ql',
+        value: function process_ql(id, show) {
+            this._layer.redrawItem(id);
+            if (show) {
+                this._layer.bringToTopItem(id);
+            } else {
+                this._layer.bringToBottomItem(id);
+            }
+            var event = document.createEvent('Event');
+            event.initEvent('visible', false, false);
+            this.dispatchEvent(event);
+        }
+    }, {
+        key: 'update_row',
+        value: function update_row(gmx_id, hover) {
+            var item = null;
+            var rowId = null;
+            switch (this._currentTab) {
+                case 'results':
+                    if (hover) {
+                        this._resultList.hilite(gmx_id);
+                    } else {
+                        this._resultList.dim(gmx_id);
+                    }
+                    break;
+                case 'favorites':
+                    if (hover) {
+                        this._favoritesList.hilite(gmx_id);
+                    } else {
+                        this._favoritesList.dim(gmx_id);
+                    }
+                    break;
+                default:
+                    return null;
+            }
+        }
+    }, {
+        key: 'update_list_item',
+        value: function update_list_item(item, state) {
+            var gmx_id = item.properties[0];
+            item.properties[visible_index] = state;
+            // this._layer.redrawItem(gmx_id);
+            var obj = properties_to_item(item.properties);
+            switch (this._currentTab) {
+                case 'results':
+                    this._resultList.redrawItem(gmx_id, obj);
+                    break;
+                case 'favorites':
+                    this._favoritesList.redrawItem(gmx_id, obj);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }, {
+        key: 'show_ql',
+        value: function show_ql(id, show) {
+            var _this2 = this;
+
+            return new Promise(function (resolve, reject) {
+                var item = _this2._layer.getDataManager()._items[id];
+                if (show) {
+                    _this2.update_list_item(item, 'loading');
+                    prefetch_ql(item.properties[sceneid_index]).then(function () {
+                        _this2.update_list_item(item, 'visible');
+                        _this2.process_ql(id, show);
+                        resolve();
+                    }).catch(function () {
+                        _this2.update_list_item(item, 'failed');
+                        resolve();
+                    });
+                } else {
+                    _this2.update_list_item(item, 'hidden');
+                    _this2.process_ql(id, show);
+                    resolve();
+                }
+            });
+        }
+    }, {
         key: 'setLayer',
         value: function setLayer(_ref4) {
             var fields = _ref4.fields,
@@ -22502,7 +22509,7 @@ var ResultsController = function (_EventTarget) {
     }, {
         key: 'addVisibleToCart',
         value: function addVisibleToCart() {
-            var _this2 = this;
+            var _this3 = this;
 
             if (this._layer.getFilteredItems(function (item) {
                 return item.result && item.visible === 'visible' || item.cart;
@@ -22518,7 +22525,7 @@ var ResultsController = function (_EventTarget) {
                 var item = items[id];
                 if (item.properties[visible_index] === 'visible') {
                     item.properties[cart_index] = true;
-                    _this2._layer.redrawItem(item.id);
+                    _this3._layer.redrawItem(item.id);
                 }
             });
 
@@ -22531,17 +22538,37 @@ var ResultsController = function (_EventTarget) {
     }, {
         key: 'refreshLists',
         value: function refreshLists() {
+            var _this4 = this;
+
+            var update_ql = function update_ql(item) {
+                var gmx_id = item.gmx_id,
+                    visible = item.visible;
+
+                var show = false;
+                switch (visible) {
+                    case 'visible':
+                    case 'loading':
+                        show = true;
+                        break;
+                    case 'hidden':
+                    default:
+                        show = false;
+                        break;
+                }
+                _this4.show_ql(gmx_id, show);
+                return item;
+            };
             this._resultList.items = this._layer.getFilteredItems(function (item) {
                 return item.result;
-            });
+            }).map(update_ql);
             this._favoritesList.items = this._layer.getFilteredItems(function (item) {
                 return item.cart;
-            });
+            }).map(update_ql);
         }
     }, {
         key: 'removeSelectedFavorites',
         value: function removeSelectedFavorites() {
-            var _this3 = this;
+            var _this5 = this;
 
             var items = this._layer.getDataManager()._items;
             Object.keys(items).forEach(function (id) {
@@ -22549,7 +22576,7 @@ var ResultsController = function (_EventTarget) {
                 if (item.properties[cart_index] && item.properties[selected_index]) {
                     item.properties[cart_index] = false;
                     item.properties[selected_index] = false;
-                    _this3._layer.redrawItem(item.id);
+                    _this5._layer.redrawItem(item.id);
                 }
             });
             this.refreshLists();
@@ -22748,10 +22775,10 @@ var ResultsController = function (_EventTarget) {
     }, {
         key: 'updateDrawnObjects',
         value: function updateDrawnObjects() {
-            var _this4 = this;
+            var _this6 = this;
 
             var objects = Object.keys(this._drawings).map(function (id) {
-                return _this4._drawings[id];
+                return _this6._drawings[id];
             });
             this._requestAdapter.geometries = objects.filter(function (obj) {
                 return obj.visible;
@@ -30809,4 +30836,4 @@ webpackContext.id = 209;
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=main.de5946c953b576e4cfd2.bundle.js.map
+//# sourceMappingURL=main.641196448f79190bee3a.bundle.js.map

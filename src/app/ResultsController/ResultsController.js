@@ -222,84 +222,6 @@ class ResultsController extends EventTarget {
             return { skipRasters, strokeStyle: color, lineWidth };
         }); 
 
-        let update_list_item = (item, state) => {
-            const gmx_id = item.properties[0];
-            item.properties[visible_index] = state;
-            // this._layer.redrawItem(gmx_id);
-            let obj = properties_to_item (item.properties);            
-            switch (this._currentTab) {
-                case 'results':                    
-                    this._resultList.redrawItem(gmx_id, obj);
-                    break;
-                case 'favorites':                    
-                    this._favoritesList.redrawItem(gmx_id, obj);
-                    break;
-                default:
-                    break;
-            }
-        };
-
-        let process_ql = (id, show) => {
-            this._layer.redrawItem(id);
-            if (show) {
-                this._layer.bringToTopItem(id);
-            }
-            else {
-                this._layer.bringToBottomItem(id);
-            } 
-            let event = document.createEvent('Event');
-            event.initEvent('visible', false, false);
-            this.dispatchEvent(event);                                
-        };
-                
-        let show_ql = (id, show) => {     
-            return new Promise ((resolve,reject) => {
-                let item = this._layer.getDataManager()._items[id];                
-                if (show)  {                
-                    update_list_item (item, 'loading');
-                    prefetch_ql(item.properties[sceneid_index])
-                    .then(() => {                        
-                        update_list_item (item, 'visible');
-                        process_ql(id, show);
-                        resolve();
-                    })
-                    .catch(() => {                        
-                        update_list_item (item, 'failed');
-                        resolve();
-                    });
-                }
-                else {                                   
-                    update_list_item (item, 'hidden');
-                    process_ql(id, show);
-                    resolve();
-                }
-            });                         
-        };
-
-        let update_row = (gmx_id, hover) => {
-            let item = null;            
-            let rowId = null;
-            switch (this._currentTab) {
-                case 'results':                    
-                    if (hover) {
-                        this._resultList.hilite(gmx_id);
-                    }
-                    else {
-                        this._resultList.dim(gmx_id);
-                    }                    
-                    break;
-                case 'favorites':                   
-                    if (hover) {
-                        this._favoritesList.hilite(gmx_id);
-                    }
-                    else {
-                        this._favoritesList.dim(gmx_id);
-                    }                    
-                    break;
-                default:
-                    return null;
-            }
-        };
         this._layer
         .on('click', e => {
             let { gmx: {id, layer, target} } = e;            
@@ -314,7 +236,7 @@ class ResultsController extends EventTarget {
                     show = true;
                     break;
             }
-            show_ql (id, show)
+            this.show_ql (id, show)
             .then(() => {
                 let item = null;                
                 switch (this._currentTab) {
@@ -337,13 +259,13 @@ class ResultsController extends EventTarget {
             let { gmx: {id, layer, target} } = e;
             target.properties[hover_index] = true;            
             this._layer.redrawItem(id); 
-            update_row(id, true);
+            this.update_row(id, true);
         })
         .on('mouseout', e => {
             let { gmx: {id, layer, target} } = e;
             target.properties[hover_index] = false;
             this._layer.redrawItem(id);
-            update_row(id, false);
+            this.update_row(id, false);
         });        
         this._resultList.addEventListener('cart', e => {            
             const { gmx_id } = e.detail;
@@ -371,7 +293,7 @@ class ResultsController extends EventTarget {
                     show = true;
                     break;
             }
-            show_ql(gmx_id, show)
+            this.show_ql(gmx_id, show)
             .then(() => {
                 this._favoritesList.items = this._layer.getFilteredItems(item => item.cart);
                 let event = document.createEvent('Event');
@@ -410,7 +332,7 @@ class ResultsController extends EventTarget {
 
         this._resultList.addEventListener('click', e => {
             let {item: {gmx_id, x2, y2, x4, y4}} = e.detail;            
-            show_ql(gmx_id, true)
+            this.show_ql(gmx_id, true)
             .then (() => {
                 let ne = L.latLng(y2, x2);
                 let sw = L.latLng(y4, x4);
@@ -470,7 +392,7 @@ class ResultsController extends EventTarget {
                     show = true;
                     break;
             }
-            show_ql(gmx_id, show)
+            this.show_ql(gmx_id, show)
             .then (() => {
                 this._resultList.items = this._layer.getFilteredItems(item => item.result);
                 let event = document.createEvent('Event');
@@ -485,7 +407,7 @@ class ResultsController extends EventTarget {
             Object.keys(items)
             .filter(id => items[id].properties[cart_index])
             .forEach(id => {
-                show_ql(id, show);
+                this.show_ql(id, show);
             });
 
             let event = document.createEvent('Event');
@@ -525,7 +447,7 @@ class ResultsController extends EventTarget {
 
         this._favoritesList.addEventListener('click', e => {
             let {item: {gmx_id, x2, y2, x4, y4}} = e.detail;            
-            show_ql(gmx_id, true)
+            this.show_ql(gmx_id, true)
             .then(() => {
                 let ne = L.latLng(y2, x2);
                 let sw = L.latLng(y4, x4);
@@ -632,6 +554,85 @@ class ResultsController extends EventTarget {
 
         document.body.addEventListener('click', e => this._imageDetails.hide());
     }
+    process_ql (id, show) {
+        this._layer.redrawItem(id);
+        if (show) {
+            this._layer.bringToTopItem(id);
+        }
+        else {
+            this._layer.bringToBottomItem(id);
+        } 
+        let event = document.createEvent('Event');
+        event.initEvent('visible', false, false);
+        this.dispatchEvent(event);                                
+    }
+
+    update_row (gmx_id, hover) {
+        let item = null;            
+        let rowId = null;
+        switch (this._currentTab) {
+            case 'results':                    
+                if (hover) {
+                    this._resultList.hilite(gmx_id);
+                }
+                else {
+                    this._resultList.dim(gmx_id);
+                }                    
+                break;
+            case 'favorites':                   
+                if (hover) {
+                    this._favoritesList.hilite(gmx_id);
+                }
+                else {
+                    this._favoritesList.dim(gmx_id);
+                }                    
+                break;
+            default:
+                return null;
+        }
+    }
+
+    update_list_item (item, state) {
+        const gmx_id = item.properties[0];
+        item.properties[visible_index] = state;
+        // this._layer.redrawItem(gmx_id);
+        let obj = properties_to_item (item.properties);            
+        switch (this._currentTab) {
+            case 'results':                    
+                this._resultList.redrawItem(gmx_id, obj);
+                break;
+            case 'favorites':                    
+                this._favoritesList.redrawItem(gmx_id, obj);
+                break;
+            default:
+                break;
+        }
+    }
+
+    show_ql (id, show) {     
+        return new Promise ((resolve,reject) => {
+            let item = this._layer.getDataManager()._items[id];
+            if (show)  {                
+                this.update_list_item (item, 'loading');
+                prefetch_ql(item.properties[sceneid_index])
+                .then(() => {                        
+                    this.update_list_item (item, 'visible');
+                    this.process_ql(id, show);
+                    resolve();
+                })
+                .catch(() => {                        
+                    this.update_list_item (item, 'failed');
+                    resolve();
+                });
+            }
+            else {                                   
+                this.update_list_item (item, 'hidden');
+                this.process_ql(id, show);
+                resolve();
+            }
+        });                         
+    }
+
     get cart () {
         return this._cart;
     }
@@ -786,8 +787,24 @@ class ResultsController extends EventTarget {
         this.dispatchEvent(event);        
     }
     refreshLists() {
-        this._resultList.items = this._layer.getFilteredItems(item => item.result);
-        this._favoritesList.items = this._layer.getFilteredItems(item => item.cart);
+        let update_ql = item => {
+            const {gmx_id, visible} = item;            
+            let show = false;
+            switch (visible) {
+                case 'visible':
+                case 'loading':
+                    show = true;
+                    break;                
+                case 'hidden':
+                default:
+                    show = false;
+                    break;
+            }
+            this.show_ql(gmx_id, show);
+            return item;
+        };
+        this._resultList.items = this._layer.getFilteredItems(item => item.result).map(update_ql);
+        this._favoritesList.items = this._layer.getFilteredItems(item => item.cart).map(update_ql);
     }
     removeSelectedFavorites () {
         let items = this._layer.getDataManager()._items;        
