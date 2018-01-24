@@ -147,9 +147,11 @@ class ResultsController extends EventTarget {
         this._resultList = resultList;
         this._favoritesList = favoritesList;
         this._imageDetails = imageDetails;        
-        this._resultList.items = [];        
+        this._resultList.items = [];
+        this._favoritesList.items = [];
         this._drawings = {};     
-        this._currentTab = '';               
+        this._currentTab = ''; 
+        this.update_ql = this.update_ql.bind(this);
         this._layer = L.gmx.createLayer({
             properties: {
                 type: 'Vector',                
@@ -271,9 +273,9 @@ class ResultsController extends EventTarget {
             const { gmx_id } = e.detail;
             let item = this._layer.getDataManager()._items[gmx_id];            
             item.properties[cart_index] = !item.properties[cart_index];
-            this._layer.redrawItem(gmx_id);            
-
-            this._favoritesList.items = this._layer.getFilteredItems(item => item.cart);
+            this._layer.redrawItem(gmx_id);
+            
+            this._resultList.redrawItem (gmx_id, properties_to_item(item.properties));
 
             let event = document.createEvent('Event');
             event.initEvent('cart', false, false);
@@ -294,8 +296,7 @@ class ResultsController extends EventTarget {
                     break;
             }
             this.show_ql(gmx_id, show)
-            .then(() => {
-                this._favoritesList.items = this._layer.getFilteredItems(item => item.cart);
+            .then(() => {                                
                 let event = document.createEvent('Event');
                 event.initEvent('visible', false, false);
                 this.dispatchEvent(event);
@@ -348,16 +349,13 @@ class ResultsController extends EventTarget {
                 let item = items[id];
                 if (item.properties[result_index]) {
                     item.properties[cart_index] = true;
-                }
-                this._layer.redrawItem(id);
+                }                
             });
-
-            this.refreshLists();
-
+            this._layer.repaint();
+            this._resultList.items = this._layer.getFilteredItems(item => item.result);
             let event = document.createEvent('Event');
             event.initEvent('cart', false, false);
             this.dispatchEvent(event);
-
         });
 
         this._resultList.addEventListener('cart:limit', e => {
@@ -394,7 +392,7 @@ class ResultsController extends EventTarget {
             }
             this.show_ql(gmx_id, show)
             .then (() => {
-                this._resultList.items = this._layer.getFilteredItems(item => item.result);
+                // this._resultList.items = this._layer.getFilteredItems(item => item.result);
                 let event = document.createEvent('Event');
                 event.initEvent('visible', false, false);
                 this.dispatchEvent(event);
@@ -567,9 +565,7 @@ class ResultsController extends EventTarget {
         this.dispatchEvent(event);                                
     }
 
-    update_row (gmx_id, hover) {
-        let item = null;            
-        let rowId = null;
+    update_row (gmx_id, hover) {                
         switch (this._currentTab) {
             case 'results':                    
                 if (hover) {
@@ -588,7 +584,7 @@ class ResultsController extends EventTarget {
                 }                    
                 break;
             default:
-                return null;
+                break;
         }
     }
 
@@ -596,7 +592,7 @@ class ResultsController extends EventTarget {
         const gmx_id = item.properties[0];
         item.properties[visible_index] = state;
         // this._layer.redrawItem(gmx_id);
-        let obj = properties_to_item (item.properties);            
+        let obj = properties_to_item (item.properties);
         switch (this._currentTab) {
             case 'results':                    
                 this._resultList.redrawItem(gmx_id, obj);
@@ -685,11 +681,9 @@ class ResultsController extends EventTarget {
             a.push(value);
             return a;
         },[]);
-        
-        // this._layer.removeData();
-        // this._layer.addData(data);
+                
         this._layer.mergeData(data);
-        this.refreshLists()
+
         let event = document.createEvent('Event');
         event.initEvent('result:done', false, false);
         this.dispatchEvent(event);
@@ -717,7 +711,7 @@ class ResultsController extends EventTarget {
     showResults () {
         this._currentTab = 'results';
         this._layer.repaint();
-        this.resultList.items = this._layer.getFilteredItems(item => item.result);
+        this._resultList.items = this._layer.getFilteredItems(item => item.result).map(this.update_ql);
     } 
     zoomToResults () {
         let bounds = getBounds(this._layer.getFilteredItems(item => item.result));
@@ -732,7 +726,7 @@ class ResultsController extends EventTarget {
     showFavorites() {
         this._currentTab = 'favorites';
         this._layer.repaint();        
-        this.favoritesList.items = this._layer.getFilteredItems(item => item.cart);
+        this.favoritesList.items = this._layer.getFilteredItems(item => item.cart).map(this.update_ql);
     }
     get hasResults () {        
         let items = this._layer.getDataManager()._items;
@@ -786,26 +780,22 @@ class ResultsController extends EventTarget {
         event.initEvent('cart', false, false);        
         this.dispatchEvent(event);        
     }
-    refreshLists() {
-        let update_ql = item => {
-            const {gmx_id, visible} = item;            
-            let show = false;
-            switch (visible) {
-                case 'visible':
-                case 'loading':
-                    show = true;
-                    break;                
-                case 'hidden':
-                default:
-                    show = false;
-                    break;
-            }
-            this.show_ql(gmx_id, show);
-            return item;
-        };
-        this._resultList.items = this._layer.getFilteredItems(item => item.result).map(update_ql);
-        this._favoritesList.items = this._layer.getFilteredItems(item => item.cart).map(update_ql);
-    }
+    update_ql (item) {
+        const {gmx_id, visible} = item;            
+        let show = false;
+        switch (visible) {
+            case 'visible':
+            case 'loading':
+                show = true;
+                break;                
+            case 'hidden':
+            default:
+                show = false;
+                break;
+        }
+        this.show_ql(gmx_id, show);
+        return item;
+    }    
     removeSelectedFavorites () {
         let items = this._layer.getDataManager()._items;        
         Object.keys(items).forEach(id => {
@@ -815,8 +805,8 @@ class ResultsController extends EventTarget {
                 item.properties[selected_index] = false;
                 this._layer.redrawItem(item.id);
             }
-        });
-        this.refreshLists();
+        });        
+        this._favoritesList.items = this._layer.getFilteredItems(item => item.cart);
     }
     get results () {
         let items = this._layer.getDataManager()._items;

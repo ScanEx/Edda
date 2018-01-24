@@ -21877,8 +21877,10 @@ var ResultsController = function (_EventTarget) {
         _this._favoritesList = favoritesList;
         _this._imageDetails = imageDetails;
         _this._resultList.items = [];
+        _this._favoritesList.items = [];
         _this._drawings = {};
         _this._currentTab = '';
+        _this.update_ql = _this.update_ql.bind(_this);
         _this._layer = L.gmx.createLayer({
             properties: {
                 type: 'Vector',
@@ -22007,9 +22009,7 @@ var ResultsController = function (_EventTarget) {
             item.properties[cart_index] = !item.properties[cart_index];
             _this._layer.redrawItem(gmx_id);
 
-            _this._favoritesList.items = _this._layer.getFilteredItems(function (item) {
-                return item.cart;
-            });
+            _this._resultList.redrawItem(gmx_id, properties_to_item(item.properties));
 
             var event = document.createEvent('Event');
             event.initEvent('cart', false, false);
@@ -22033,9 +22033,6 @@ var ResultsController = function (_EventTarget) {
                     break;
             }
             _this.show_ql(gmx_id, show).then(function () {
-                _this._favoritesList.items = _this._layer.getFilteredItems(function (item) {
-                    return item.cart;
-                });
                 var event = document.createEvent('Event');
                 event.initEvent('visible', false, false);
                 _this.dispatchEvent(event);
@@ -22102,11 +22099,11 @@ var ResultsController = function (_EventTarget) {
                 if (item.properties[result_index]) {
                     item.properties[cart_index] = true;
                 }
-                _this._layer.redrawItem(id);
             });
-
-            _this.refreshLists();
-
+            _this._layer.repaint();
+            _this._resultList.items = _this._layer.getFilteredItems(function (item) {
+                return item.result;
+            });
             var event = document.createEvent('Event');
             event.initEvent('cart', false, false);
             _this.dispatchEvent(event);
@@ -22150,9 +22147,7 @@ var ResultsController = function (_EventTarget) {
                     break;
             }
             _this.show_ql(gmx_id, show).then(function () {
-                _this._resultList.items = _this._layer.getFilteredItems(function (item) {
-                    return item.result;
-                });
+                // this._resultList.items = this._layer.getFilteredItems(item => item.result);
                 var event = document.createEvent('Event');
                 event.initEvent('visible', false, false);
                 _this.dispatchEvent(event);
@@ -22357,8 +22352,6 @@ var ResultsController = function (_EventTarget) {
     }, {
         key: 'update_row',
         value: function update_row(gmx_id, hover) {
-            var item = null;
-            var rowId = null;
             switch (this._currentTab) {
                 case 'results':
                     if (hover) {
@@ -22375,7 +22368,7 @@ var ResultsController = function (_EventTarget) {
                     }
                     break;
                 default:
-                    return null;
+                    break;
             }
         }
     }, {
@@ -22456,10 +22449,8 @@ var ResultsController = function (_EventTarget) {
                 return a;
             }, []);
 
-            // this._layer.removeData();
-            // this._layer.addData(data);
             this._layer.mergeData(data);
-            this.refreshLists();
+
             var event = document.createEvent('Event');
             event.initEvent('result:done', false, false);
             this.dispatchEvent(event);
@@ -22475,9 +22466,9 @@ var ResultsController = function (_EventTarget) {
         value: function showResults() {
             this._currentTab = 'results';
             this._layer.repaint();
-            this.resultList.items = this._layer.getFilteredItems(function (item) {
+            this._resultList.items = this._layer.getFilteredItems(function (item) {
                 return item.result;
-            });
+            }).map(this.update_ql);
         }
     }, {
         key: 'zoomToResults',
@@ -22504,7 +22495,7 @@ var ResultsController = function (_EventTarget) {
             this._layer.repaint();
             this.favoritesList.items = this._layer.getFilteredItems(function (item) {
                 return item.cart;
-            });
+            }).map(this.update_ql);
         }
     }, {
         key: 'addVisibleToCart',
@@ -22536,39 +22527,29 @@ var ResultsController = function (_EventTarget) {
             this.dispatchEvent(event);
         }
     }, {
-        key: 'refreshLists',
-        value: function refreshLists() {
-            var _this4 = this;
+        key: 'update_ql',
+        value: function update_ql(item) {
+            var gmx_id = item.gmx_id,
+                visible = item.visible;
 
-            var update_ql = function update_ql(item) {
-                var gmx_id = item.gmx_id,
-                    visible = item.visible;
-
-                var show = false;
-                switch (visible) {
-                    case 'visible':
-                    case 'loading':
-                        show = true;
-                        break;
-                    case 'hidden':
-                    default:
-                        show = false;
-                        break;
-                }
-                _this4.show_ql(gmx_id, show);
-                return item;
-            };
-            this._resultList.items = this._layer.getFilteredItems(function (item) {
-                return item.result;
-            }).map(update_ql);
-            this._favoritesList.items = this._layer.getFilteredItems(function (item) {
-                return item.cart;
-            }).map(update_ql);
+            var show = false;
+            switch (visible) {
+                case 'visible':
+                case 'loading':
+                    show = true;
+                    break;
+                case 'hidden':
+                default:
+                    show = false;
+                    break;
+            }
+            this.show_ql(gmx_id, show);
+            return item;
         }
     }, {
         key: 'removeSelectedFavorites',
         value: function removeSelectedFavorites() {
-            var _this5 = this;
+            var _this4 = this;
 
             var items = this._layer.getDataManager()._items;
             Object.keys(items).forEach(function (id) {
@@ -22576,10 +22557,12 @@ var ResultsController = function (_EventTarget) {
                 if (item.properties[cart_index] && item.properties[selected_index]) {
                     item.properties[cart_index] = false;
                     item.properties[selected_index] = false;
-                    _this5._layer.redrawItem(item.id);
+                    _this4._layer.redrawItem(item.id);
                 }
             });
-            this.refreshLists();
+            this._favoritesList.items = this._layer.getFilteredItems(function (item) {
+                return item.cart;
+            });
         }
     }, {
         key: 'clear',
@@ -22775,10 +22758,10 @@ var ResultsController = function (_EventTarget) {
     }, {
         key: 'updateDrawnObjects',
         value: function updateDrawnObjects() {
-            var _this6 = this;
+            var _this5 = this;
 
             var objects = Object.keys(this._drawings).map(function (id) {
-                return _this6._drawings[id];
+                return _this5._drawings[id];
             });
             this._requestAdapter.geometries = objects.filter(function (obj) {
                 return obj.visible;
@@ -30836,4 +30819,4 @@ webpackContext.id = 209;
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=main.641196448f79190bee3a.bundle.js.map
+//# sourceMappingURL=main.4337b3998ac7852f9464.bundle.js.map
