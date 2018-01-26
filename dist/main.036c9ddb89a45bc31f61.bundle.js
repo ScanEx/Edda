@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 182);
+/******/ 	return __webpack_require__(__webpack_require__.s = 183);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1914,7 +1914,7 @@ function loadLocale(name) {
         try {
             oldLocale = globalLocale._abbr;
             var aliasedRequire = require;
-            __webpack_require__(209)("./" + name);
+            __webpack_require__(211)("./" + name);
             getSetGlobalLocale(oldLocale);
         } catch (e) {}
     }
@@ -5002,7 +5002,7 @@ exports.DEFAULT_LANGUAGE = exports.Translations = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Extensions = __webpack_require__(180);
+var _Extensions = __webpack_require__(181);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5129,11 +5129,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(202);
+__webpack_require__(204);
 
-var _Tristate = __webpack_require__(174);
+var _Tristate = __webpack_require__(175);
 
-var _EventTarget2 = __webpack_require__(173);
+var _EventTarget2 = __webpack_require__(174);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5822,6 +5822,245 @@ exports.ENUM_ID = ENUM_ID;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.Panel = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+__webpack_require__(206);
+
+var _Translations = __webpack_require__(2);
+
+var _EventTarget2 = __webpack_require__(177);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+window.Catalog.translations = window.Catalog.translations || new _Translations.Translations();
+var T = window.Catalog.translations;
+
+T.addText('rus', {
+    minimize: 'Свернуть',
+    maximize: 'Показать',
+    close: 'Закрыть'
+});
+T.addText('eng', {
+    minimize: 'Minimize',
+    maximize: 'Maximize',
+    close: 'Close'
+});
+
+var Panel = function (_EventTarget) {
+    _inherits(Panel, _EventTarget);
+
+    function Panel(container, _ref) {
+        var _ref$title = _ref.title,
+            title = _ref$title === undefined ? '' : _ref$title,
+            _ref$id = _ref.id,
+            id = _ref$id === undefined ? '' : _ref$id,
+            _ref$closable = _ref.closable,
+            closable = _ref$closable === undefined ? true : _ref$closable,
+            _ref$left = _ref.left,
+            left = _ref$left === undefined ? 100 : _ref$left,
+            _ref$top = _ref.top,
+            top = _ref$top === undefined ? 100 : _ref$top,
+            _ref$modal = _ref.modal,
+            modal = _ref$modal === undefined ? false : _ref$modal,
+            _ref$header = _ref.header,
+            header = _ref$header === undefined ? true : _ref$header;
+
+        _classCallCheck(this, Panel);
+
+        var _this = _possibleConstructorReturn(this, (Panel.__proto__ || Object.getPrototypeOf(Panel)).call(this));
+
+        _this._id = id;
+        _this._container = container;
+        _this._modal = modal;
+        _this._container.classList.add('noselect');
+        _this._container.classList.add('panel-container');
+        var useClose = closable ? '<td class="panel-close-button" title="' + T.getText('close') + '">\n                <i class="panel-icon-close" />\n            </td>' : '';
+        _this._container.innerHTML = '<div class="panel-body">\n                ' + (header ? '<table class="panel-header">\n                        <tr>\n                            <td class="panel-header-title">' + title + '</td>\n                            <td class="panel-toggle-button" title="' + T.getText('minimize') + '">\n                                <i class="panel-icon-minimize" />\n                            </td>\n                            ' + useClose + '\n                        </tr>\n                    </table>' : '') + '\n                <div class="panel-content"></div>\n                <div class="panel-footer"></div>\n            </div>';
+        _this._body = _this._container.querySelector('.panel-body');
+        _this._content = _this._container.querySelector('.panel-content');
+        _this._footer = _this._container.querySelector('.panel-footer');
+        _this.show = _this.show.bind(_this);
+        _this.hide = _this.hide.bind(_this);
+
+        if (header) {
+            _this._header = _this._container.querySelector('.panel-header');
+            _this._title = _this._container.querySelector('.panel-header-title');
+            _this.toggle = _this.toggle.bind(_this);
+            _this._toggleButton = _this._container.querySelector('.panel-toggle-button');
+            _this._toggleButton.addEventListener('click', _this.toggle);
+        }
+
+        if (header && closable) {
+            _this._closeButton = _this._container.querySelector('.panel-close-button');
+            _this._closeButton.addEventListener('click', _this.hide);
+        }
+        _this._savePosition = _this._savePosition.bind(_this);
+
+        _this._stopPropagation = _this._stopPropagation.bind(_this);
+        _this._startMove = _this._startMove.bind(_this);
+        _this._stopMove = _this._stopMove.bind(_this);
+        _this._handleMove = _this._handleMove.bind(_this);
+        _this._container.addEventListener('dragstart', _this.preventDefault);
+        if (header) {
+            _this._header.addEventListener('mousedown', _this._startMove);
+            _this._header.addEventListener('mousemove', _this._handleMove);
+        }
+        document.body.addEventListener('mouseup', _this._stopMove);
+        _this._container.addEventListener('mousewheel', _this._stopPropagation);
+        _this._restorePosition(top, left);
+        if (_this._modal) {
+            _this._ovl = document.querySelector('.panel-modal-overlay');
+            if (!_this._ovl) {
+                _this._ovl = document.createElement('div');
+                document.body.appendChild(_this._ovl);
+                _this._ovl.className = 'panel-modal-overlay';
+                _this._ovl.style.display = 'none';
+                _this._ovl.addEventListener('mousemove', _this._stopPropagation);
+                _this._ovl.addEventListener('mousewheel', _this._stopPropagation);
+                _this._ovl.addEventListener('click', _this._stopPropagation);
+            }
+            _this._container.classList.add('panel-modal');
+        } else {
+            _this._container.classList.add('panel-non-modal');
+        }
+        return _this;
+    }
+
+    _createClass(Panel, [{
+        key: '_startMove',
+        value: function _startMove(e) {
+            var _container$getBoundin = this._container.getBoundingClientRect(),
+                left = _container$getBoundin.left,
+                top = _container$getBoundin.top;
+
+            this._offset = { x: e.clientX - left, y: e.clientY - top };
+        }
+    }, {
+        key: '_stopMove',
+        value: function _stopMove(e) {
+            this._offset = null;
+        }
+    }, {
+        key: '_handleMove',
+        value: function _handleMove(e) {
+            if (this._offset) {
+                this._container.style.left = e.clientX - this._offset.x + 'px';
+                this._container.style.top = e.clientY - this._offset.y + 'px';
+            }
+        }
+    }, {
+        key: '_stopPropagation',
+        value: function _stopPropagation(e) {
+            e.stopPropagation();
+        }
+    }, {
+        key: 'show',
+        value: function show() {
+            if (this._modal) {
+                this._ovl.style.display = 'block';
+            }
+            this._body.style.visibility = 'visible';
+            var event = document.createEvent('Event');
+            event.initEvent('show', false, false);
+            this.dispatchEvent(event);
+        }
+    }, {
+        key: 'hide',
+        value: function hide() {
+            if (this._modal) {
+                this._ovl.style.display = 'none';
+            }
+            this._body.style.visibility = 'hidden';
+            var event = document.createEvent('Event');
+            event.initEvent('hide', false, false);
+            this.dispatchEvent(event);
+        }
+    }, {
+        key: 'toggle',
+        value: function toggle() {
+            var btn = this._toggleButton.querySelector('i');
+            if (this._content.style.display == 'none') {
+                btn.classList.remove('fa-plus-circle');
+                btn.classList.add('fa-minus-circle');
+                this._content.style.display = 'block';
+            } else {
+                btn.classList.remove('fa-minus-circle');
+                btn.classList.add('fa-plus-circle');
+                this._content.style.display = 'none';
+            }
+        }
+    }, {
+        key: 'getTitle',
+        value: function getTitle() {
+            return this._title.innerText;
+        }
+    }, {
+        key: 'setTitle',
+        value: function setTitle(text) {
+            return this._title.innerText = text;
+        }
+    }, {
+        key: '_restorePosition',
+        value: function _restorePosition(top, left) {
+            if (typeof this._id === 'string' && this._id != '') {
+                var x = localStorage.getItem(this._id + '.left') || left;
+                var y = localStorage.getItem(this._id + '.top') || top;
+                this._container.style.left = x + 'px';
+                this._container.style.top = y + 'px';
+            }
+        }
+    }, {
+        key: '_savePosition',
+        value: function _savePosition() {
+            if (typeof this._id === 'string' && this._id != '') {
+                var p = this._container.getBoundingClientRect();
+                localStorage.setItem(this._id + '.top', p.top);
+                localStorage.setItem(this._id + '.left', p.left);
+            }
+        }
+    }, {
+        key: 'header',
+        get: function get() {
+            return this._header;
+        }
+    }, {
+        key: 'body',
+        get: function get() {
+            return this._body;
+        }
+    }, {
+        key: 'footer',
+        get: function get() {
+            return this._footer;
+        }
+    }, {
+        key: 'content',
+        get: function get() {
+            return this._content;
+        }
+    }]);
+
+    return Panel;
+}(_EventTarget2.EventTarget);
+
+exports.Panel = Panel;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.getSatelliteName = exports.satellites = undefined;
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
@@ -6425,245 +6664,6 @@ exports.satellites = satellites;
 exports.getSatelliteName = getSatelliteName;
 
 /***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Panel = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-__webpack_require__(204);
-
-var _Translations = __webpack_require__(2);
-
-var _EventTarget2 = __webpack_require__(176);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-window.Catalog.translations = window.Catalog.translations || new _Translations.Translations();
-var T = window.Catalog.translations;
-
-T.addText('rus', {
-    minimize: 'Свернуть',
-    maximize: 'Показать',
-    close: 'Закрыть'
-});
-T.addText('eng', {
-    minimize: 'Minimize',
-    maximize: 'Maximize',
-    close: 'Close'
-});
-
-var Panel = function (_EventTarget) {
-    _inherits(Panel, _EventTarget);
-
-    function Panel(container, _ref) {
-        var _ref$title = _ref.title,
-            title = _ref$title === undefined ? '' : _ref$title,
-            _ref$id = _ref.id,
-            id = _ref$id === undefined ? '' : _ref$id,
-            _ref$closable = _ref.closable,
-            closable = _ref$closable === undefined ? true : _ref$closable,
-            _ref$left = _ref.left,
-            left = _ref$left === undefined ? 100 : _ref$left,
-            _ref$top = _ref.top,
-            top = _ref$top === undefined ? 100 : _ref$top,
-            _ref$modal = _ref.modal,
-            modal = _ref$modal === undefined ? false : _ref$modal,
-            _ref$header = _ref.header,
-            header = _ref$header === undefined ? true : _ref$header;
-
-        _classCallCheck(this, Panel);
-
-        var _this = _possibleConstructorReturn(this, (Panel.__proto__ || Object.getPrototypeOf(Panel)).call(this));
-
-        _this._id = id;
-        _this._container = container;
-        _this._modal = modal;
-        _this._container.classList.add('noselect');
-        _this._container.classList.add('panel-container');
-        var useClose = closable ? '<td class="panel-close-button" title="' + T.getText('close') + '">\n                <i class="panel-icon-close" />\n            </td>' : '';
-        _this._container.innerHTML = '<div class="panel-body">\n                ' + (header ? '<table class="panel-header">\n                        <tr>\n                            <td class="panel-header-title">' + title + '</td>\n                            <td class="panel-toggle-button" title="' + T.getText('minimize') + '">\n                                <i class="panel-icon-minimize" />\n                            </td>\n                            ' + useClose + '\n                        </tr>\n                    </table>' : '') + '\n                <div class="panel-content"></div>\n                <div class="panel-footer"></div>\n            </div>';
-        _this._body = _this._container.querySelector('.panel-body');
-        _this._content = _this._container.querySelector('.panel-content');
-        _this._footer = _this._container.querySelector('.panel-footer');
-        _this.show = _this.show.bind(_this);
-        _this.hide = _this.hide.bind(_this);
-
-        if (header) {
-            _this._header = _this._container.querySelector('.panel-header');
-            _this._title = _this._container.querySelector('.panel-header-title');
-            _this.toggle = _this.toggle.bind(_this);
-            _this._toggleButton = _this._container.querySelector('.panel-toggle-button');
-            _this._toggleButton.addEventListener('click', _this.toggle);
-        }
-
-        if (header && closable) {
-            _this._closeButton = _this._container.querySelector('.panel-close-button');
-            _this._closeButton.addEventListener('click', _this.hide);
-        }
-        _this._savePosition = _this._savePosition.bind(_this);
-
-        _this._stopPropagation = _this._stopPropagation.bind(_this);
-        _this._startMove = _this._startMove.bind(_this);
-        _this._stopMove = _this._stopMove.bind(_this);
-        _this._handleMove = _this._handleMove.bind(_this);
-        _this._container.addEventListener('dragstart', _this.preventDefault);
-        if (header) {
-            _this._header.addEventListener('mousedown', _this._startMove);
-            _this._header.addEventListener('mousemove', _this._handleMove);
-        }
-        document.body.addEventListener('mouseup', _this._stopMove);
-        _this._container.addEventListener('mousewheel', _this._stopPropagation);
-        _this._restorePosition(top, left);
-        if (_this._modal) {
-            _this._ovl = document.querySelector('.panel-modal-overlay');
-            if (!_this._ovl) {
-                _this._ovl = document.createElement('div');
-                document.body.appendChild(_this._ovl);
-                _this._ovl.className = 'panel-modal-overlay';
-                _this._ovl.style.display = 'none';
-                _this._ovl.addEventListener('mousemove', _this._stopPropagation);
-                _this._ovl.addEventListener('mousewheel', _this._stopPropagation);
-                _this._ovl.addEventListener('click', _this._stopPropagation);
-            }
-            _this._container.classList.add('panel-modal');
-        } else {
-            _this._container.classList.add('panel-non-modal');
-        }
-        return _this;
-    }
-
-    _createClass(Panel, [{
-        key: '_startMove',
-        value: function _startMove(e) {
-            var _container$getBoundin = this._container.getBoundingClientRect(),
-                left = _container$getBoundin.left,
-                top = _container$getBoundin.top;
-
-            this._offset = { x: e.clientX - left, y: e.clientY - top };
-        }
-    }, {
-        key: '_stopMove',
-        value: function _stopMove(e) {
-            this._offset = null;
-        }
-    }, {
-        key: '_handleMove',
-        value: function _handleMove(e) {
-            if (this._offset) {
-                this._container.style.left = e.clientX - this._offset.x + 'px';
-                this._container.style.top = e.clientY - this._offset.y + 'px';
-            }
-        }
-    }, {
-        key: '_stopPropagation',
-        value: function _stopPropagation(e) {
-            e.stopPropagation();
-        }
-    }, {
-        key: 'show',
-        value: function show() {
-            if (this._modal) {
-                this._ovl.style.display = 'block';
-            }
-            this._body.style.visibility = 'visible';
-            var event = document.createEvent('Event');
-            event.initEvent('show', false, false);
-            this.dispatchEvent(event);
-        }
-    }, {
-        key: 'hide',
-        value: function hide() {
-            if (this._modal) {
-                this._ovl.style.display = 'none';
-            }
-            this._body.style.visibility = 'hidden';
-            var event = document.createEvent('Event');
-            event.initEvent('hide', false, false);
-            this.dispatchEvent(event);
-        }
-    }, {
-        key: 'toggle',
-        value: function toggle() {
-            var btn = this._toggleButton.querySelector('i');
-            if (this._content.style.display == 'none') {
-                btn.classList.remove('fa-plus-circle');
-                btn.classList.add('fa-minus-circle');
-                this._content.style.display = 'block';
-            } else {
-                btn.classList.remove('fa-minus-circle');
-                btn.classList.add('fa-plus-circle');
-                this._content.style.display = 'none';
-            }
-        }
-    }, {
-        key: 'getTitle',
-        value: function getTitle() {
-            return this._title.innerText;
-        }
-    }, {
-        key: 'setTitle',
-        value: function setTitle(text) {
-            return this._title.innerText = text;
-        }
-    }, {
-        key: '_restorePosition',
-        value: function _restorePosition(top, left) {
-            if (typeof this._id === 'string' && this._id != '') {
-                var x = localStorage.getItem(this._id + '.left') || left;
-                var y = localStorage.getItem(this._id + '.top') || top;
-                this._container.style.left = x + 'px';
-                this._container.style.top = y + 'px';
-            }
-        }
-    }, {
-        key: '_savePosition',
-        value: function _savePosition() {
-            if (typeof this._id === 'string' && this._id != '') {
-                var p = this._container.getBoundingClientRect();
-                localStorage.setItem(this._id + '.top', p.top);
-                localStorage.setItem(this._id + '.left', p.left);
-            }
-        }
-    }, {
-        key: 'header',
-        get: function get() {
-            return this._header;
-        }
-    }, {
-        key: 'body',
-        get: function get() {
-            return this._body;
-        }
-    }, {
-        key: 'footer',
-        get: function get() {
-            return this._footer;
-        }
-    }, {
-        key: 'content',
-        get: function get() {
-            return this._content;
-        }
-    }]);
-
-    return Panel;
-}(_EventTarget2.EventTarget);
-
-exports.Panel = Panel;
-
-/***/ }),
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6922,11 +6922,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-__webpack_require__(184);
+__webpack_require__(186);
 
-var _Panel2 = __webpack_require__(6);
+var _Panel2 = __webpack_require__(5);
 
-var _Satellites = __webpack_require__(5);
+var _Satellites = __webpack_require__(6);
 
 var _Translations = __webpack_require__(2);
 
@@ -7259,15 +7259,15 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _DataGrid = __webpack_require__(4);
 
-__webpack_require__(185);
+__webpack_require__(187);
 
 var _EventTarget2 = __webpack_require__(3);
 
-var _Panel = __webpack_require__(6);
+var _Panel = __webpack_require__(5);
 
 var _Translations = __webpack_require__(2);
 
-var _ColorPicker = __webpack_require__(171);
+var _ColorPicker = __webpack_require__(172);
 
 var _Utils = __webpack_require__(1);
 
@@ -7627,7 +7627,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _EventTarget2 = __webpack_require__(3);
 
-__webpack_require__(187);
+__webpack_require__(189);
 
 var _Translations = __webpack_require__(2);
 
@@ -7763,11 +7763,11 @@ exports.ResultList = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(188);
+__webpack_require__(190);
 
 var _DataGrid = __webpack_require__(4);
 
-var _Satellites = __webpack_require__(5);
+var _Satellites = __webpack_require__(6);
 
 var _EventTarget2 = __webpack_require__(3);
 
@@ -8639,7 +8639,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _Server2 = __webpack_require__(167);
+var _Server2 = __webpack_require__(168);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8887,7 +8887,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _EventTarget2 = __webpack_require__(9);
 
-__webpack_require__(201);
+__webpack_require__(203);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -20904,15 +20904,90 @@ module.exports = L;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.About = undefined;
+
+var _Panel2 = __webpack_require__(5);
+
+__webpack_require__(185);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+window.Catalog.translations = window.Catalog.translations || new Translations();
+var T = window.Catalog.translations;
+
+T.addText('rus', {
+    about: {
+        version: 'Версия',
+        news: 'Что нового',
+        help: 'Инструкция пользователя'
+    }
+
+});
+
+T.addText('eng', {
+    about: {
+        version: 'Version',
+        news: "What's new",
+        help: "User's guide"
+    }
+
+});
+
+var About = function (_Panel) {
+    _inherits(About, _Panel);
+
+    function About(container, _ref) {
+        var text = _ref.text;
+
+        _classCallCheck(this, About);
+
+        var _this = _possibleConstructorReturn(this, (About.__proto__ || Object.getPrototypeOf(About)).call(this, container, {
+            id: 'about.dialog',
+            left: window.DIALOG_PLACE.left,
+            top: window.DIALOG_PLACE.top,
+            modal: true
+        }));
+
+        _this._text = text;
+        _this._container.classList.add('about-dialog');
+        _this._content.innerHTML = '<div class="logo-symbol-about"></div>        \n        <div class="about-version">\n            <div></div>\n            <div>' + T.getText('about.version') + ' ' + window.Catalog.VERSION + '</div>\n            <div></div>\n        </div>\n        <div class="about-date">' + moment(window.Catalog.VERSION_DATE).format('L') + '</div>\n        <div class="about-news">\n            <div>' + T.getText('about.news') + '</div>\n            <div><ul>' + _this._text.split(/\r?\n/g).map(function (x) {
+            return '<li>' + x + '</li>';
+        }).join('') + '</ul></div>\n        </div>\n        <div class="about-link">' + T.getText('about.help') + '</div>';
+        _this._container.querySelector('.about-link').addEventListener('click', function (e) {
+            window.open('https://scanex.github.io/Documentation/Catalog/index.html', '_blank');
+            _this.hide();
+        });
+        return _this;
+    }
+
+    return About;
+}(_Panel2.Panel);
+
+exports.About = About;
+
+/***/ }),
+/* 142 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.FavoritesList = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(186);
+__webpack_require__(188);
 
 var _DataGrid = __webpack_require__(4);
 
-var _Satellites = __webpack_require__(5);
+var _Satellites = __webpack_require__(6);
 
 var _EventTarget2 = __webpack_require__(3);
 
@@ -21325,7 +21400,7 @@ var FavoritesList = function (_EventTarget) {
 exports.FavoritesList = FavoritesList;
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21439,7 +21514,7 @@ var GmxLayerDataProvider = function (_EventTarget) {
 exports.GmxLayerDataProvider = GmxLayerDataProvider;
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21454,7 +21529,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Index = __webpack_require__(166);
+var _Index = __webpack_require__(167);
 
 var _Utils = __webpack_require__(1);
 
@@ -21676,7 +21751,7 @@ var RequestAdapter = function () {
 exports.RequestAdapter = RequestAdapter;
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21695,7 +21770,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _EventTarget2 = __webpack_require__(3);
 
-var _Quicklook = __webpack_require__(162);
+var _Quicklook = __webpack_require__(163);
 
 var _DataGrid = __webpack_require__(4);
 
@@ -21705,7 +21780,7 @@ var _Utils = __webpack_require__(1);
 
 var _Extensions = __webpack_require__(7);
 
-__webpack_require__(189);
+__webpack_require__(191);
 
 var _Utils2 = __webpack_require__(1);
 
@@ -21849,7 +21924,7 @@ function prefetch_ql(sceneid) {
             delete qlCache[sceneid];
             reject();
         };
-        img.src = 'http://wikimixer.kosmosnimki.ru/QuickLookImage.ashx?id=' + sceneid + '&srs=3857';
+        img.src = 'http://search.kosmosnimki.ru/QuickLookImage.ashx?id=' + sceneid + '&srs=3857';
     });
 }
 
@@ -21880,7 +21955,8 @@ var ResultsController = function (_EventTarget) {
         _this._favoritesList.items = [];
         _this._drawings = {};
         _this._currentTab = '';
-        _this.update_ql = _this.update_ql.bind(_this);
+        _this._currentID = null;
+        _this._update_ql = _this._update_ql.bind(_this);
         _this._layer = L.gmx.createLayer({
             properties: {
                 type: 'Vector',
@@ -21889,7 +21965,7 @@ var ResultsController = function (_EventTarget) {
                 GeometryType: 'polygon',
                 // IsRasterCatalog: true,
                 RCMinZoomForRasters: 3,
-                Quicklook: '{"template":"http://wikimixer.kosmosnimki.ru/QuickLookImage.ashx?id=[sceneid]","minZoom":3,"X1":"x1","Y1":"y1","X2":"x2","Y2":"y2","X3":"x3","Y3":"y3","X4":"x4","Y4":"y4"}',
+                Quicklook: '{"template":"http://search.kosmosnimki.ru/QuickLookImage.ashx?id=[sceneid]","minZoom":3,"X1":"x1","Y1":"y1","X2":"x2","Y2":"y2","X3":"x3","Y3":"y3","X4":"x4","Y4":"y4"}',
                 MetaProperties: {
                     quicklookPlatform: {
                         Type: "String",
@@ -21966,22 +22042,37 @@ var ResultsController = function (_EventTarget) {
                     show = true;
                     break;
             }
-            _this.show_ql(id, show).then(function () {
+            _this._show_ql(id, show).then(function () {
                 var item = null;
                 switch (_this._currentTab) {
                     case 'results':
                         if (show) {
-                            _this.resultList.scrollToRow(id);
+                            if (_this._currentID) {
+                                _this._resultList.dim(_this._currentID);
+                            }
+                            _this._currentID = id;
+                            _this._resultList.hilite(id);
+                            _this._resultList.scrollToRow(id);
+                        } else {
+                            _this._currentID = null;
                         }
                         break;
                     case 'favorites':
                         if (show) {
-                            _this.favoritesList.scrollToRow(id);
+                            if (_this._currentID) {
+                                _this._favoritesList.dim(_this._currentID);
+                            }
+                            _this._currentID = id;
+                            _this._favoritesList.hilite(id);
+                            _this._favoritesList.scrollToRow(id);
+                        } else {
+                            _this._currentID = null;
                         }
                         break;
                     default:
                         break;
                 }
+                // this._highlight(id, show);
             });
         }).on('mouseover', function (e) {
             var _e$gmx2 = e.gmx,
@@ -21991,7 +22082,7 @@ var ResultsController = function (_EventTarget) {
 
             target.properties[hover_index] = true;
             _this._layer.redrawItem(id);
-            _this.update_row(id, true);
+            _this._highlight(id, true);
         }).on('mouseout', function (e) {
             var _e$gmx3 = e.gmx,
                 id = _e$gmx3.id,
@@ -22000,7 +22091,7 @@ var ResultsController = function (_EventTarget) {
 
             target.properties[hover_index] = false;
             _this._layer.redrawItem(id);
-            _this.update_row(id, false);
+            _this._highlight(id, false);
         });
         _this._resultList.addEventListener('cart', function (e) {
             var gmx_id = e.detail.gmx_id;
@@ -22032,7 +22123,7 @@ var ResultsController = function (_EventTarget) {
                     show = true;
                     break;
             }
-            _this.show_ql(gmx_id, show).then(function () {
+            _this._show_ql(gmx_id, show).then(function () {
                 var event = document.createEvent('Event');
                 event.initEvent('visible', false, false);
                 _this.dispatchEvent(event);
@@ -22062,7 +22153,7 @@ var ResultsController = function (_EventTarget) {
             var item = _this._layer.getDataManager()._items[gmx_id];
             item.properties[hover_index] = true;
             _this._layer.redrawItem(gmx_id);
-            _this._layer.bringToTopItem(gmx_id);
+            // this._layer.bringToTopItem(gmx_id);
         });
 
         _this._resultList.addEventListener('mouseout', function (e) {
@@ -22071,8 +22162,15 @@ var ResultsController = function (_EventTarget) {
             var item = _this._layer.getDataManager()._items[gmx_id];
             item.properties[hover_index] = false;
             _this._layer.redrawItem(gmx_id);
-            _this._layer.bringToBottomItem(gmx_id);
+            // this._layer.bringToBottomItem(gmx_id);
         });
+
+        var zoom_to_bounds = function zoom_to_bounds(xmin, ymin, xmax, ymax) {
+            var ne = L.latLng(ymax, xmax);
+            var sw = L.latLng(ymin, xmin);
+            _this._map.fitBounds(L.latLngBounds(sw, ne), { animate: false });
+            _this._map.invalidateSize();
+        };
 
         _this._resultList.addEventListener('click', function (e) {
             var _e$detail$item = e.detail.item,
@@ -22082,12 +22180,8 @@ var ResultsController = function (_EventTarget) {
                 x4 = _e$detail$item.x4,
                 y4 = _e$detail$item.y4;
 
-            _this.show_ql(gmx_id, true).then(function () {
-                var ne = L.latLng(y2, x2);
-                var sw = L.latLng(y4, x4);
-                _this._map.fitBounds(L.latLngBounds(sw, ne), { animate: false });
-                _this._map.invalidateSize();
-            });
+            zoom_to_bounds(x4, y4, x2, y2);
+            _this._show_ql(gmx_id, true);
         });
 
         _this._resultList.addEventListener('cart:all', function (e) {
@@ -22146,7 +22240,7 @@ var ResultsController = function (_EventTarget) {
                     show = true;
                     break;
             }
-            _this.show_ql(gmx_id, show).then(function () {
+            _this._show_ql(gmx_id, show).then(function () {
                 // this._resultList.items = this._layer.getFilteredItems(item => item.result);
                 var event = document.createEvent('Event');
                 event.initEvent('visible', false, false);
@@ -22160,7 +22254,7 @@ var ResultsController = function (_EventTarget) {
             Object.keys(items).filter(function (id) {
                 return items[id].properties[cart_index];
             }).forEach(function (id) {
-                _this.show_ql(id, show);
+                _this._show_ql(id, show);
             });
 
             var event = document.createEvent('Event');
@@ -22174,7 +22268,7 @@ var ResultsController = function (_EventTarget) {
             var item = _this._layer.getDataManager()._items[gmx_id];
             item.properties[hover_index] = true;
             _this._layer.redrawItem(gmx_id);
-            _this._layer.bringToTopItem(gmx_id);
+            // this._layer.bringToTopItem(gmx_id);
         });
 
         _this._favoritesList.addEventListener('mouseout', function (e) {
@@ -22183,7 +22277,7 @@ var ResultsController = function (_EventTarget) {
             var item = _this._layer.getDataManager()._items[gmx_id];
             item.properties[hover_index] = false;
             _this._layer.redrawItem(gmx_id);
-            _this._layer.bringToBottomItem(gmx_id);
+            // this._layer.bringToBottomItem(gmx_id);
         });
 
         _this._favoritesList.addEventListener('info', function (e) {
@@ -22213,12 +22307,8 @@ var ResultsController = function (_EventTarget) {
                 x4 = _e$detail$item2.x4,
                 y4 = _e$detail$item2.y4;
 
-            _this.show_ql(gmx_id, true).then(function () {
-                var ne = L.latLng(y2, x2);
-                var sw = L.latLng(y4, x4);
-                _this._map.fitBounds(L.latLngBounds(sw, ne), { animate: false });
-                _this._map.invalidateSize();
-            });
+            zoom_to_bounds(x4, y4, x2, y2);
+            _this._show_ql(gmx_id, true);
         });
 
         _this._drawnObjects = drawnObjects;
@@ -22337,8 +22427,8 @@ var ResultsController = function (_EventTarget) {
     }
 
     _createClass(ResultsController, [{
-        key: 'process_ql',
-        value: function process_ql(id, show) {
+        key: '_process_ql',
+        value: function _process_ql(id, show) {
             this._layer.redrawItem(id);
             if (show) {
                 this._layer.bringToTopItem(id);
@@ -22350,8 +22440,8 @@ var ResultsController = function (_EventTarget) {
             this.dispatchEvent(event);
         }
     }, {
-        key: 'update_row',
-        value: function update_row(gmx_id, hover) {
+        key: '_highlight',
+        value: function _highlight(gmx_id, hover) {
             switch (this._currentTab) {
                 case 'results':
                     if (hover) {
@@ -22372,8 +22462,8 @@ var ResultsController = function (_EventTarget) {
             }
         }
     }, {
-        key: 'update_list_item',
-        value: function update_list_item(item, state) {
+        key: '_update_list_item',
+        value: function _update_list_item(item, state) {
             var gmx_id = item.properties[0];
             item.properties[visible_index] = state;
             // this._layer.redrawItem(gmx_id);
@@ -22390,25 +22480,25 @@ var ResultsController = function (_EventTarget) {
             }
         }
     }, {
-        key: 'show_ql',
-        value: function show_ql(id, show) {
+        key: '_show_ql',
+        value: function _show_ql(id, show) {
             var _this2 = this;
 
             return new Promise(function (resolve, reject) {
                 var item = _this2._layer.getDataManager()._items[id];
                 if (show) {
-                    _this2.update_list_item(item, 'loading');
+                    _this2._update_list_item(item, 'loading');
                     prefetch_ql(item.properties[sceneid_index]).then(function () {
-                        _this2.update_list_item(item, 'visible');
-                        _this2.process_ql(id, show);
+                        _this2._update_list_item(item, 'visible');
+                        _this2._process_ql(id, show);
                         resolve();
                     }).catch(function () {
-                        _this2.update_list_item(item, 'failed');
+                        _this2._update_list_item(item, 'failed');
                         resolve();
                     });
                 } else {
-                    _this2.update_list_item(item, 'hidden');
-                    _this2.process_ql(id, show);
+                    _this2._update_list_item(item, 'hidden');
+                    _this2._process_ql(id, show);
                     resolve();
                 }
             });
@@ -22419,6 +22509,7 @@ var ResultsController = function (_EventTarget) {
             var fields = _ref4.fields,
                 values = _ref4.values,
                 types = _ref4.types;
+            var activeTabId = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'results';
 
             // "hover", "selected", "visible", "result", "cart"
             qlCache = {};
@@ -22453,6 +22544,7 @@ var ResultsController = function (_EventTarget) {
 
             var event = document.createEvent('Event');
             event.initEvent('result:done', false, false);
+            event.detail = { activeTabId: activeTabId };
             this.dispatchEvent(event);
         }
     }, {
@@ -22468,7 +22560,7 @@ var ResultsController = function (_EventTarget) {
             this._layer.repaint();
             this._resultList.items = this._layer.getFilteredItems(function (item) {
                 return item.result;
-            }).map(this.update_ql);
+            }).map(this._update_ql);
         }
     }, {
         key: 'zoomToResults',
@@ -22495,7 +22587,7 @@ var ResultsController = function (_EventTarget) {
             this._layer.repaint();
             this.favoritesList.items = this._layer.getFilteredItems(function (item) {
                 return item.cart;
-            }).map(this.update_ql);
+            }).map(this._update_ql);
         }
     }, {
         key: 'addVisibleToCart',
@@ -22527,23 +22619,27 @@ var ResultsController = function (_EventTarget) {
             this.dispatchEvent(event);
         }
     }, {
-        key: 'update_ql',
-        value: function update_ql(item) {
+        key: '_update_ql',
+        value: function _update_ql(item) {
             var gmx_id = item.gmx_id,
                 visible = item.visible;
 
             var show = false;
-            switch (visible) {
-                case 'visible':
-                case 'loading':
-                    show = true;
-                    break;
-                case 'hidden':
-                default:
-                    show = false;
-                    break;
+            if (typeof visible === 'boolean') {
+                show = visible;
+            } else if (typeof visible === 'string') {
+                switch (visible) {
+                    case 'visible':
+                    case 'loading':
+                        show = true;
+                        break;
+                    case 'hidden':
+                    default:
+                        show = false;
+                        break;
+                }
             }
-            this.show_ql(gmx_id, show);
+            this._show_ql(gmx_id, show);
             return item;
         }
     }, {
@@ -22941,7 +23037,7 @@ exports.layerAttributes = layerAttributes;
 exports.layerAttrTypes = layerAttrTypes;
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22956,9 +23052,9 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(192);
+__webpack_require__(194);
 
-var _RangeWidget = __webpack_require__(177);
+var _RangeWidget = __webpack_require__(178);
 
 var _ResultList = __webpack_require__(13);
 
@@ -22968,7 +23064,7 @@ var _Cart = __webpack_require__(10);
 
 var _ImageDetails = __webpack_require__(12);
 
-var _Satellites = __webpack_require__(164);
+var _Satellites = __webpack_require__(165);
 
 var _EventTarget2 = __webpack_require__(3);
 
@@ -22980,8 +23076,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-__webpack_require__(183);
-var Pikaday = __webpack_require__(210);
+__webpack_require__(184);
+var Pikaday = __webpack_require__(212);
 
 window.Catalog.translations = window.Catalog.translations || new _Translations.Translations();
 var T = window.Catalog.translations;
@@ -23308,7 +23404,7 @@ exports.ResultList = _ResultList.ResultList;
 exports.DrawnObjects = _DrawnObjects.DrawnObjects;
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23327,7 +23423,7 @@ var _Extensions = __webpack_require__(7);
 
 var _Utils = __webpack_require__(1);
 
-var _Formats = __webpack_require__(165);
+var _Formats = __webpack_require__(166);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -23574,7 +23670,7 @@ var ShapeLoader = function () {
 exports.ShapeLoader = ShapeLoader;
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23585,7 +23681,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.createTab = undefined;
 
-__webpack_require__(193);
+__webpack_require__(195);
 
 function createTab(_ref) {
     var icon = _ref.icon,
@@ -23614,7 +23710,7 @@ function createTab(_ref) {
 exports.createTab = createTab;
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23701,7 +23797,7 @@ exports.getAuthManager = getAuthManager;
 exports.getResourceServer = getResourceServer;
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23714,13 +23810,13 @@ exports.AuthWidget = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _DropdownMenuWidget = __webpack_require__(168);
+var _DropdownMenuWidget = __webpack_require__(169);
 
 var _EventTarget2 = __webpack_require__(16);
 
-__webpack_require__(195);
+__webpack_require__(197);
 
-__webpack_require__(194);
+__webpack_require__(196);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -23903,7 +23999,7 @@ var AuthWidget = function (_EventTarget) {
 exports.AuthWidget = AuthWidget;
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24143,7 +24239,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(139)(module)))
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24156,9 +24252,9 @@ exports.LanguageWidget = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(203);
+__webpack_require__(205);
 
-var _EventTarget2 = __webpack_require__(175);
+var _EventTarget2 = __webpack_require__(176);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24217,7 +24313,7 @@ var LanguageWidget = function (_EventTarget) {
 exports.LanguageWidget = LanguageWidget;
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24535,7 +24631,7 @@ exports.LanguageWidget = LanguageWidget;
 });
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24548,7 +24644,7 @@ exports.LoaderWidget = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(205);
+__webpack_require__(207);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24603,7 +24699,7 @@ var LoaderWidget = function () {
 exports.LoaderWidget = LoaderWidget;
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24616,7 +24712,7 @@ exports.NotificationWidget = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(206);
+__webpack_require__(208);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24665,12 +24761,6 @@ var NotificationWidget = function () {
 exports.NotificationWidget = NotificationWidget;
 
 /***/ }),
-/* 155 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
 /* 156 */
 /***/ (function(module, exports) {
 
@@ -24708,6 +24798,12 @@ exports.NotificationWidget = NotificationWidget;
 
 /***/ }),
 /* 162 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24916,7 +25012,7 @@ var Quicklook = function (_EventTarget) {
 exports.Quicklook = Quicklook;
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24929,7 +25025,7 @@ exports.Info = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(190);
+__webpack_require__(192);
 
 var _Translations = __webpack_require__(2);
 
@@ -25003,7 +25099,7 @@ var Info = function () {
 exports.Info = Info;
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25018,15 +25114,15 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(191);
+__webpack_require__(193);
 
 var _EventTarget2 = __webpack_require__(3);
 
 var _Translations = __webpack_require__(2);
 
-var _Tristate = __webpack_require__(181);
+var _Tristate = __webpack_require__(182);
 
-var _Info = __webpack_require__(163);
+var _Info = __webpack_require__(164);
 
 var _Utils = __webpack_require__(1);
 
@@ -25281,7 +25377,7 @@ var Satellites = function (_EventTarget) {
 exports.Satellites = Satellites;
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25351,7 +25447,7 @@ var Formats = {
 exports.Formats = Formats;
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25436,7 +25532,7 @@ exports.st_range = st_range;
 exports.to_query = to_query;
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25671,7 +25767,7 @@ var Server = function () {
 exports.Server = Server;
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25684,7 +25780,7 @@ exports.DropdownMenuWidget = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(196);
+__webpack_require__(198);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -25770,7 +25866,7 @@ var DropdownMenuWidget = function () {
 exports.DropdownMenuWidget = DropdownMenuWidget;
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25785,7 +25881,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Slider2 = __webpack_require__(18);
 
-__webpack_require__(197);
+__webpack_require__(199);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -25890,7 +25986,7 @@ var AlphaSlider = function (_Slider) {
 exports.AlphaSlider = AlphaSlider;
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25907,7 +26003,7 @@ var _EventTarget2 = __webpack_require__(9);
 
 var _Color = __webpack_require__(8);
 
-__webpack_require__(198);
+__webpack_require__(200);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26133,7 +26229,7 @@ var ColorArea = function (_EventTarget) {
 exports.ColorArea = ColorArea;
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26152,13 +26248,13 @@ var _Utils = __webpack_require__(19);
 
 var _Color = __webpack_require__(8);
 
-var _ColorSlider = __webpack_require__(172);
+var _ColorSlider = __webpack_require__(173);
 
-var _AlphaSlider = __webpack_require__(169);
+var _AlphaSlider = __webpack_require__(170);
 
-var _ColorArea = __webpack_require__(170);
+var _ColorArea = __webpack_require__(171);
 
-__webpack_require__(199);
+__webpack_require__(201);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26361,7 +26457,7 @@ var ColorPicker = function (_EventTarget) {
 exports.ColorPicker = ColorPicker;
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26380,7 +26476,7 @@ var _Slider2 = __webpack_require__(18);
 
 var _Color = __webpack_require__(8);
 
-__webpack_require__(200);
+__webpack_require__(202);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26526,7 +26622,7 @@ var ColorSlider = function (_Slider) {
 exports.ColorSlider = ColorSlider;
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26589,7 +26685,7 @@ var EventTarget = function () {
 exports.EventTarget = EventTarget;
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26672,69 +26768,6 @@ var Tristate = function () {
 exports.Tristate = Tristate;
 
 /***/ }),
-/* 175 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var EventTarget = function () {
-    function EventTarget() {
-        _classCallCheck(this, EventTarget);
-
-        this.listeners = {};
-    }
-
-    _createClass(EventTarget, [{
-        key: "addEventListener",
-        value: function addEventListener(type, callback) {
-            if (!(type in this.listeners)) {
-                this.listeners[type] = [];
-            }
-            this.listeners[type].push(callback);
-        }
-    }, {
-        key: "removeEventListener",
-        value: function removeEventListener(type, callback) {
-            if (!(type in this.listeners)) {
-                return;
-            }
-            var stack = this.listeners[type];
-            for (var i = 0, l = stack.length; i < l; i++) {
-                if (stack[i] === callback) {
-                    stack.splice(i, 1);
-                    return this.removeEventListener(type, callback);
-                }
-            }
-        }
-    }, {
-        key: "dispatchEvent",
-        value: function dispatchEvent(event) {
-            if (!(event.type in this.listeners)) {
-                return;
-            }
-            var stack = this.listeners[event.type];
-            // event.target = this;
-            for (var i = 0, l = stack.length; i < l; i++) {
-                stack[i].call(this, event);
-            }
-        }
-    }]);
-
-    return EventTarget;
-}();
-
-exports.EventTarget = EventTarget;
-
-/***/ }),
 /* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -26807,6 +26840,69 @@ exports.EventTarget = EventTarget;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var EventTarget = function () {
+    function EventTarget() {
+        _classCallCheck(this, EventTarget);
+
+        this.listeners = {};
+    }
+
+    _createClass(EventTarget, [{
+        key: "addEventListener",
+        value: function addEventListener(type, callback) {
+            if (!(type in this.listeners)) {
+                this.listeners[type] = [];
+            }
+            this.listeners[type].push(callback);
+        }
+    }, {
+        key: "removeEventListener",
+        value: function removeEventListener(type, callback) {
+            if (!(type in this.listeners)) {
+                return;
+            }
+            var stack = this.listeners[type];
+            for (var i = 0, l = stack.length; i < l; i++) {
+                if (stack[i] === callback) {
+                    stack.splice(i, 1);
+                    return this.removeEventListener(type, callback);
+                }
+            }
+        }
+    }, {
+        key: "dispatchEvent",
+        value: function dispatchEvent(event) {
+            if (!(event.type in this.listeners)) {
+                return;
+            }
+            var stack = this.listeners[event.type];
+            // event.target = this;
+            for (var i = 0, l = stack.length; i < l; i++) {
+                stack[i].call(this, event);
+            }
+        }
+    }]);
+
+    return EventTarget;
+}();
+
+exports.EventTarget = EventTarget;
+
+/***/ }),
+/* 178 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.RangeWidget = undefined;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
@@ -26817,9 +26913,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _set = function set(object, property, value, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent !== null) { set(parent, property, value, receiver); } } else if ("value" in desc && desc.writable) { desc.value = value; } else { var setter = desc.set; if (setter !== undefined) { setter.call(receiver, value); } } return value; };
 
-var _SliderWidget2 = __webpack_require__(178);
+var _SliderWidget2 = __webpack_require__(179);
 
-__webpack_require__(207);
+__webpack_require__(209);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26941,7 +27037,7 @@ var RangeWidget = function (_SliderWidget) {
 exports.RangeWidget = RangeWidget;
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26956,9 +27052,9 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(208);
+__webpack_require__(210);
 
-var _EventTarget2 = __webpack_require__(179);
+var _EventTarget2 = __webpack_require__(180);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -27244,7 +27340,7 @@ var SliderWidget = function (_EventTarget) {
 exports.SliderWidget = SliderWidget;
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27307,7 +27403,7 @@ var EventTarget = function () {
 exports.EventTarget = EventTarget;
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27364,7 +27460,7 @@ exports.copy = copy;
 exports.extend = extend;
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27447,7 +27543,7 @@ var Tristate = function () {
 exports.Tristate = Tristate;
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27455,17 +27551,17 @@ exports.Tristate = Tristate;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-__webpack_require__(155);
-
-__webpack_require__(157);
-
 __webpack_require__(156);
 
 __webpack_require__(158);
 
+__webpack_require__(157);
+
+__webpack_require__(159);
+
 var _Translations = __webpack_require__(2);
 
-var _SearchOptions = __webpack_require__(145);
+var _SearchOptions = __webpack_require__(146);
 
 var _ImageDetails = __webpack_require__(12);
 
@@ -27475,50 +27571,52 @@ var _Cart = __webpack_require__(10);
 
 var _ResultList = __webpack_require__(13);
 
-var _FavoritesList = __webpack_require__(141);
+var _FavoritesList = __webpack_require__(142);
 
-var _Satellites = __webpack_require__(5);
+var _Satellites = __webpack_require__(6);
 
-var _AuthWidget = __webpack_require__(149);
+var _AuthWidget = __webpack_require__(150);
 
 var _AuthManager = __webpack_require__(14);
 
 var _ResourceServer = __webpack_require__(15);
 
-var _api = __webpack_require__(148);
+var _api = __webpack_require__(149);
 
-var _Panel = __webpack_require__(6);
+var _Panel = __webpack_require__(5);
 
-var _RequestAdapter = __webpack_require__(143);
+var _RequestAdapter = __webpack_require__(144);
 
-var _ResultsController = __webpack_require__(144);
+var _ResultsController = __webpack_require__(145);
 
-var _TabFactory = __webpack_require__(147);
+var _TabFactory = __webpack_require__(148);
 
 var _Utils = __webpack_require__(1);
 
-var _NotificationWidget = __webpack_require__(154);
+var _NotificationWidget = __webpack_require__(155);
 
-var _LoaderWidget = __webpack_require__(153);
+var _LoaderWidget = __webpack_require__(154);
 
-var _ShapeLoader = __webpack_require__(146);
+var _ShapeLoader = __webpack_require__(147);
 
 var _Extensions = __webpack_require__(7);
 
-var _GmxLayerDataProvider = __webpack_require__(142);
+var _GmxLayerDataProvider = __webpack_require__(143);
 
-var _LanguageWidget = __webpack_require__(151);
+var _LanguageWidget = __webpack_require__(152);
 
-__webpack_require__(161);
+var _About = __webpack_require__(141);
+
+__webpack_require__(162);
 
 // import { Progress } from 'app/Progress/Progress.js';
 // import { FilterControl } from 'app/FilterControl/FilterControl.js';
 
-__webpack_require__(159);
-var IconSidebarControl = __webpack_require__(150);
-
 __webpack_require__(160);
-var IconLayers = __webpack_require__(152);
+var IconSidebarControl = __webpack_require__(151);
+
+__webpack_require__(161);
+var IconLayers = __webpack_require__(153);
 
 // import './animate.css';
 
@@ -27528,11 +27626,18 @@ var IconLayers = __webpack_require__(152);
 window.DIALOG_PLACE = { left: 600, top: 150 };
 window.RESULT_MAX_COUNT = 1000;
 window.MAX_CART_SIZE = 200;
+window.Catalog.VERSION = '2.2.1';
+window.Catalog.VERSION_DATE = new Date(2018, 0, 25);
 
 window.Catalog.translations = window.Catalog.translations || new _Translations.Translations();
 var T = window.Catalog.translations;
 
 var DEFAULT_LANGUAGE = 'rus';
+var NON_EDIT_LINE_STYLE = {
+    fill: false,
+    weight: 2,
+    opacity: 1
+};
 
 T.addText('rus', {
     aoi: 'Область интереса',
@@ -28038,6 +28143,10 @@ function init_sidebar(state) {
                 x.feature.properties.name = x.feature.properties.ObjName;
                 return x.feature;
             });
+            var fill = NON_EDIT_LINE_STYLE.fill,
+                weight = NON_EDIT_LINE_STYLE.weight,
+                opacity = NON_EDIT_LINE_STYLE.opacity;
+
             if (features && features.length) {
                 features.map(function (geoJSON) {
                     var center = map.getCenter();
@@ -28045,11 +28154,7 @@ function init_sidebar(state) {
 
                     var _map$gmxDrawing$addGe = map.gmxDrawing.addGeoJSON(geoJSON, {
                         editable: false,
-                        lineStyle: {
-                            fill: false,
-                            weight: 1,
-                            opacity: 1
-                        },
+                        lineStyle: { fill: fill, weight: weight, opacity: opacity },
                         className: 'osm-layer'
                     }),
                         _map$gmxDrawing$addGe2 = _slicedToArray(_map$gmxDrawing$addGe, 1),
@@ -28419,14 +28524,25 @@ function init_sidebar(state) {
         };
 
         window.Catalog.resultsController.addEventListener('result:done', function (e) {
-            if (window.Catalog.resultsController.hasResults) {
-                window.Catalog.searchSidebar.enable('results', true);
-                window.Catalog.searchSidebar.open('results');
-                window.Catalog.resultsController.zoomToResults();
-            } else if (window.Catalog.resultsController.hasFavorites) {
-                window.Catalog.searchSidebar.enable('favorites', true);
-                window.Catalog.searchSidebar.open('favorites');
-                window.Catalog.resultsController.zoomToFavorites();
+            var activeTabId = e.detail.activeTabId;
+
+            switch (activeTabId) {
+                case 'results':
+                    if (window.Catalog.resultsController.hasResults) {
+                        window.Catalog.searchSidebar.enable('results', true);
+                        window.Catalog.searchSidebar.open('results');
+                        window.Catalog.resultsController.zoomToResults();
+                    }
+                    break;
+                case 'favorites':
+                    if (window.Catalog.resultsController.hasFavorites) {
+                        window.Catalog.searchSidebar.enable('favorites', true);
+                        window.Catalog.searchSidebar.open('favorites');
+                        window.Catalog.resultsController.zoomToFavorites();
+                    }
+                    break;
+                default:
+                    break;
             }
         });
 
@@ -29069,18 +29185,17 @@ function load_state(state) {
         values = _Object$keys$reduce.values,
         types = _Object$keys$reduce.types;
 
-    window.Catalog.resultsController.setLayer({ fields: fields, values: values, types: types });
-    // if (state.items.length > 0){
-    //     window.Catalog.searchSidebar.enable ('results', true);        
-    //     window.Catalog.resultsController.items = state.items.map(item => convert_date (item, window.Catalog.resultList.fields));
-    // }
-
-    // if (state.cart.length > 0) {
-    //     window.Catalog.searchSidebar.enable ('favorites', true);
-    //     window.Catalog.favoritesList.items = state.cart.map(item => convert_date(item, window.Catalog.favoritesList.fields));
-    // }
+    window.Catalog.resultsController.setLayer({ fields: fields, values: values, types: types }, state.activeTabId);
 
     update_quicklooks_cart();
+
+    if (state.items.length > 0) {
+        window.Catalog.searchSidebar.enable('results', true);
+    }
+
+    if (state.cart.length > 0) {
+        window.Catalog.searchSidebar.enable('favorites', true);
+    }
 
     var _state$position = state.position,
         x = _state$position.x,
@@ -29090,13 +29205,6 @@ function load_state(state) {
     var center = L.Projection.Mercator.unproject({ y: y, x: x });
     map.setView(center, 17 - z);
     map.invalidateSize();
-    if (state.activeTabId) {
-        if (window.Catalog.searchSidebar.enabled(state.activeTabId)) {
-            window.Catalog.searchSidebar.open(state.activeTabId);
-        } else {
-            window.Catalog.searchSidebar.open('search');
-        }
-    }
 
     var _mapContainer$getBoun3 = mapContainer.getBoundingClientRect(),
         height = _mapContainer$getBoun3.height;
@@ -29132,7 +29240,23 @@ function load_presets(state) {
     });
 }
 
-(0, _Utils.chain)([load_locale, load_map, init_baselayer_manager, set_active_layer, authenticate, get_user, check_access, init_sidebar, init_controls, init_cart, load_presets], {}).then(function (state) {
+function load_version_info(state) {
+    return new Promise(function (resolve) {
+        fetch('dist/version-' + T.getLanguage() + '.txt').then(function (response) {
+            return response.text();
+        }).then(function (text) {
+            var dlgAboutContainer = (0, _Utils.create_container)();
+            window.Catalog.dlgAbout = new _About.About(dlgAboutContainer, { text: text });
+            window.Catalog.dlgAbout.hide();
+            document.getElementById('help').addEventListener('click', function (e) {
+                window.Catalog.dlgAbout.show();
+            });
+            resolve(state);
+        });
+    });
+}
+
+(0, _Utils.chain)([load_locale, load_map, init_baselayer_manager, set_active_layer, authenticate, get_user, check_access, init_sidebar, init_controls, init_cart, load_presets, load_version_info], {}).then(function (state) {
     var btnLogin = window.Catalog.authContainer.querySelector('.authWidget-loginButton');
     if (btnLogin) {
         btnLogin.addEventListener('click', function (e) {
@@ -29141,9 +29265,6 @@ function load_presets(state) {
             }
         });
     }
-    document.getElementById('help').addEventListener('click', function (e) {
-        window.open('https://scanex.github.io/Documentation/Catalog/index.html', '_blank');
-    });
     window.Catalog.langWidget = new _LanguageWidget.LanguageWidget(document.getElementById('lang'), {
         languages: {
             'eng': 'EN',
@@ -29158,12 +29279,6 @@ function load_presets(state) {
         window.location.reload(true);
     });
 });
-
-/***/ }),
-/* 183 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 184 */
@@ -29317,6 +29432,18 @@ function load_presets(state) {
 
 /***/ }),
 /* 209 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 210 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -29573,10 +29700,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 209;
+webpackContext.id = 211;
 
 /***/ }),
-/* 210 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -30819,4 +30946,4 @@ webpackContext.id = 209;
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=main.4337b3998ac7852f9464.bundle.js.map
+//# sourceMappingURL=main.036c9ddb89a45bc31f61.bundle.js.map

@@ -120,7 +120,7 @@ const hover_index = layerAttributes.indexOf('hover') + 1;
 
 let qlCache = {};
 
-function prefetch_ql  (sceneid) {
+function prefetch_ql (sceneid) {
     return new Promise((resolve, reject) => {
         
         let img = new Image();
@@ -133,7 +133,7 @@ function prefetch_ql  (sceneid) {
             delete qlCache[sceneid];
             reject();
         };                
-        img.src = `http://wikimixer.kosmosnimki.ru/QuickLookImage.ashx?id=${sceneid}&srs=3857`;
+        img.src = `http://search.kosmosnimki.ru/QuickLookImage.ashx?id=${sceneid}&srs=3857`;
     });                            
 }
 
@@ -143,24 +143,25 @@ class ResultsController extends EventTarget {
         this._map = map;
         this._cart = {};
         this._requestAdapter = requestAdapter;  
-        this._sidebar = sidebar;      
+        this._sidebar = sidebar;
         this._resultList = resultList;
         this._favoritesList = favoritesList;
-        this._imageDetails = imageDetails;        
+        this._imageDetails = imageDetails;
         this._resultList.items = [];
         this._favoritesList.items = [];
-        this._drawings = {};     
-        this._currentTab = ''; 
-        this.update_ql = this.update_ql.bind(this);
+        this._drawings = {};
+        this._currentTab = '';
+        this._currentID = null;
+        this._update_ql = this._update_ql.bind(this);
         this._layer = L.gmx.createLayer({
             properties: {
-                type: 'Vector',                
+                type: 'Vector',
                 visible: true,
                 identityField: 'gmx_id',
                 GeometryType: 'polygon',
                 // IsRasterCatalog: true,
                 RCMinZoomForRasters: 3,
-                Quicklook: '{"template":"http://wikimixer.kosmosnimki.ru/QuickLookImage.ashx?id=[sceneid]","minZoom":3,"X1":"x1","Y1":"y1","X2":"x2","Y2":"y2","X3":"x3","Y3":"y3","X4":"x4","Y4":"y4"}',
+                Quicklook: '{"template":"http://search.kosmosnimki.ru/QuickLookImage.ashx?id=[sceneid]","minZoom":3,"X1":"x1","Y1":"y1","X2":"x2","Y2":"y2","X3":"x3","Y3":"y3","X4":"x4","Y4":"y4"}',
                 MetaProperties: {
                     quicklookPlatform: {
                         Type: "String",
@@ -238,42 +239,59 @@ class ResultsController extends EventTarget {
                     show = true;
                     break;
             }
-            this.show_ql (id, show)
+            this._show_ql (id, show)
             .then(() => {
                 let item = null;                
                 switch (this._currentTab) {
                     case 'results':                        
-                        if (show) {
-                            this.resultList.scrollToRow(id);
+                        if (show) {                            
+                            if (this._currentID) {
+                                this._resultList.dim(this._currentID);
+                            }                            
+                            this._currentID = id;
+                            this._resultList.hilite(id);
+                            this._resultList.scrollToRow(id);                            
+                        }
+                        else {
+                            this._currentID = null;
                         }
                         break;
-                    case 'favorites':                                            
+                    case 'favorites':
                         if (show) {
-                            this.favoritesList.scrollToRow(id);
+                            if (this._currentID) {
+                                this._favoritesList.dim(this._currentID);
+                            }
+                            this._currentID = id;
+                            this._favoritesList.hilite(id);
+                            this._favoritesList.scrollToRow(id);                            
+                        }
+                        else {
+                            this._currentID = null;
                         }
                         break;
                     default:
                         break;
                 }
+                // this._highlight(id, show);
             });            
         })
         .on('mouseover', e => {
             let { gmx: {id, layer, target} } = e;
             target.properties[hover_index] = true;            
             this._layer.redrawItem(id); 
-            this.update_row(id, true);
+            this._highlight(id, true);
         })
         .on('mouseout', e => {
             let { gmx: {id, layer, target} } = e;
             target.properties[hover_index] = false;
             this._layer.redrawItem(id);
-            this.update_row(id, false);
+            this._highlight(id, false);
         });        
         this._resultList.addEventListener('cart', e => {            
             const { gmx_id } = e.detail;
             let item = this._layer.getDataManager()._items[gmx_id];            
             item.properties[cart_index] = !item.properties[cart_index];
-            this._layer.redrawItem(gmx_id);
+            this._layer.redrawItem(gmx_id);            
             
             this._resultList.redrawItem (gmx_id, properties_to_item(item.properties));
 
@@ -295,12 +313,12 @@ class ResultsController extends EventTarget {
                     show = true;
                     break;
             }
-            this.show_ql(gmx_id, show)
+            this._show_ql(gmx_id, show)
             .then(() => {                                
                 let event = document.createEvent('Event');
                 event.initEvent('visible', false, false);
                 this.dispatchEvent(event);
-            });            
+            });
         });       
         this._resultList.addEventListener('info', e => {
             let {item, top, button} = e.detail;
@@ -320,7 +338,7 @@ class ResultsController extends EventTarget {
             let item = this._layer.getDataManager()._items[gmx_id];            
             item.properties[hover_index] = true;
             this._layer.redrawItem(gmx_id);
-            this._layer.bringToTopItem(gmx_id);            
+            // this._layer.bringToTopItem(gmx_id);
         });
 
         this._resultList.addEventListener('mouseout', e => {
@@ -328,18 +346,20 @@ class ResultsController extends EventTarget {
             let item = this._layer.getDataManager()._items[gmx_id];            
             item.properties[hover_index] = false;
             this._layer.redrawItem(gmx_id);
-            this._layer.bringToBottomItem(gmx_id);
+            // this._layer.bringToBottomItem(gmx_id);
         });
 
+        let zoom_to_bounds = (xmin,ymin,xmax,ymax) => {
+            let ne = L.latLng(ymax, xmax);
+            let sw = L.latLng(ymin, xmin);
+            this._map.fitBounds(L.latLngBounds(sw, ne), { animate: false });
+            this._map.invalidateSize();
+        };
+
         this._resultList.addEventListener('click', e => {
-            let {item: {gmx_id, x2, y2, x4, y4}} = e.detail;            
-            this.show_ql(gmx_id, true)
-            .then (() => {
-                let ne = L.latLng(y2, x2);
-                let sw = L.latLng(y4, x4);
-                this._map.fitBounds(L.latLngBounds(sw, ne), { animate: false });
-                this._map.invalidateSize();
-            });            
+            let {item: {gmx_id, x2, y2, x4, y4}} = e.detail;
+            zoom_to_bounds (x4,y4,x2,y2);
+            this._show_ql(gmx_id, true);
         });        
 
         this._resultList.addEventListener('cart:all', e => {
@@ -390,7 +410,7 @@ class ResultsController extends EventTarget {
                     show = true;
                     break;
             }
-            this.show_ql(gmx_id, show)
+            this._show_ql(gmx_id, show)
             .then (() => {
                 // this._resultList.items = this._layer.getFilteredItems(item => item.result);
                 let event = document.createEvent('Event');
@@ -405,7 +425,7 @@ class ResultsController extends EventTarget {
             Object.keys(items)
             .filter(id => items[id].properties[cart_index])
             .forEach(id => {
-                this.show_ql(id, show);
+                this._show_ql(id, show);
             });
 
             let event = document.createEvent('Event');
@@ -418,7 +438,7 @@ class ResultsController extends EventTarget {
             let item = this._layer.getDataManager()._items[gmx_id];            
             item.properties[hover_index] = true;
             this._layer.redrawItem(gmx_id);
-            this._layer.bringToTopItem(gmx_id);
+            // this._layer.bringToTopItem(gmx_id);
         });
 
         this._favoritesList.addEventListener('mouseout', e => {
@@ -426,7 +446,7 @@ class ResultsController extends EventTarget {
             let item = this._layer.getDataManager()._items[gmx_id];            
             item.properties[hover_index] = false;
             this._layer.redrawItem(gmx_id);
-            this._layer.bringToBottomItem(gmx_id);
+            // this._layer.bringToBottomItem(gmx_id);
         });
 
         this._favoritesList.addEventListener('info', e => {
@@ -444,14 +464,9 @@ class ResultsController extends EventTarget {
         });
 
         this._favoritesList.addEventListener('click', e => {
-            let {item: {gmx_id, x2, y2, x4, y4}} = e.detail;            
-            this.show_ql(gmx_id, true)
-            .then(() => {
-                let ne = L.latLng(y2, x2);
-                let sw = L.latLng(y4, x4);
-                this._map.fitBounds(L.latLngBounds(sw, ne), { animate: false });
-                this._map.invalidateSize();
-            });
+            let {item: {gmx_id, x2, y2, x4, y4}} = e.detail;  
+            zoom_to_bounds (x4,y4,x2,y2);          
+            this._show_ql(gmx_id, true);
         });
 
         this._drawnObjects = drawnObjects;
@@ -552,7 +567,7 @@ class ResultsController extends EventTarget {
 
         document.body.addEventListener('click', e => this._imageDetails.hide());
     }
-    process_ql (id, show) {
+    _process_ql (id, show) {
         this._layer.redrawItem(id);
         if (show) {
             this._layer.bringToTopItem(id);
@@ -565,7 +580,7 @@ class ResultsController extends EventTarget {
         this.dispatchEvent(event);                                
     }
 
-    update_row (gmx_id, hover) {                
+    _highlight (gmx_id, hover) {                
         switch (this._currentTab) {
             case 'results':                    
                 if (hover) {
@@ -588,7 +603,7 @@ class ResultsController extends EventTarget {
         }
     }
 
-    update_list_item (item, state) {
+    _update_list_item (item, state) {
         const gmx_id = item.properties[0];
         item.properties[visible_index] = state;
         // this._layer.redrawItem(gmx_id);
@@ -605,25 +620,25 @@ class ResultsController extends EventTarget {
         }
     }
 
-    show_ql (id, show) {     
+    _show_ql (id, show) {     
         return new Promise ((resolve,reject) => {
             let item = this._layer.getDataManager()._items[id];
             if (show)  {                
-                this.update_list_item (item, 'loading');
+                this._update_list_item (item, 'loading');
                 prefetch_ql(item.properties[sceneid_index])
                 .then(() => {                        
-                    this.update_list_item (item, 'visible');
-                    this.process_ql(id, show);
+                    this._update_list_item (item, 'visible');
+                    this._process_ql(id, show);
                     resolve();
                 })
                 .catch(() => {                        
-                    this.update_list_item (item, 'failed');
+                    this._update_list_item (item, 'failed');
                     resolve();
                 });
             }
             else {                                   
-                this.update_list_item (item, 'hidden');
-                this.process_ql(id, show);
+                this._update_list_item (item, 'hidden');
+                this._process_ql(id, show);
                 resolve();
             }
         });                         
@@ -650,7 +665,7 @@ class ResultsController extends EventTarget {
     get downloadCache () {
         return this._downloadCache;
     }
-    setLayer ({fields, values, types}) {  
+    setLayer ({fields, values, types}, activeTabId = 'results') {
         // "hover", "selected", "visible", "result", "cart"
         qlCache = {};         
         const idx = fields.indexOf('gmx_id');
@@ -686,6 +701,7 @@ class ResultsController extends EventTarget {
 
         let event = document.createEvent('Event');
         event.initEvent('result:done', false, false);
+        event.detail = {activeTabId};
         this.dispatchEvent(event);
     }
     hideContours() {
@@ -711,7 +727,7 @@ class ResultsController extends EventTarget {
     showResults () {
         this._currentTab = 'results';
         this._layer.repaint();
-        this._resultList.items = this._layer.getFilteredItems(item => item.result).map(this.update_ql);
+        this._resultList.items = this._layer.getFilteredItems(item => item.result).map(this._update_ql);
     } 
     zoomToResults () {
         let bounds = getBounds(this._layer.getFilteredItems(item => item.result));
@@ -726,7 +742,7 @@ class ResultsController extends EventTarget {
     showFavorites() {
         this._currentTab = 'favorites';
         this._layer.repaint();        
-        this.favoritesList.items = this._layer.getFilteredItems(item => item.cart).map(this.update_ql);
+        this.favoritesList.items = this._layer.getFilteredItems(item => item.cart).map(this._update_ql);
     }
     get hasResults () {        
         let items = this._layer.getDataManager()._items;
@@ -780,20 +796,25 @@ class ResultsController extends EventTarget {
         event.initEvent('cart', false, false);        
         this.dispatchEvent(event);        
     }
-    update_ql (item) {
+    _update_ql (item) {
         const {gmx_id, visible} = item;            
         let show = false;
-        switch (visible) {
-            case 'visible':
-            case 'loading':
-                show = true;
-                break;                
-            case 'hidden':
-            default:
-                show = false;
-                break;
+        if (typeof visible === 'boolean') {
+            show = visible;
         }
-        this.show_ql(gmx_id, show);
+        else if (typeof visible === 'string') {
+            switch (visible) {
+                case 'visible':
+                case 'loading':
+                    show = true;
+                    break;                
+                case 'hidden':
+                default:
+                    show = false;
+                    break;
+            }
+        }        
+        this._show_ql(gmx_id, show);
         return item;
     }    
     removeSelectedFavorites () {

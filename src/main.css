@@ -78,6 +78,7 @@ html, body {
     background-color: transparent;    
     margin-right: 10px;
     vertical-align: middle;
+    margin-bottom: 3px;
 }
 #auth .dropdownMenuWidget-item {
     padding-top: 0px;    

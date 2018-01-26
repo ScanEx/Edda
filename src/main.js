@@ -27,6 +27,8 @@ import { ShapeLoader } from 'app/ShapeLoader/ShapeLoader.js';
 import { copy } from 'lib/Object.Extensions/src/Extensions.js';
 import { GmxLayerDataProvider } from 'app/GmxLayerDataProvider/GmxLayerDataProvider.js';
 import { LanguageWidget } from 'lib/LanguageWidget/src/LanguageWidget.js';
+import { About } from 'app/About/About.js';
+
 // import { Progress } from 'app/Progress/Progress.js';
 // import { FilterControl } from 'app/FilterControl/FilterControl.js';
 
@@ -44,11 +46,18 @@ import './main.css';
 window.DIALOG_PLACE = {left: 600, top: 150};
 window.RESULT_MAX_COUNT = 1000;
 window.MAX_CART_SIZE = 200;
+window.Catalog.VERSION = '2.2.1';
+window.Catalog.VERSION_DATE = new Date(2018, 0, 25);
 
 window.Catalog.translations = window.Catalog.translations || new Translations();
-let T = window.Catalog.translations
+let T = window.Catalog.translations;
 
 const DEFAULT_LANGUAGE = 'rus';
+const NON_EDIT_LINE_STYLE = {
+    fill: false,
+    weight: 2,
+    opacity: 1,
+};
 
 T.addText('rus', {  
     aoi: 'Область интереса', 
@@ -533,6 +542,7 @@ function init_sidebar (state) {
                 x.feature.properties.name = x.feature.properties.ObjName;
                 return x.feature;
             });
+            let {fill, weight, opacity} = NON_EDIT_LINE_STYLE;
             if (features && features.length) {                                                            
                 features.map(geoJSON => {
                     let center = map.getCenter();
@@ -541,11 +551,7 @@ function init_sidebar (state) {
                         geoJSON,
                         {
                             editable: false,
-                            lineStyle: {
-                                fill: false,
-                                weight: 1,
-                                opacity: 1,
-                            },
+                            lineStyle: { fill, weight, opacity },
                             className: 'osm-layer'
                         }
                     );
@@ -952,16 +958,25 @@ function init_sidebar (state) {
         };
 
         window.Catalog.resultsController.addEventListener('result:done', e => {
-            if (window.Catalog.resultsController.hasResults) {
-                window.Catalog.searchSidebar.enable ('results', true);
-                window.Catalog.searchSidebar.open('results');   
-                window.Catalog.resultsController.zoomToResults();
-            }
-            else if (window.Catalog.resultsController.hasFavorites) {
-                window.Catalog.searchSidebar.enable ('favorites', true);
-                window.Catalog.searchSidebar.open('favorites');
-                window.Catalog.resultsController.zoomToFavorites();
-            }            
+            let {activeTabId} = e.detail;
+            switch (activeTabId) {
+                case 'results':
+                    if (window.Catalog.resultsController.hasResults) {
+                        window.Catalog.searchSidebar.enable ('results', true);
+                        window.Catalog.searchSidebar.open('results');   
+                        window.Catalog.resultsController.zoomToResults();                
+                    }                    
+                    break;
+                case 'favorites':
+                    if (window.Catalog.resultsController.hasFavorites) {
+                        window.Catalog.searchSidebar.enable ('favorites', true);
+                        window.Catalog.searchSidebar.open('favorites');
+                        window.Catalog.resultsController.zoomToFavorites();                    
+                    }                    
+                    break;
+                default:
+                    break;
+            }                       
         });
 
         window.Catalog.btnSearch = searchContainer.querySelector('.search-options-search-button');
@@ -1599,31 +1614,22 @@ function load_state (state) {
         return a;
     }, {fields: [], values: [], types: []});
     
-    window.Catalog.resultsController.setLayer({fields,values,types});
-    // if (state.items.length > 0){
-    //     window.Catalog.searchSidebar.enable ('results', true);        
-    //     window.Catalog.resultsController.items = state.items.map(item => convert_date (item, window.Catalog.resultList.fields));
-    // }
-
-    // if (state.cart.length > 0) {
-    //     window.Catalog.searchSidebar.enable ('favorites', true);
-    //     window.Catalog.favoritesList.items = state.cart.map(item => convert_date(item, window.Catalog.favoritesList.fields));
-    // }
-
+    window.Catalog.resultsController.setLayer({fields,values,types}, state.activeTabId);
+           
     update_quicklooks_cart();
+
+    if (state.items.length > 0){
+        window.Catalog.searchSidebar.enable ('results', true);            
+    }
+
+    if (state.cart.length > 0) {
+        window.Catalog.searchSidebar.enable ('favorites', true);        
+    }
     
     let {x, y, z} = state.position;
     let center = L.Projection.Mercator.unproject({y, x});
     map.setView(center, 17 - z);
-    map.invalidateSize();
-    if (state.activeTabId) {
-        if (window.Catalog.searchSidebar.enabled(state.activeTabId)) {            
-            window.Catalog.searchSidebar.open(state.activeTabId);
-        }
-        else {
-            window.Catalog.searchSidebar.open('search');
-        }        
-    }
+    map.invalidateSize();        
     let { height } =  mapContainer.getBoundingClientRect();
     window.Catalog.drawnObjectsControl.widget.resize(height - 150);
 }
@@ -1657,6 +1663,22 @@ function load_presets (state) {
     });
 }
 
+function load_version_info(state) {
+    return new Promise(resolve => {
+        fetch(`dist/version-${T.getLanguage()}.txt`)
+        .then (response => response.text())
+        .then(text => {
+            let dlgAboutContainer = create_container();
+            window.Catalog.dlgAbout = new About(dlgAboutContainer, {text});
+            window.Catalog.dlgAbout.hide();
+            document.getElementById('help').addEventListener('click', e => {
+                window.Catalog.dlgAbout.show();                
+            });
+            resolve(state);
+        });
+    });
+}
+
 chain([
     load_locale,
     load_map,
@@ -1669,6 +1691,7 @@ chain([
     init_controls,
     init_cart,
     load_presets,
+    load_version_info,
 ], {})
 .then (state => {        
     let btnLogin = window.Catalog.authContainer.querySelector('.authWidget-loginButton');
@@ -1678,10 +1701,7 @@ chain([
                 localStorage.setItem('view_state', JSON.stringify(get_state()));
             }
         });
-    }
-    document.getElementById('help').addEventListener('click', e => {
-        window.open ('https://scanex.github.io/Documentation/Catalog/index.html', '_blank');
-    });
+    }    
     window.Catalog.langWidget = new LanguageWidget(document.getElementById('lang'), {
         languages: {
             'eng': 'EN',
@@ -1694,5 +1714,6 @@ chain([
         L.gmxLocale.setLanguage(e.detail);
         localStorage.setItem('view_state', JSON.stringify(get_state()));
         window.location.reload(true);
-    });
+    });    
+    
 });
