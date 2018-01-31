@@ -36,6 +36,7 @@ class GmxLayerDataProvider extends EventTarget {
                 geometry: true,
                 pagesize: 0,
                 query: query,
+                out_cs: 'EPSG:3857',
             };
             this._rsGmx.sendPostRequest('VectorLayer/Search.ashx', rq)
                 .then(response => {

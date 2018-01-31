@@ -4618,6 +4618,68 @@ return hooks;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.DEFAULT_LANGUAGE = exports.Translations = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Extensions = __webpack_require__(181);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var DEFAULT_LANGUAGE = 'rus';
+
+var Translations = function () {
+    function Translations() {
+        _classCallCheck(this, Translations);
+
+        this._hash = {};
+    }
+
+    _createClass(Translations, [{
+        key: 'setLanguage',
+        value: function setLanguage(lang) {
+            this._language = lang;
+        }
+    }, {
+        key: 'getLanguage',
+        value: function getLanguage() {
+            return window.language || this._language || DEFAULT_LANGUAGE;
+        }
+    }, {
+        key: 'addText',
+        value: function addText(lang, tran) {
+            this._hash[lang] = (0, _Extensions.extend)(this._hash[lang] || {}, tran);
+            return this;
+        }
+    }, {
+        key: 'getText',
+        value: function getText(key) {
+            if (key && typeof key === 'string') {
+                var locale = this._hash[this.getLanguage()];
+                if (locale) {
+                    return eval('locale.' + key);
+                }
+            }
+            return null;
+        }
+    }]);
+
+    return Translations;
+}();
+
+exports.Translations = Translations;
+exports.DEFAULT_LANGUAGE = DEFAULT_LANGUAGE;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -4987,68 +5049,6 @@ exports.normalize_geometries = normalize_geometries;
 exports.normalize_geometry = normalize_geometry;
 exports.get_bbox = get_bbox;
 exports.normalize_geometry_type = normalize_geometry_type;
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.DEFAULT_LANGUAGE = exports.Translations = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Extensions = __webpack_require__(181);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var DEFAULT_LANGUAGE = 'rus';
-
-var Translations = function () {
-    function Translations() {
-        _classCallCheck(this, Translations);
-
-        this._hash = {};
-    }
-
-    _createClass(Translations, [{
-        key: 'setLanguage',
-        value: function setLanguage(lang) {
-            this._language = lang;
-        }
-    }, {
-        key: 'getLanguage',
-        value: function getLanguage() {
-            return window.language || this._language || DEFAULT_LANGUAGE;
-        }
-    }, {
-        key: 'addText',
-        value: function addText(lang, tran) {
-            this._hash[lang] = (0, _Extensions.extend)(this._hash[lang] || {}, tran);
-            return this;
-        }
-    }, {
-        key: 'getText',
-        value: function getText(key) {
-            if (key && typeof key === 'string') {
-                var locale = this._hash[this.getLanguage()];
-                if (locale) {
-                    return eval('locale.' + key);
-                }
-            }
-            return null;
-        }
-    }]);
-
-    return Translations;
-}();
-
-exports.Translations = Translations;
-exports.DEFAULT_LANGUAGE = DEFAULT_LANGUAGE;
 
 /***/ }),
 /* 3 */
@@ -5828,7 +5828,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 __webpack_require__(206);
 
-var _Translations = __webpack_require__(2);
+var _Translations = __webpack_require__(1);
 
 var _EventTarget2 = __webpack_require__(177);
 
@@ -6067,7 +6067,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Translations = __webpack_require__(2);
+var _Translations = __webpack_require__(1);
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
@@ -6928,9 +6928,9 @@ var _Panel2 = __webpack_require__(5);
 
 var _Satellites = __webpack_require__(6);
 
-var _Translations = __webpack_require__(2);
+var _Translations = __webpack_require__(1);
 
-var _Utils = __webpack_require__(1);
+var _Utils = __webpack_require__(2);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7265,11 +7265,11 @@ var _EventTarget2 = __webpack_require__(3);
 
 var _Panel = __webpack_require__(5);
 
-var _Translations = __webpack_require__(2);
+var _Translations = __webpack_require__(1);
 
 var _ColorPicker = __webpack_require__(172);
 
-var _Utils = __webpack_require__(1);
+var _Utils = __webpack_require__(2);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7629,7 +7629,7 @@ var _EventTarget2 = __webpack_require__(3);
 
 __webpack_require__(189);
 
-var _Translations = __webpack_require__(2);
+var _Translations = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7771,9 +7771,9 @@ var _Satellites = __webpack_require__(6);
 
 var _EventTarget2 = __webpack_require__(3);
 
-var _Utils = __webpack_require__(1);
+var _Utils = __webpack_require__(2);
 
-var _Translations = __webpack_require__(2);
+var _Translations = __webpack_require__(1);
 
 var _DataGrid2 = __webpack_require__(4);
 
@@ -20991,9 +20991,9 @@ var _Satellites = __webpack_require__(6);
 
 var _EventTarget2 = __webpack_require__(3);
 
-var _Utils = __webpack_require__(1);
+var _Utils = __webpack_require__(2);
 
-var _Translations = __webpack_require__(2);
+var _Translations = __webpack_require__(1);
 
 var _DataGrid2 = __webpack_require__(4);
 
@@ -21413,7 +21413,7 @@ exports.GmxLayerDataProvider = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Utils = __webpack_require__(1);
+var _Utils = __webpack_require__(2);
 
 var _EventTarget2 = __webpack_require__(3);
 
@@ -21480,7 +21480,8 @@ var GmxLayerDataProvider = function (_EventTarget) {
                     layer: 'AFB4D363768E4C5FAC71C9B0C6F7B2F4',
                     geometry: true,
                     pagesize: 0,
-                    query: query
+                    query: query,
+                    out_cs: 'EPSG:3857'
                 };
                 _this3._rsGmx.sendPostRequest('VectorLayer/Search.ashx', rq).then(function (response) {
                     if (response.Status == 'ok') {
@@ -21531,7 +21532,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Index = __webpack_require__(167);
 
-var _Utils = __webpack_require__(1);
+var _Utils = __webpack_require__(2);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -21774,15 +21775,15 @@ var _Quicklook = __webpack_require__(163);
 
 var _DataGrid = __webpack_require__(4);
 
-var _Translations = __webpack_require__(2);
+var _Translations = __webpack_require__(1);
 
-var _Utils = __webpack_require__(1);
+var _Utils = __webpack_require__(2);
 
 var _Extensions = __webpack_require__(7);
 
 __webpack_require__(191);
 
-var _Utils2 = __webpack_require__(1);
+var _Utils2 = __webpack_require__(2);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -22486,7 +22487,7 @@ var ResultsController = function (_EventTarget) {
 
             return new Promise(function (resolve, reject) {
                 var item = _this2._layer.getDataManager()._items[id];
-                if (show) {
+                if (show && item.properties[visible_index] === 'hidden') {
                     _this2._update_list_item(item, 'loading');
                     prefetch_ql(item.properties[sceneid_index]).then(function () {
                         _this2._update_list_item(item, 'visible');
@@ -22496,7 +22497,7 @@ var ResultsController = function (_EventTarget) {
                         _this2._update_list_item(item, 'failed');
                         resolve();
                     });
-                } else {
+                } else if (!show && item.properties[visible_index] !== 'hidden') {
                     _this2._update_list_item(item, 'hidden');
                     _this2._process_ql(id, show);
                     resolve();
@@ -22560,7 +22561,8 @@ var ResultsController = function (_EventTarget) {
             this._layer.repaint();
             this._resultList.items = this._layer.getFilteredItems(function (item) {
                 return item.result;
-            }).map(this._update_ql);
+            });
+            this._resultList.items.forEach(this._update_ql);
         }
     }, {
         key: 'zoomToResults',
@@ -22587,7 +22589,8 @@ var ResultsController = function (_EventTarget) {
             this._layer.repaint();
             this.favoritesList.items = this._layer.getFilteredItems(function (item) {
                 return item.cart;
-            }).map(this._update_ql);
+            });
+            this.favoritesList.items.forEach(this._update_ql);
         }
     }, {
         key: 'addVisibleToCart',
@@ -23068,7 +23071,7 @@ var _Satellites = __webpack_require__(165);
 
 var _EventTarget2 = __webpack_require__(3);
 
-var _Translations = __webpack_require__(2);
+var _Translations = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -23421,7 +23424,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Extensions = __webpack_require__(7);
 
-var _Utils = __webpack_require__(1);
+var _Utils = __webpack_require__(2);
 
 var _Formats = __webpack_require__(166);
 
@@ -24646,30 +24649,53 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 __webpack_require__(207);
 
+var _Translations = __webpack_require__(1);
+
+var _EventTarget2 = __webpack_require__(3);
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var LoaderWidget = function () {
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+window.Catalog.translations = window.Catalog.translations || new _Translations.Translations();
+var T = window.Catalog.translations;
+
+var LoaderWidget = function (_EventTarget) {
+    _inherits(LoaderWidget, _EventTarget);
+
     function LoaderWidget() {
         _classCallCheck(this, LoaderWidget);
 
-        this._container = document.createElement('div');
-        document.body.appendChild(this._container);
-        this._container.classList.add('noselect');
-        this._container.classList.add('loader-widget');
-        this._container.innerHTML = '<div class="loader-icon"></div>';
-        this._ovl = document.querySelector('.loader-widget-overlay');
-        this._stopPropagation = this._stopPropagation.bind(this);
-        if (!this._ovl) {
-            this._ovl = document.createElement('div');
-            document.body.appendChild(this._ovl);
-            this._ovl.className = 'loader-widget-overlay';
-            this._ovl.style.display = 'none';
-            this._ovl.addEventListener('mousemove', this._stopPropagation);
-            this._ovl.addEventListener('mousewheel', this._stopPropagation);
-            this._ovl.addEventListener('click', this._stopPropagation);
+        var _this = _possibleConstructorReturn(this, (LoaderWidget.__proto__ || Object.getPrototypeOf(LoaderWidget)).call(this));
+
+        _this._container = document.createElement('div');
+        document.body.appendChild(_this._container);
+        _this._container.classList.add('noselect');
+        _this._container.classList.add('loader-widget');
+        _this._container.innerHTML = '<div class="loader-icon"></div><div class="loader-button">' + T.getText('alerts.cancel') + '</div>';
+        _this._ovl = document.querySelector('.loader-widget-overlay');
+        _this._stopPropagation = _this._stopPropagation.bind(_this);
+        if (!_this._ovl) {
+            _this._ovl = document.createElement('div');
+            document.body.appendChild(_this._ovl);
+            _this._ovl.className = 'loader-widget-overlay';
+            _this._ovl.style.display = 'none';
+            _this._ovl.addEventListener('mousemove', _this._stopPropagation);
+            _this._ovl.addEventListener('mousewheel', _this._stopPropagation);
+            _this._ovl.addEventListener('click', _this._stopPropagation);
         }
-        this.show = this.show.bind(this);
-        this.hide = this.hide.bind(this);
+        _this._container.querySelector('.loader-button').addEventListener('click', function (e) {
+            _this.hide();
+
+            var event = document.createEvent('Event');
+            event.initEvent('cancel', false, false);
+            _this.dispatchEvent(event);
+        });
+        _this.show = _this.show.bind(_this);
+        _this.hide = _this.hide.bind(_this);
+        return _this;
     }
 
     _createClass(LoaderWidget, [{
@@ -24694,7 +24720,7 @@ var LoaderWidget = function () {
     }]);
 
     return LoaderWidget;
-}();
+}(_EventTarget2.EventTarget);
 
 exports.LoaderWidget = LoaderWidget;
 
@@ -24818,7 +24844,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _EventTarget2 = __webpack_require__(3);
 
-var _Utils = __webpack_require__(1);
+var _Utils = __webpack_require__(2);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -25027,7 +25053,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 __webpack_require__(192);
 
-var _Translations = __webpack_require__(2);
+var _Translations = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -25118,13 +25144,13 @@ __webpack_require__(193);
 
 var _EventTarget2 = __webpack_require__(3);
 
-var _Translations = __webpack_require__(2);
+var _Translations = __webpack_require__(1);
 
 var _Tristate = __webpack_require__(182);
 
 var _Info = __webpack_require__(164);
 
-var _Utils = __webpack_require__(1);
+var _Utils = __webpack_require__(2);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -27559,7 +27585,7 @@ __webpack_require__(157);
 
 __webpack_require__(159);
 
-var _Translations = __webpack_require__(2);
+var _Translations = __webpack_require__(1);
 
 var _SearchOptions = __webpack_require__(146);
 
@@ -27591,7 +27617,7 @@ var _ResultsController = __webpack_require__(145);
 
 var _TabFactory = __webpack_require__(148);
 
-var _Utils = __webpack_require__(1);
+var _Utils = __webpack_require__(2);
 
 var _NotificationWidget = __webpack_require__(155);
 
@@ -27638,6 +27664,8 @@ var NON_EDIT_LINE_STYLE = {
     weight: 2,
     opacity: 1
 };
+
+var ignoreResults = false;
 
 T.addText('rus', {
     aoi: 'Область интереса',
@@ -27811,6 +27839,7 @@ var map = L.map(mapContainer, {
     zoom: 3,
     boxZoom: false,
     srs: 3857,
+    skipTiles: 'All',
     ftc: 'osm',
     attributionControl: false,
     zoomControl: false,
@@ -27846,7 +27875,13 @@ function load_locale(state) {
 
 function load_map(state) {
     return new Promise(function (resolve) {
-        L.gmx.loadMap('1CB019F36D024831972F3029B724D7CA', { apiKey: 'A07FEB777402A559A7DE8BC6CA7C2E96', leafletMap: map }).then(function (gmxMap) {
+        L.gmx.loadMap('1CB019F36D024831972F3029B724D7CA', {
+            apiKey: 'Z2SSNR87N4', //'A07FEB777402A559A7DE8BC6CA7C2E96',
+            leafletMap: map,
+            srs: 3857,
+            skipTiles: 'All',
+            ftc: 'osm'
+        }).then(function (gmxMap) {
             state.gmxMap = gmxMap;
             map.invalidateSize();
             resolve(state);
@@ -27857,7 +27892,11 @@ function load_map(state) {
 function init_baselayer_manager(state) {
     return new Promise(function (resolve) {
         map.gmxBaseLayersManager = new window.L.gmxBaseLayersManager(map);
-        map.gmxBaseLayersManager.initDefaults().then(function () {
+        map.gmxBaseLayersManager.initDefaults({
+            srs: 3857,
+            skipTiles: 'All',
+            ftc: 'osm'
+        }).then(function () {
             return resolve(state);
         });
     });
@@ -28203,7 +28242,7 @@ function init_sidebar(state) {
         var searchControl = new nsGmx.SearchWidget(searchContainer.querySelector('.search-pane'), {
             placeHolder: T.getText('controls.search'),
             suggestionLimit: 10,
-            providers: [crds, gmx, osm, cadastre],
+            providers: [crds, gmx, osm],
             replaceInputOnEnter: true,
             style: {
                 editable: false,
@@ -28252,6 +28291,7 @@ function init_sidebar(state) {
         window.Catalog.dlgDownloadResult.footer.innerHTML = '<button class="dialog-ok-button">' + T.getText('download.ok') + '</button>\n        <button class="dialog-cancel-button">' + T.getText('download.cancel') + '</button>';
         window.Catalog.dlgDownloadResult.footer.querySelector('button.dialog-ok-button').addEventListener('click', function (e) {
             window.Catalog.dlgDownloadResult.hide();
+            ignoreResults = false;
             window.Catalog.loaderWidget.show();
             window.Catalog.requestAdapter.search().then(function (_ref2) {
                 var fields = _ref2.fields,
@@ -28259,8 +28299,10 @@ function init_sidebar(state) {
                     types = _ref2.types;
 
                 window.Catalog.loaderWidget.hide();
-                window.Catalog.resultsController.downloadCache = { fields: fields, values: values, types: types };
-                window.Catalog.shapeLoader.download('results', 'results');
+                if (!ignoreResults) {
+                    window.Catalog.resultsController.downloadCache = { fields: fields, values: values, types: types };
+                    window.Catalog.shapeLoader.download('results', 'results');
+                }
             }).catch(function (e) {
                 window.Catalog.dlgErrorMessage.content.innerHTML = '' + e.Message;
                 window.Catalog.dlgErrorMessage.show();
@@ -28549,6 +28591,7 @@ function init_sidebar(state) {
         window.Catalog.btnSearch = searchContainer.querySelector('.search-options-search-button');
         window.Catalog.btnSearch.addEventListener('click', function () {
             if (window.Catalog.btnSearch.classList.contains('search-options-search-button-active')) {
+                ignoreResults = false;
                 window.Catalog.loaderWidget.show();
                 window.Catalog.resultsController.clear();
                 window.Catalog.requestAdapter.criteria = window.Catalog.searchOptions.criteria;
@@ -28562,21 +28605,23 @@ function init_sidebar(state) {
                         types = _ref3.types;
 
                     window.Catalog.loaderWidget.hide();
-                    if (Count === 0) {
-                        window.Catalog.searchSidebar.enable('results', false);
-                        update_results_number(0);
-                        window.Catalog.notificationWidget.content.innerText = T.getText('alerts.nothing');
-                        window.Catalog.notificationWidget.show();
-                    } else if (0 < Count && Count <= window.RESULT_MAX_COUNT) {
+                    if (!ignoreResults) {
+                        if (Count === 0) {
+                            window.Catalog.searchSidebar.enable('results', false);
+                            update_results_number(0);
+                            window.Catalog.notificationWidget.content.innerText = T.getText('alerts.nothing');
+                            window.Catalog.notificationWidget.show();
+                        } else if (0 < Count && Count <= window.RESULT_MAX_COUNT) {
 
-                        window.Catalog.resultsController.setLayer({ fields: fields, values: values, types: types });
-                        update_results_number(Count);
-                    } else {
-                        window.Catalog.searchSidebar.enable('results', false);
-                        if (window.Catalog.userInfo.IsAuthenticated && window.Catalog.userInfo.Role === 'scanex') {
-                            window.Catalog.dlgDownloadResult.show();
+                            window.Catalog.resultsController.setLayer({ fields: fields, values: values, types: types });
+                            update_results_number(Count);
                         } else {
-                            window.Catalog.dlgChangeResult.show();
+                            window.Catalog.searchSidebar.enable('results', false);
+                            if (window.Catalog.userInfo.IsAuthenticated && window.Catalog.userInfo.Role === 'scanex') {
+                                window.Catalog.dlgDownloadResult.show();
+                            } else {
+                                window.Catalog.dlgChangeResult.show();
+                            }
                         }
                     }
                 }).catch(function (e) {
@@ -29036,6 +29081,9 @@ function init_controls(state) {
         init_base_layers();
         window.Catalog.notificationWidget = new _NotificationWidget.NotificationWidget(map._controlCorners.right, { timeout: 2000 });
         window.Catalog.loaderWidget = new _LoaderWidget.LoaderWidget();
+        window.Catalog.loaderWidget.addEventListener('cancel', function (e) {
+            ignoreResults = true;
+        });
 
         resolve(state);
     });
@@ -29249,7 +29297,8 @@ function load_version_info(state) {
             window.Catalog.dlgAbout = new _About.About(dlgAboutContainer, { text: text });
             window.Catalog.dlgAbout.hide();
             document.getElementById('help').addEventListener('click', function (e) {
-                window.Catalog.dlgAbout.show();
+                // window.Catalog.dlgAbout.show();
+                window.open('https://scanex.github.io/Documentation/Catalog/index.html', '_blank');
             });
             resolve(state);
         });
@@ -30946,4 +30995,4 @@ webpackContext.id = 211;
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=main.036c9ddb89a45bc31f61.bundle.js.map
+//# sourceMappingURL=main.f1fae8eeeace8daed485.bundle.js.map

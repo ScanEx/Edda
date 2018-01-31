@@ -1799,12 +1799,29 @@ http://nicolasgallagher.com/micro-clearfix-hack/
     transform: translate(-50%, -50%);
 }
 .loader-widget {
+    text-align: center;
     overflow: visible;
     padding-top: 4em;
-    height: 0;
-    width: 4em;
+    height: 0;    
     visibility: hidden;
     z-index: 3002;
+}
+.loader-widget .loader-button {
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;    
+    color: #fff;
+    border: 1px solid #fff; 
+    cursor: pointer;    
+    text-align: center;
+    width: 100px;
+    padding: 9px;
+    margin-top: 20px;
+}
+.loader-widget .loader-button:hover {
+    background-color: #fff;
+    color: #313a3f;
 }
 .loader-animated {
     height: 0;
@@ -2572,4 +2589,4 @@ html, body {
 .leaflet-iconLayers-layerCell_hidden { display: none; }
 .leaflet-iconLayers-layerCell_active .leaflet-iconLayers-layer { cursor: default; }
 .leaflet-iconLayers-layerCell_active .leaflet-iconLayers-layerCheckIcon { display: block; }
-/*# sourceMappingURL=fa3e87ca058dc38acb3417e238db5efa.bundle.css.map*/
+/*# sourceMappingURL=36fb6676cafd2ec72f57c6b2b7a81d81.bundle.css.map*/

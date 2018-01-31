@@ -59,6 +59,8 @@ const NON_EDIT_LINE_STYLE = {
     opacity: 1,
 };
 
+let ignoreResults = false;
+
 T.addText('rus', {  
     aoi: 'Область интереса', 
     controls: {
@@ -231,6 +233,7 @@ let map = L.map(mapContainer, {
     zoom: 3,
     boxZoom: false,
     srs: 3857,
+    skipTiles: 'All',
     ftc: 'osm',
     attributionControl: false,
     zoomControl: false,
@@ -266,7 +269,13 @@ function load_locale (state) {
 
 function load_map (state) {
     return new Promise(resolve => {
-        L.gmx.loadMap('1CB019F36D024831972F3029B724D7CA', { apiKey: 'A07FEB777402A559A7DE8BC6CA7C2E96', leafletMap: map })
+        L.gmx.loadMap('1CB019F36D024831972F3029B724D7CA', {
+            apiKey: 'Z2SSNR87N4', //'A07FEB777402A559A7DE8BC6CA7C2E96',
+            leafletMap: map,
+            srs: 3857,
+            skipTiles: 'All',
+            ftc: 'osm',
+        })
         .then(gmxMap => {
             state.gmxMap = gmxMap;                    
             map.invalidateSize();
@@ -278,7 +287,12 @@ function load_map (state) {
 function init_baselayer_manager(state) {
     return new Promise(resolve => {
         map.gmxBaseLayersManager = new window.L.gmxBaseLayersManager(map);
-        map.gmxBaseLayersManager.initDefaults().then(() => resolve(state));
+        map.gmxBaseLayersManager.initDefaults({
+            srs: 3857,
+            skipTiles: 'All',
+            ftc: 'osm'
+        })
+        .then(() => resolve(state));
     });
 }
 
@@ -603,7 +617,7 @@ function init_sidebar (state) {
             {            
                 placeHolder: T.getText('controls.search'),
                 suggestionLimit: 10,
-                providers: [crds, gmx, osm, cadastre],
+                providers: [crds, gmx, osm ],
                 replaceInputOnEnter: true,
                 style: {
                     editable: false,
@@ -655,17 +669,20 @@ function init_sidebar (state) {
         window.Catalog.dlgDownloadResult.footer.querySelector('button.dialog-ok-button')
         .addEventListener('click', e => {
             window.Catalog.dlgDownloadResult.hide();
+            ignoreResults = false;
             window.Catalog.loaderWidget.show();
             window.Catalog.requestAdapter.search()
-            .then (({fields, values, types}) => {
+            .then (({fields, values, types}) => {                
                 window.Catalog.loaderWidget.hide();
-                window.Catalog.resultsController.downloadCache = {fields, values, types};
-                window.Catalog.shapeLoader.download('results', 'results');
+                if (!ignoreResults) {
+                    window.Catalog.resultsController.downloadCache = {fields, values, types};
+                    window.Catalog.shapeLoader.download('results', 'results');
+                }                
             })
             .catch (e => {
                 window.Catalog.dlgErrorMessage.content.innerHTML = `${e.Message}`;
                 window.Catalog.dlgErrorMessage.show();
-            });        
+            });
         });
 
         let dlgErrorMessageContainer = create_container();
@@ -928,7 +945,7 @@ function init_sidebar (state) {
                     break;
             }
             update_cart_number(window.Catalog.resultsController.favoritesCount);
-            shift_base_layers_control();            
+            shift_base_layers_control();
         });
 
         window.Catalog.searchSidebar.enable ('results', false);
@@ -982,6 +999,7 @@ function init_sidebar (state) {
         window.Catalog.btnSearch = searchContainer.querySelector('.search-options-search-button');
         window.Catalog.btnSearch.addEventListener('click', () => {
             if (window.Catalog.btnSearch.classList.contains('search-options-search-button-active')) {
+                ignoreResults = false;
                 window.Catalog.loaderWidget.show();
                 window.Catalog.resultsController.clear();
                 window.Catalog.requestAdapter.criteria = window.Catalog.searchOptions.criteria;
@@ -991,26 +1009,28 @@ function init_sidebar (state) {
                 window.Catalog.requestAdapter.search(window.RESULT_MAX_COUNT)
                 .then(({Count, fields, values, types}) => {                
                     window.Catalog.loaderWidget.hide();
-                    if (Count === 0) {                    
-                        window.Catalog.searchSidebar.enable ('results', false);
-                        update_results_number(0);
-                        window.Catalog.notificationWidget.content.innerText = T.getText('alerts.nothing');
-                        window.Catalog.notificationWidget.show();
-                    }
-                    else if(0 < Count && Count <= window.RESULT_MAX_COUNT) {                        
-                       
-                        window.Catalog.resultsController.setLayer({fields,values,types});
-                        update_results_number(Count);                        
-                    }                
-                    else {  
-                        window.Catalog.searchSidebar.enable ('results', false);
-                        if (window.Catalog.userInfo.IsAuthenticated && window.Catalog.userInfo.Role === 'scanex') {                        
-                            window.Catalog.dlgDownloadResult.show();
+                    if (!ignoreResults) {
+                        if (Count === 0) {                    
+                            window.Catalog.searchSidebar.enable ('results', false);
+                            update_results_number(0);
+                            window.Catalog.notificationWidget.content.innerText = T.getText('alerts.nothing');
+                            window.Catalog.notificationWidget.show();
                         }
-                        else {
-                            window.Catalog.dlgChangeResult.show();
-                        }                    
-                    }                                
+                        else if(0 < Count && Count <= window.RESULT_MAX_COUNT) {                        
+                           
+                            window.Catalog.resultsController.setLayer({fields,values,types});
+                            update_results_number(Count);                        
+                        }                
+                        else {  
+                            window.Catalog.searchSidebar.enable ('results', false);
+                            if (window.Catalog.userInfo.IsAuthenticated && window.Catalog.userInfo.Role === 'scanex') {                        
+                                window.Catalog.dlgDownloadResult.show();
+                            }
+                            else {
+                                window.Catalog.dlgChangeResult.show();
+                            }                    
+                        } 
+                    }                                                   
                 })
                 .catch(e => {
                     window.Catalog.loaderWidget.hide();
@@ -1482,6 +1502,9 @@ function init_controls(state) {
         init_base_layers();    
         window.Catalog.notificationWidget = new NotificationWidget (map._controlCorners.right, {timeout: 2000});
         window.Catalog.loaderWidget = new LoaderWidget ();
+        window.Catalog.loaderWidget.addEventListener('cancel', e => {
+            ignoreResults = true;
+        });
 
         resolve(state);
     });
@@ -1671,8 +1694,9 @@ function load_version_info(state) {
             let dlgAboutContainer = create_container();
             window.Catalog.dlgAbout = new About(dlgAboutContainer, {text});
             window.Catalog.dlgAbout.hide();
-            document.getElementById('help').addEventListener('click', e => {
-                window.Catalog.dlgAbout.show();                
+            document.getElementById('help').addEventListener('click', e => {                
+                // window.Catalog.dlgAbout.show();
+                window.open ('https://scanex.github.io/Documentation/Catalog/index.html', '_blank');
             });
             resolve(state);
         });

@@ -622,8 +622,8 @@ class ResultsController extends EventTarget {
 
     _show_ql (id, show) {     
         return new Promise ((resolve,reject) => {
-            let item = this._layer.getDataManager()._items[id];
-            if (show)  {                
+            let item = this._layer.getDataManager()._items[id];            
+            if (show && item.properties[visible_index] === 'hidden') {                
                 this._update_list_item (item, 'loading');
                 prefetch_ql(item.properties[sceneid_index])
                 .then(() => {                        
@@ -634,9 +634,9 @@ class ResultsController extends EventTarget {
                 .catch(() => {                        
                     this._update_list_item (item, 'failed');
                     resolve();
-                });
+                });                                
             }
-            else {                                   
+            else if(!show && item.properties[visible_index] !== 'hidden') {
                 this._update_list_item (item, 'hidden');
                 this._process_ql(id, show);
                 resolve();
@@ -727,7 +727,8 @@ class ResultsController extends EventTarget {
     showResults () {
         this._currentTab = 'results';
         this._layer.repaint();
-        this._resultList.items = this._layer.getFilteredItems(item => item.result).map(this._update_ql);
+        this._resultList.items = this._layer.getFilteredItems(item => item.result);
+        this._resultList.items.forEach(this._update_ql);
     } 
     zoomToResults () {
         let bounds = getBounds(this._layer.getFilteredItems(item => item.result));
@@ -742,7 +743,8 @@ class ResultsController extends EventTarget {
     showFavorites() {
         this._currentTab = 'favorites';
         this._layer.repaint();        
-        this.favoritesList.items = this._layer.getFilteredItems(item => item.cart).map(this._update_ql);
+        this.favoritesList.items = this._layer.getFilteredItems(item => item.cart);
+        this.favoritesList.items.forEach(this._update_ql);
     }
     get hasResults () {        
         let items = this._layer.getDataManager()._items;
