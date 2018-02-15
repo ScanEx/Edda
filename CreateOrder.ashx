@@ -211,7 +211,7 @@ public class CreateOrder : IHttpHandler, System.Web.SessionState.IRequiresSessio
             mes.BodyEncoding = Encoding.GetEncoding("UTF-8");
 
             mes.Body = string.Join(Environment.NewLine, new [] {
-                string.Format ("Вы сделали заказ № {0}.{1}Детали заказа: {2}", order.Number.ToString(), Environment.NewLine, order.TinyReferenceUrl),
+                string.Format ("Вы сделали заказ номер {0}.{1}Детали заказа: {2}", order.Number.ToString(), Environment.NewLine, order.TinyReferenceUrl),
                 string.Format("Организация (заказчик): {0}", order.Customer),
                 string.Format("Имя и фамилия: {0}", order.Surname),
                 string.Format("Электронная почта: {0}", order.Email),

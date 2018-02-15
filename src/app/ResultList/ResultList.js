@@ -56,6 +56,7 @@ class ResultList extends EventTarget {
         this._onRowMouseOut = this._onRowMouseOut.bind(this);
         this._onSort = this._onSort.bind(this);
         this._activeInfo = null;
+        this._disableMouseHover = false;
         this._fields = {             
             'visible': {                
                 type: 'string',                    
@@ -86,6 +87,16 @@ class ResultList extends EventTarget {
                 default: false,
                 tooltip: T.getText('results.stereo'),
                 width: 32,
+                formatter: item => {                    
+                    switch (typeof item.stereo) {
+                        case 'string':
+                            return item.stereo !== 'NONE';
+                        case 'boolean':
+                            return item.stereo;
+                        default:
+                            return false;
+                    }
+                },
             },                               
             'platform': {
                 type: 'string',
@@ -203,7 +214,15 @@ class ResultList extends EventTarget {
             },
         };
 
-        this._grid = new DataGrid(this._container, {fields: this.fields, filter: item => Boolean (item.checked), indexBy: 'gmx_id'});
+        this._grid = new DataGrid(
+            this._container,
+            {
+                fields: this.fields, 
+                filter: item => Boolean (item.checked),
+                sortBy: {field: 'acqdate', asc: false},
+                indexBy: 'gmx_id'
+            }
+        );
         this._grid.addEventListener('cell:click', this._onCellClick);
         this._grid.addEventListener('column:click', this._onColumnClick);
         this._grid.addEventListener('row:mouseover', this._onRowMouseOver);
@@ -348,16 +367,20 @@ class ResultList extends EventTarget {
         }
     }   
     _onRowMouseOver (e) {                
-        let event = document.createEvent('Event');
-        event.initEvent('mouseover', false, false);
-        event.detail = e.detail;
-        this.dispatchEvent(event);
+        if (!this._disableMouseHover) {
+            let event = document.createEvent('Event');
+            event.initEvent('mouseover', false, false);
+            event.detail = e.detail;
+            this.dispatchEvent(event);
+        }        
     }
-    _onRowMouseOut (e) {                
-        let event = document.createEvent('Event');
-        event.initEvent('mouseout', false, false);
-        event.detail = e.detail;
-        this.dispatchEvent(event);        
+    _onRowMouseOut (e) {  
+        if (!this._disableMouseHover) {              
+            let event = document.createEvent('Event');
+            event.initEvent('mouseout', false, false);
+            event.detail = e.detail;
+            this.dispatchEvent(event);
+        }   
     }
     set items (value) {
         if(Array.isArray(value)) {            
@@ -408,8 +431,10 @@ class ResultList extends EventTarget {
     getRow (rowId) {
         return this._grid.getRow (rowId);
     }
-    redrawItem (id, item) {        
+    redrawItem (id, item) {     
+        this._disableMouseHover = true;
         this._grid.redrawRow(id, item);
+        this._disableMouseHover = false;
     }
 }
 

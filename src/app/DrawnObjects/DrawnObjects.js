@@ -1,4 +1,4 @@
-import { DataGrid } from 'lib/DataGrid/src/DataGrid.js';
+import { DataGrid, ENUM_ID } from 'lib/DataGrid/src/DataGrid.js';
 import './DrawnObjects.css';
 import { EventTarget } from 'lib/EventTarget/src/EventTarget.js';
 import { Panel } from 'lib/Leaflet.Panel/src/Panel.js';
@@ -164,17 +164,20 @@ class DrawnObjects extends EventTarget {
         let event = document.createEvent('Event');
         switch(name){            
             case 'visible':
-                let btn = cell.querySelector('i');
-                if (btn.classList.contains('search-visibility-off')) {
-                    btn.classList.remove('search-visibility-off');
-                    btn.classList.add('search-visibility-on');
-                    item.visible = false;
-                }
-                else {
-                    btn.classList.remove('search-visibility-on');
-                    btn.classList.add('search-visibility-off');
-                    item.visible = true;
-                }        
+                // let btn = cell.querySelector('i');
+                // if (btn.classList.contains('search-visibility-off')) {
+                //     btn.classList.remove('search-visibility-off');
+                //     btn.classList.add('search-visibility-on');
+                //     item.visible = false;
+                // }
+                // else {
+                //     btn.classList.remove('search-visibility-on');
+                //     btn.classList.add('search-visibility-off');
+                    
+                // }   
+                item.visible = !item.visible;                
+                const id = item[ENUM_ID];
+                this._grid.redrawRow(id, item);
                 
                 event.initEvent('check', false, false);
                 event.detail = item;

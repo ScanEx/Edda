@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 183);
+/******/ 	return __webpack_require__(__webpack_require__.s = 184);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1914,7 +1914,7 @@ function loadLocale(name) {
         try {
             oldLocale = globalLocale._abbr;
             var aliasedRequire = require;
-            __webpack_require__(211)("./" + name);
+            __webpack_require__(212)("./" + name);
             getSetGlobalLocale(oldLocale);
         } catch (e) {}
     }
@@ -4618,68 +4618,6 @@ return hooks;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.DEFAULT_LANGUAGE = exports.Translations = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Extensions = __webpack_require__(181);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var DEFAULT_LANGUAGE = 'rus';
-
-var Translations = function () {
-    function Translations() {
-        _classCallCheck(this, Translations);
-
-        this._hash = {};
-    }
-
-    _createClass(Translations, [{
-        key: 'setLanguage',
-        value: function setLanguage(lang) {
-            this._language = lang;
-        }
-    }, {
-        key: 'getLanguage',
-        value: function getLanguage() {
-            return window.language || this._language || DEFAULT_LANGUAGE;
-        }
-    }, {
-        key: 'addText',
-        value: function addText(lang, tran) {
-            this._hash[lang] = (0, _Extensions.extend)(this._hash[lang] || {}, tran);
-            return this;
-        }
-    }, {
-        key: 'getText',
-        value: function getText(key) {
-            if (key && typeof key === 'string') {
-                var locale = this._hash[this.getLanguage()];
-                if (locale) {
-                    return eval('locale.' + key);
-                }
-            }
-            return null;
-        }
-    }]);
-
-    return Translations;
-}();
-
-exports.Translations = Translations;
-exports.DEFAULT_LANGUAGE = DEFAULT_LANGUAGE;
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -5051,6 +4989,68 @@ exports.get_bbox = get_bbox;
 exports.normalize_geometry_type = normalize_geometry_type;
 
 /***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.DEFAULT_LANGUAGE = exports.Translations = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Extensions = __webpack_require__(182);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var DEFAULT_LANGUAGE = 'rus';
+
+var Translations = function () {
+    function Translations() {
+        _classCallCheck(this, Translations);
+
+        this._hash = {};
+    }
+
+    _createClass(Translations, [{
+        key: 'setLanguage',
+        value: function setLanguage(lang) {
+            this._language = lang;
+        }
+    }, {
+        key: 'getLanguage',
+        value: function getLanguage() {
+            return window.language || this._language || DEFAULT_LANGUAGE;
+        }
+    }, {
+        key: 'addText',
+        value: function addText(lang, tran) {
+            this._hash[lang] = (0, _Extensions.extend)(this._hash[lang] || {}, tran);
+            return this;
+        }
+    }, {
+        key: 'getText',
+        value: function getText(key) {
+            if (key && typeof key === 'string') {
+                var locale = this._hash[this.getLanguage()];
+                if (locale) {
+                    return eval('locale.' + key);
+                }
+            }
+            return null;
+        }
+    }]);
+
+    return Translations;
+}();
+
+exports.Translations = Translations;
+exports.DEFAULT_LANGUAGE = DEFAULT_LANGUAGE;
+
+/***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5129,11 +5129,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(204);
+__webpack_require__(205);
 
-var _Tristate = __webpack_require__(175);
+var _Tristate = __webpack_require__(176);
 
-var _EventTarget2 = __webpack_require__(174);
+var _EventTarget2 = __webpack_require__(175);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5324,7 +5324,8 @@ var DataGrid = function (_EventTarget) {
                 case 'button':
                     return '<td' + align + '><i class="table-list-button ' + field.button + '" /></td>';
                 case 'boolean':
-                    var cell = field.yes || field.no ? '<i class="table-list-button ' + field.icon + ' ' + (item[col] ? field.yes || '' : field.no || '') + '"></i>' : '' + (item[col] ? '+' : '');
+                    var val = typeof field.formatter === 'function' ? field.formatter(item) : item[col];
+                    var cell = field.yes || field.no ? '<i class="table-list-button ' + field.icon + ' ' + (val ? field.yes || '' : field.no || '') + '"></i>' : '' + (val ? '+' : '');
                     return '<td' + align + '>' + cell + '</td>';
                 case 'color':
                     return '<td' + align + '>\n                        <div class="table-list-color" style="' + (typeof item[col] !== 'undefined' ? 'border-color: ' + item[col] : 'border: none') + ' ">&nbsp;</div>\n                    </td>';
@@ -5332,8 +5333,8 @@ var DataGrid = function (_EventTarget) {
                     if (typeof field.styler === 'function') {
                         return '<td' + align + '><i class="' + field.styler(item) + '"></i></td>';
                     } else {
-                        var val = (typeof field.formatter === 'function' ? field.formatter(item) : item[col]) || field.default;
-                        return '<td' + align + '><span>' + val + '</span>' + (field.edit ? '<i class="cell-edit"></i>' : '') + '</td>';
+                        var _val = typeof field.formatter === 'function' ? field.formatter(item) : item[col];
+                        return '<td' + align + '><span>' + _val + '</span>' + (field.edit ? '<i class="cell-edit"></i>' : '') + '</td>';
                     }
 
             }
@@ -5826,11 +5827,11 @@ exports.Panel = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(206);
+__webpack_require__(207);
 
-var _Translations = __webpack_require__(1);
+var _Translations = __webpack_require__(2);
 
-var _EventTarget2 = __webpack_require__(177);
+var _EventTarget2 = __webpack_require__(178);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6067,7 +6068,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Translations = __webpack_require__(1);
+var _Translations = __webpack_require__(2);
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
@@ -6922,15 +6923,15 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-__webpack_require__(186);
+__webpack_require__(187);
 
 var _Panel2 = __webpack_require__(5);
 
 var _Satellites = __webpack_require__(6);
 
-var _Translations = __webpack_require__(1);
+var _Translations = __webpack_require__(2);
 
-var _Utils = __webpack_require__(2);
+var _Utils = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7259,17 +7260,17 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _DataGrid = __webpack_require__(4);
 
-__webpack_require__(187);
+__webpack_require__(188);
 
 var _EventTarget2 = __webpack_require__(3);
 
 var _Panel = __webpack_require__(5);
 
-var _Translations = __webpack_require__(1);
+var _Translations = __webpack_require__(2);
 
-var _ColorPicker = __webpack_require__(172);
+var _ColorPicker = __webpack_require__(173);
 
-var _Utils = __webpack_require__(2);
+var _Utils = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7459,16 +7460,20 @@ var DrawnObjects = function (_EventTarget) {
             var event = document.createEvent('Event');
             switch (name) {
                 case 'visible':
-                    var btn = cell.querySelector('i');
-                    if (btn.classList.contains('search-visibility-off')) {
-                        btn.classList.remove('search-visibility-off');
-                        btn.classList.add('search-visibility-on');
-                        item.visible = false;
-                    } else {
-                        btn.classList.remove('search-visibility-on');
-                        btn.classList.add('search-visibility-off');
-                        item.visible = true;
-                    }
+                    // let btn = cell.querySelector('i');
+                    // if (btn.classList.contains('search-visibility-off')) {
+                    //     btn.classList.remove('search-visibility-off');
+                    //     btn.classList.add('search-visibility-on');
+                    //     item.visible = false;
+                    // }
+                    // else {
+                    //     btn.classList.remove('search-visibility-on');
+                    //     btn.classList.add('search-visibility-off');
+
+                    // }   
+                    item.visible = !item.visible;
+                    var id = item[_DataGrid.ENUM_ID];
+                    this._grid.redrawRow(id, item);
 
                     event.initEvent('check', false, false);
                     event.detail = item;
@@ -7627,9 +7632,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _EventTarget2 = __webpack_require__(3);
 
-__webpack_require__(189);
+__webpack_require__(190);
 
-var _Translations = __webpack_require__(1);
+var _Translations = __webpack_require__(2);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7761,9 +7766,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ResultList = undefined;
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(190);
+__webpack_require__(191);
 
 var _DataGrid = __webpack_require__(4);
 
@@ -7771,9 +7778,9 @@ var _Satellites = __webpack_require__(6);
 
 var _EventTarget2 = __webpack_require__(3);
 
-var _Utils = __webpack_require__(2);
+var _Utils = __webpack_require__(1);
 
-var _Translations = __webpack_require__(1);
+var _Translations = __webpack_require__(2);
 
 var _DataGrid2 = __webpack_require__(4);
 
@@ -7840,6 +7847,7 @@ var ResultList = function (_EventTarget) {
         _this._onRowMouseOut = _this._onRowMouseOut.bind(_this);
         _this._onSort = _this._onSort.bind(_this);
         _this._activeInfo = null;
+        _this._disableMouseHover = false;
         _this._fields = {
             'visible': {
                 type: 'string',
@@ -7869,7 +7877,17 @@ var ResultList = function (_EventTarget) {
                 sortable: true,
                 default: false,
                 tooltip: T.getText('results.stereo'),
-                width: 32
+                width: 32,
+                formatter: function formatter(item) {
+                    switch (_typeof(item.stereo)) {
+                        case 'string':
+                            return item.stereo !== 'NONE';
+                        case 'boolean':
+                            return item.stereo;
+                        default:
+                            return false;
+                    }
+                }
             },
             'platform': {
                 type: 'string',
@@ -7983,9 +8001,14 @@ var ResultList = function (_EventTarget) {
             }
         };
 
-        _this._grid = new _DataGrid.DataGrid(_this._container, { fields: _this.fields, filter: function filter(item) {
+        _this._grid = new _DataGrid.DataGrid(_this._container, {
+            fields: _this.fields,
+            filter: function filter(item) {
                 return Boolean(item.checked);
-            }, indexBy: 'gmx_id' });
+            },
+            sortBy: { field: 'acqdate', asc: false },
+            indexBy: 'gmx_id'
+        });
         _this._grid.addEventListener('cell:click', _this._onCellClick);
         _this._grid.addEventListener('column:click', _this._onColumnClick);
         _this._grid.addEventListener('row:mouseover', _this._onRowMouseOver);
@@ -8155,18 +8178,22 @@ var ResultList = function (_EventTarget) {
     }, {
         key: '_onRowMouseOver',
         value: function _onRowMouseOver(e) {
-            var event = document.createEvent('Event');
-            event.initEvent('mouseover', false, false);
-            event.detail = e.detail;
-            this.dispatchEvent(event);
+            if (!this._disableMouseHover) {
+                var event = document.createEvent('Event');
+                event.initEvent('mouseover', false, false);
+                event.detail = e.detail;
+                this.dispatchEvent(event);
+            }
         }
     }, {
         key: '_onRowMouseOut',
         value: function _onRowMouseOut(e) {
-            var event = document.createEvent('Event');
-            event.initEvent('mouseout', false, false);
-            event.detail = e.detail;
-            this.dispatchEvent(event);
+            if (!this._disableMouseHover) {
+                var event = document.createEvent('Event');
+                event.initEvent('mouseout', false, false);
+                event.detail = e.detail;
+                this.dispatchEvent(event);
+            }
         }
     }, {
         key: 'hilite',
@@ -8216,7 +8243,9 @@ var ResultList = function (_EventTarget) {
     }, {
         key: 'redrawItem',
         value: function redrawItem(id, item) {
+            this._disableMouseHover = true;
             this._grid.redrawRow(id, item);
+            this._disableMouseHover = false;
         }
     }, {
         key: 'fields',
@@ -8639,7 +8668,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _Server2 = __webpack_require__(168);
+var _Server2 = __webpack_require__(169);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8887,7 +8916,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _EventTarget2 = __webpack_require__(9);
 
-__webpack_require__(203);
+__webpack_require__(204);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -20908,7 +20937,7 @@ exports.About = undefined;
 
 var _Panel2 = __webpack_require__(5);
 
-__webpack_require__(185);
+__webpack_require__(186);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -20981,9 +21010,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.FavoritesList = undefined;
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(188);
+__webpack_require__(189);
 
 var _DataGrid = __webpack_require__(4);
 
@@ -20991,9 +21022,9 @@ var _Satellites = __webpack_require__(6);
 
 var _EventTarget2 = __webpack_require__(3);
 
-var _Utils = __webpack_require__(2);
+var _Utils = __webpack_require__(1);
 
-var _Translations = __webpack_require__(1);
+var _Translations = __webpack_require__(2);
 
 var _DataGrid2 = __webpack_require__(4);
 
@@ -21026,6 +21057,7 @@ var FavoritesList = function (_EventTarget) {
         _this._onRowMouseOut = _this._onRowMouseOut.bind(_this);
         _this._onSort = _this._onSort.bind(_this);
         _this._activeInfo = null;
+        _this._disableMouseHover = false;
         _this._fields = {
             'selected': {
                 type: 'selector',
@@ -21058,7 +21090,17 @@ var FavoritesList = function (_EventTarget) {
                 yes: 'search-stereo',
                 sortable: true,
                 default: false,
-                tooltip: T.getText('results.stereo')
+                tooltip: T.getText('results.stereo'),
+                formatter: function formatter(item) {
+                    switch (_typeof(item.stereo)) {
+                        case 'string':
+                            return item.stereo !== 'NONE';
+                        case 'boolean':
+                            return item.stereo;
+                        default:
+                            return false;
+                    }
+                }
             },
             'platform': {
                 type: 'string',
@@ -21157,7 +21199,11 @@ var FavoritesList = function (_EventTarget) {
 
         };
 
-        _this._grid = new _DataGrid.DataGrid(_this._container, { fields: _this.fields, indexBy: 'gmx_id' });
+        _this._grid = new _DataGrid.DataGrid(_this._container, {
+            fields: _this.fields,
+            sortBy: { field: 'acqdate', asc: false },
+            indexBy: 'gmx_id'
+        });
         _this._grid.addEventListener('cell:click', _this._onCellClick);
         _this._grid.addEventListener('column:click', _this._onColumnClick);
         _this._grid.addEventListener('row:mouseover', _this._onRowMouseOver);
@@ -21293,18 +21339,22 @@ var FavoritesList = function (_EventTarget) {
     }, {
         key: '_onRowMouseOver',
         value: function _onRowMouseOver(e) {
-            var event = document.createEvent('Event');
-            event.initEvent('mouseover', false, false);
-            event.detail = e.detail;
-            this.dispatchEvent(event);
+            if (!this._disableMouseHover) {
+                var event = document.createEvent('Event');
+                event.initEvent('mouseover', false, false);
+                event.detail = e.detail;
+                this.dispatchEvent(event);
+            }
         }
     }, {
         key: '_onRowMouseOut',
         value: function _onRowMouseOut(e) {
-            var event = document.createEvent('Event');
-            event.initEvent('mouseout', false, false);
-            event.detail = e.detail;
-            this.dispatchEvent(event);
+            if (!this._disableMouseHover) {
+                var event = document.createEvent('Event');
+                event.initEvent('mouseout', false, false);
+                event.detail = e.detail;
+                this.dispatchEvent(event);
+            }
         }
     }, {
         key: 'hilite',
@@ -21355,7 +21405,9 @@ var FavoritesList = function (_EventTarget) {
     }, {
         key: 'redrawItem',
         value: function redrawItem(id, item) {
+            this._disableMouseHover = true;
             this._grid.redrawRow(id, item);
+            this._disableMouseHover = false;
         }
     }, {
         key: 'fields',
@@ -21413,7 +21465,7 @@ exports.GmxLayerDataProvider = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Utils = __webpack_require__(2);
+var _Utils = __webpack_require__(1);
 
 var _EventTarget2 = __webpack_require__(3);
 
@@ -21530,9 +21582,9 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Index = __webpack_require__(167);
+var _Index = __webpack_require__(168);
 
-var _Utils = __webpack_require__(2);
+var _Utils = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -21771,19 +21823,21 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _EventTarget2 = __webpack_require__(3);
 
-var _Quicklook = __webpack_require__(163);
+var _Quicklook = __webpack_require__(164);
 
 var _DataGrid = __webpack_require__(4);
 
-var _Translations = __webpack_require__(1);
+var _CompositeLayer = __webpack_require__(163);
 
-var _Utils = __webpack_require__(2);
+var _Translations = __webpack_require__(2);
+
+var _Utils = __webpack_require__(1);
 
 var _Extensions = __webpack_require__(7);
 
-__webpack_require__(191);
+__webpack_require__(192);
 
-var _Utils2 = __webpack_require__(2);
+var _Utils2 = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -21802,7 +21856,7 @@ var Colors = {
 };
 
 var layerAttributes = ["hover", "selected", "visible", "result", "cart", "sceneid", "acqdate", "acqtime", "cloudness", "tilt", "sunelev", "stereo", "url", "x1", "y1", "x2", "y2", "x3", "y3", "x4", "y4", "volume", "platform", "spot5_a_exists", "spot5_b_exists", "islocal", "product", "gmx_id", "sensor", "local_exists", "spot5id", "stidx"];
-var layerAttrTypes = ["boolean", "boolean", "boolean", "boolean", "boolean", "string", "date", "time", "float", "float", "float", "string", "string", "float", "float", "float", "float", "float", "float", "float", "float", "string", "string", "boolean", "boolean", "boolean", "boolean", "integer", "string", "boolean", "string", "integer"];
+var layerAttrTypes = ["boolean", "boolean", "string", "boolean", "boolean", "string", "date", "time", "float", "float", "float", "string", "string", "float", "float", "float", "float", "float", "float", "float", "float", "string", "string", "boolean", "boolean", "boolean", "boolean", "integer", "string", "boolean", "string", "integer"];
 
 function properties_to_item(properties) {
     return properties.slice(1, properties.length - 1).reduce(function (a, v, i) {
@@ -21828,41 +21882,6 @@ function properties_to_item(properties) {
     }, {});
 }
 
-L.gmx.VectorLayer.prototype.toItemList = function () {
-    var items = this.getDataManager()._items;
-    return Object.keys(items).map(function (id) {
-        return items[id].properties;
-    }).map(properties_to_item);
-};
-
-L.gmx.VectorLayer.prototype.getFilteredItems = function (filter) {
-    return this.toItemList().filter(function (item) {
-        return typeof filter !== 'function' || filter(item);
-    });
-};
-
-L.gmx.VectorLayer.prototype.mergeData = function (data) {
-    var dm = this.getDataManager();
-    var cache = Object.keys(dm._items).reduce(function (a, gmx_id) {
-        a[gmx_id] = (0, _Extensions.copy)(dm._items[gmx_id].properties);
-        return a;
-    }, {});
-    var items = data.reduce(function (a, value) {
-        var gmx_id = value[0];
-        if (cache[gmx_id]) {
-            cache[gmx_id][result_index] = true;
-        } else {
-            a[gmx_id] = value;
-        }
-        return a;
-    }, cache);
-    var res = Object.keys(items).map(function (gmx_id) {
-        return items[gmx_id];
-    });
-    this.removeData();
-    this.addData(res);
-};
-
 function getBounds(items) {
     return items.reduce(function (a, item) {
         var x2 = item.x2,
@@ -21882,27 +21901,6 @@ function getBounds(items) {
     }, null);
 }
 
-// L.gmx.DataManager.prototype.removeData = function (data) {
-//     this._itemsBounds = null;
-//     var vTile = this.processingTile;
-//     if (vTile) {                
-//         var chkKeys = (data || vTile.data).reduce(function(a,item) {
-//             var id = item[0];
-//             a[id] = true;
-//             delete this._items[id];
-//             return a;
-//         }.bind(this), {});
-
-//         this._removeDataFromObservers(chkKeys);
-//         vTile.removeData(chkKeys, true);
-//         this._updateItemsFromTile(vTile);
-
-//         this._triggerObservers();
-//     }
-
-//     return vTile;
-// };
-
 var sceneid_index = layerAttributes.indexOf('sceneid') + 1;
 var result_index = layerAttributes.indexOf('result') + 1;
 var cart_index = layerAttributes.indexOf('cart') + 1;
@@ -21911,23 +21909,6 @@ var visible_index = layerAttributes.indexOf('visible') + 1;
 var hover_index = layerAttributes.indexOf('hover') + 1;
 
 var qlCache = {};
-
-function prefetch_ql(sceneid) {
-    return new Promise(function (resolve, reject) {
-
-        var img = new Image();
-        img.crossOrigin = "Anonymous";
-        img.onload = function () {
-            qlCache[sceneid] = true;
-            resolve();
-        };
-        img.onerror = function () {
-            delete qlCache[sceneid];
-            reject();
-        };
-        img.src = 'http://search.kosmosnimki.ru/QuickLookImage.ashx?id=' + sceneid + '&srs=3857';
-    });
-}
 
 var ResultsController = function (_EventTarget) {
     _inherits(ResultsController, _EventTarget);
@@ -21957,161 +21938,69 @@ var ResultsController = function (_EventTarget) {
         _this._drawings = {};
         _this._currentTab = '';
         _this._currentID = null;
-        _this._update_ql = _this._update_ql.bind(_this);
-        _this._layer = L.gmx.createLayer({
-            properties: {
-                type: 'Vector',
-                visible: true,
-                identityField: 'gmx_id',
-                GeometryType: 'polygon',
-                // IsRasterCatalog: true,
-                RCMinZoomForRasters: 3,
-                Quicklook: '{"template":"http://search.kosmosnimki.ru/QuickLookImage.ashx?id=[sceneid]","minZoom":3,"X1":"x1","Y1":"y1","X2":"x2","Y2":"y2","X3":"x3","Y3":"y3","X4":"x4","Y4":"y4"}',
-                MetaProperties: {
-                    quicklookPlatform: {
-                        Type: "String",
-                        Value: "image"
-                    }
-                },
-                srs: 3857,
-                attributes: layerAttributes,
-                attrTypes: layerAttrTypes,
-                styles: [{
-                    MinZoom: 3,
-                    MaxZoom: 17,
-                    DisableBalloonOnClick: true,
-                    DisableBalloonOnMouseMove: true,
-                    RenderStyle: {
-                        outline: { color: Colors.Default, thickness: 1 },
-                        fill: { color: 0xfff, opacity: 0 }
-                    }
-                }]
-            },
-            geometry: null
-        }).addTo(_this._map);
-        _this._layer.disableFlip();
-        _this._layer.setFilter(function (item) {
-            var obj = properties_to_item(item.properties);
-            var filtered = false;
-            if (typeof _this._filter === 'function') {
-                filtered = _this._filter(obj);
-            } else {
-                filtered = true;
-            }
+
+        _this._compositeLayer = new _CompositeLayer.CompositeLayer({ map: _this._map });
+        _this._compositeLayer.addEventListener('click', function (e) {
+            var _e$detail = e.detail,
+                id = _e$detail.id,
+                show = _e$detail.show;
+
+            var obj = _this._compositeLayer.getItem(id);
+            _this._update_list_item(id, obj);
             switch (_this._currentTab) {
                 case 'results':
-                    return item.properties[result_index] && filtered;
+                    if (show) {
+                        if (_this._currentID) {
+                            _this._resultList.dim(_this._currentID);
+                        }
+                        _this._currentID = id;
+                        _this._resultList.hilite(id);
+                        _this._resultList.scrollToRow(id);
+                    } else {
+                        _this._currentID = null;
+                    }
+                    break;
                 case 'favorites':
-                    return item.properties[cart_index] && filtered;
-                case 'search':
-                    return false;
-                default:
-                    return true;
-            }
-        });
-        _this._layer.setStyleHook(function (item) {
-            var color = Colors.Default;
-            var lineWidth = 1;
-            if (item.properties[hover_index]) {
-                color = item.properties[cart_index] ? Colors.CartHilite : Colors.Hilite;
-                lineWidth = 3;
-            } else {
-                color = item.properties[cart_index] ? Colors.Cart : Colors.Default;
-            }
-            var sceneid = item.properties[sceneid_index];
-            var skipRasters = item.properties[visible_index] === 'hidden';
-            if (!qlCache[sceneid] && !skipRasters) {
-                skipRasters = true;
-            }
-            return { skipRasters: skipRasters, strokeStyle: color, lineWidth: lineWidth };
-        });
-
-        _this._layer.on('click', function (e) {
-            var _e$gmx = e.gmx,
-                id = _e$gmx.id,
-                layer = _e$gmx.layer,
-                target = _e$gmx.target;
-
-            var show = null;
-            switch (target.properties[visible_index]) {
-                case 'visible':
-                case 'loading':
-                    show = false;
+                    if (show) {
+                        if (_this._currentID) {
+                            _this._favoritesList.dim(_this._currentID);
+                        }
+                        _this._currentID = id;
+                        _this._favoritesList.hilite(id);
+                        _this._favoritesList.scrollToRow(id);
+                    } else {
+                        _this._currentID = null;
+                    }
                     break;
-                case 'hidden':
                 default:
-                    show = true;
                     break;
             }
-            _this._show_ql(id, show).then(function () {
-                var item = null;
-                switch (_this._currentTab) {
-                    case 'results':
-                        if (show) {
-                            if (_this._currentID) {
-                                _this._resultList.dim(_this._currentID);
-                            }
-                            _this._currentID = id;
-                            _this._resultList.hilite(id);
-                            _this._resultList.scrollToRow(id);
-                        } else {
-                            _this._currentID = null;
-                        }
-                        break;
-                    case 'favorites':
-                        if (show) {
-                            if (_this._currentID) {
-                                _this._favoritesList.dim(_this._currentID);
-                            }
-                            _this._currentID = id;
-                            _this._favoritesList.hilite(id);
-                            _this._favoritesList.scrollToRow(id);
-                        } else {
-                            _this._currentID = null;
-                        }
-                        break;
-                    default:
-                        break;
-                }
-                // this._highlight(id, show);
-            });
-        }).on('mouseover', function (e) {
-            var _e$gmx2 = e.gmx,
-                id = _e$gmx2.id,
-                layer = _e$gmx2.layer,
-                target = _e$gmx2.target;
-
-            target.properties[hover_index] = true;
-            _this._layer.redrawItem(id);
+        });
+        _this._compositeLayer.addEventListener('mouseover', function (e) {
+            var id = e.detail;
             _this._highlight(id, true);
-        }).on('mouseout', function (e) {
-            var _e$gmx3 = e.gmx,
-                id = _e$gmx3.id,
-                layer = _e$gmx3.layer,
-                target = _e$gmx3.target;
-
-            target.properties[hover_index] = false;
-            _this._layer.redrawItem(id);
+        });
+        _this._compositeLayer.addEventListener('mouseout', function (e) {
+            var id = e.detail;
             _this._highlight(id, false);
         });
+
         _this._resultList.addEventListener('cart', function (e) {
             var gmx_id = e.detail.gmx_id;
 
-            var item = _this._layer.getDataManager()._items[gmx_id];
-            item.properties[cart_index] = !item.properties[cart_index];
-            _this._layer.redrawItem(gmx_id);
-
-            _this._resultList.redrawItem(gmx_id, properties_to_item(item.properties));
+            var item = _this._compositeLayer.addToCart(gmx_id);
+            _this._resultList.redrawItem(gmx_id, item);
 
             var event = document.createEvent('Event');
             event.initEvent('cart', false, false);
             event.detail = item;
             _this.dispatchEvent(event);
         });
+
         _this._resultList.addEventListener('visible', function (e) {
-            var _e$detail = e.detail,
-                gmx_id = _e$detail.gmx_id,
-                visible = _e$detail.visible;
+            var _e$detail2 = e.detail,
+                gmx_id = _e$detail2.gmx_id,
+                visible = _e$detail2.visible;
 
             var show = false;
             switch (visible) {
@@ -22124,6 +22013,7 @@ var ResultsController = function (_EventTarget) {
                     show = true;
                     break;
             }
+
             _this._show_ql(gmx_id, show).then(function () {
                 var event = document.createEvent('Event');
                 event.initEvent('visible', false, false);
@@ -22131,10 +22021,10 @@ var ResultsController = function (_EventTarget) {
             });
         });
         _this._resultList.addEventListener('info', function (e) {
-            var _e$detail2 = e.detail,
-                item = _e$detail2.item,
-                top = _e$detail2.top,
-                button = _e$detail2.button;
+            var _e$detail3 = e.detail,
+                item = _e$detail3.item,
+                top = _e$detail3.top,
+                button = _e$detail3.button;
             var _this$_resultList$bbo = _this._resultList.bbox,
                 left = _this$_resultList$bbo.left,
                 width = _this$_resultList$bbo.width;
@@ -22148,29 +22038,24 @@ var ResultsController = function (_EventTarget) {
                 _this._imageDetails.show({ left: left + width + 20, top: top });
             }
         });
+
         _this._resultList.addEventListener('mouseover', function (e) {
             var gmx_id = e.detail.item.gmx_id;
 
-            var item = _this._layer.getDataManager()._items[gmx_id];
-            item.properties[hover_index] = true;
-            _this._layer.redrawItem(gmx_id);
-            // this._layer.bringToTopItem(gmx_id);
+            _this._compositeLayer.setHover(gmx_id, true);
         });
 
         _this._resultList.addEventListener('mouseout', function (e) {
             var gmx_id = e.detail.item.gmx_id;
 
-            var item = _this._layer.getDataManager()._items[gmx_id];
-            item.properties[hover_index] = false;
-            _this._layer.redrawItem(gmx_id);
-            // this._layer.bringToBottomItem(gmx_id);
+            _this._compositeLayer.setHover(gmx_id, false);
         });
 
         var zoom_to_bounds = function zoom_to_bounds(xmin, ymin, xmax, ymax) {
             var ne = L.latLng(ymax, xmax);
             var sw = L.latLng(ymin, xmin);
             _this._map.fitBounds(L.latLngBounds(sw, ne), { animate: false });
-            _this._map.invalidateSize();
+            // this._map.invalidateSize();
         };
 
         _this._resultList.addEventListener('click', function (e) {
@@ -22188,17 +22073,12 @@ var ResultsController = function (_EventTarget) {
         _this._resultList.addEventListener('cart:all', function (e) {
             var state = e.detail.state;
 
-            var items = _this._layer.getDataManager()._items;
-            Object.keys(items).forEach(function (id) {
-                var item = items[id];
-                if (item.properties[result_index]) {
-                    item.properties[cart_index] = true;
-                }
-            });
-            _this._layer.repaint();
-            _this._resultList.items = _this._layer.getFilteredItems(function (item) {
+
+            _this._compositeLayer.addAllToCart();
+            _this._resultList.items = _this._compositeLayer.getFilteredItems(function (item) {
                 return item.result;
             });
+
             var event = document.createEvent('Event');
             event.initEvent('cart', false, false);
             _this.dispatchEvent(event);
@@ -22211,14 +22091,11 @@ var ResultsController = function (_EventTarget) {
         });
 
         _this._favoritesList.addEventListener('selected', function (e) {
-            var _e$detail3 = e.detail,
-                gmx_id = _e$detail3.gmx_id,
-                selected = _e$detail3.selected;
+            var _e$detail4 = e.detail,
+                gmx_id = _e$detail4.gmx_id,
+                selected = _e$detail4.selected;
 
-            var item = _this._layer.getDataManager()._items[gmx_id];
-            item.properties[selected_index] = selected;
-            _this._layer.redrawItem(gmx_id);
-
+            _this._compositeLayer.setSelected(gmx_id, selected);
             var event = document.createEvent('Event');
             event.initEvent('selected', false, false);
             event.detail = e.detail;
@@ -22226,9 +22103,9 @@ var ResultsController = function (_EventTarget) {
         });
 
         _this._favoritesList.addEventListener('visible', function (e) {
-            var _e$detail4 = e.detail,
-                gmx_id = _e$detail4.gmx_id,
-                visible = _e$detail4.visible;
+            var _e$detail5 = e.detail,
+                gmx_id = _e$detail5.gmx_id,
+                visible = _e$detail5.visible;
 
             var show = false;
             switch (visible) {
@@ -22242,7 +22119,6 @@ var ResultsController = function (_EventTarget) {
                     break;
             }
             _this._show_ql(gmx_id, show).then(function () {
-                // this._resultList.items = this._layer.getFilteredItems(item => item.result);
                 var event = document.createEvent('Event');
                 event.initEvent('visible', false, false);
                 _this.dispatchEvent(event);
@@ -22251,7 +22127,7 @@ var ResultsController = function (_EventTarget) {
 
         _this._favoritesList.addEventListener('visible:all', function (e) {
             var show = e.detail;
-            var items = _this._layer.getDataManager()._items;
+            var items = _this._compositeLayer.vectors;
             Object.keys(items).filter(function (id) {
                 return items[id].properties[cart_index];
             }).forEach(function (id) {
@@ -22266,26 +22142,20 @@ var ResultsController = function (_EventTarget) {
         _this._favoritesList.addEventListener('mouseover', function (e) {
             var gmx_id = e.detail.item.gmx_id;
 
-            var item = _this._layer.getDataManager()._items[gmx_id];
-            item.properties[hover_index] = true;
-            _this._layer.redrawItem(gmx_id);
-            // this._layer.bringToTopItem(gmx_id);
+            _this._compositeLayer.setHover(gmx_id, true);
         });
 
         _this._favoritesList.addEventListener('mouseout', function (e) {
             var gmx_id = e.detail.item.gmx_id;
 
-            var item = _this._layer.getDataManager()._items[gmx_id];
-            item.properties[hover_index] = false;
-            _this._layer.redrawItem(gmx_id);
-            // this._layer.bringToBottomItem(gmx_id);
+            _this._compositeLayer.setHover(gmx_id, false);
         });
 
         _this._favoritesList.addEventListener('info', function (e) {
-            var _e$detail5 = e.detail,
-                item = _e$detail5.item,
-                top = _e$detail5.top,
-                button = _e$detail5.button;
+            var _e$detail6 = e.detail,
+                item = _e$detail6.item,
+                top = _e$detail6.top,
+                button = _e$detail6.button;
             var _this$_favoritesList$ = _this._favoritesList.bbox,
                 left = _this$_favoritesList$.left,
                 width = _this$_favoritesList$.width;
@@ -22330,10 +22200,10 @@ var ResultsController = function (_EventTarget) {
         }.bind(_this));
 
         _this._drawnObjects.addEventListener('edit', function (e) {
-            var _e$detail6 = e.detail,
-                id = _e$detail6.id,
-                name = _e$detail6.name,
-                color = _e$detail6.color;
+            var _e$detail7 = e.detail,
+                id = _e$detail7.id,
+                name = _e$detail7.name,
+                color = _e$detail7.color;
             var drawing = _this._drawings[id].drawing;
 
             _this._drawings[id].name = name;
@@ -22371,9 +22241,9 @@ var ResultsController = function (_EventTarget) {
         });
 
         _this._drawnObjects.addEventListener('check', function (e) {
-            var _e$detail7 = e.detail,
-                id = _e$detail7.id,
-                visible = _e$detail7.visible;
+            var _e$detail8 = e.detail,
+                id = _e$detail8.id,
+                visible = _e$detail8.visible;
 
             _this.showDrawing(id, visible);
             _this.updateDrawnObjects();
@@ -22387,9 +22257,9 @@ var ResultsController = function (_EventTarget) {
         });
 
         _this._drawnObjects.addEventListener('fit', function (e) {
-            var _e$detail8 = e.detail,
-                id = _e$detail8.id,
-                visible = _e$detail8.visible;
+            var _e$detail9 = e.detail,
+                id = _e$detail9.id,
+                visible = _e$detail9.visible;
 
             var item = _this._drawings[id];
             if (visible && item) {
@@ -22400,11 +22270,11 @@ var ResultsController = function (_EventTarget) {
                 if (type === 'Point') {
                     var center = L.latLng(coordinates[1], coordinates[0]);
                     _this._map.setView(center);
-                    _this._map.invalidateSize();
+                    // this._map.invalidateSize();
                 } else {
                     var bounds = item.drawing.getBounds();
                     _this._map.fitBounds(bounds, { animate: false });
-                    _this._map.invalidateSize();
+                    // this._map.invalidateSize();
                 }
             }
         });
@@ -22428,19 +22298,6 @@ var ResultsController = function (_EventTarget) {
     }
 
     _createClass(ResultsController, [{
-        key: '_process_ql',
-        value: function _process_ql(id, show) {
-            this._layer.redrawItem(id);
-            if (show) {
-                this._layer.bringToTopItem(id);
-            } else {
-                this._layer.bringToBottomItem(id);
-            }
-            var event = document.createEvent('Event');
-            event.initEvent('visible', false, false);
-            this.dispatchEvent(event);
-        }
-    }, {
         key: '_highlight',
         value: function _highlight(gmx_id, hover) {
             switch (this._currentTab) {
@@ -22464,17 +22321,13 @@ var ResultsController = function (_EventTarget) {
         }
     }, {
         key: '_update_list_item',
-        value: function _update_list_item(item, state) {
-            var gmx_id = item.properties[0];
-            item.properties[visible_index] = state;
-            // this._layer.redrawItem(gmx_id);
-            var obj = properties_to_item(item.properties);
+        value: function _update_list_item(id, item) {
             switch (this._currentTab) {
                 case 'results':
-                    this._resultList.redrawItem(gmx_id, obj);
+                    this._resultList.redrawItem(id, item);
                     break;
                 case 'favorites':
-                    this._favoritesList.redrawItem(gmx_id, obj);
+                    this._favoritesList.redrawItem(id, item);
                     break;
                 default:
                     break;
@@ -22485,22 +22338,18 @@ var ResultsController = function (_EventTarget) {
         value: function _show_ql(id, show) {
             var _this2 = this;
 
-            return new Promise(function (resolve, reject) {
-                var item = _this2._layer.getDataManager()._items[id];
-                if (show && item.properties[visible_index] === 'hidden') {
-                    _this2._update_list_item(item, 'loading');
-                    prefetch_ql(item.properties[sceneid_index]).then(function () {
-                        _this2._update_list_item(item, 'visible');
-                        _this2._process_ql(id, show);
+            return new Promise(function (resolve) {
+                if (_this2._compositeLayer.setVisible(id, show)) {
+                    _this2._update_list_item(id, _this2._compositeLayer.getItem(id));
+                    _this2._compositeLayer.showQuicklook(id, show).then(function () {
+                        _this2._update_list_item(id, _this2._compositeLayer.getItem(id));
+                        var event = document.createEvent('Event');
+                        event.initEvent('visible', false, false);
+                        _this2.dispatchEvent(event);
                         resolve();
-                    }).catch(function () {
-                        _this2._update_list_item(item, 'failed');
-                        resolve();
+                    }).catch(function (e) {
+                        return console.log(e);
                     });
-                } else if (!show && item.properties[visible_index] !== 'hidden') {
-                    _this2._update_list_item(item, 'hidden');
-                    _this2._process_ql(id, show);
-                    resolve();
                 }
             });
         }
@@ -22512,37 +22361,7 @@ var ResultsController = function (_EventTarget) {
                 types = _ref4.types;
             var activeTabId = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'results';
 
-            // "hover", "selected", "visible", "result", "cart"
-            qlCache = {};
-            var idx = fields.indexOf('gmx_id');
-            var data = values.reduce(function (a, item) {
-                var value = layerAttributes.reduce(function (b, k) {
-                    var i = fields.indexOf(k);
-                    if (i < 0) {
-                        switch (k) {
-                            case 'hover':
-                            case 'selected':
-                            case 'cart':
-                                return b.concat(false);
-                            case 'result':
-                                return b.concat(true);
-                            case 'acqtime':
-                                return b.concat(null);
-                            case 'visible':
-                                return b.concat('hidden');
-                        }
-                    } else {
-                        return b.concat(item[i]);
-                    }
-                }, []);
-                value.unshift(item[idx]);
-                value.push(item[item.length - 1]);
-                a.push(value);
-                return a;
-            }, []);
-
-            this._layer.mergeData(data);
-
+            this._compositeLayer.setData({ fields: fields, values: values }, activeTabId);
             var event = document.createEvent('Event');
             event.initEvent('result:done', false, false);
             event.detail = { activeTabId: activeTabId };
@@ -22552,52 +22371,58 @@ var ResultsController = function (_EventTarget) {
         key: 'hideContours',
         value: function hideContours() {
             this._currentTab = 'search';
-            this._layer.repaint();
+            this._compositeLayer.currentTab = this._currentTab;
+            this._compositeLayer.redraw();
         }
     }, {
         key: 'showResults',
         value: function showResults() {
             this._currentTab = 'results';
-            this._layer.repaint();
-            this._resultList.items = this._layer.getFilteredItems(function (item) {
+            this._compositeLayer.currentTab = this._currentTab;
+            this._compositeLayer.redraw();
+            this._resultList.items = this._compositeLayer.getFilteredItems(function (item) {
                 return item.result;
             });
-            this._resultList.items.forEach(this._update_ql);
+            // this._resultList.items.forEach(({gmx_id, visible}) => this._update_ql(gmx_id, visible));
         }
     }, {
         key: 'zoomToResults',
         value: function zoomToResults() {
-            var bounds = getBounds(this._layer.getFilteredItems(function (item) {
+            var bounds = getBounds(this._compositeLayer.getFilteredItems(function (item) {
                 return item.result;
             }));
-            this._map.fitBounds(bounds, { animate: false });
-            this._map.invalidateSize();
+            if (bounds) {
+                this._map.fitBounds(bounds, { animate: false });
+                // this._map.invalidateSize();
+            }
         }
     }, {
         key: 'zoomToFavorites',
         value: function zoomToFavorites() {
-            var bounds = getBounds(this._layer.getFilteredItems(function (item) {
+            var bounds = getBounds(this._compositeLayer.getFilteredItems(function (item) {
                 return item.cart;
             }));
-            this._map.fitBounds(bounds, { animate: false });
-            this._map.invalidateSize();
+            if (bounds) {
+                this._map.fitBounds(bounds, { animate: false });
+                // this._map.invalidateSize();
+            }
         }
     }, {
         key: 'showFavorites',
         value: function showFavorites() {
             this._currentTab = 'favorites';
-            this._layer.repaint();
-            this.favoritesList.items = this._layer.getFilteredItems(function (item) {
+            this._compositeLayer.currentTab = this._currentTab;
+            this._compositeLayer.redraw();
+            this.favoritesList.items = this._compositeLayer.getFilteredItems(function (item) {
                 return item.cart;
             });
-            this.favoritesList.items.forEach(this._update_ql);
+            // this.favoritesList.items.forEach(({gmx_id, visible}) => this._update_ql(gmx_id, visible));
         }
     }, {
         key: 'addVisibleToCart',
         value: function addVisibleToCart() {
-            var _this3 = this;
 
-            if (this._layer.getFilteredItems(function (item) {
+            if (this._compositeLayer.getFilteredItems(function (item) {
                 return item.result && item.visible === 'visible' || item.cart;
             }).length > window.MAX_CART_SIZE) {
                 var _event = document.createEvent('Event');
@@ -22606,14 +22431,7 @@ var ResultsController = function (_EventTarget) {
                 return;
             }
 
-            var items = this._layer.getDataManager()._items;
-            Object.keys(items).forEach(function (id) {
-                var item = items[id];
-                if (item.properties[visible_index] === 'visible') {
-                    item.properties[cart_index] = true;
-                    _this3._layer.redrawItem(item.id);
-                }
-            });
+            this._compositeLayer.addVisibleToCart();
 
             this.showResults();
 
@@ -22623,10 +22441,7 @@ var ResultsController = function (_EventTarget) {
         }
     }, {
         key: '_update_ql',
-        value: function _update_ql(item) {
-            var gmx_id = item.gmx_id,
-                visible = item.visible;
-
+        value: function _update_ql(id, visible) {
             var show = false;
             if (typeof visible === 'boolean') {
                 show = visible;
@@ -22642,24 +22457,13 @@ var ResultsController = function (_EventTarget) {
                         break;
                 }
             }
-            this._show_ql(gmx_id, show);
-            return item;
+            return this._show_ql(id, show);
         }
     }, {
         key: 'removeSelectedFavorites',
         value: function removeSelectedFavorites() {
-            var _this4 = this;
-
-            var items = this._layer.getDataManager()._items;
-            Object.keys(items).forEach(function (id) {
-                var item = items[id];
-                if (item.properties[cart_index] && item.properties[selected_index]) {
-                    item.properties[cart_index] = false;
-                    item.properties[selected_index] = false;
-                    _this4._layer.redrawItem(item.id);
-                }
-            });
-            this._favoritesList.items = this._layer.getFilteredItems(function (item) {
+            this._compositeLayer.removeSelectedFavorites();
+            this._favoritesList.items = this._compositeLayer.getFilteredItems(function (item) {
                 return item.cart;
             });
         }
@@ -22668,17 +22472,7 @@ var ResultsController = function (_EventTarget) {
         value: function clear() {
             this.resultList.items = [];
             this._downloadCache = [];
-            var items = this._layer.getDataManager()._items;
-            var toRemove = Object.keys(items).reduce(function (a, gmx_id) {
-                var item = items[gmx_id].properties;
-                if (item[cart_index]) {
-                    item[result_index] = false;
-                } else {
-                    a.push([gmx_id]);
-                }
-                return a;
-            }, []);
-            this._layer.removeData(toRemove);
+            this._compositeLayer.clear();
         }
     }, {
         key: 'createDrawing',
@@ -22761,7 +22555,7 @@ var ResultsController = function (_EventTarget) {
 
                 if (!editable) {
                     options.className = 'osm-layer';
-                    drawing.enableEdit();
+                    // drawing.enableEdit();
                     drawing.setOptions({
                         editable: editable,
                         lineStyle: {
@@ -22772,7 +22566,7 @@ var ResultsController = function (_EventTarget) {
                         },
                         pointStyle: { color: color }
                     });
-                    drawing.disableEdit();
+                    // drawing.disableEdit();
                 }
                 drawing.options.uuid = id;
                 object.drawing = drawing;
@@ -22857,10 +22651,10 @@ var ResultsController = function (_EventTarget) {
     }, {
         key: 'updateDrawnObjects',
         value: function updateDrawnObjects() {
-            var _this5 = this;
+            var _this3 = this;
 
             var objects = Object.keys(this._drawings).map(function (id) {
-                return _this5._drawings[id];
+                return _this3._drawings[id];
             });
             this._requestAdapter.geometries = objects.filter(function (obj) {
                 return obj.visible;
@@ -22914,16 +22708,12 @@ var ResultsController = function (_EventTarget) {
     }, {
         key: 'resultsCount',
         get: function get() {
-            return this._layer.getFilteredItems(function (item) {
-                return item.result;
-            }).length;
+            return this._compositeLayer.resultsCount;
         }
     }, {
         key: 'favoritesCount',
         get: function get() {
-            return this._layer.getFilteredItems(function (item) {
-                return item.cart;
-            }).length;
+            return this._compositeLayer.favoritesCount;
         }
     }, {
         key: 'count',
@@ -22940,45 +22730,30 @@ var ResultsController = function (_EventTarget) {
     }, {
         key: 'hasResults',
         get: function get() {
-            var items = this._layer.getDataManager()._items;
-            return Object.keys(items).some(function (id) {
-                var item = items[id];
-                return item.properties[result_index];
-            });
+            return this._compositeLayer.hasResults;
         }
     }, {
         key: 'hasVisibleResults',
         get: function get() {
-            var items = this._layer.getDataManager()._items;
-            return Object.keys(items).some(function (id) {
-                var item = items[id];
-                return item.properties[result_index] && item.properties[visible_index];
-            });
+            return this._compositeLayer.hasVisibleResults;
         }
     }, {
         key: 'hasFavoritesSelected',
         get: function get() {
-            var items = this._layer.getDataManager()._items;
-            return Object.keys(items).some(function (id) {
-                var item = items[id];
-                return item.properties[cart_index] && item.properties[selected_index];
-            });
+            return this._compositeLayer.hasFavoritesSelected;
         }
     }, {
         key: 'hasFavorites',
         get: function get() {
-            var items = this._layer.getDataManager()._items;
-            return Object.keys(items).some(function (id) {
-                var item = items[id];
-                return item.properties[cart_index];
-            });
+            this._compositeLayer.hasFavorites;
         }
     }, {
         key: 'results',
         get: function get() {
-            var items = this._layer.getDataManager()._items;
+            var items = this._compositeLayer.vectors;
             return this._resultList.items.map(function (item) {
                 var properties = items[item.gmx_id].properties;
+
                 item.geoJSON = L.gmxUtil.convertGeometry(properties[properties.length - 1], true, true);
                 item.geoJSON = (0, _Utils.normalize_geometry_type)(item.geoJSON);
                 return item;
@@ -22987,9 +22762,10 @@ var ResultsController = function (_EventTarget) {
     }, {
         key: 'favorites',
         get: function get() {
-            var items = this._layer.getDataManager()._items;
+            var items = this._compositeLayer.vectors;
             return this._favoritesList.items.map(function (item) {
                 var properties = items[item.gmx_id].properties;
+
                 item.geoJSON = L.gmxUtil.convertGeometry(properties[properties.length - 1], true, true);
                 item.geoJSON = (0, _Utils.normalize_geometry_type)(item.geoJSON);
                 return item;
@@ -23001,7 +22777,7 @@ var ResultsController = function (_EventTarget) {
             this._filter = value;
             this._resultList.filter = value;
             this._favoritesList.filter = value;
-            this._layer.repaint();
+            this._compositeLayer.redraw();
         }
     }, {
         key: 'platforms',
@@ -23019,11 +22795,11 @@ var ResultsController = function (_EventTarget) {
             };
             switch (this._currentTab) {
                 case 'results':
-                    return get_platforms(this._layer.getFilteredItems(function (item) {
+                    return get_platforms(this._compositeLayer.getFilteredItems(function (item) {
                         return item.result;
                     }));
                 case 'favorites':
-                    return get_platforms(this._layer.getFilteredItems(function (item) {
+                    return get_platforms(this._compositeLayer.getFilteredItems(function (item) {
                         return item.cart;
                     }));
                 default:
@@ -23055,9 +22831,9 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(194);
+__webpack_require__(195);
 
-var _RangeWidget = __webpack_require__(178);
+var _RangeWidget = __webpack_require__(179);
 
 var _ResultList = __webpack_require__(13);
 
@@ -23067,11 +22843,11 @@ var _Cart = __webpack_require__(10);
 
 var _ImageDetails = __webpack_require__(12);
 
-var _Satellites = __webpack_require__(165);
+var _Satellites = __webpack_require__(166);
 
 var _EventTarget2 = __webpack_require__(3);
 
-var _Translations = __webpack_require__(1);
+var _Translations = __webpack_require__(2);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -23079,8 +22855,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-__webpack_require__(184);
-var Pikaday = __webpack_require__(212);
+__webpack_require__(185);
+var Pikaday = __webpack_require__(213);
 
 window.Catalog.translations = window.Catalog.translations || new _Translations.Translations();
 var T = window.Catalog.translations;
@@ -23424,9 +23200,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Extensions = __webpack_require__(7);
 
-var _Utils = __webpack_require__(2);
+var _Utils = __webpack_require__(1);
 
-var _Formats = __webpack_require__(166);
+var _Formats = __webpack_require__(167);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -23443,7 +23219,9 @@ var ShapeLoader = function () {
             _ref$fileMakerUrl = _ref.fileMakerUrl,
             fileMakerUrl = _ref$fileMakerUrl === undefined ? 'VectorFileMaker' : _ref$fileMakerUrl,
             _ref$fileDownloaderUr = _ref.fileDownloaderUrl,
-            fileDownloaderUrl = _ref$fileDownloaderUr === undefined ? 'DownloadFile' : _ref$fileDownloaderUr;
+            fileDownloaderUrl = _ref$fileDownloaderUr === undefined ? 'DownloadFile' : _ref$fileDownloaderUr,
+            _ref$csvFileUrl = _ref.csvFileUrl,
+            csvFileUrl = _ref$csvFileUrl === undefined ? 'CreateCsv.ashx' : _ref$csvFileUrl;
 
         _classCallCheck(this, ShapeLoader);
 
@@ -23456,6 +23234,8 @@ var ShapeLoader = function () {
         this._fileMakerUrl = fileMakerUrl;
         this._fileDownloaderUrl = fileDownloaderUrl;
         this._metadataUrl = metadataUrl;
+        this._csvFileUrl = csvFileUrl;
+        this._csvColumns = ['sceneid', 'stereo', 'platform', 'cloudness', 'tilt', 'acqdate'];
     }
 
     _createClass(ShapeLoader, [{
@@ -23524,6 +23304,12 @@ var ShapeLoader = function () {
             var get_meta_data = function get_meta_data(state) {
                 return new Promise(function (resolve) {
                     var ids = [];
+                    var items = [];
+                    var csv = function csv(item) {
+                        return _this2._csvColumns.map(function (col) {
+                            return col === 'acqdate' ? moment(item[col]).format('YYYY-MM-DD') : item[col];
+                        });
+                    };
                     switch (type) {
                         case 'results':
                             if (_this2._resultsController.downloadCache && _this2._resultsController.downloadCache.length > 0) {
@@ -23534,6 +23320,13 @@ var ShapeLoader = function () {
                                 ids = _this2._resultsController.resultList.items.map(function (item) {
                                     return item.sceneid;
                                 });
+                            }
+                            break;
+                        case 'csv':
+                            if (_this2._resultsController.downloadCache && _this2._resultsController.downloadCache.length > 0) {
+                                items = _this2._resultsController.downloadCache.map(csv);
+                            } else {
+                                items = _this2._resultsController.resultList.items.map(csv);
                             }
                             break;
                         case 'cart':
@@ -23551,9 +23344,113 @@ var ShapeLoader = function () {
                         default:
                             break;
                     }
+                    if (type === 'csv') {
+                        state.items = JSON.stringify(items);
+                        resolve(state);
+                    } else {
+                        if (ids.length > 0) {
+                            _this2._catalogResourceServer.sendPostRequest(_this2._metadataUrl, { ids: ids, WrapStyle: 'None' }).then(function (response) {
+                                if (response.Status === 'ok') {
+                                    state.result = response.Result;
+                                    resolve(state);
+                                } else {
+                                    state.error = response;
+                                    resolve(state);
+                                }
+                            }).catch(function (e) {
+                                state.error = e;
+                                resolve(state);
+                            });
+                        } else {
+                            resolve(state);
+                        }
+                    }
+                });
+            };
+            var make_file = function make_file(state) {
+                return new Promise(function (resolve) {
+                    if (type === 'csv') {
+                        resolve(state);
+                    } else {
+                        var Features = _this2._drawnObjects.items.filter(function (item) {
+                            return item.visible;
+                        }).map(function (_ref2) {
+                            var id = _ref2.id,
+                                name = _ref2.name,
+                                area = _ref2.area,
+                                visible = _ref2.visible,
+                                editable = _ref2.editable,
+                                color = _ref2.color,
+                                geoJSON = _ref2.geoJSON;
 
-                    if (ids.length > 0) {
-                        _this2._catalogResourceServer.sendPostRequest(_this2._metadataUrl, { ids: ids, WrapStyle: 'None' }).then(function (response) {
+                            return {
+                                type: 'Feature',
+                                geometry: geoJSON.geometry,
+                                properties: {
+                                    id: id,
+                                    // name: encodeURIComponent(name),
+                                    name: name,
+                                    area: area,
+                                    visible: visible,
+                                    editable: editable,
+                                    color: color
+                                }
+                            };
+                        });
+                        var Files = Features.length ? [{
+                            Columns: [{ "Name": "id", "Type": "String" }, { "Name": "name", "Type": "String" }, { "Name": "area", "Type": "Float" }, { "Name": "editable", "Type": "Boolean" }, { "Name": "visible", "Type": "Boolean" }, { "Name": "color", "Type": "String" }],
+                            Features: Features,
+                            Filename: archiveName + '_contours',
+                            Formats: ['shape', 'tab']
+                        }] : [];
+                        switch (type) {
+                            case 'results':
+                            case 'cart':
+                            case 'quicklooks':
+                                var result = state.result;
+                                Files = Files.concat(Object.keys(result).map(function (file) {
+                                    var Features = result[file].map(function (f) {
+                                        var properties = (0, _Extensions.copy)(f);
+                                        delete properties.geometry;
+                                        return {
+                                            type: 'Feature',
+                                            geometry: (0, _Extensions.copy)(f.geometry),
+                                            properties: properties
+                                        };
+                                    });
+                                    return {
+                                        Columns: _Formats.Formats[file],
+                                        Filename: archiveName + '_' + file,
+                                        Features: Features,
+                                        Formats: ['shape', 'tab']
+                                    };
+                                }));
+                                break;
+                            default:
+                                break;
+                        }
+
+                        _this2._gmxResourceServer.sendPostRequest(_this2._fileMakerUrl, { Request: JSON.stringify({ ArchiveName: archiveName, Files: Files, Images: type === 'quicklooks' }) }).then(function (response) {
+                            if (response.Status === 'ok') {
+                                state.id = response.Result;
+                                resolve(state);
+                            } else {
+                                resolve(state);
+                            }
+                        }).catch(function (e) {
+                            state.error = e;
+                            resolve(state);
+                        });
+                    }
+                });
+            };
+            var download_file = function download_file(state) {
+                window.Catalog.loaderWidget.hide();
+                return new Promise(function (resolve) {
+                    if (type === 'csv') {
+                        var items = state.items;
+
+                        _this2._catalogResourceServer.sendPostRequest(_this2._csvFileUrl, { file: encodeURIComponent(archiveName), items: items, columns: _this2._csvColumns, WrapStyle: 'None' }).then(function (response) {
                             if (response.Status === 'ok') {
                                 state.result = response.Result;
                                 resolve(state);
@@ -23566,97 +23463,18 @@ var ShapeLoader = function () {
                             resolve(state);
                         });
                     } else {
-                        resolve(state);
-                    }
-                });
-            };
-            var make_file = function make_file(state) {
-                return new Promise(function (resolve) {
-                    var Features = _this2._drawnObjects.items.filter(function (item) {
-                        return item.visible;
-                    }).map(function (_ref2) {
-                        var id = _ref2.id,
-                            name = _ref2.name,
-                            area = _ref2.area,
-                            visible = _ref2.visible,
-                            editable = _ref2.editable,
-                            color = _ref2.color,
-                            geoJSON = _ref2.geoJSON;
-
-                        return {
-                            type: 'Feature',
-                            geometry: geoJSON.geometry,
-                            properties: {
-                                id: id,
-                                // name: encodeURIComponent(name),
-                                name: name,
-                                area: area,
-                                visible: visible,
-                                editable: editable,
-                                color: color
+                        _this2._gmxResourceServer.sendPostRequest(_this2._fileDownloaderUrl + '?id=' + state.id).then(function (response) {
+                            if (response.Status === 'ok') {
+                                state.id = response.Result;
+                                resolve(state);
+                            } else {
+                                resolve(state);
                             }
-                        };
-                    });
-                    var Files = Features.length ? [{
-                        Columns: [{ "Name": "id", "Type": "String" }, { "Name": "name", "Type": "String" }, { "Name": "area", "Type": "Float" }, { "Name": "editable", "Type": "Boolean" }, { "Name": "visible", "Type": "Boolean" }, { "Name": "color", "Type": "String" }],
-                        Features: Features,
-                        Filename: archiveName + '_contours',
-                        Formats: ['shape', 'tab']
-                    }] : [];
-                    switch (type) {
-                        case 'results':
-                        case 'cart':
-                        case 'quicklooks':
-                            var result = state.result;
-                            Files = Files.concat(Object.keys(result).map(function (file) {
-                                var Features = result[file].map(function (f) {
-                                    var properties = (0, _Extensions.copy)(f);
-                                    delete properties.geometry;
-                                    return {
-                                        type: 'Feature',
-                                        geometry: (0, _Extensions.copy)(f.geometry),
-                                        properties: properties
-                                    };
-                                });
-                                return {
-                                    Columns: _Formats.Formats[file],
-                                    Filename: archiveName + '_' + file,
-                                    Features: Features,
-                                    Formats: ['shape', 'tab']
-                                };
-                            }));
-                            break;
-                        default:
-                            break;
+                        }).catch(function (e) {
+                            state.error = e;
+                            resolve(state);
+                        });
                     }
-
-                    _this2._gmxResourceServer.sendPostRequest(_this2._fileMakerUrl, { Request: JSON.stringify({ ArchiveName: archiveName, Files: Files, Images: type === 'quicklooks' }) }).then(function (response) {
-                        if (response.Status === 'ok') {
-                            state.id = response.Result;
-                            resolve(state);
-                        } else {
-                            resolve(state);
-                        }
-                    }).catch(function (e) {
-                        state.error = e;
-                        resolve(state);
-                    });
-                });
-            };
-            var download_file = function download_file(state) {
-                window.Catalog.loaderWidget.hide();
-                return new Promise(function (resolve) {
-                    _this2._gmxResourceServer.sendPostRequest(_this2._fileDownloaderUrl + '?id=' + state.id).then(function (response) {
-                        if (response.Status === 'ok') {
-                            state.id = response.Result;
-                            resolve(state);
-                        } else {
-                            resolve(state);
-                        }
-                    }).catch(function (e) {
-                        state.error = e;
-                        resolve(state);
-                    });
                 });
             };
             return (0, _Utils.chain)([get_meta_data, make_file, download_file], {}).then(function (state) {
@@ -23684,7 +23502,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.createTab = undefined;
 
-__webpack_require__(195);
+__webpack_require__(196);
 
 function createTab(_ref) {
     var icon = _ref.icon,
@@ -23813,13 +23631,13 @@ exports.AuthWidget = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _DropdownMenuWidget = __webpack_require__(169);
+var _DropdownMenuWidget = __webpack_require__(170);
 
 var _EventTarget2 = __webpack_require__(16);
 
-__webpack_require__(197);
+__webpack_require__(198);
 
-__webpack_require__(196);
+__webpack_require__(197);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24255,9 +24073,9 @@ exports.LanguageWidget = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(205);
+__webpack_require__(206);
 
-var _EventTarget2 = __webpack_require__(176);
+var _EventTarget2 = __webpack_require__(177);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24647,9 +24465,9 @@ exports.LoaderWidget = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(207);
+__webpack_require__(208);
 
-var _Translations = __webpack_require__(1);
+var _Translations = __webpack_require__(2);
 
 var _EventTarget2 = __webpack_require__(3);
 
@@ -24738,7 +24556,7 @@ exports.NotificationWidget = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(208);
+__webpack_require__(209);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24838,13 +24656,623 @@ exports.NotificationWidget = NotificationWidget;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.CompositeLayer = undefined;
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _EventTarget2 = __webpack_require__(3);
+
+var _Utils = __webpack_require__(1);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Colors = {
+    Default: 0x23a5cc,
+    Hilite: 0x23a5cc,
+    Cart: 0xef4e70,
+    CartHilite: 0xef4e70
+};
+
+function serialize(obj) {
+    return Object.keys(obj).map(function (id) {
+        return obj[id];
+    });
+}
+
+var CompositeLayer = function (_EventTarget) {
+    _inherits(CompositeLayer, _EventTarget);
+
+    function CompositeLayer(_ref) {
+        var _ref$minZoom = _ref.minZoom,
+            minZoom = _ref$minZoom === undefined ? 3 : _ref$minZoom,
+            _ref$maxZoom = _ref.maxZoom,
+            maxZoom = _ref$maxZoom === undefined ? 17 : _ref$maxZoom,
+            map = _ref.map,
+            _ref$qlUrl = _ref.qlUrl,
+            qlUrl = _ref$qlUrl === undefined ? 'http://wikimixer.kosmosnimki.ru/QuickLookImage.ashx' : _ref$qlUrl,
+            _ref$qlSize = _ref.qlSize,
+            qlSize = _ref$qlSize === undefined ? { width: 300, height: 300 } : _ref$qlSize,
+            _ref$srs = _ref.srs,
+            srs = _ref$srs === undefined ? 3857 : _ref$srs;
+
+        _classCallCheck(this, CompositeLayer);
+
+        var _this = _possibleConstructorReturn(this, (CompositeLayer.__proto__ || Object.getPrototypeOf(CompositeLayer)).call(this));
+
+        _this._currentTab = '';
+        _this._qlUrl = qlUrl;
+        _this._qlSize = qlSize;
+        _this._attributes = ["hover", "selected", "visible", "result", "cart", "clip_coords", "sceneid", "acqdate", "acqtime", "cloudness", "tilt", "sunelev", "stereo", "url", "x1", "y1", "x2", "y2", "x3", "y3", "x4", "y4", "volume", "platform", "spot5_a_exists", "spot5_b_exists", "islocal", "product", "gmx_id", "sensor", "local_exists", "spot5id", "stidx"];
+        _this._attrTypes = ["boolean", "boolean", "string", "boolean", "boolean", "object", "string", "date", "time", "float", "float", "float", "string", "string", "float", "float", "float", "float", "float", "float", "float", "float", "string", "string", "boolean", "boolean", "boolean", "boolean", "integer", "string", "boolean", "string", "integer"];
+        _this._sceneid_index = _this._attributes.indexOf('sceneid') + 1;
+        _this._result_index = _this._attributes.indexOf('result') + 1;
+        _this._clip_coords_index = _this._attributes.indexOf('clip_coords') + 1;
+        _this._cart_index = _this._attributes.indexOf('cart') + 1;
+        _this._selected_index = _this._attributes.indexOf('selected') + 1;
+        _this._visible_index = _this._attributes.indexOf('visible') + 1;
+        _this._hover_index = _this._attributes.indexOf('hover') + 1;
+        _this._x1_index = _this._attributes.indexOf('x1') + 1;
+        _this._vectors = {};
+        _this._propertiesToItem = _this._propertiesToItem.bind(_this);
+
+        _this._map = map;
+        var tab_filter = function tab_filter(_ref2) {
+            var properties = _ref2.properties;
+
+            var obj = _this._propertiesToItem(properties);
+            var filtered = true;
+            if (typeof _this._filter === 'function') {
+                filtered = _this._filter(obj);
+            }
+            switch (_this._currentTab) {
+                case 'results':
+                    return filtered && properties[_this._result_index];
+                case 'favorites':
+                    return filtered && properties[_this._cart_index];
+                case 'search':
+                    return false;
+                default:
+                    return true;
+            }
+        };
+        _this._vectorLayer = L.gmx.createLayer({
+            geometry: null,
+            properties: {
+                type: 'Vector',
+                visible: true,
+                identityField: 'gmx_id',
+                GeometryType: 'polygon',
+                srs: srs,
+                attributes: _this._attributes,
+                attrTypes: _this._attrTypes,
+                styles: [{
+                    MinZoom: minZoom,
+                    MaxZoom: maxZoom,
+                    DisableBalloonOnClick: true,
+                    DisableBalloonOnMouseMove: true,
+                    RenderStyle: {
+                        outline: { color: Colors.Default, thickness: 1 },
+                        fill: { color: 0xfff, opacity: 0 }
+                    },
+                    HoverStyle: {
+                        outline: { color: Colors.Default, thickness: 1 },
+                        fill: { color: 0xfff, opacity: 0 }
+                    }
+                }]
+            }
+        });
+        _this._vectorLayer.disableFlip();
+        _this._vectorLayer.setFilter(tab_filter);
+        _this._vectorLayer.setStyleHook(function (item) {
+            var properties = item.properties;
+
+            var color = Colors.Default;
+            var lineWidth = 1;
+            if (properties[_this._hover_index]) {
+                color = properties[_this._cart_index] ? Colors.CartHilite : Colors.Hilite;
+                lineWidth = 3;
+            } else {
+                color = properties[_this._cart_index] ? Colors.Cart : Colors.Default;
+            }
+            return { skipRasters: true, strokeStyle: color, lineWidth: lineWidth };
+        });
+        _this._vectorLayer.addTo(_this._map);
+        _this._vectorLayer.on('click', function (e) {
+            var _e$gmx = e.gmx,
+                id = _e$gmx.id,
+                layer = _e$gmx.layer,
+                target = _e$gmx.target;
+
+            var show = null;
+            var properties = _this._vectors[id].properties;
+
+            switch (properties[_this._visible_index]) {
+                case 'visible':
+                case 'loading':
+                    show = false;
+                    break;
+                case 'hidden':
+                default:
+                    show = true;
+                    break;
+            }
+            _this.setVisible(id, show);
+            _this.showQuicklook(id, show).then(function () {
+                var event = document.createEvent('Event');
+                event.initEvent('click', false, false);
+                event.detail = { id: id, show: show };
+                _this.dispatchEvent(event);
+            });
+        }).on('mouseover', function (e) {
+            var _e$gmx2 = e.gmx,
+                id = _e$gmx2.id,
+                layer = _e$gmx2.layer,
+                target = _e$gmx2.target;
+
+            _this._vectors[id].properties[_this._hover_index] = true;
+            _this._vectorLayer.redrawItem(id);
+
+            var event = document.createEvent('Event');
+            event.initEvent('mouseover', false, false);
+            event.detail = id;
+            _this.dispatchEvent(event);
+        }).on('mouseout', function (e) {
+            var _e$gmx3 = e.gmx,
+                id = _e$gmx3.id,
+                layer = _e$gmx3.layer,
+                target = _e$gmx3.target;
+
+            _this._vectors[id].properties[_this._hover_index] = false;
+            _this._vectorLayer.redrawItem(id);
+
+            var event = document.createEvent('Event');
+            event.initEvent('mouseout', false, false);
+            event.detail = id;
+            _this.dispatchEvent(event);
+        });
+        return _this;
+    }
+
+    _createClass(CompositeLayer, [{
+        key: 'showQuicklook',
+        value: function showQuicklook(id, show) {
+            var _this2 = this;
+
+            return new Promise(function (resolve) {
+                var _vectors$id = _this2._vectors[id],
+                    properties = _vectors$id.properties,
+                    quicklook = _vectors$id.quicklook;
+
+                if (show) {
+                    if (!quicklook) {
+                        var imageUrl = _this2._qlUrl + '?id=' + (0, _Utils.split_complex_id)(properties[_this2._sceneid_index]).id + '&width=' + _this2._qlSize.width + '&height=' + _this2._qlSize.height;
+                        var clipCoords = properties[_this2._clip_coords_index];
+                        var anchors = [properties.slice(_this2._x1_index, _this2._x1_index + 2), properties.slice(_this2._x1_index + 2, _this2._x1_index + 4), properties.slice(_this2._x1_index + 4, _this2._x1_index + 6), properties.slice(_this2._x1_index + 6, _this2._x1_index + 8)];
+                        quicklook = L.imageTransform(imageUrl, (0, _Utils.flatten)(anchors, true), { clip: clipCoords, disableSetClip: true }).addTo(_this2._map);
+                        _this2._vectors[id].quicklook = quicklook;
+                        quicklook.on('load', function (e) {
+                            properties[_this2._visible_index] = 'visible';
+                            _this2._vectorLayer.bringToTopItem(id);
+                            resolve();
+                        });
+                        quicklook.on('error', function (e) {
+                            properties[_this2._visible_index] = 'failed';
+                            _this2._map.removeLayer(quicklook);
+                            _this2._vectors[id].quicklook = null;
+                            resolve();
+                        });
+                        quicklook.addTo(_this2._map);
+                    } else {
+                        properties[_this2._visible_index] = 'visible';
+                        quicklook.addTo(_this2._map);
+                        _this2._vectorLayer.bringToTopItem(id);
+                        resolve();
+                    }
+                } else {
+                    if (quicklook) {
+                        _this2._map.removeLayer(quicklook);
+                        _this2._vectorLayer.bringToBottomItem(id);
+                    }
+                    resolve();
+                }
+            });
+        }
+    }, {
+        key: '_propertiesToItem',
+        value: function _propertiesToItem(properties) {
+            var _this3 = this;
+
+            return properties && properties.slice(1, properties.length - 1).reduce(function (a, v, i) {
+                var f = _this3._attributes[i];
+                switch (_this3._attrTypes[i]) {
+                    case 'date':
+                        switch (typeof v === 'undefined' ? 'undefined' : _typeof(v)) {
+                            case 'string':
+                                a[f] = new Date(v);
+                                break;
+                            case 'number':
+                                a[f] = new Date(v * 1000);
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    default:
+                        a[f] = v;
+                        break;
+                }
+                return a;
+            }, {}) || null;
+        }
+    }, {
+        key: '_mergeResults',
+        value: function _mergeResults(old, data) {
+            var _this4 = this;
+
+            var cache = Object.keys(old).reduce(function (a, id) {
+                a[id] = a[id] || { properties: [], quicklook: null };
+                a[id].properties = old[id];
+                return a;
+            }, {});
+            return data.reduce(function (a, value) {
+                var id = value[0];
+                if (cache[id]) {
+                    cache[id].properties[_this4._result_index] = true;
+                } else {
+                    a[id] = a[id] || { properties: [], quicklook: null };
+                    a[id].properties = value;
+                }
+                return a;
+            }, cache);
+        }
+    }, {
+        key: 'setData',
+        value: function setData(_ref3) {
+            var _this5 = this;
+
+            var fields = _ref3.fields,
+                values = _ref3.values;
+            var activeTabId = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'results';
+
+            var idx = fields.indexOf('gmx_id');
+            var vectors = values.reduce(function (a, item) {
+                var clipCoords = (0, _Utils.flatten)(L.gmxUtil.geometryToGeoJSON(item[item.length - 1], true, true).coordinates, true);
+                var value = _this5._attributes.reduce(function (b, k) {
+                    var i = fields.indexOf(k);
+                    if (i < 0) {
+                        switch (k) {
+                            case 'hover':
+                            case 'selected':
+                            case 'cart':
+                                b.push(false);
+                                break;
+                            case 'result':
+                                b.push(true);
+                                break;
+                            case 'acqtime':
+                                b.push(null);
+                                break;
+                            case 'visible':
+                                b.push('hidden');
+                                break;
+                            case 'clip_coords':
+                                b.push(clipCoords);
+                                break;
+                            default:
+                                break;
+                        }
+                    } else {
+                        if (k === 'visible') {
+                            switch (_typeof(item[i])) {
+                                case 'boolean':
+                                    b.push(item[i] ? 'visible' : 'hidden');
+                                    break;
+                                default:
+                                case 'string':
+                                    b.push(item[i]);
+                                    break;
+                            }
+                        } else {
+                            b.push(item[i]);
+                        }
+                    }
+                    return b;
+                }, []);
+                value.unshift(item[idx]);
+                value.push(item[item.length - 1]);
+                a.push(value);
+                return a;
+            }, []);
+            this._vectors = this._mergeResults(this._vectors, vectors);
+            this._vectorLayer.removeData();
+            var items = serialize(this._vectors).map(function (_ref4) {
+                var properties = _ref4.properties;
+                return properties;
+            });
+            this._vectorLayer.addData(items);
+        }
+    }, {
+        key: 'clear',
+        value: function clear() {
+            var _this6 = this;
+
+            var toRemove = Object.keys(this._vectors).reduce(function (a, id) {
+                var properties = _this6._vectors[id].properties;
+
+                if (properties[_this6._cart_index]) {
+                    properties[_this6._result_index] = false;
+                } else {
+                    a.push([properties[0]]);
+                }
+                return a;
+            }, []);
+            this._vectorLayer.removeData(toRemove);
+            toRemove.forEach(function (_ref5) {
+                var _ref6 = _slicedToArray(_ref5, 1),
+                    id = _ref6[0];
+
+                var quicklook = _this6._vectors[id].quicklook;
+
+                if (quicklook) {
+                    _this6._map.removeLayer(quicklook);
+                }
+                delete _this6._vectors[id];
+            });
+        }
+    }, {
+        key: 'getFilteredItems',
+        value: function getFilteredItems(filter) {
+            var _this7 = this;
+
+            return serialize(this._vectors).map(function (_ref7) {
+                var properties = _ref7.properties;
+                return _this7._propertiesToItem(properties);
+            }).filter(filter);
+        }
+    }, {
+        key: 'getItem',
+        value: function getItem(id) {
+            return this._propertiesToItem(this._vectors[id].properties);
+        }
+    }, {
+        key: 'redraw',
+        value: function redraw() {
+            this._vectorLayer.repaint();
+        }
+    }, {
+        key: 'redrawItem',
+        value: function redrawItem(id) {
+            this._vectorLayer.redrawItem(id);
+        }
+    }, {
+        key: 'setHover',
+        value: function setHover(id, hover) {
+            this._vectors[id].properties[this._hover_index] = hover;
+            this.redrawItem(id);
+        }
+    }, {
+        key: 'setSelected',
+        value: function setSelected(id, selected) {
+            this._vectors[id].properties[this._selected_index] = selected;
+            this.redrawItem(id);
+        }
+    }, {
+        key: 'setVisible',
+        value: function setVisible(id, show) {
+            var properties = this._vectors[id].properties;
+
+            var changed = false;
+            if (show) {
+                switch (properties[this._visible_index]) {
+                    case 'hidden':
+                    case 'failed':
+                        properties[this._visible_index] = 'loading';
+                        changed = true;
+                        break;
+                    case 'loading':
+                        properties[this._visible_index] = 'visible';
+                        changed = true;
+                        break;
+                    case 'visible':
+                    default:
+                        break;
+                }
+            } else {
+                switch (properties[this._visible_index]) {
+                    case 'failed':
+                    case 'loading':
+                    case 'visible':
+                        properties[this._visible_index] = 'hidden';
+                        changed = true;
+                        break;
+                    case 'hidden':
+                    default:
+                        break;
+                }
+            }
+            this._vectorLayer.redrawItem(id);
+            return changed;
+        }
+    }, {
+        key: 'addAllToCart',
+        value: function addAllToCart() {
+            var _this8 = this;
+
+            Object.keys(this._vectors).forEach(function (id) {
+                var properties = _this8._vectors[id].properties;
+
+                if (properties[_this8._result_index]) {
+                    properties[_this8._cart_index] = true;
+                }
+            });
+            this.redraw();
+        }
+    }, {
+        key: 'addToCart',
+        value: function addToCart(id) {
+            var properties = this._vectors[id].properties;
+
+            if (properties) {
+                properties[this._cart_index] = !properties[this._cart_index];
+                this._vectorLayer.redrawItem(id);
+            }
+            return this._propertiesToItem(properties);
+        }
+    }, {
+        key: 'removeSelectedFavorites',
+        value: function removeSelectedFavorites() {
+            var _this9 = this;
+
+            Object.keys(this._vectors).forEach(function (id) {
+                var _vectors$id2 = _this9._vectors[id],
+                    properties = _vectors$id2.properties,
+                    quicklook = _vectors$id2.quicklook;
+
+                if (properties[_this9._cart_index] && properties[_this9._selected_index]) {
+                    properties[_this9._cart_index] = false;
+                    properties[_this9._selected_index] = false;
+                    _this9.showQuicklook(id, false);
+                    _this9._vectorLayer.redrawItem(id);
+                }
+            });
+        }
+    }, {
+        key: 'addVisibleToCart',
+        value: function addVisibleToCart() {
+            var _this10 = this;
+
+            Object.keys(this._vectors).forEach(function (id) {
+                var properties = _this10._vectors[id].properties;
+
+                if (properties[_this10._visible_index] === 'visible') {
+                    properties[_this10._cart_index] = true;
+                    _this10._vectorLayer.redrawItem(id);
+                }
+            });
+        }
+    }, {
+        key: 'vectors',
+        get: function get() {
+            return this._vectors;
+        }
+    }, {
+        key: 'hasResults',
+        get: function get() {
+            var _this11 = this;
+
+            return Object.keys(this._vectors).some(function (id) {
+                var properties = _this11._vectors[id].properties;
+
+                return properties[_this11._result_index];
+            });
+        }
+    }, {
+        key: 'hasVisibleResults',
+        get: function get() {
+            var _this12 = this;
+
+            return Object.keys(this._vectors).some(function (id) {
+                var properties = _this12._vectors[id].properties;
+
+                return properties[_this12._result_index] && properties[_this12._visible_index];
+            });
+        }
+    }, {
+        key: 'hasFavoritesSelected',
+        get: function get() {
+            var _this13 = this;
+
+            return Object.keys(this._vectors).some(function (id) {
+                var properties = _this13._vectors[id].properties;
+
+                return properties[_this13._cart_index] && properties[_this13._selected_index];
+            });
+        }
+    }, {
+        key: 'hasFavorites',
+        get: function get() {
+            var _this14 = this;
+
+            return Object.keys(this._vectors).some(function (id) {
+                var properties = _this14._vectors[id].properties;
+
+                return properties[_this14._cart_index];
+            });
+        }
+    }, {
+        key: 'resultsCount',
+        get: function get() {
+            return this.getFilteredItems(function (item) {
+                return item.result;
+            }).length;
+        }
+    }, {
+        key: 'favoritesCount',
+        get: function get() {
+            return this.getFilteredItems(function (item) {
+                return item.cart;
+            }).length;
+        }
+    }, {
+        key: 'currentTab',
+        set: function set(value) {
+            var _this15 = this;
+
+            this._currentTab = value;
+            Object.keys(this._vectors).forEach(function (id) {
+                var properties = _this15._vectors[id].properties;
+
+                var filtered = true;
+                if (typeof _this15._filter === 'function') {
+                    filtered = _this15._filter(_this15._propertiesToItem(properties));
+                }
+                switch (_this15._currentTab) {
+                    case 'results':
+                        _this15.showQuicklook(id, filtered && properties[_this15._result_index] && properties[_this15._visible_index] === 'visible');
+                        break;
+                    case 'favorites':
+                        _this15.showQuicklook(id, filtered && properties[_this15._cart_index] && properties[_this15._visible_index] === 'visible');
+                        break;
+                    case 'search':
+                        _this15.showQuicklook(id, false);
+                        break;
+                    default:
+                        break;
+                }
+            });
+        }
+    }]);
+
+    return CompositeLayer;
+}(_EventTarget2.EventTarget);
+
+exports.CompositeLayer = CompositeLayer;
+
+/***/ }),
+/* 164 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.Quicklook = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _EventTarget2 = __webpack_require__(3);
 
-var _Utils = __webpack_require__(2);
+var _Utils = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -25038,7 +25466,7 @@ var Quicklook = function (_EventTarget) {
 exports.Quicklook = Quicklook;
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25051,9 +25479,9 @@ exports.Info = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(192);
+__webpack_require__(193);
 
-var _Translations = __webpack_require__(1);
+var _Translations = __webpack_require__(2);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -25125,7 +25553,7 @@ var Info = function () {
 exports.Info = Info;
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25140,17 +25568,17 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(193);
+__webpack_require__(194);
 
 var _EventTarget2 = __webpack_require__(3);
 
-var _Translations = __webpack_require__(1);
+var _Translations = __webpack_require__(2);
 
-var _Tristate = __webpack_require__(182);
+var _Tristate = __webpack_require__(183);
 
-var _Info = __webpack_require__(164);
+var _Info = __webpack_require__(165);
 
-var _Utils = __webpack_require__(2);
+var _Utils = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -25403,7 +25831,7 @@ var Satellites = function (_EventTarget) {
 exports.Satellites = Satellites;
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25473,7 +25901,7 @@ var Formats = {
 exports.Formats = Formats;
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25558,7 +25986,7 @@ exports.st_range = st_range;
 exports.to_query = to_query;
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25793,7 +26221,7 @@ var Server = function () {
 exports.Server = Server;
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25806,7 +26234,7 @@ exports.DropdownMenuWidget = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(198);
+__webpack_require__(199);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -25892,7 +26320,7 @@ var DropdownMenuWidget = function () {
 exports.DropdownMenuWidget = DropdownMenuWidget;
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25907,7 +26335,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Slider2 = __webpack_require__(18);
 
-__webpack_require__(199);
+__webpack_require__(200);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26012,7 +26440,7 @@ var AlphaSlider = function (_Slider) {
 exports.AlphaSlider = AlphaSlider;
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26029,7 +26457,7 @@ var _EventTarget2 = __webpack_require__(9);
 
 var _Color = __webpack_require__(8);
 
-__webpack_require__(200);
+__webpack_require__(201);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26255,7 +26683,7 @@ var ColorArea = function (_EventTarget) {
 exports.ColorArea = ColorArea;
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26274,13 +26702,13 @@ var _Utils = __webpack_require__(19);
 
 var _Color = __webpack_require__(8);
 
-var _ColorSlider = __webpack_require__(173);
+var _ColorSlider = __webpack_require__(174);
 
-var _AlphaSlider = __webpack_require__(170);
+var _AlphaSlider = __webpack_require__(171);
 
-var _ColorArea = __webpack_require__(171);
+var _ColorArea = __webpack_require__(172);
 
-__webpack_require__(201);
+__webpack_require__(202);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26483,7 +26911,7 @@ var ColorPicker = function (_EventTarget) {
 exports.ColorPicker = ColorPicker;
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26502,7 +26930,7 @@ var _Slider2 = __webpack_require__(18);
 
 var _Color = __webpack_require__(8);
 
-__webpack_require__(202);
+__webpack_require__(203);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26648,7 +27076,7 @@ var ColorSlider = function (_Slider) {
 exports.ColorSlider = ColorSlider;
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26711,7 +27139,7 @@ var EventTarget = function () {
 exports.EventTarget = EventTarget;
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26794,69 +27222,6 @@ var Tristate = function () {
 exports.Tristate = Tristate;
 
 /***/ }),
-/* 176 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var EventTarget = function () {
-    function EventTarget() {
-        _classCallCheck(this, EventTarget);
-
-        this.listeners = {};
-    }
-
-    _createClass(EventTarget, [{
-        key: "addEventListener",
-        value: function addEventListener(type, callback) {
-            if (!(type in this.listeners)) {
-                this.listeners[type] = [];
-            }
-            this.listeners[type].push(callback);
-        }
-    }, {
-        key: "removeEventListener",
-        value: function removeEventListener(type, callback) {
-            if (!(type in this.listeners)) {
-                return;
-            }
-            var stack = this.listeners[type];
-            for (var i = 0, l = stack.length; i < l; i++) {
-                if (stack[i] === callback) {
-                    stack.splice(i, 1);
-                    return this.removeEventListener(type, callback);
-                }
-            }
-        }
-    }, {
-        key: "dispatchEvent",
-        value: function dispatchEvent(event) {
-            if (!(event.type in this.listeners)) {
-                return;
-            }
-            var stack = this.listeners[event.type];
-            // event.target = this;
-            for (var i = 0, l = stack.length; i < l; i++) {
-                stack[i].call(this, event);
-            }
-        }
-    }]);
-
-    return EventTarget;
-}();
-
-exports.EventTarget = EventTarget;
-
-/***/ }),
 /* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -26929,6 +27294,69 @@ exports.EventTarget = EventTarget;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var EventTarget = function () {
+    function EventTarget() {
+        _classCallCheck(this, EventTarget);
+
+        this.listeners = {};
+    }
+
+    _createClass(EventTarget, [{
+        key: "addEventListener",
+        value: function addEventListener(type, callback) {
+            if (!(type in this.listeners)) {
+                this.listeners[type] = [];
+            }
+            this.listeners[type].push(callback);
+        }
+    }, {
+        key: "removeEventListener",
+        value: function removeEventListener(type, callback) {
+            if (!(type in this.listeners)) {
+                return;
+            }
+            var stack = this.listeners[type];
+            for (var i = 0, l = stack.length; i < l; i++) {
+                if (stack[i] === callback) {
+                    stack.splice(i, 1);
+                    return this.removeEventListener(type, callback);
+                }
+            }
+        }
+    }, {
+        key: "dispatchEvent",
+        value: function dispatchEvent(event) {
+            if (!(event.type in this.listeners)) {
+                return;
+            }
+            var stack = this.listeners[event.type];
+            // event.target = this;
+            for (var i = 0, l = stack.length; i < l; i++) {
+                stack[i].call(this, event);
+            }
+        }
+    }]);
+
+    return EventTarget;
+}();
+
+exports.EventTarget = EventTarget;
+
+/***/ }),
+/* 179 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.RangeWidget = undefined;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
@@ -26939,9 +27367,9 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _set = function set(object, property, value, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent !== null) { set(parent, property, value, receiver); } } else if ("value" in desc && desc.writable) { desc.value = value; } else { var setter = desc.set; if (setter !== undefined) { setter.call(receiver, value); } } return value; };
 
-var _SliderWidget2 = __webpack_require__(179);
+var _SliderWidget2 = __webpack_require__(180);
 
-__webpack_require__(209);
+__webpack_require__(210);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -27063,7 +27491,7 @@ var RangeWidget = function (_SliderWidget) {
 exports.RangeWidget = RangeWidget;
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27078,9 +27506,9 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(210);
+__webpack_require__(211);
 
-var _EventTarget2 = __webpack_require__(180);
+var _EventTarget2 = __webpack_require__(181);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -27366,7 +27794,7 @@ var SliderWidget = function (_EventTarget) {
 exports.SliderWidget = SliderWidget;
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27429,7 +27857,7 @@ var EventTarget = function () {
 exports.EventTarget = EventTarget;
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27486,7 +27914,7 @@ exports.copy = copy;
 exports.extend = extend;
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27569,7 +27997,7 @@ var Tristate = function () {
 exports.Tristate = Tristate;
 
 /***/ }),
-/* 183 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27585,7 +28013,7 @@ __webpack_require__(157);
 
 __webpack_require__(159);
 
-var _Translations = __webpack_require__(1);
+var _Translations = __webpack_require__(2);
 
 var _SearchOptions = __webpack_require__(146);
 
@@ -27617,7 +28045,7 @@ var _ResultsController = __webpack_require__(145);
 
 var _TabFactory = __webpack_require__(148);
 
-var _Utils = __webpack_require__(2);
+var _Utils = __webpack_require__(1);
 
 var _NotificationWidget = __webpack_require__(155);
 
@@ -27652,8 +28080,9 @@ var IconLayers = __webpack_require__(153);
 window.DIALOG_PLACE = { left: 600, top: 150 };
 window.RESULT_MAX_COUNT = 1000;
 window.MAX_CART_SIZE = 200;
-window.Catalog.VERSION = '2.2.1';
-window.Catalog.VERSION_DATE = new Date(2018, 0, 25);
+window.MAX_UPLOAD_POINTS = 1000;
+window.Catalog.VERSION = '2.2.2';
+window.Catalog.VERSION_DATE = new Date(2018, 1, 15);
 
 window.Catalog.translations = window.Catalog.translations || new _Translations.Translations();
 var T = window.Catalog.translations;
@@ -27742,7 +28171,13 @@ T.addText('rus', {
         cancel: 'Отмена',
         noname: 'Без имени',
         noresults: 'Нет объектов для скачивания',
-        empty: "Нет объектов"
+        empty: "Нет объектов",
+        csv: 'Результаты поиска в формате csv'
+    },
+    errors: {
+        permalink: 'Произошла ошибка при загрузке ссылки',
+        upload: 'Произошла ошибка при загрузке файла',
+        points: '\u0413\u0435\u043E\u043C\u0435\u0442\u0440\u0438\u044F \u0441\u043E\u0434\u0435\u0440\u0436\u0438\u0442 \u0431\u043E\u043B\u0435\u0435 ' + window.MAX_UPLOAD_POINTS + ' \u0442\u043E\u0447\u0435\u043A'
     }
 });
 
@@ -27826,7 +28261,13 @@ T.addText('eng', {
         cancel: 'Cancel',
         noname: 'No name',
         noresults: 'No objects to download',
-        empty: "Can't download. No objects"
+        empty: "Can't download. No objects",
+        csv: 'Results as .csv'
+    },
+    errors: {
+        permalink: 'Error while loading permalik',
+        upload: 'Error while uploading file',
+        points: 'Geometry contains more than ' + window.MAX_UPLOAD_POINTS + ' points'
     }
 });
 
@@ -28146,7 +28587,7 @@ function init_sidebar(state) {
             window.Catalog.drawnObjectsControl.widget.resize(height - 150);
             // window.Catalog.drawnObjectsControl.widget.items = window.Catalog.drawnObjectsControl.widget.items.concat(item);
             map.setView(center, 14);
-            map.invalidateSize();
+            // map.invalidateSize();
         });
         var gmx = new _GmxLayerDataProvider.GmxLayerDataProvider({ map: map, gmxResourceServer: window.Catalog.gmxResourceServer });
         gmx.addEventListener('fetch', function (e) {
@@ -28208,7 +28649,7 @@ function init_sidebar(state) {
                 }, L.geoJson());
                 var bounds = json.getBounds();
                 map.fitBounds(bounds);
-                map.invalidateSize();
+                // map.invalidateSize();
             }
         });
 
@@ -28625,6 +29066,7 @@ function init_sidebar(state) {
                         }
                     }
                 }).catch(function (e) {
+                    console.log(e);
                     window.Catalog.loaderWidget.hide();
                     window.Catalog.dlgErrorMessage.content.innerHTML = e.toString() + '<br/>' + e.StackTrace;
                     window.Catalog.dlgErrorMessage.show();
@@ -28732,6 +29174,8 @@ function show_cart() {
             window.Catalog.cartPanel.show();
         }).catch(function (e) {
             console.log(e);
+            window.Catalog.dlgErrorMessage.content.innerHTML = '' + T.getText('errors.permalink');
+            window.Catalog.dlgErrorMessage.show();
         });
     }
 }
@@ -28902,6 +29346,10 @@ function init_zoom() {
 }
 
 function init_upload(shapeLoader) {
+    var npoints = function npoints(coordinates) {
+        var m = /\[(-?\d+(\.\d+)?)\s*,\s*(-?\d+(\.\d+)?)\]/g.exec(JSON.stringify(coordinates));
+        return m && m.length || 0;
+    };
     var uploadControl = new L.Control.gmxIcon({
         id: 'upload',
         position: 'searchControls',
@@ -28914,38 +29362,47 @@ function init_upload(shapeLoader) {
                 switch (type) {
                     case 'shapefile':
                         var bounds = null;
-                        results.forEach(function (item) {
-                            var _window$Catalog$resul = window.Catalog.resultsController.getObject({ geoJSON: item }),
-                                name = _window$Catalog$resul.name,
-                                color = _window$Catalog$resul.color,
-                                editable = _window$Catalog$resul.editable,
-                                visible = _window$Catalog$resul.visible,
-                                _window$Catalog$resul2 = _window$Catalog$resul.geoJSON,
-                                geometry = _window$Catalog$resul2.geometry,
-                                properties = _window$Catalog$resul2.properties;
+                        var count = results.reduce(function (a, item) {
+                            var coordinates = item.geometry.coordinates;
 
-                            var drawing = window.Catalog.resultsController.addDrawing({
-                                name: name,
-                                color: color,
-                                geoJSON: { type: 'Feature', properties: properties, geometry: geometry },
-                                visible: visible,
-                                editable: editable
-                            });
-                            if (drawing) {
-                                if (bounds) {
-                                    bounds.extend(drawing.getBounds());
-                                } else {
-                                    bounds = drawing.getBounds();
+                            return a + npoints(coordinates);
+                        }, 0);
+                        if (count <= window.MAX_UPLOAD_POINTS) {
+                            results.forEach(function (item) {
+                                var _window$Catalog$resul = window.Catalog.resultsController.getObject({ geoJSON: item }),
+                                    name = _window$Catalog$resul.name,
+                                    color = _window$Catalog$resul.color,
+                                    editable = _window$Catalog$resul.editable,
+                                    visible = _window$Catalog$resul.visible,
+                                    _window$Catalog$resul2 = _window$Catalog$resul.geoJSON,
+                                    geometry = _window$Catalog$resul2.geometry,
+                                    properties = _window$Catalog$resul2.properties;
+
+                                var drawing = window.Catalog.resultsController.addDrawing({
+                                    name: name,
+                                    color: color,
+                                    geoJSON: { type: 'Feature', properties: properties, geometry: geometry },
+                                    visible: visible,
+                                    editable: editable
+                                });
+                                if (drawing) {
+                                    if (bounds) {
+                                        bounds.extend(drawing.getBounds());
+                                    } else {
+                                        bounds = drawing.getBounds();
+                                    }
                                 }
-                            }
-                        });
+                            });
 
-                        var _mapContainer$getBoun2 = mapContainer.getBoundingClientRect(),
-                            height = _mapContainer$getBoun2.height;
+                            var _mapContainer$getBoun2 = mapContainer.getBoundingClientRect(),
+                                height = _mapContainer$getBoun2.height;
 
-                        window.Catalog.drawnObjectsControl.widget.resize(height - 150);
-                        map.fitBounds(bounds, { animate: false });
-                        map.invalidateSize();
+                            window.Catalog.drawnObjectsControl.widget.resize(height - 150);
+                            map.fitBounds(bounds, { animate: false });
+                        } else {
+                            window.Catalog.dlgErrorMessage.content.innerHTML = T.getText('errors.upload') + '<br>' + T.getText('errors.points');
+                            window.Catalog.dlgErrorMessage.show();
+                        }
                         break;
                     case 'idlist':
                         var fields = results.fields,
@@ -28969,6 +29426,8 @@ function init_upload(shapeLoader) {
                 }
             }).catch(function (e) {
                 console.log(e);
+                window.Catalog.dlgErrorMessage.content.innerHTML = '' + T.getText('errors.upload');
+                window.Catalog.dlgErrorMessage.show();
             });
         }
     });
@@ -28979,7 +29438,7 @@ function init_download(shapeLoader) {
     var dlgDownload = (0, _Utils.create_container)();
     dlgDownload.style.display = 'none';
     dlgDownload.classList.add('dialog-download');
-    dlgDownload.innerHTML = '<table border="0" cellspacing="0" cellpadding="0">\n        <tbody>\n            <tr>\n                <td class="download-type">' + T.getText('download.type') + '</td>\n                <td>\n                    <select>                        \n                        <option value="borders">' + T.getText('download.borders') + '</option>\n                        <option value="results">' + T.getText('download.results') + '</option>\n                        <option value="cart">' + T.getText('download.cart') + '</option>\n                        <option value="quicklooks">' + T.getText('download.quicklooks') + '</option>\n                    </select>\n                </td>\n            </tr>\n            <tr>\n                <td class="download-file">' + T.getText('download.file') + '</td>\n                <td>\n                    <input type="text" value="' + T.getText('download.noname') + '"/>\n                </td>\n            </tr>\n            <tr>\n                <td colspan="2" class="download-footer">\n                    <button class="download-ok">' + T.getText('download.ok') + '</button>\n                    <button class="download-cancel">' + T.getText('download.cancel') + '</button>\n                </td>\n            </tr>\n        </tbody>\n    </table>';
+    dlgDownload.innerHTML = '<table border="0" cellspacing="0" cellpadding="0">\n        <tbody>\n            <tr>\n                <td class="download-type">' + T.getText('download.type') + '</td>\n                <td>\n                    <select>                        \n                        <option value="borders">' + T.getText('download.borders') + '</option>\n                        <option value="results">' + T.getText('download.results') + '</option>\n                        <option value="csv">' + T.getText('download.csv') + '</option>\n                        <option value="cart">' + T.getText('download.cart') + '</option>\n                        <option value="quicklooks">' + T.getText('download.quicklooks') + '</option>\n                    </select>\n                </td>\n            </tr>\n            <tr>\n                <td class="download-file">' + T.getText('download.file') + '</td>\n                <td>\n                    <input type="text" value="' + T.getText('download.noname') + '"/>\n                </td>\n            </tr>\n            <tr>\n                <td colspan="2" class="download-footer">\n                    <button class="download-ok">' + T.getText('download.ok') + '</button>\n                    <button class="download-cancel">' + T.getText('download.cancel') + '</button>\n                </td>\n            </tr>\n        </tbody>\n    </table>';
 
     dlgDownload.querySelector('.download-ok').addEventListener('click', function (e) {
         var type = dlgDownload.querySelector('select').value;
@@ -28992,6 +29451,7 @@ function init_download(shapeLoader) {
                 }
                 break;
             case 'results':
+            case 'csv':
                 if (window.Catalog.resultsController.hasResults) {
                     valid = true;
                 }
@@ -29252,7 +29712,7 @@ function load_state(state) {
 
     var center = L.Projection.Mercator.unproject({ y: y, x: x });
     map.setView(center, 17 - z);
-    map.invalidateSize();
+    // map.invalidateSize();        
 
     var _mapContainer$getBoun3 = mapContainer.getBoundingClientRect(),
         height = _mapContainer$getBoun3.height;
@@ -29328,12 +29788,6 @@ function load_version_info(state) {
         window.location.reload(true);
     });
 });
-
-/***/ }),
-/* 184 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 185 */
@@ -29493,6 +29947,12 @@ function load_version_info(state) {
 
 /***/ }),
 /* 211 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -29749,10 +30209,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 211;
+webpackContext.id = 212;
 
 /***/ }),
-/* 212 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -30995,4 +31455,4 @@ webpackContext.id = 211;
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=main.f1fae8eeeace8daed485.bundle.js.map
+//# sourceMappingURL=main.043488c755ad0c2ec642.bundle.js.map

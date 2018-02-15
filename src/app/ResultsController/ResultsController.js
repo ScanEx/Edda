@@ -1,6 +1,7 @@
 import { EventTarget } from 'lib/EventTarget/src/EventTarget.js';
 import { Quicklook } from 'app/Quicklook/Quicklook.js';
 import { ENUM_ID } from 'lib/DataGrid/src/DataGrid.js';
+import { CompositeLayer } from 'app/CompositeLayer/CompositeLayer.js';
 import { Translations } from 'lib/Translations/src/Translations.js';
 import { is_geojson_feature, from_gmx, normalize_geometry, normalize_geometry_type, chain } from 'app/Utils/Utils.js';
 import { copy } from 'lib/Object.Extensions/src/Extensions.js';
@@ -18,7 +19,7 @@ const Colors = {
 };
 
 const layerAttributes = ["hover", "selected", "visible", "result", "cart", "sceneid", "acqdate", "acqtime", "cloudness", "tilt", "sunelev", "stereo", "url", "x1", "y1", "x2", "y2", "x3", "y3", "x4", "y4", "volume", "platform", "spot5_a_exists", "spot5_b_exists", "islocal", "product", "gmx_id", "sensor", "local_exists", "spot5id", "stidx"]
-const layerAttrTypes = ["boolean", "boolean", "boolean", "boolean", "boolean", "string", "date", "time", "float", "float", "float", "string", "string", "float", "float", "float", "float", "float", "float", "float", "float", "string", "string", "boolean", "boolean", "boolean", "boolean", "integer", "string", "boolean", "string", "integer"];
+const layerAttrTypes = ["boolean", "boolean", "string", "boolean", "boolean", "string", "date", "time", "float", "float", "float", "string", "string", "float", "float", "float", "float", "float", "float", "float", "float", "string", "string", "boolean", "boolean", "boolean", "boolean", "integer", "string", "boolean", "string", "integer"];
 
 function properties_to_item (properties) {
     return properties.slice(1, properties.length - 1).reduce((a,v,i) => {
@@ -44,36 +45,6 @@ function properties_to_item (properties) {
     },{});
 }
 
-L.gmx.VectorLayer.prototype.toItemList = function () {
-    let items = this.getDataManager()._items;    
-    return Object.keys (items).map(id => items[id].properties).map(properties_to_item);
-}
-
-L.gmx.VectorLayer.prototype.getFilteredItems = function(filter) {
-    return this.toItemList().filter(item => (typeof filter !== 'function') || filter(item));
-};
-
-L.gmx.VectorLayer.prototype.mergeData = function(data) {
-    let dm = this.getDataManager();
-    let cache = Object.keys(dm._items).reduce((a,gmx_id) => {
-        a[gmx_id] = copy(dm._items[gmx_id].properties);
-        return a;
-    }, {});
-    let items = data.reduce((a,value) => {
-        const gmx_id = value[0];
-        if (cache[gmx_id]){
-            cache[gmx_id][result_index] = true;
-        }
-        else {
-            a[gmx_id] = value;
-        }        
-        return a;
-    }, cache);
-    let res = Object.keys(items).map(gmx_id => items[gmx_id]);
-    this.removeData();
-    this.addData(res);
-};
-
 function getBounds (items) {
     return items.reduce((a,item) => {
         let {x2,y2,x4,y4} = item;        
@@ -90,27 +61,6 @@ function getBounds (items) {
     }, null);
 }
 
-// L.gmx.DataManager.prototype.removeData = function (data) {
-//     this._itemsBounds = null;
-//     var vTile = this.processingTile;
-//     if (vTile) {                
-//         var chkKeys = (data || vTile.data).reduce(function(a,item) {
-//             var id = item[0];
-//             a[id] = true;
-//             delete this._items[id];
-//             return a;
-//         }.bind(this), {});
-        
-//         this._removeDataFromObservers(chkKeys);
-//         vTile.removeData(chkKeys, true);
-//         this._updateItemsFromTile(vTile);
-
-//         this._triggerObservers();
-//     }
-
-//     return vTile;
-// };
-
 const sceneid_index = layerAttributes.indexOf('sceneid') + 1;
 const result_index = layerAttributes.indexOf('result') + 1;
 const cart_index = layerAttributes.indexOf('cart') + 1;
@@ -119,23 +69,6 @@ const visible_index = layerAttributes.indexOf('visible') + 1;
 const hover_index = layerAttributes.indexOf('hover') + 1;
 
 let qlCache = {};
-
-function prefetch_ql (sceneid) {
-    return new Promise((resolve, reject) => {
-        
-        let img = new Image();
-        img.crossOrigin = "Anonymous";
-        img.onload = () => {   
-            qlCache[sceneid] = true;
-            resolve();
-        };
-        img.onerror = () => {              
-            delete qlCache[sceneid];
-            reject();
-        };                
-        img.src = `http://search.kosmosnimki.ru/QuickLookImage.ashx?id=${sceneid}&srs=3857`;
-    });                            
-}
 
 class ResultsController extends EventTarget {
     constructor({map, requestAdapter, sidebar, resultList, favoritesList, imageDetails, drawnObjects}){
@@ -151,155 +84,64 @@ class ResultsController extends EventTarget {
         this._favoritesList.items = [];
         this._drawings = {};
         this._currentTab = '';
-        this._currentID = null;
-        this._update_ql = this._update_ql.bind(this);
-        this._layer = L.gmx.createLayer({
-            properties: {
-                type: 'Vector',
-                visible: true,
-                identityField: 'gmx_id',
-                GeometryType: 'polygon',
-                // IsRasterCatalog: true,
-                RCMinZoomForRasters: 3,
-                Quicklook: '{"template":"http://search.kosmosnimki.ru/QuickLookImage.ashx?id=[sceneid]","minZoom":3,"X1":"x1","Y1":"y1","X2":"x2","Y2":"y2","X3":"x3","Y3":"y3","X4":"x4","Y4":"y4"}',
-                MetaProperties: {
-                    quicklookPlatform: {
-                        Type: "String",
-                        Value: "image"
-                    }
-                },
-                srs: 3857,
-                attributes: layerAttributes,
-                attrTypes: layerAttrTypes,
-                styles: [
-                    {
-                        MinZoom: 3,
-                        MaxZoom: 17,                        
-                        DisableBalloonOnClick: true,
-                        DisableBalloonOnMouseMove: true,                        
-                        RenderStyle:{
-                            outline: {color: Colors.Default, thickness: 1},
-                            fill: {color: 0xfff, opacity: 0}
-                        },                       
-                    }
-                ]
-            },
-            geometry: null
-        }).addTo(this._map);
-        this._layer.disableFlip();
-        this._layer.setFilter (item => {
-            let obj = properties_to_item(item.properties);
-            let filtered = false;
-            if(typeof this._filter === 'function') {
-                filtered = this._filter(obj);
-            }
-            else {
-                filtered = true;
-            }            
-            switch (this._currentTab) {
-                case 'results':                    
-                    return item.properties[result_index] && filtered;
-                case 'favorites':                 
-                    return item.properties[cart_index] && filtered;
-                case 'search':
-                    return false;
-                default:
-                    return true;
-            }
-        });
-        this._layer.setStyleHook (item => {
-            let color = Colors.Default;
-            let lineWidth = 1;            
-            if (item.properties[hover_index]) {
-                color = item.properties[cart_index] ? Colors.CartHilite : Colors.Hilite;
-                lineWidth = 3;                
-            }
-            else {
-                color = item.properties[cart_index] ? Colors.Cart : Colors.Default;                
-            }
-            let sceneid = item.properties[sceneid_index];
-            let skipRasters = item.properties[visible_index] === 'hidden';
-            if (!qlCache[sceneid] && !skipRasters) {
-                skipRasters = true;
-            }
-            return { skipRasters, strokeStyle: color, lineWidth };
-        }); 
+        this._currentID = null;        
 
-        this._layer
-        .on('click', e => {
-            let { gmx: {id, layer, target} } = e;            
-            let show = null;            
-            switch (target.properties[visible_index]) {
-                case 'visible':
-                case 'loading':
-                    show = false;
-                    break;                
-                case 'hidden':
+        this._compositeLayer = new CompositeLayer({ map: this._map});
+        this._compositeLayer.addEventListener('click', e => {
+            let {id, show} = e.detail;
+            let obj = this._compositeLayer.getItem (id);
+            this._update_list_item (id, obj);
+            switch (this._currentTab) {
+                case 'results':                        
+                    if (show) {                            
+                        if (this._currentID) {
+                            this._resultList.dim(this._currentID);
+                        }
+                        this._currentID = id;
+                        this._resultList.hilite(id);
+                        this._resultList.scrollToRow(id);
+                    }
+                    else {
+                        this._currentID = null;
+                    }
+                    break;
+                case 'favorites':
+                    if (show) {
+                        if (this._currentID) {
+                            this._favoritesList.dim(this._currentID);
+                        }
+                        this._currentID = id;
+                        this._favoritesList.hilite(id);
+                        this._favoritesList.scrollToRow(id);                            
+                    }
+                    else {
+                        this._currentID = null;
+                    }
+                    break;
                 default:
-                    show = true;
                     break;
             }
-            this._show_ql (id, show)
-            .then(() => {
-                let item = null;                
-                switch (this._currentTab) {
-                    case 'results':                        
-                        if (show) {                            
-                            if (this._currentID) {
-                                this._resultList.dim(this._currentID);
-                            }                            
-                            this._currentID = id;
-                            this._resultList.hilite(id);
-                            this._resultList.scrollToRow(id);                            
-                        }
-                        else {
-                            this._currentID = null;
-                        }
-                        break;
-                    case 'favorites':
-                        if (show) {
-                            if (this._currentID) {
-                                this._favoritesList.dim(this._currentID);
-                            }
-                            this._currentID = id;
-                            this._favoritesList.hilite(id);
-                            this._favoritesList.scrollToRow(id);                            
-                        }
-                        else {
-                            this._currentID = null;
-                        }
-                        break;
-                    default:
-                        break;
-                }
-                // this._highlight(id, show);
-            });            
-        })
-        .on('mouseover', e => {
-            let { gmx: {id, layer, target} } = e;
-            target.properties[hover_index] = true;            
-            this._layer.redrawItem(id); 
+        });
+        this._compositeLayer.addEventListener('mouseover', e => {
+            const id = e.detail;            
             this._highlight(id, true);
-        })
-        .on('mouseout', e => {
-            let { gmx: {id, layer, target} } = e;
-            target.properties[hover_index] = false;
-            this._layer.redrawItem(id);
+        });
+        this._compositeLayer.addEventListener('mouseout', e => {
+            const id = e.detail;
             this._highlight(id, false);
-        });        
+        });
+        
         this._resultList.addEventListener('cart', e => {            
             const { gmx_id } = e.detail;
-            let item = this._layer.getDataManager()._items[gmx_id];            
-            item.properties[cart_index] = !item.properties[cart_index];
-            this._layer.redrawItem(gmx_id);            
-            
-            this._resultList.redrawItem (gmx_id, properties_to_item(item.properties));
+            const item = this._compositeLayer.addToCart(gmx_id);
+            this._resultList.redrawItem (gmx_id, item);
 
             let event = document.createEvent('Event');
             event.initEvent('cart', false, false);
             event.detail = item;
             this.dispatchEvent(event);
-        });          
+        });
+
         this._resultList.addEventListener('visible', e => {            
             let {gmx_id, visible} = e.detail;
             let show = false;
@@ -313,13 +155,15 @@ class ResultsController extends EventTarget {
                     show = true;
                     break;
             }
+
             this._show_ql(gmx_id, show)
-            .then(() => {                                
+            .then(() => {
                 let event = document.createEvent('Event');
                 event.initEvent('visible', false, false);
                 this.dispatchEvent(event);
             });
-        });       
+
+        });
         this._resultList.addEventListener('info', e => {
             let {item, top, button} = e.detail;
             let {left, width} = this._resultList.bbox;
@@ -333,27 +177,22 @@ class ResultsController extends EventTarget {
                 this._imageDetails.show({left: left + width + 20, top});
             }
         });
+
         this._resultList.addEventListener('mouseover', e => {
             let {item: {gmx_id}} = e.detail;
-            let item = this._layer.getDataManager()._items[gmx_id];            
-            item.properties[hover_index] = true;
-            this._layer.redrawItem(gmx_id);
-            // this._layer.bringToTopItem(gmx_id);
+            this._compositeLayer.setHover(gmx_id, true);            
         });
 
         this._resultList.addEventListener('mouseout', e => {
             let {item: {gmx_id}} = e.detail;
-            let item = this._layer.getDataManager()._items[gmx_id];            
-            item.properties[hover_index] = false;
-            this._layer.redrawItem(gmx_id);
-            // this._layer.bringToBottomItem(gmx_id);
+            this._compositeLayer.setHover(gmx_id, false);            
         });
 
         let zoom_to_bounds = (xmin,ymin,xmax,ymax) => {
             let ne = L.latLng(ymax, xmax);
             let sw = L.latLng(ymin, xmin);
             this._map.fitBounds(L.latLngBounds(sw, ne), { animate: false });
-            this._map.invalidateSize();
+            // this._map.invalidateSize();
         };
 
         this._resultList.addEventListener('click', e => {
@@ -363,16 +202,11 @@ class ResultsController extends EventTarget {
         });        
 
         this._resultList.addEventListener('cart:all', e => {
-            let {state} = e.detail;
-            let items = this._layer.getDataManager()._items;
-            Object.keys(items).forEach(id => {
-                let item = items[id];
-                if (item.properties[result_index]) {
-                    item.properties[cart_index] = true;
-                }                
-            });
-            this._layer.repaint();
-            this._resultList.items = this._layer.getFilteredItems(item => item.result);
+            let { state } = e.detail;
+
+            this._compositeLayer.addAllToCart();
+            this._resultList.items = this._compositeLayer.getFilteredItems(item => item.result);
+
             let event = document.createEvent('Event');
             event.initEvent('cart', false, false);
             this.dispatchEvent(event);
@@ -386,10 +220,7 @@ class ResultsController extends EventTarget {
 
         this._favoritesList.addEventListener ('selected', e => {
             let {gmx_id, selected} = e.detail;
-            let item = this._layer.getDataManager()._items[gmx_id];
-            item.properties[selected_index] = selected;
-            this._layer.redrawItem(gmx_id);            
-
+            this._compositeLayer.setSelected(gmx_id, selected);
             let event = document.createEvent('Event');
             event.initEvent('selected', false, false);
             event.detail = e.detail;
@@ -411,17 +242,16 @@ class ResultsController extends EventTarget {
                     break;
             }
             this._show_ql(gmx_id, show)
-            .then (() => {
-                // this._resultList.items = this._layer.getFilteredItems(item => item.result);
+            .then(() => {
                 let event = document.createEvent('Event');
                 event.initEvent('visible', false, false);
                 this.dispatchEvent(event);
-            });
+            });            
         });
 
         this._favoritesList.addEventListener('visible:all', e => {
             let show = e.detail;
-            let items = this._layer.getDataManager()._items;
+            let items = this._compositeLayer.vectors;
             Object.keys(items)
             .filter(id => items[id].properties[cart_index])
             .forEach(id => {
@@ -435,18 +265,12 @@ class ResultsController extends EventTarget {
 
         this._favoritesList.addEventListener('mouseover', e => {
             let {item: {gmx_id}} = e.detail;
-            let item = this._layer.getDataManager()._items[gmx_id];            
-            item.properties[hover_index] = true;
-            this._layer.redrawItem(gmx_id);
-            // this._layer.bringToTopItem(gmx_id);
+            this._compositeLayer.setHover(gmx_id, true);            
         });
 
         this._favoritesList.addEventListener('mouseout', e => {
             let {item: {gmx_id}} = e.detail;
-            let item = this._layer.getDataManager()._items[gmx_id];            
-            item.properties[hover_index] = false;
-            this._layer.redrawItem(gmx_id);
-            // this._layer.bringToBottomItem(gmx_id);
+            this._compositeLayer.setHover(gmx_id, false);
         });
 
         this._favoritesList.addEventListener('info', e => {
@@ -544,12 +368,12 @@ class ResultsController extends EventTarget {
                 if (type === 'Point') {
                     let center = L.latLng(coordinates[1],coordinates[0]);                    
                     this._map.setView(center);
-                    this._map.invalidateSize();
+                    // this._map.invalidateSize();
                 }
                 else {                    
                     const bounds = item.drawing.getBounds();
                     this._map.fitBounds(bounds, { animate: false });
-                    this._map.invalidateSize();
+                    // this._map.invalidateSize();
                 }                
             }
         });
@@ -567,19 +391,7 @@ class ResultsController extends EventTarget {
 
         document.body.addEventListener('click', e => this._imageDetails.hide());
     }
-    _process_ql (id, show) {
-        this._layer.redrawItem(id);
-        if (show) {
-            this._layer.bringToTopItem(id);
-        }
-        else {
-            this._layer.bringToBottomItem(id);
-        } 
-        let event = document.createEvent('Event');
-        event.initEvent('visible', false, false);
-        this.dispatchEvent(event);                                
-    }
-
+    
     _highlight (gmx_id, hover) {                
         switch (this._currentTab) {
             case 'results':                    
@@ -601,49 +413,37 @@ class ResultsController extends EventTarget {
             default:
                 break;
         }
-    }
+    }    
 
-    _update_list_item (item, state) {
-        const gmx_id = item.properties[0];
-        item.properties[visible_index] = state;
-        // this._layer.redrawItem(gmx_id);
-        let obj = properties_to_item (item.properties);
+    _update_list_item (id, item) {        
         switch (this._currentTab) {
             case 'results':                    
-                this._resultList.redrawItem(gmx_id, obj);
+                this._resultList.redrawItem(id, item);
                 break;
             case 'favorites':                    
-                this._favoritesList.redrawItem(gmx_id, obj);
+                this._favoritesList.redrawItem(id, item);
                 break;
             default:
                 break;
         }
     }
 
-    _show_ql (id, show) {     
-        return new Promise ((resolve,reject) => {
-            let item = this._layer.getDataManager()._items[id];            
-            if (show && item.properties[visible_index] === 'hidden') {                
-                this._update_list_item (item, 'loading');
-                prefetch_ql(item.properties[sceneid_index])
-                .then(() => {                        
-                    this._update_list_item (item, 'visible');
-                    this._process_ql(id, show);
+    _show_ql (id, show) {
+        return new Promise(resolve => {                        
+            if(this._compositeLayer.setVisible(id, show)) {                
+                this._update_list_item (id, this._compositeLayer.getItem (id));
+                this._compositeLayer.showQuicklook(id, show)
+                .then(() => {                    
+                    this._update_list_item (id, this._compositeLayer.getItem (id));
+                    let event = document.createEvent('Event');
+                    event.initEvent('visible', false, false);
+                    this.dispatchEvent(event); 
                     resolve();
                 })
-                .catch(() => {                        
-                    this._update_list_item (item, 'failed');
-                    resolve();
-                });                                
+                .catch(e => console.log(e));
             }
-            else if(!show && item.properties[visible_index] !== 'hidden') {
-                this._update_list_item (item, 'hidden');
-                this._process_ql(id, show);
-                resolve();
-            }
-        });                         
+        });
     }
-
     get cart () {
         return this._cart;
     }
@@ -666,39 +466,7 @@ class ResultsController extends EventTarget {
         return this._downloadCache;
     }
     setLayer ({fields, values, types}, activeTabId = 'results') {
-        // "hover", "selected", "visible", "result", "cart"
-        qlCache = {};         
-        const idx = fields.indexOf('gmx_id');
-        let data = values.reduce((a,item) => {            
-            let value = layerAttributes.reduce((b,k) => {
-                const i = fields.indexOf(k);
-                if (i < 0) {
-                    switch (k) {
-                        case 'hover':                            
-                        case 'selected':                        
-                        case 'cart':
-                            return b.concat(false);
-                        case 'result':
-                            return b.concat(true);                        
-                        case 'acqtime':
-                            return b.concat(null);
-                        case 'visible':
-                            return b.concat('hidden');
-                    }
-                }
-                else {
-                    return b.concat(item[i]);
-                }
-                
-            }, []);
-            value.unshift(item[idx]);
-            value.push(item[item.length - 1]);
-            a.push(value);
-            return a;
-        },[]);
-                
-        this._layer.mergeData(data);
-
+        this._compositeLayer.setData({fields, values}, activeTabId);
         let event = document.createEvent('Event');
         event.initEvent('result:done', false, false);
         event.detail = {activeTabId};
@@ -706,13 +474,14 @@ class ResultsController extends EventTarget {
     }
     hideContours() {
         this._currentTab = 'search';
-        this._layer.repaint();
+        this._compositeLayer.currentTab = this._currentTab;
+        this._compositeLayer.redraw();
     }    
     get resultsCount () {
-        return this._layer.getFilteredItems(item => item.result).length;
+        return this._compositeLayer.resultsCount;
     }
     get favoritesCount () {
-        return this._layer.getFilteredItems(item => item.cart).length;
+        return this._compositeLayer.favoritesCount;
     }
     get count () {
         switch (this._currentTab) {
@@ -726,71 +495,55 @@ class ResultsController extends EventTarget {
     }   
     showResults () {
         this._currentTab = 'results';
-        this._layer.repaint();
-        this._resultList.items = this._layer.getFilteredItems(item => item.result);
-        this._resultList.items.forEach(this._update_ql);
+        this._compositeLayer.currentTab = this._currentTab;
+        this._compositeLayer.redraw();
+        this._resultList.items = this._compositeLayer.getFilteredItems(item => item.result);
+        // this._resultList.items.forEach(({gmx_id, visible}) => this._update_ql(gmx_id, visible));
     } 
     zoomToResults () {
-        let bounds = getBounds(this._layer.getFilteredItems(item => item.result));
-        this._map.fitBounds(bounds, { animate: false });
-        this._map.invalidateSize();
+        let bounds = getBounds(this._compositeLayer.getFilteredItems(item => item.result));
+        if (bounds) {
+            this._map.fitBounds(bounds, { animate: false });
+            // this._map.invalidateSize();
+        }
     } 
     zoomToFavorites () {
-        let bounds = getBounds(this._layer.getFilteredItems(item => item.cart));
-        this._map.fitBounds(bounds, { animate: false });
-        this._map.invalidateSize();
+        let bounds = getBounds(this._compositeLayer.getFilteredItems(item => item.cart));
+        if (bounds) {
+            this._map.fitBounds(bounds, { animate: false });
+            // this._map.invalidateSize();
+        }
     } 
     showFavorites() {
         this._currentTab = 'favorites';
-        this._layer.repaint();        
-        this.favoritesList.items = this._layer.getFilteredItems(item => item.cart);
-        this.favoritesList.items.forEach(this._update_ql);
+        this._compositeLayer.currentTab = this._currentTab;
+        this._compositeLayer.redraw();
+        this.favoritesList.items = this._compositeLayer.getFilteredItems(item => item.cart);
+        // this.favoritesList.items.forEach(({gmx_id, visible}) => this._update_ql(gmx_id, visible));
     }
     get hasResults () {        
-        let items = this._layer.getDataManager()._items;
-        return Object.keys(items).some(id => {
-            let item = items[id];
-            return item.properties[result_index];
-        });
+        return this._compositeLayer.hasResults;
     } 
     get hasVisibleResults () {        
-        let items = this._layer.getDataManager()._items;
-        return Object.keys(items).some(id => {
-            let item = items[id];
-            return item.properties[result_index] && item.properties[visible_index];
-        });
+        return this._compositeLayer.hasVisibleResults;
     }
-    get hasFavoritesSelected () {            
-        let items = this._layer.getDataManager()._items;
-        return Object.keys(items).some(id => {
-            let item = items[id];
-            return item.properties[cart_index] && item.properties[selected_index];
-        });
+    get hasFavoritesSelected () {        
+        return this._compositeLayer.hasFavoritesSelected;
     }
     get hasFavorites () {        
-        let items = this._layer.getDataManager()._items;
-        return Object.keys(items).some(id => {
-            let item = items[id];
-            return item.properties[cart_index];
-        });
+        this._compositeLayer.hasFavorites;
     }
+
     addVisibleToCart () {                
 
-        if (this._layer.getFilteredItems(item => item.result && item.visible === 'visible' || item.cart).length > window.MAX_CART_SIZE) {
+        if (this._compositeLayer.getFilteredItems(item => item.result && item.visible === 'visible' || item.cart).length > window.MAX_CART_SIZE) {
             let event = document.createEvent('Event');
             event.initEvent('cart:limit', false, false);            
             this.dispatchEvent(event);
             return;
         }
 
-        let items = this._layer.getDataManager()._items;        
-        Object.keys(items).forEach(id => {
-            let item = items[id];
-            if (item.properties[visible_index] === 'visible') {
-                item.properties[cart_index] = true;                
-                this._layer.redrawItem(item.id);
-            }
-        });        
+        this._compositeLayer.addVisibleToCart();
 
         this.showResults();
         
@@ -798,8 +551,7 @@ class ResultsController extends EventTarget {
         event.initEvent('cart', false, false);        
         this.dispatchEvent(event);        
     }
-    _update_ql (item) {
-        const {gmx_id, visible} = item;            
+    _update_ql (id, visible) {        
         let show = false;
         if (typeof visible === 'boolean') {
             show = visible;
@@ -816,34 +568,25 @@ class ResultsController extends EventTarget {
                     break;
             }
         }        
-        this._show_ql(gmx_id, show);
-        return item;
+        return this._show_ql(id, show);
     }    
     removeSelectedFavorites () {
-        let items = this._layer.getDataManager()._items;        
-        Object.keys(items).forEach(id => {
-            let item = items[id];
-            if (item.properties[cart_index] && item.properties[selected_index]) {
-                item.properties[cart_index] = false;
-                item.properties[selected_index] = false;
-                this._layer.redrawItem(item.id);
-            }
-        });        
-        this._favoritesList.items = this._layer.getFilteredItems(item => item.cart);
+        this._compositeLayer.removeSelectedFavorites();       
+        this._favoritesList.items = this._compositeLayer.getFilteredItems(item => item.cart);
     }
     get results () {
-        let items = this._layer.getDataManager()._items;
+        let items = this._compositeLayer.vectors;
         return this._resultList.items.map(item => {
-            let properties = items[item.gmx_id].properties;
+            let {properties} = items[item.gmx_id];
             item.geoJSON = L.gmxUtil.convertGeometry (properties[properties.length - 1], true, true);
             item.geoJSON = normalize_geometry_type(item.geoJSON);
             return item;
         });
     }
     get favorites () {
-        let items = this._layer.getDataManager()._items;
+        let items = this._compositeLayer.vectors;
         return this._favoritesList.items.map(item => {
-            let properties = items[item.gmx_id].properties;
+            let {properties} = items[item.gmx_id];
             item.geoJSON = L.gmxUtil.convertGeometry (properties[properties.length - 1], true, true);
             item.geoJSON = normalize_geometry_type(item.geoJSON);
             return item;
@@ -851,19 +594,8 @@ class ResultsController extends EventTarget {
     }
     clear () {
         this.resultList.items = [];
-        this._downloadCache = [];        
-        let items = this._layer.getDataManager()._items;
-        let toRemove = Object.keys(items).reduce((a,gmx_id) => {
-            let item = items[gmx_id].properties;
-            if (item[cart_index]) {
-                item[result_index] = false;
-            }
-            else {
-                a.push([gmx_id]);
-            }            
-            return a;
-        }, []);
-        this._layer.removeData(toRemove);
+        this._downloadCache = [];     
+        this._compositeLayer.clear();        
     }    
     createDrawing({object, geoJSON}) { 
         const id = object.options.uuid || L.gmxUtil.newId();        
@@ -930,9 +662,9 @@ class ResultsController extends EventTarget {
             let [drawing] = this._map.gmxDrawing.addGeoJSON(object.geoJSON, options);
             if (!editable) {
                 options.className = 'osm-layer';             
-                drawing.enableEdit();
+                // drawing.enableEdit();
                 drawing.setOptions({                                     
-                    editable,                    
+                    editable,
                     lineStyle: {
                         fill: false,
                         weight: 2,
@@ -941,7 +673,7 @@ class ResultsController extends EventTarget {
                     },                    
                     pointStyle: {color}
                 });
-                drawing.disableEdit();
+                // drawing.disableEdit();
             }
             drawing.options.uuid = id;
             object.drawing = drawing;
@@ -1028,7 +760,7 @@ class ResultsController extends EventTarget {
         this._filter = value;
         this._resultList.filter = value;
         this._favoritesList.filter = value;
-        this._layer.repaint();
+        this._compositeLayer.redraw();
     } 
     get platforms () {
         let get_platforms = items => {
@@ -1042,9 +774,9 @@ class ResultsController extends EventTarget {
         };
         switch (this._currentTab) {
             case 'results':
-                return get_platforms (this._layer.getFilteredItems(item => item.result));
+                return get_platforms (this._compositeLayer.getFilteredItems(item => item.result));
             case 'favorites':                
-                return get_platforms (this._layer.getFilteredItems(item => item.cart));
+                return get_platforms (this._compositeLayer.getFilteredItems(item => item.cart));
             default:
                 return [];
         }

@@ -46,8 +46,9 @@ import './main.css';
 window.DIALOG_PLACE = {left: 600, top: 150};
 window.RESULT_MAX_COUNT = 1000;
 window.MAX_CART_SIZE = 200;
-window.Catalog.VERSION = '2.2.1';
-window.Catalog.VERSION_DATE = new Date(2018, 0, 25);
+window.MAX_UPLOAD_POINTS = 1000;
+window.Catalog.VERSION = '2.2.2';
+window.Catalog.VERSION_DATE = new Date(2018, 1, 15);
 
 window.Catalog.translations = window.Catalog.translations || new Translations();
 let T = window.Catalog.translations;
@@ -137,6 +138,12 @@ T.addText('rus', {
         noname: 'Без имени',
         noresults: 'Нет объектов для скачивания',
         empty: "Нет объектов",
+        csv: 'Результаты поиска в формате csv'
+    },
+    errors: {
+        permalink: 'Произошла ошибка при загрузке ссылки',
+        upload: 'Произошла ошибка при загрузке файла',
+        points: `Геометрия содержит более ${window.MAX_UPLOAD_POINTS} точек`
     }
 });
 
@@ -221,7 +228,13 @@ T.addText('eng', {
         noname: 'No name',
         noresults: 'No objects to download',
         empty: "Can't download. No objects",
+        csv: 'Results as .csv'
     },
+    errors: {
+        permalink: 'Error while loading permalik',
+        upload: 'Error while uploading file',
+        points: `Geometry contains more than ${window.MAX_UPLOAD_POINTS} points`
+    }
 });
 
 let mapContainer = document.getElementById('map');
@@ -523,7 +536,7 @@ function init_sidebar (state) {
             window.Catalog.drawnObjectsControl.widget.resize(height - 150);            
             // window.Catalog.drawnObjectsControl.widget.items = window.Catalog.drawnObjectsControl.widget.items.concat(item);
             map.setView(center, 14);
-            map.invalidateSize();
+            // map.invalidateSize();
         });
         let gmx = new GmxLayerDataProvider({ map, gmxResourceServer: window.Catalog.gmxResourceServer});
         gmx.addEventListener ('fetch', e => {
@@ -578,7 +591,7 @@ function init_sidebar (state) {
                 }, L.geoJson())
                 let bounds = json.getBounds();
                 map.fitBounds(bounds);
-                map.invalidateSize();
+                // map.invalidateSize();
             }
         });
 
@@ -1033,6 +1046,7 @@ function init_sidebar (state) {
                     }                                                   
                 })
                 .catch(e => {
+                    console.log(e);
                     window.Catalog.loaderWidget.hide();
                     window.Catalog.dlgErrorMessage.content.innerHTML = `${e.toString()}<br/>${e.StackTrace}`;
                     window.Catalog.dlgErrorMessage.show();
@@ -1143,6 +1157,8 @@ function show_cart () {
         })
         .catch(e => {
             console.log(e);
+            window.Catalog.dlgErrorMessage.content.innerHTML = `${T.getText('errors.permalink')}`;
+            window.Catalog.dlgErrorMessage.show();
         });                        
     }
 }
@@ -1313,6 +1329,10 @@ function init_zoom (){
 }
 
 function init_upload (shapeLoader) {
+    let npoints = coordinates => {
+        const m = /\[(-?\d+(\.\d+)?)\s*,\s*(-?\d+(\.\d+)?)\]/g.exec(JSON.stringify(coordinates));
+        return m && m.length || 0;
+    };
     let uploadControl = new L.Control.gmxIcon({
         id: 'upload',
         position: 'searchControls',
@@ -1323,28 +1343,37 @@ function init_upload (shapeLoader) {
                 switch (type) {                    
                     case 'shapefile':
                         let bounds = null;
-                        results.forEach(item => {
-                            let {name, color, editable, visible, geoJSON: {geometry, properties}} = window.Catalog.resultsController.getObject ({geoJSON: item});
-                            const drawing = window.Catalog.resultsController.addDrawing ({
-                                name,
-                                color,
-                                geoJSON: {type: 'Feature', properties, geometry},
-                                visible,
-                                editable,
-                            });
-                            if (drawing) {
-                                if (bounds) {
-                                    bounds.extend(drawing.getBounds());
-                                }
-                                else {
-                                    bounds = drawing.getBounds();
-                                }                                            
-                            }                    
-                        }); 
-                        let { height } =  mapContainer.getBoundingClientRect();
-                        window.Catalog.drawnObjectsControl.widget.resize(height - 150);
-                        map.fitBounds(bounds, { animate: false });
-                        map.invalidateSize();
+                        const count = results.reduce((a,item) => {
+                            const {geometry: {coordinates}} = item;
+                            return a + npoints(coordinates);
+                        }, 0);
+                        if (count <= window.MAX_UPLOAD_POINTS) {
+                            results.forEach(item => {
+                                let {name, color, editable, visible, geoJSON: {geometry, properties}} = window.Catalog.resultsController.getObject ({geoJSON: item});
+                                const drawing = window.Catalog.resultsController.addDrawing ({
+                                    name,
+                                    color,
+                                    geoJSON: {type: 'Feature', properties, geometry},
+                                    visible,
+                                    editable,
+                                });
+                                if (drawing) {
+                                    if (bounds) {
+                                        bounds.extend(drawing.getBounds());
+                                    }
+                                    else {
+                                        bounds = drawing.getBounds();
+                                    }                                            
+                                }                    
+                            }); 
+                            let { height } =  mapContainer.getBoundingClientRect();
+                            window.Catalog.drawnObjectsControl.widget.resize(height - 150);
+                            map.fitBounds(bounds, { animate: false });
+                        }
+                        else {
+                            window.Catalog.dlgErrorMessage.content.innerHTML = `${T.getText('errors.upload')}<br>${T.getText('errors.points')}`;
+                            window.Catalog.dlgErrorMessage.show();
+                        }
                         break;
                     case 'idlist':
                         let {fields, values, types, Count} = results;                        
@@ -1365,6 +1394,8 @@ function init_upload (shapeLoader) {
             })
             .catch(e => {                
                 console.log(e);
+                window.Catalog.dlgErrorMessage.content.innerHTML = `${T.getText('errors.upload')}`;
+                window.Catalog.dlgErrorMessage.show();
             });
         }
     });
@@ -1384,6 +1415,7 @@ function init_download (shapeLoader) {
                     <select>                        
                         <option value="borders">${T.getText('download.borders')}</option>
                         <option value="results">${T.getText('download.results')}</option>
+                        <option value="csv">${T.getText('download.csv')}</option>
                         <option value="cart">${T.getText('download.cart')}</option>
                         <option value="quicklooks">${T.getText('download.quicklooks')}</option>
                     </select>
@@ -1415,6 +1447,7 @@ function init_download (shapeLoader) {
                 }
                 break;
             case 'results':
+            case 'csv':
                 if (window.Catalog.resultsController.hasResults) {
                     valid = true;
                 }
@@ -1424,7 +1457,7 @@ function init_download (shapeLoader) {
                 if (window.Catalog.resultsController.hasFavorites) {
                     valid = true;
                 }
-                break;                                            
+                break;                                                      
             default:
                 break;
         }
@@ -1652,7 +1685,7 @@ function load_state (state) {
     let {x, y, z} = state.position;
     let center = L.Projection.Mercator.unproject({y, x});
     map.setView(center, 17 - z);
-    map.invalidateSize();        
+    // map.invalidateSize();        
     let { height } =  mapContainer.getBoundingClientRect();
     window.Catalog.drawnObjectsControl.widget.resize(height - 150);
 }
