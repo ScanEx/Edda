@@ -170,8 +170,8 @@ class SP5_10MS extends Airbus {
     constructor(){
         super({id: 'SP5_10MS', platforms: ['SPOT 5'], name: 'SPOT 5 (10m)', resolution: 10, swath: 20, since: '2002 - 2015'});
     }
-    condition (archive) {
-        return "platform = 'SPOT 5' AND sensor = 'J'";
+    condition (archive, authorized) {
+        return `platform = 'SPOT 5' AND sensor = 'J'${authorized ? this.islocal(archive) : ''}`;
     }
 }
 
@@ -179,8 +179,8 @@ class SP5_5MS extends Airbus{
     constructor(){
         super({id: 'SP5_5MS', platforms: ['SPOT 5'], name: 'SPOT 5 (5m)', resolution: 5, swath: 20, since: '2002 - 2015'});
     }
-    condition () {
-        return "platform = 'SPOT 5' AND (sensor = 'J' AND (spot5_a_exists = TRUE OR spot5_b_exists = TRUE))";
+    condition (archive, authorized) {
+        return `platform = 'SPOT 5' AND (sensor = 'J' AND (spot5_a_exists = TRUE OR spot5_b_exists = TRUE))${authorized ? this.islocal(archive) : ''}`;
     }
 }
 
@@ -190,8 +190,8 @@ class SP5_5PC extends SP5_5MS{
         this._id = 'SP5_5PC';
         this._ms = false;
     }
-    condition () {
-        return "platform = 'SPOT 5' AND (sensor = 'A' OR sensor = 'B' AND spot5_b_exists = FALSE)";
+    condition (archive, authorized) {
+        return `platform = 'SPOT 5' AND (sensor = 'A' OR sensor = 'B' AND spot5_b_exists = FALSE)${authorized ? this.islocal(archive) : ''}`;
     }
 }
 
@@ -199,8 +199,8 @@ class SP5_2MS extends Airbus{
     constructor(){
         super({id: 'SP5_2MS', platforms: ['SPOT 5'], name: 'SPOT 5 (2.5m)', resolution: 2.5, swath: 20, since: '2002 - 2015'});
     }
-    condition () {
-        return "platform = 'SPOT 5' AND sensor = 'J' AND spot5_a_exists = TRUE AND spot5_b_exists = TRUE";
+    condition (archive, authorized) {
+        return `platform = 'SPOT 5' AND sensor = 'J' AND spot5_a_exists = TRUE AND spot5_b_exists = TRUE${authorized ? this.islocal(archive) : ''}`;
     }
 }
 
@@ -210,8 +210,8 @@ class SP5_2PC extends SP5_2MS{
         this._id = 'SP5_2PC';
         this._ms = false;
     }
-    condition () {
-        return "platform = 'SPOT 5' AND sensor = 'A' AND spot5_b_exists = TRUE";
+    condition (archive, authorized) {
+        return `platform = 'SPOT 5' AND sensor = 'A' AND spot5_b_exists = TRUE${authorized ? this.islocal(archive) : ''}`;
     }
 }
 

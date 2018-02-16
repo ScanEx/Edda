@@ -12,6 +12,9 @@ function serialize (obj) {
     return Object.keys(obj).map(id => obj[id]);
 }
 
+const attributes = ["hover", "selected", "visible", "result", "cart", "clip_coords", "sceneid", "acqdate", "acqtime", "cloudness", "tilt", "sunelev", "stereo", "url", "x1", "y1", "x2", "y2", "x3", "y3", "x4", "y4", "volume", "platform", "spot5_a_exists", "spot5_b_exists", "islocal", "product", "gmx_id", "sensor", "local_exists", "spot5id", "stidx"];
+const attrTypes = ["boolean", "boolean", "string", "boolean", "boolean", "object", "string", "date", "time", "float", "float", "float", "string", "string", "float", "float", "float", "float", "float", "float", "float", "float", "string", "string", "boolean", "boolean", "boolean", "boolean", "integer", "string", "boolean", "string", "integer"];
+
 class CompositeLayer extends EventTarget {
     constructor ({        
         minZoom = 3,
@@ -24,8 +27,8 @@ class CompositeLayer extends EventTarget {
         this._currentTab = '';
         this._qlUrl = qlUrl;
         this._qlSize = qlSize;
-        this._attributes = ["hover", "selected", "visible", "result", "cart", "clip_coords", "sceneid", "acqdate", "acqtime", "cloudness", "tilt", "sunelev", "stereo", "url", "x1", "y1", "x2", "y2", "x3", "y3", "x4", "y4", "volume", "platform", "spot5_a_exists", "spot5_b_exists", "islocal", "product", "gmx_id", "sensor", "local_exists", "spot5id", "stidx"];
-        this._attrTypes = ["boolean", "boolean", "string", "boolean", "boolean", "object", "string", "date", "time", "float", "float", "float", "string", "string", "float", "float", "float", "float", "float", "float", "float", "float", "string", "string", "boolean", "boolean", "boolean", "boolean", "integer", "string", "boolean", "string", "integer"];
+        this._attributes = attributes;
+        this._attrTypes = attrTypes;
         this._sceneid_index = this._attributes.indexOf('sceneid') + 1;
         this._result_index = this._attributes.indexOf('result') + 1;
         this._clip_coords_index = this._attributes.indexOf('clip_coords') + 1;
@@ -104,44 +107,50 @@ class CompositeLayer extends EventTarget {
             let { gmx: {id, layer, target} } = e;            
             let show = null;         
             let {properties} = this._vectors[id];
-            switch (properties[this._visible_index]) {
-                case 'visible':
-                case 'loading':
-                    show = false;
-                    break;                
-                case 'hidden':
-                default:
-                    show = true;
-                    break;
-            }
-            this.setVisible(id, show);            
-            this.showQuicklook(id, show)
-            .then(() => {
-                let event = document.createEvent('Event');
-                event.initEvent('click', false, false);
-                event.detail = {id, show};
-                this.dispatchEvent(event);
-            });
+            if (properties) {
+                switch (properties[this._visible_index]) {
+                    case 'visible':
+                    case 'loading':
+                        show = false;
+                        break;                
+                    case 'hidden':
+                    default:
+                        show = true;
+                        break;
+                }
+                this.setVisible(id, show);            
+                this.showQuicklook(id, show)
+                .then(() => {
+                    let event = document.createEvent('Event');
+                    event.initEvent('click', false, false);
+                    event.detail = {id, show};
+                    this.dispatchEvent(event);
+                });
+            }            
         })
         .on('mouseover', e => {
-            let { gmx: {id, layer, target} } = e;            
-            this._vectors[id].properties[this._hover_index] = true;
-            this._vectorLayer.redrawItem(id);             
-
-            let event = document.createEvent('Event');
-            event.initEvent('mouseover', false, false);
-            event.detail = id;
-            this.dispatchEvent(event);
+            let { gmx: {id, layer, target} } = e;
+            let {properties} = this._vectors[id];
+            if(properties) {
+                properties[this._hover_index] = true;
+                this._vectorLayer.redrawItem(id);
+                let event = document.createEvent('Event');
+                event.initEvent('mouseover', false, false);
+                event.detail = id;
+                this.dispatchEvent(event);
+            }            
         })
         .on('mouseout', e => {
             let { gmx: {id, layer, target} } = e;
-            this._vectors[id].properties[this._hover_index] = false;
-            this._vectorLayer.redrawItem(id); 
-            
-            let event = document.createEvent('Event');
-            event.initEvent('mouseout', false, false);
-            event.detail = id;
-            this.dispatchEvent(event);            
+            let {properties} = this._vectors[id];
+            if (properties) {
+                properties[this._hover_index] = false;                
+                this._vectorLayer.redrawItem(id);
+                let event = document.createEvent('Event');
+                event.initEvent('mouseout', false, false);
+                event.detail = id;
+                this.dispatchEvent(event);
+            }                                             
         });
     }
     showQuicklook (id, show) {
@@ -182,6 +191,7 @@ class CompositeLayer extends EventTarget {
             else {
                 if (quicklook) {
                     this._map.removeLayer(quicklook);
+                    this._vectors[id].quicklook = null;
                     this._vectorLayer.bringToBottomItem(id);  
                 }
                 resolve();
@@ -214,7 +224,7 @@ class CompositeLayer extends EventTarget {
     _mergeResults (old, data) {
         let cache = Object.keys(old).reduce((a,id) => {
             a[id] = a[id] || {properties: [], quicklook: null};
-            a[id].properties = old[id];
+            a[id].properties = old[id].properties;
             return a;
         }, {});
         return data.reduce((a,value) => {
@@ -294,7 +304,7 @@ class CompositeLayer extends EventTarget {
                 properties[this._result_index] = false;
             }
             else {
-                a.push([properties[0]]);
+                a.push([id]);
             }            
             return a;
         }, []);
@@ -340,12 +350,26 @@ class CompositeLayer extends EventTarget {
         });
     }
 
+    get results () {
+        return this.getFilteredItems(item => item.result);
+    }
+
+    get favorites () {
+        return this.getFilteredItems(item => item.cart);
+    }
+
     get resultsCount () {
-        return this.getFilteredItems(item => item.result).length;
+        return Object.keys(this._vectors).reduce((a,id) =>  {
+            const { properties } = this._vectors[id];
+            return properties[this._result_index] ? a + 1 : a;
+        }, 0);
     }
     
     get favoritesCount () {
-        return this.getFilteredItems(item => item.cart).length;
+        return Object.keys(this._vectors).reduce((a,id) =>  {
+            const { properties } = this._vectors[id];
+            return properties[this._cart_index] ? a + 1 : a;
+        }, 0);
     }
     getFilteredItems (filter) {        
         return serialize (this._vectors).map(({properties}) => this._propertiesToItem(properties)).filter (filter);
@@ -469,4 +493,4 @@ class CompositeLayer extends EventTarget {
     }
 }
 
-export { CompositeLayer };
+export { CompositeLayer, attributes, attrTypes };

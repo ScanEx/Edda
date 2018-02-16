@@ -6401,8 +6401,8 @@ var SP5_10MS = function (_Airbus3) {
 
     _createClass(SP5_10MS, [{
         key: 'condition',
-        value: function condition(archive) {
-            return "platform = 'SPOT 5' AND sensor = 'J'";
+        value: function condition(archive, authorized) {
+            return 'platform = \'SPOT 5\' AND sensor = \'J\'' + (authorized ? this.islocal(archive) : '');
         }
     }]);
 
@@ -6420,8 +6420,8 @@ var SP5_5MS = function (_Airbus4) {
 
     _createClass(SP5_5MS, [{
         key: 'condition',
-        value: function condition() {
-            return "platform = 'SPOT 5' AND (sensor = 'J' AND (spot5_a_exists = TRUE OR spot5_b_exists = TRUE))";
+        value: function condition(archive, authorized) {
+            return 'platform = \'SPOT 5\' AND (sensor = \'J\' AND (spot5_a_exists = TRUE OR spot5_b_exists = TRUE))' + (authorized ? this.islocal(archive) : '');
         }
     }]);
 
@@ -6443,8 +6443,8 @@ var SP5_5PC = function (_SP5_5MS) {
 
     _createClass(SP5_5PC, [{
         key: 'condition',
-        value: function condition() {
-            return "platform = 'SPOT 5' AND (sensor = 'A' OR sensor = 'B' AND spot5_b_exists = FALSE)";
+        value: function condition(archive, authorized) {
+            return 'platform = \'SPOT 5\' AND (sensor = \'A\' OR sensor = \'B\' AND spot5_b_exists = FALSE)' + (authorized ? this.islocal(archive) : '');
         }
     }]);
 
@@ -6462,8 +6462,8 @@ var SP5_2MS = function (_Airbus5) {
 
     _createClass(SP5_2MS, [{
         key: 'condition',
-        value: function condition() {
-            return "platform = 'SPOT 5' AND sensor = 'J' AND spot5_a_exists = TRUE AND spot5_b_exists = TRUE";
+        value: function condition(archive, authorized) {
+            return 'platform = \'SPOT 5\' AND sensor = \'J\' AND spot5_a_exists = TRUE AND spot5_b_exists = TRUE' + (authorized ? this.islocal(archive) : '');
         }
     }]);
 
@@ -6485,8 +6485,8 @@ var SP5_2PC = function (_SP5_2MS) {
 
     _createClass(SP5_2PC, [{
         key: 'condition',
-        value: function condition() {
-            return "platform = 'SPOT 5' AND sensor = 'A' AND spot5_b_exists = TRUE";
+        value: function condition(archive, authorized) {
+            return 'platform = \'SPOT 5\' AND sensor = \'A\' AND spot5_b_exists = TRUE' + (authorized ? this.islocal(archive) : '');
         }
     }]);
 
@@ -7881,7 +7881,7 @@ var ResultList = function (_EventTarget) {
                 formatter: function formatter(item) {
                     switch (_typeof(item.stereo)) {
                         case 'string':
-                            return item.stereo !== 'NONE';
+                            return item.stereo !== 'NONE' && item.stereo !== '';
                         case 'boolean':
                             return item.stereo;
                         default:
@@ -21094,7 +21094,7 @@ var FavoritesList = function (_EventTarget) {
                 formatter: function formatter(item) {
                     switch (_typeof(item.stereo)) {
                         case 'string':
-                            return item.stereo !== 'NONE';
+                            return item.stereo !== 'NONE' && item.stereo !== '';
                         case 'boolean':
                             return item.stereo;
                         default:
@@ -21855,13 +21855,10 @@ var Colors = {
     CartHilite: 0xef4e70
 };
 
-var layerAttributes = ["hover", "selected", "visible", "result", "cart", "sceneid", "acqdate", "acqtime", "cloudness", "tilt", "sunelev", "stereo", "url", "x1", "y1", "x2", "y2", "x3", "y3", "x4", "y4", "volume", "platform", "spot5_a_exists", "spot5_b_exists", "islocal", "product", "gmx_id", "sensor", "local_exists", "spot5id", "stidx"];
-var layerAttrTypes = ["boolean", "boolean", "string", "boolean", "boolean", "string", "date", "time", "float", "float", "float", "string", "string", "float", "float", "float", "float", "float", "float", "float", "float", "string", "string", "boolean", "boolean", "boolean", "boolean", "integer", "string", "boolean", "string", "integer"];
-
 function properties_to_item(properties) {
     return properties.slice(1, properties.length - 1).reduce(function (a, v, i) {
-        var f = layerAttributes[i];
-        switch (layerAttrTypes[i]) {
+        var f = _CompositeLayer.attributes[i];
+        switch (_CompositeLayer.attrTypes[i]) {
             case 'date':
                 switch (typeof v === 'undefined' ? 'undefined' : _typeof(v)) {
                     case 'string':
@@ -21901,14 +21898,12 @@ function getBounds(items) {
     }, null);
 }
 
-var sceneid_index = layerAttributes.indexOf('sceneid') + 1;
-var result_index = layerAttributes.indexOf('result') + 1;
-var cart_index = layerAttributes.indexOf('cart') + 1;
-var selected_index = layerAttributes.indexOf('selected') + 1;
-var visible_index = layerAttributes.indexOf('visible') + 1;
-var hover_index = layerAttributes.indexOf('hover') + 1;
-
-var qlCache = {};
+var sceneid_index = _CompositeLayer.attributes.indexOf('sceneid') + 1;
+var result_index = _CompositeLayer.attributes.indexOf('result') + 1;
+var cart_index = _CompositeLayer.attributes.indexOf('cart') + 1;
+var selected_index = _CompositeLayer.attributes.indexOf('selected') + 1;
+var visible_index = _CompositeLayer.attributes.indexOf('visible') + 1;
+var hover_index = _CompositeLayer.attributes.indexOf('hover') + 1;
 
 var ResultsController = function (_EventTarget) {
     _inherits(ResultsController, _EventTarget);
@@ -22812,8 +22807,8 @@ var ResultsController = function (_EventTarget) {
 }(_EventTarget2.EventTarget);
 
 exports.ResultsController = ResultsController;
-exports.layerAttributes = layerAttributes;
-exports.layerAttrTypes = layerAttrTypes;
+exports.layerAttributes = _CompositeLayer.attributes;
+exports.layerAttrTypes = _CompositeLayer.attrTypes;
 
 /***/ }),
 /* 146 */
@@ -24656,7 +24651,7 @@ exports.NotificationWidget = NotificationWidget;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.CompositeLayer = undefined;
+exports.attrTypes = exports.attributes = exports.CompositeLayer = undefined;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -24687,6 +24682,9 @@ function serialize(obj) {
     });
 }
 
+var attributes = ["hover", "selected", "visible", "result", "cart", "clip_coords", "sceneid", "acqdate", "acqtime", "cloudness", "tilt", "sunelev", "stereo", "url", "x1", "y1", "x2", "y2", "x3", "y3", "x4", "y4", "volume", "platform", "spot5_a_exists", "spot5_b_exists", "islocal", "product", "gmx_id", "sensor", "local_exists", "spot5id", "stidx"];
+var attrTypes = ["boolean", "boolean", "string", "boolean", "boolean", "object", "string", "date", "time", "float", "float", "float", "string", "string", "float", "float", "float", "float", "float", "float", "float", "float", "string", "string", "boolean", "boolean", "boolean", "boolean", "integer", "string", "boolean", "string", "integer"];
+
 var CompositeLayer = function (_EventTarget) {
     _inherits(CompositeLayer, _EventTarget);
 
@@ -24710,8 +24708,8 @@ var CompositeLayer = function (_EventTarget) {
         _this._currentTab = '';
         _this._qlUrl = qlUrl;
         _this._qlSize = qlSize;
-        _this._attributes = ["hover", "selected", "visible", "result", "cart", "clip_coords", "sceneid", "acqdate", "acqtime", "cloudness", "tilt", "sunelev", "stereo", "url", "x1", "y1", "x2", "y2", "x3", "y3", "x4", "y4", "volume", "platform", "spot5_a_exists", "spot5_b_exists", "islocal", "product", "gmx_id", "sensor", "local_exists", "spot5id", "stidx"];
-        _this._attrTypes = ["boolean", "boolean", "string", "boolean", "boolean", "object", "string", "date", "time", "float", "float", "float", "string", "string", "float", "float", "float", "float", "float", "float", "float", "float", "string", "string", "boolean", "boolean", "boolean", "boolean", "integer", "string", "boolean", "string", "integer"];
+        _this._attributes = attributes;
+        _this._attrTypes = attrTypes;
         _this._sceneid_index = _this._attributes.indexOf('sceneid') + 1;
         _this._result_index = _this._attributes.indexOf('result') + 1;
         _this._clip_coords_index = _this._attributes.indexOf('clip_coords') + 1;
@@ -24794,49 +24792,55 @@ var CompositeLayer = function (_EventTarget) {
             var show = null;
             var properties = _this._vectors[id].properties;
 
-            switch (properties[_this._visible_index]) {
-                case 'visible':
-                case 'loading':
-                    show = false;
-                    break;
-                case 'hidden':
-                default:
-                    show = true;
-                    break;
+            if (properties) {
+                switch (properties[_this._visible_index]) {
+                    case 'visible':
+                    case 'loading':
+                        show = false;
+                        break;
+                    case 'hidden':
+                    default:
+                        show = true;
+                        break;
+                }
+                _this.setVisible(id, show);
+                _this.showQuicklook(id, show).then(function () {
+                    var event = document.createEvent('Event');
+                    event.initEvent('click', false, false);
+                    event.detail = { id: id, show: show };
+                    _this.dispatchEvent(event);
+                });
             }
-            _this.setVisible(id, show);
-            _this.showQuicklook(id, show).then(function () {
-                var event = document.createEvent('Event');
-                event.initEvent('click', false, false);
-                event.detail = { id: id, show: show };
-                _this.dispatchEvent(event);
-            });
         }).on('mouseover', function (e) {
             var _e$gmx2 = e.gmx,
                 id = _e$gmx2.id,
                 layer = _e$gmx2.layer,
                 target = _e$gmx2.target;
+            var properties = _this._vectors[id].properties;
 
-            _this._vectors[id].properties[_this._hover_index] = true;
-            _this._vectorLayer.redrawItem(id);
-
-            var event = document.createEvent('Event');
-            event.initEvent('mouseover', false, false);
-            event.detail = id;
-            _this.dispatchEvent(event);
+            if (properties) {
+                properties[_this._hover_index] = true;
+                _this._vectorLayer.redrawItem(id);
+                var event = document.createEvent('Event');
+                event.initEvent('mouseover', false, false);
+                event.detail = id;
+                _this.dispatchEvent(event);
+            }
         }).on('mouseout', function (e) {
             var _e$gmx3 = e.gmx,
                 id = _e$gmx3.id,
                 layer = _e$gmx3.layer,
                 target = _e$gmx3.target;
+            var properties = _this._vectors[id].properties;
 
-            _this._vectors[id].properties[_this._hover_index] = false;
-            _this._vectorLayer.redrawItem(id);
-
-            var event = document.createEvent('Event');
-            event.initEvent('mouseout', false, false);
-            event.detail = id;
-            _this.dispatchEvent(event);
+            if (properties) {
+                properties[_this._hover_index] = false;
+                _this._vectorLayer.redrawItem(id);
+                var event = document.createEvent('Event');
+                event.initEvent('mouseout', false, false);
+                event.detail = id;
+                _this.dispatchEvent(event);
+            }
         });
         return _this;
     }
@@ -24879,6 +24883,7 @@ var CompositeLayer = function (_EventTarget) {
                 } else {
                     if (quicklook) {
                         _this2._map.removeLayer(quicklook);
+                        _this2._vectors[id].quicklook = null;
                         _this2._vectorLayer.bringToBottomItem(id);
                     }
                     resolve();
@@ -24919,7 +24924,7 @@ var CompositeLayer = function (_EventTarget) {
 
             var cache = Object.keys(old).reduce(function (a, id) {
                 a[id] = a[id] || { properties: [], quicklook: null };
-                a[id].properties = old[id];
+                a[id].properties = old[id].properties;
                 return a;
             }, {});
             return data.reduce(function (a, value) {
@@ -25010,7 +25015,7 @@ var CompositeLayer = function (_EventTarget) {
                 if (properties[_this6._cart_index]) {
                     properties[_this6._result_index] = false;
                 } else {
-                    a.push([properties[0]]);
+                    a.push([id]);
                 }
                 return a;
             }, []);
@@ -25208,41 +25213,63 @@ var CompositeLayer = function (_EventTarget) {
             });
         }
     }, {
-        key: 'resultsCount',
+        key: 'results',
         get: function get() {
             return this.getFilteredItems(function (item) {
                 return item.result;
-            }).length;
+            });
+        }
+    }, {
+        key: 'favorites',
+        get: function get() {
+            return this.getFilteredItems(function (item) {
+                return item.cart;
+            });
+        }
+    }, {
+        key: 'resultsCount',
+        get: function get() {
+            var _this15 = this;
+
+            return Object.keys(this._vectors).reduce(function (a, id) {
+                var properties = _this15._vectors[id].properties;
+
+                return properties[_this15._result_index] ? a + 1 : a;
+            }, 0);
         }
     }, {
         key: 'favoritesCount',
         get: function get() {
-            return this.getFilteredItems(function (item) {
-                return item.cart;
-            }).length;
+            var _this16 = this;
+
+            return Object.keys(this._vectors).reduce(function (a, id) {
+                var properties = _this16._vectors[id].properties;
+
+                return properties[_this16._cart_index] ? a + 1 : a;
+            }, 0);
         }
     }, {
         key: 'currentTab',
         set: function set(value) {
-            var _this15 = this;
+            var _this17 = this;
 
             this._currentTab = value;
             Object.keys(this._vectors).forEach(function (id) {
-                var properties = _this15._vectors[id].properties;
+                var properties = _this17._vectors[id].properties;
 
                 var filtered = true;
-                if (typeof _this15._filter === 'function') {
-                    filtered = _this15._filter(_this15._propertiesToItem(properties));
+                if (typeof _this17._filter === 'function') {
+                    filtered = _this17._filter(_this17._propertiesToItem(properties));
                 }
-                switch (_this15._currentTab) {
+                switch (_this17._currentTab) {
                     case 'results':
-                        _this15.showQuicklook(id, filtered && properties[_this15._result_index] && properties[_this15._visible_index] === 'visible');
+                        _this17.showQuicklook(id, filtered && properties[_this17._result_index] && properties[_this17._visible_index] === 'visible');
                         break;
                     case 'favorites':
-                        _this15.showQuicklook(id, filtered && properties[_this15._cart_index] && properties[_this15._visible_index] === 'visible');
+                        _this17.showQuicklook(id, filtered && properties[_this17._cart_index] && properties[_this17._visible_index] === 'visible');
                         break;
                     case 'search':
-                        _this15.showQuicklook(id, false);
+                        _this17.showQuicklook(id, false);
                         break;
                     default:
                         break;
@@ -25255,6 +25282,8 @@ var CompositeLayer = function (_EventTarget) {
 }(_EventTarget2.EventTarget);
 
 exports.CompositeLayer = CompositeLayer;
+exports.attributes = attributes;
+exports.attrTypes = attrTypes;
 
 /***/ }),
 /* 164 */
@@ -28080,7 +28109,7 @@ var IconLayers = __webpack_require__(153);
 window.DIALOG_PLACE = { left: 600, top: 150 };
 window.RESULT_MAX_COUNT = 1000;
 window.MAX_CART_SIZE = 200;
-window.MAX_UPLOAD_POINTS = 1000;
+window.MAX_UPLOAD_POINTS = 100000;
 window.Catalog.VERSION = '2.2.2';
 window.Catalog.VERSION_DATE = new Date(2018, 1, 15);
 
@@ -29679,7 +29708,11 @@ function load_state(state) {
 
         var values = a.fields.map(function (k) {
             if (item[k]) {
-                return item[k];
+                if (k === 'visible') {
+                    return item[k] === 'loading' ? 'visible' : item[k];
+                } else {
+                    return item[k];
+                }
             } else {
                 return false;
             }
@@ -29712,7 +29745,8 @@ function load_state(state) {
 
     var center = L.Projection.Mercator.unproject({ y: y, x: x });
     map.setView(center, 17 - z);
-    // map.invalidateSize();        
+    // map.invalidateSize();
+    window.Catalog.searchSidebar.open(state.activeTabId);
 
     var _mapContainer$getBoun3 = mapContainer.getBoundingClientRect(),
         height = _mapContainer$getBoun3.height;
@@ -31455,4 +31489,4 @@ webpackContext.id = 212;
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=main.043488c755ad0c2ec642.bundle.js.map
+//# sourceMappingURL=main.02110bdefc12394527f1.bundle.js.map

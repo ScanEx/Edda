@@ -46,7 +46,7 @@ import './main.css';
 window.DIALOG_PLACE = {left: 600, top: 150};
 window.RESULT_MAX_COUNT = 1000;
 window.MAX_CART_SIZE = 200;
-window.MAX_UPLOAD_POINTS = 1000;
+window.MAX_UPLOAD_POINTS = 100000;
 window.Catalog.VERSION = '2.2.2';
 window.Catalog.VERSION_DATE = new Date(2018, 1, 15);
 
@@ -1658,7 +1658,12 @@ function load_state (state) {
         
         let values = a.fields.map(k => {
             if (item[k]) {
-                return item[k];
+                if(k === 'visible') {
+                    return item[k] === 'loading' ? 'visible' : item[k];
+                }
+                else {
+                    return item[k];
+                }                
             } 
             else {
                 return false;
@@ -1685,7 +1690,8 @@ function load_state (state) {
     let {x, y, z} = state.position;
     let center = L.Projection.Mercator.unproject({y, x});
     map.setView(center, 17 - z);
-    // map.invalidateSize();        
+    // map.invalidateSize();
+    window.Catalog.searchSidebar.open(state.activeTabId);
     let { height } =  mapContainer.getBoundingClientRect();
     window.Catalog.drawnObjectsControl.widget.resize(height - 150);
 }

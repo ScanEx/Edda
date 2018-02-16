@@ -90,7 +90,7 @@ class ResultList extends EventTarget {
                 formatter: item => {                    
                     switch (typeof item.stereo) {
                         case 'string':
-                            return item.stereo !== 'NONE';
+                            return item.stereo !== 'NONE' && item.stereo !== '';
                         case 'boolean':
                             return item.stereo;
                         default:

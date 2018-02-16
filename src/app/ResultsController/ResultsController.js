@@ -1,7 +1,7 @@
 import { EventTarget } from 'lib/EventTarget/src/EventTarget.js';
 import { Quicklook } from 'app/Quicklook/Quicklook.js';
 import { ENUM_ID } from 'lib/DataGrid/src/DataGrid.js';
-import { CompositeLayer } from 'app/CompositeLayer/CompositeLayer.js';
+import { CompositeLayer, attributes as layerAttributes, attrTypes as layerAttrTypes } from 'app/CompositeLayer/CompositeLayer.js';
 import { Translations } from 'lib/Translations/src/Translations.js';
 import { is_geojson_feature, from_gmx, normalize_geometry, normalize_geometry_type, chain } from 'app/Utils/Utils.js';
 import { copy } from 'lib/Object.Extensions/src/Extensions.js';
@@ -17,9 +17,6 @@ const Colors = {
     Cart: 0xef4e70,
     CartHilite: 0xef4e70,
 };
-
-const layerAttributes = ["hover", "selected", "visible", "result", "cart", "sceneid", "acqdate", "acqtime", "cloudness", "tilt", "sunelev", "stereo", "url", "x1", "y1", "x2", "y2", "x3", "y3", "x4", "y4", "volume", "platform", "spot5_a_exists", "spot5_b_exists", "islocal", "product", "gmx_id", "sensor", "local_exists", "spot5id", "stidx"]
-const layerAttrTypes = ["boolean", "boolean", "string", "boolean", "boolean", "string", "date", "time", "float", "float", "float", "string", "string", "float", "float", "float", "float", "float", "float", "float", "float", "string", "string", "boolean", "boolean", "boolean", "boolean", "integer", "string", "boolean", "string", "integer"];
 
 function properties_to_item (properties) {
     return properties.slice(1, properties.length - 1).reduce((a,v,i) => {
@@ -67,8 +64,6 @@ const cart_index = layerAttributes.indexOf('cart') + 1;
 const selected_index = layerAttributes.indexOf('selected') + 1;
 const visible_index = layerAttributes.indexOf('visible') + 1;
 const hover_index = layerAttributes.indexOf('hover') + 1;
-
-let qlCache = {};
 
 class ResultsController extends EventTarget {
     constructor({map, requestAdapter, sidebar, resultList, favoritesList, imageDetails, drawnObjects}){
