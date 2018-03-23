@@ -275,7 +275,25 @@ class Cart extends Panel {
         let event = document.createEvent('Event');
         event.initEvent('hide', false, false);
         this.dispatchEvent(event);
-    }        
+    }   
+    show () {
+        super.show();
+        const bounds = document.body.getBoundingClientRect();
+        let header = document.getElementById('header');
+        const headerBounds = header.getBoundingClientRect();
+        let height = bounds.height - headerBounds.height;
+        let cartBounds = this.body.getBoundingClientRect();
+        if (cartBounds.height > height) {
+            const headerBounds = this.header.getBoundingClientRect();
+            const footerBounds = this.footer.getBoundingClientRect();
+            this.content.style.maxHeight = `${height - headerBounds.height - footerBounds.height}px`;
+            this.content.style.overflowY = 'auto';
+        }
+        else {
+            this.content.style.maxHeight = 'auto';
+            this.content.style.overflowY = 'none';
+        }
+    }
     _valid (s) {        
         if (this._internal && s === '.cart-project-number') {            
             switch (this._projectTypeSelect.value) {

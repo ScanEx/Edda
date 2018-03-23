@@ -3,10 +3,9 @@ import { Quicklook } from 'app/Quicklook/Quicklook.js';
 import { ENUM_ID } from 'lib/DataGrid/src/DataGrid.js';
 import { CompositeLayer, attributes as layerAttributes, attrTypes as layerAttrTypes } from 'app/CompositeLayer/CompositeLayer.js';
 import { Translations } from 'lib/Translations/src/Translations.js';
-import { is_geojson_feature, from_gmx, normalize_geometry, normalize_geometry_type, chain } from 'app/Utils/Utils.js';
+import { is_geojson_feature, from_gmx, normalize_geometry, split180, normalize_geometry_type, get_bbox, chain } from 'app/Utils/Utils.js';
 import { copy } from 'lib/Object.Extensions/src/Extensions.js';
 import './ResultsController.css';
-import { flatten, get_bbox } from '../Utils/Utils';
 
 window.Catalog.translations = window.Catalog.translations || new Translations();
 let T = window.Catalog.translations
@@ -40,22 +39,6 @@ function properties_to_item (properties) {
         }           
         return a;
     },{});
-}
-
-function getBounds (items) {
-    return items.reduce((a,item) => {
-        let {x2,y2,x4,y4} = item;        
-        let ne = L.latLng(y2, x2);
-        let sw = L.latLng(y4, x4);
-        let b = L.latLngBounds(sw, ne);
-        if (a === null) {            
-            a = b;
-        }
-        else {
-            a.extend(b);
-        }
-        return a;
-    }, null);
 }
 
 const sceneid_index = layerAttributes.indexOf('sceneid') + 1;
@@ -116,6 +99,11 @@ class ResultsController extends EventTarget {
                 default:
                     break;
             }
+        });
+        this._compositeLayer.addEventListener('ready', e => {
+            let {id, show} = e.detail;
+            let obj = this._compositeLayer.getItem (id);
+            this._update_list_item (id, obj);
         });
         this._compositeLayer.addEventListener('mouseover', e => {
             const id = e.detail;            
@@ -183,16 +171,11 @@ class ResultsController extends EventTarget {
             this._compositeLayer.setHover(gmx_id, false);            
         });
 
-        let zoom_to_bounds = (xmin,ymin,xmax,ymax) => {
-            let ne = L.latLng(ymax, xmax);
-            let sw = L.latLng(ymin, xmin);
-            this._map.fitBounds(L.latLngBounds(sw, ne), { animate: false });
-            // this._map.invalidateSize();
-        };
-
         this._resultList.addEventListener('click', e => {
-            let {item: {gmx_id, x2, y2, x4, y4}} = e.detail;
-            zoom_to_bounds (x4,y4,x2,y2);
+            let {item: {gmx_id}} = e.detail;
+            const {properties} = this._compositeLayer.vectors[gmx_id];            
+            const bounds  = this._compositeLayer.getBounds([properties]);
+            this._map.fitBounds(bounds, { animate: false });
             this._show_ql(gmx_id, true);
         });        
 
@@ -283,8 +266,10 @@ class ResultsController extends EventTarget {
         });
 
         this._favoritesList.addEventListener('click', e => {
-            let {item: {gmx_id, x2, y2, x4, y4}} = e.detail;  
-            zoom_to_bounds (x4,y4,x2,y2);          
+            let {item: {gmx_id}} = e.detail;
+            const {properties} = this._compositeLayer.vectors[gmx_id];            
+            const bounds  = this._compositeLayer.getBounds([properties]);
+            this._map.fitBounds(bounds, { animate: false });
             this._show_ql(gmx_id, true);
         });
 
@@ -293,7 +278,7 @@ class ResultsController extends EventTarget {
 
         this._map.gmxDrawing
         .on('drawstop', this.createDrawing)
-        .on('editstop', function ({object}) {
+        .on('editstop', function ({object}) {            
             if(this._drawings[object.options.uuid]){
                 this.updateDrawing(object);
             }
@@ -495,19 +480,11 @@ class ResultsController extends EventTarget {
         this._resultList.items = this._compositeLayer.getFilteredItems(item => item.result);
         // this._resultList.items.forEach(({gmx_id, visible}) => this._update_ql(gmx_id, visible));
     } 
-    zoomToResults () {
-        let bounds = getBounds(this._compositeLayer.getFilteredItems(item => item.result));
-        if (bounds) {
-            this._map.fitBounds(bounds, { animate: false });
-            // this._map.invalidateSize();
-        }
+    zoomToResults () {        
+        this._compositeLayer.zoomToResults();
     } 
-    zoomToFavorites () {
-        let bounds = getBounds(this._compositeLayer.getFilteredItems(item => item.cart));
-        if (bounds) {
-            this._map.fitBounds(bounds, { animate: false });
-            // this._map.invalidateSize();
-        }
+    zoomToFavorites () {        
+        this._compositeLayer.zoomToFavorites();
     } 
     showFavorites() {
         this._currentTab = 'favorites';
@@ -526,7 +503,7 @@ class ResultsController extends EventTarget {
         return this._compositeLayer.hasFavoritesSelected;
     }
     get hasFavorites () {        
-        this._compositeLayer.hasFavorites;
+        return this._compositeLayer.hasFavorites;
     }
 
     addVisibleToCart () {                
@@ -569,9 +546,9 @@ class ResultsController extends EventTarget {
         this._compositeLayer.removeSelectedFavorites();       
         this._favoritesList.items = this._compositeLayer.getFilteredItems(item => item.cart);
     }
-    get results () {
+    get results () {        
         let items = this._compositeLayer.vectors;
-        return this._resultList.items.map(item => {
+        return this._compositeLayer.results.map(item => {            
             let {properties} = items[item.gmx_id];
             item.geoJSON = L.gmxUtil.convertGeometry (properties[properties.length - 1], true, true);
             item.geoJSON = normalize_geometry_type(item.geoJSON);
@@ -580,7 +557,7 @@ class ResultsController extends EventTarget {
     }
     get favorites () {
         let items = this._compositeLayer.vectors;
-        return this._favoritesList.items.map(item => {
+        return this._compositeLayer.favorites.map(item => {
             let {properties} = items[item.gmx_id];
             item.geoJSON = L.gmxUtil.convertGeometry (properties[properties.length - 1], true, true);
             item.geoJSON = normalize_geometry_type(item.geoJSON);
@@ -627,7 +604,7 @@ class ResultsController extends EventTarget {
         let { name, color, area, geoJSON, visible } = item;
         if(is_geojson_feature(geoJSON)) {
             let id = L.gmxUtil.newId();
-            let editable = typeof geoJSON.properties.editable === 'undefined' ? true : geoJSON.properties.editable;            ;
+            let editable = typeof geoJSON.properties.editable === 'undefined' ? true : geoJSON.properties.editable;
             this._drawings[id] = this.getObject ({ id, name, geoJSON, color, visible, editable });            
             this.updateDrawnObjects();            
             this.showDrawing(id, visible);
@@ -684,14 +661,23 @@ class ResultsController extends EventTarget {
         } 
     }
     updateDrawing(object) {
-        if(this._drawings[object.options.uuid]){
-            const id = object.options.uuid;            
-            const geoJSON = object.toGeoJSON();
+        const id = object.options.uuid;            
+        const geoJSON = object.toGeoJSON();
+        let { geometry } = geoJSON;
+        let { coordinates } = geometry;        
+        if(typeof coordinates !== 'undefined' && this._drawings[id]){
             this._drawings[id].drawing = object;
             this._drawings[id].geoJSON = geoJSON;
-            this._drawings[id].area = this._getObjectArea(geoJSON);
-            this.updateDrawnObjects();
+            this._drawings[id].area = this._getObjectArea(geoJSON);            
         }
+        else {
+            if(this._drawings[id].drawing) {
+                this._drawings[id].drawing.remove();
+                this._drawings[id].drawing = null;
+                delete this._drawings[id];                
+            }
+        }
+        this.updateDrawnObjects();
     }
     _getObjectName(geoJSON) {
         if(geoJSON.properties.name) {
@@ -713,18 +699,20 @@ class ResultsController extends EventTarget {
         }
     }
     _getObjectArea(geoJSON) {        
-        const type = geoJSON.geometry.type;
-        switch (type.toUpperCase()) {
-            case 'POINT':
-                return 0;
-            case 'LINESTRING':
-            case 'MULTILINESTRING':
-                return L.gmxUtil.geoJSONGetLength(geoJSON);
-            case 'MULTIPOLYGON':
-            case 'POLYGON':
-            default:
-                return L.gmxUtil.geoJSONGetArea(geoJSON);
-        }
+        const {geometry: {type,coordinates}} = geoJSON;
+        if (typeof coordinates !== 'undefined') {
+            switch (type.toUpperCase()) {
+                case 'POINT':
+                    return 0;
+                case 'LINESTRING':
+                case 'MULTILINESTRING':
+                    return L.gmxUtil.geoJSONGetLength(geoJSON);
+                case 'MULTIPOLYGON':
+                case 'POLYGON':
+                default:
+                    return L.gmxUtil.geoJSONGetArea(geoJSON);
+            }
+        }                
     }
     getObject ({id, name, geoJSON, color, visible}) {
         id = id || L.gmxUtil.newId();
@@ -744,7 +732,12 @@ class ResultsController extends EventTarget {
     }
     updateDrawnObjects() {
         let objects =  Object.keys(this._drawings).map(id => this._drawings[id]);
-        this._requestAdapter.geometries = objects.filter(obj => obj.visible).reduce((a, {geoJSON}) => a.concat(geoJSON.geometry), []);
+        this._requestAdapter.geometries = objects
+        .filter(obj => obj.visible)
+        .reduce((a, {geoJSON}) => a.concat(geoJSON.geometry), [])
+        .reduce((a, geometry) => {
+            return a.concat (split180(geometry));
+        }, []);
         this._drawnObjects.items = objects;
     }  
     enableFilter (enable) {

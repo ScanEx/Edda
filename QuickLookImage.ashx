@@ -154,12 +154,12 @@ public class QuickLookImage : IHttpHandler
         return client.DownloadData(url);
     }
 
-    Quicklook GetQuicklook(string sceneid)
+    Quicklook GetQuicklook(string sceneid, string platform)
     {        
         var data = new[] {
             new RequestParam("WrapStyle","message"),
             new RequestParam("layer","AFB4D363768E4C5FAC71C9B0C6F7B2F4"),
-            new RequestParam("query", string.Format("sceneid = '{0}'", sceneid)),
+            new RequestParam("query", string.IsNullOrEmpty(platform) ? string.Format("sceneid = '{0}'", sceneid) : string.Format("sceneid = '{0}' AND platform = '{1}'", sceneid, platform)),
             new RequestParam("geometry", "false"),
             new RequestParam("page", "0"),
             new RequestParam("count", "add"),
@@ -194,16 +194,19 @@ public class QuickLookImage : IHttpHandler
             context.Response.Headers["Access-Control-Allow-Origin"] = context.Request.Headers["Origin"];
         }
         context.Response.Expires = 1440; //1 day
-
-        var q = GetQuicklook(context.Request.GetValue("id"));
+        string sceneid = context.Request.GetValue("sceneid");
+        if (string.IsNullOrEmpty (sceneid)) {
+            sceneid = context.Request.GetValue("id");
+        }
+        string platform = context.Request.GetValue("platform");
+        var q = GetQuicklook(sceneid, platform);
 
         if (q != null)
         {
-
-            var url = q["url"].ToString();
-                        
-            var sceneid = q["sceneid"].ToString();
-            var platform = q["platform"].ToString();
+            var url = q["url"].ToString();   
+            if (string.IsNullOrEmpty("platform")) {
+                platform = q["platform"].ToString();
+            }
             var acqdate = FromUnixDate(Convert.ToDouble(q["acqdate"]) * 1000);
             try {
                 Trace.TraceInformation("Getting image url={0}", url);

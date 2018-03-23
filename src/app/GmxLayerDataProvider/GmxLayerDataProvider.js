@@ -1,4 +1,3 @@
-import { normalize_geometry } from 'app/Utils/Utils.js';
 import { EventTarget } from 'lib/EventTarget/src/EventTarget.js';
 
 class GmxLayerDataProvider extends EventTarget {
@@ -15,7 +14,6 @@ class GmxLayerDataProvider extends EventTarget {
         return fields.reduce((a, k, i) => {
             if (k === 'geomixergeojson') {
                 var geojson = L.gmxUtil.geometryToGeoJSON(values[i], true);
-                normalize_geometry(this._map.getCenter().lng, geojson);
                 a.geometry = geojson;
             }
             else {

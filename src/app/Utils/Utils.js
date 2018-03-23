@@ -1,4 +1,6 @@
-function chain (tasks, state) {        
+import { isNumber } from "util";
+
+function chain (tasks, state) {
     return tasks.reduce(
         (prev, next) => prev.then(next),
         new Promise ((resolve, reject) => resolve (state))
@@ -191,60 +193,71 @@ function from_gmx ({fields, values, types}, convertMercator = true) {
     });    
 }
 
-function normalize_geometries (lng, objects) {
-    for (var i = 0, len = objects.length; i < len; i++) {
-        normalize_geometry(lng, objects[i].geometry);
-        fix_anchors(lng, objects[i]);
-    }
+function normalize_point (lng, [x,y]) {
+    return [make_close_to(lng, x),y];
 }
 
 function normalize_ring (lng, coordinates) {
-    for (var i = 0; i < coordinates.length; ++i) {
-        var d = get_correction(lng, coordinates[i][0]);
-        if (d) {
-            coordinates[i][0] += d;
-        }
-    }
+    return coordinates.map(normalize_point.bind(null, lng));
 }
 
-function normalize_polygon (lng, coordinates) {
-    for (var i = 0; i < coordinates.length; ++i) {
-        normalize_ring(lng, coordinates[i]);				
-    }
-}
-
-function normalize_geometry (lng, geometry) {
-    switch (geometry.type) {
-        case 'Polygon':
-            normalize_polygon(lng, geometry.coordinates);
-            break;
-        case 'MultiPolygon':
-            for (var i = 0; i < geometry.coordinates.length; ++i) {
-                normalize_polygon(lng, geometry.coordinates[i]);
-            }
-            break;
-        default:
-            break;
-    }
-}
-
-function fix_anchors (lng, object) {
-    for (var i = 0; i <= 4; ++i) {
-        var d = get_correction(lng, object['x' + i]);
-        if (d) {
-            object['x' + i] += d;
-        }
-    }
-}
-
-function get_correction (lon, x) {
-    var d1 = Math.abs(lon - x),
-        d2 = Math.abs(lon - (x + 360));
-    if (d1 <= d2) {
-        return 0;
+function normalize_polygon (lng, coordinates) {        
+    if (isNumber (lng)) {
+        return coordinates.map(normalize_ring.bind(null, lng));
     }
     else {
-        return 360;
+        return coordinates.map(normalize_ring.bind(null, get_ref_lon(coordinates)));
+    }
+}
+
+function get_ref_lon (coordinates) {        
+    let f = flatten (coordinates);
+    let pos = f.filter(([x,y]) => x >= 0);
+    let [x,y] = pos.length > 0 ? pos[0] : f[0];        
+    return x;    
+}
+
+function normalize_geometry (geometry, lng) {
+    let {type, coordinates} = geometry;
+    const x = isNumber(lng) ? lng : get_ref_lon(coordinates);
+    switch (type.toUpperCase()) {
+        case 'POLYGON':
+            return {type, coordinates: normalize_polygon(x, coordinates)};
+        case 'MULTIPOLYGON':
+            return {type, coordinates: coordinates.map(normalize_polygon.bind(null, x))};
+        default:
+            return geometry;
+    }
+}
+
+function wrap_point ([x,y]) {
+    let lon = x;
+    while (lon < -180) {
+        lon += 360;
+    }
+    while (lon > 180) {
+        lon -= 360;
+    }
+    return [lon,y];
+}
+
+function wrap_ring (coordinates) {
+    return coordinates.map(wrap_point);
+}
+
+function wrap_polygon (coordinates) {
+    return coordinates.map(wrap_ring);
+}
+
+function wrap_geometry (geometry) {
+    let {type, coordinates} = geometry;
+    switch (type.toUpperCase()) {
+        case 'POLYGON':
+            return {type, coordinates: wrap_polygon(coordinates)};
+        case 'MULTIPOLYGON':
+            return {type, coordinates: coordinates.map(wrap_polygon)};
+        default:
+            return geometry;
     }
 }
 
@@ -305,8 +318,82 @@ function get_bbox (geometry) {
             let ymax = ys[ys.length - 1];
             return [[xmin,ymax],[xmax,ymax],[xmax,ymin],[xmin,ymin]];                        
         default:
-            break;
+            return null;
     }
 }
 
-export { chain, create_container, flatten, split_complex_id, unhex, hex, is_geojson_feature, is_geometry, get_type_of_value, from_gmx, normalize_geometries, normalize_geometry, get_bbox, normalize_geometry_type };
+const EAST_HEMISPHERE = L.bounds(
+    L.point(0, -90), 
+    L.point(180, 90)
+);
+
+const WEST_HEMISPHERE = L.bounds(
+    L.point(180, -90),
+    L.point(360, 90)
+);
+
+const WEST_HEMISPHERE2 = L.bounds(
+    L.point(-180, -90),
+    L.point(0, 90)
+);
+
+function split180 (geometry) {
+    const {type, coordinates} = geometry;
+    let split_coords = (points, hemisphere) => {        
+        let coords = L.PolyUtil.clipPolygon(points, hemisphere).map(({x,y}) => [x,y]);
+        if (coords.length > 0) {
+            let start_point = coords[0];
+            let end_point = coords[coords.length - 1];
+            if (start_point[0] != end_point[0] || start_point[1] != end_point[1]) {
+                coords.push(start_point);
+            }
+        }
+        return coords;
+    };    
+    let geometries = [];
+    switch(type.toUpperCase()) {
+        case 'POLYGON':
+            const points = coordinates[0].map(([x,y]) => L.point(x,y));
+            let c1 =  split_coords(points, EAST_HEMISPHERE);
+            if (c1.length > 0) {
+                geometries.push(normalize_geometry ({type, coordinates: [c1]}, 179));
+            }            
+            let c2 = split_coords(points, WEST_HEMISPHERE);
+            if (c2.length > 0) {
+                geometries.push(normalize_geometry ({type, coordinates: [c2]}, -179));
+            }
+            else {
+                c2 = split_coords(points, WEST_HEMISPHERE2);
+                if (c2.length > 0) {
+                    geometries.push(normalize_geometry ({type, coordinates: [c2]}, -179));
+                }
+            }
+            break;
+        case 'LINESTRING':            
+        default:
+            geometries.push(geometry);
+            break;
+    }
+    return geometries;
+}
+
+function make_close_to (lng, x) {
+    let dist = (a,b) => Math.abs (a - b);
+    let {p} = [x - 360, x, x + 360]
+    .map(p => {
+        return {p, d: dist (lng, p)};
+    })
+    .reduce((a,{p,d}) => {
+        if (a === null || d < a.d) {
+            a = {d, p};
+        }
+        return a;
+    }, null);
+    return p;
+}
+
+export {
+    chain, create_container, flatten, split_complex_id, unhex, hex, is_geojson_feature, is_geometry,
+    get_type_of_value, from_gmx, get_bbox, normalize_geometry_type,
+    normalize_geometry, normalize_polygon, normalize_ring, normalize_point, split180, make_close_to
+};

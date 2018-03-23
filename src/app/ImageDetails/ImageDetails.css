@@ -20,4 +20,9 @@
     max-width: 160px;
     padding-left: 10px;
     overflow-wrap: break-word;
+    text-align: left;
+}
+.image-info a {
+    color: #3ca1d0;
+    text-decoration: underline;
 }

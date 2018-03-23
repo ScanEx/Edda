@@ -116,12 +116,12 @@ public class GetMetadata : IHttpHandler
             case "WV02":
             case "WV03":            
             case "WV04":
-                return "QB_GE_WV2_WV3";
+                return "DG_products";
             case "GE01_L":
             case "QB02_L":            
             case "WV02_L":
             case "WV03_L":
-                return "QB_GE_WV2_WV3_L";
+                return "DG_products_L";
             case "BKA":
                 return "BKA";
             case "GF1":
@@ -137,6 +137,10 @@ public class GetMetadata : IHttpHandler
             case "1A-SPOT-6_L":
             case "1A-SPOT-7_L":
                 return "ONE_ATLAS";
+            case "TripleSat Constellation-1":
+            case "TripleSat Constellation-2":
+            case "TripleSat Constellation-3":
+                return "TRIPLESAT";
             default:
                 return null;
         }
@@ -214,6 +218,10 @@ public class GetMetadata : IHttpHandler
             case "1A-SPOT-6_L":
             case "1A-SPOT-7_L":
                 return "one_atlas";
+            case "TripleSat Constellation-1":
+            case "TripleSat Constellation-2":
+            case "TripleSat Constellation-3":
+                return "triplesat";
             default:
                 return null;
 
@@ -250,6 +258,8 @@ public class GetMetadata : IHttpHandler
                 return "metadata_id";
             case "one_atlas":
                 return "scene_id";
+            case "triplesat":
+                return "id";
             default:
                 return null;
         }

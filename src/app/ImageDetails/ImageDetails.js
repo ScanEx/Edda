@@ -3,7 +3,13 @@ import './ImageDetails.css';
 import { Translations } from 'lib/Translations/src/Translations.js';
 
 window.Catalog.translations = window.Catalog.translations || new Translations();
-let T = window.Catalog.translations
+let T = window.Catalog.translations;
+T.addText('rus', {
+    quicklook: 'Открыть квиклук'
+});
+T.addText('eng', {
+    quicklook: 'Open quicklook'
+});
 
 class ImageDetails extends EventTarget {
     constructor(container, {left, top}){ 
@@ -78,6 +84,11 @@ class ImageDetails extends EventTarget {
                 <tr>
                     <td class="image-info-id-label">ID:</td>
                     <td class="image-info-id-value">${this._item.sceneid}</td>
+                </tr>
+                <tr>                    
+                    <td class="image-info-id-label" colspan="2">
+                        <a href="${this._item.url}" target="_blank">${T.getText('quicklook')}</a>
+                    </td>
                 </tr>
             </tbody>
         </table>`;         

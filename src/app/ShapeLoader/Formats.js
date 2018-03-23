@@ -28,7 +28,7 @@ let PLEIADES = [
     {'Name':'y4','Type':'Float'},
  ];
 
- let QB_GE_WV2_WV3 = [
+ let DG_products = [
     {'Name':'catalogid','Type':'String'},    
     {'Name':'acqdate','Type':'Date'},
     {'Name':'mnoffnadir','Type':'Float'},
@@ -65,7 +65,7 @@ let PLEIADES = [
     {'Name':'y4','Type':'Float'},
 ];
 
-let QB_GE_WV2_WV3_L = [
+let DG_products_L = [
     {'Name':'scene_id', 'Type':'String'},
     {'Name':'part_id', 'Type':'String'},
     {'Name':'cat_id', 'Type':'String'},
@@ -385,8 +385,8 @@ let SPOT5 = [
 
 let Formats = {
     KOMPSAT,
-    QB_GE_WV2_WV3, 
-    QB_GE_WV2_WV3_L,
+    DG_products, 
+    DG_products_L,
     PLEIADES, 
     RAPIDEYE,
     EROS,
@@ -473,7 +473,26 @@ let Formats = {
         {'Name':'x4','Type':'Float'},
         {'Name':'y4','Type':'Float'},
         {'Name':'shp_ts','Type':'Date'},
-    ]
+    ],   
+    TRIPLESAT: [
+        {'Name':'thumbimg', 'Type': 'String'},
+        {'Name':'id', 'Type': 'String'},
+        {'Name':'satellite', 'Type': 'String'},
+        {'Name':'cloudcover', 'Type': 'Float'},
+        {'Name':'rollangle', 'Type': 'Float'},
+        {'Name':'centertime', 'Type': 'Date'},
+        {'Name':'browserimg ', 'Type': 'String'},
+        {'Name':'transformimg ', 'Type': 'String'},
+        {'Name':'bottomrightlatitude', 'Type': 'Float'},
+        {'Name':'bottomrightlongitude', 'Type': 'Float'},
+        {'Name':'bottomleftlatitude', 'Type': 'Float'},
+        {'Name':'bottomleftlongitude', 'Type': 'Float'},
+        {'Name':'topleftlatitude', 'Type': 'Float'},
+        {'Name':'topleftlongitude', 'Type': 'Float'},
+        {'Name':'toprightlatitude', 'Type': 'Float'},
+        {'Name':'toprightlongitude', 'Type': 'Float'},
+        {'Name':'rsid ', 'Type': 'String'},
+    ],
 };
 
 export { Formats };

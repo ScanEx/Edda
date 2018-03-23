@@ -95,15 +95,15 @@ class ShapeLoader {
                             ids = this._resultsController.downloadCache.map(item => item.sceneid);
                         }
                         else {
-                            ids = this._resultsController.resultList.items.map(item => item.sceneid);
+                            ids = this._resultsController.results.map(item => item.sceneid);
                         }
                         break;
-                    case 'csv':
+                    case 'rcsv':
                         if(this._resultsController.downloadCache && this._resultsController.downloadCache.length > 0) {
                             items = this._resultsController.downloadCache.map(csv);
                         }
                         else {
-                            items = this._resultsController.resultList.items.map(csv);
+                            items = this._resultsController.results.map(csv);
                         }
                         break;
                     case 'cart':
@@ -112,13 +112,21 @@ class ShapeLoader {
                             ids = this._resultsController.downloadCache.map(item => item.sceneid);
                         }
                         else {
-                            ids = this._resultsController.favoritesList.items.map(item => item.sceneid);
+                            ids = this._resultsController.favorites.map(item => item.sceneid);
                         }                        
+                        break;
+                    case 'ccsv':
+                        if(this._resultsController.downloadCache && this._resultsController.downloadCache.length > 0) {
+                            items = this._resultsController.downloadCache.map(csv);
+                        }
+                        else {
+                            items = this._resultsController.favorites.map(csv);
+                        }
                         break;
                     default:
                         break;
                 }
-                if (type === 'csv') {
+                if (type === 'rcsv' || type === 'ccsv') {
                     state.items = JSON.stringify (items);
                     resolve(state);
                 }
@@ -148,7 +156,7 @@ class ShapeLoader {
         };        
         let make_file = state => {
             return new Promise (resolve => {  
-                if (type === 'csv') {
+                if (type === 'rcsv' || type === 'ccsv') {
                     resolve(state);
                 }
                 else {
@@ -232,7 +240,7 @@ class ShapeLoader {
         let download_file = state => {            
             window.Catalog.loaderWidget.hide();
             return new Promise(resolve => {
-                if (type === 'csv') {
+                if (type === 'rcsv' || type === 'ccsv') {
                     const {items} = state;
                     this._catalogResourceServer.sendPostRequest(this._csvFileUrl, {file: encodeURIComponent (archiveName), items, columns: this._csvColumns, WrapStyle: 'None'})
                     .then(response => {

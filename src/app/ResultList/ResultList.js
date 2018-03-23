@@ -159,6 +159,12 @@ class ResultList extends EventTarget {
                             return '1ATLAS (SP6)';
                         case '1A-SPOT-7':
                             return '1ATLAS (SP7)';
+                        case 'TripleSat Constellation-1':
+                            return 'Triplesat-1';
+                        case 'TripleSat Constellation-2':
+                            return 'Triplesat-2';
+                        case 'TripleSat Constellation-3':
+                            return 'Triplesat-3';
                         default:
                             return `${getSatelliteName(item.platform)}${item.islocal ? ' (L)': ''}`;
                     }
@@ -283,6 +289,13 @@ class ResultList extends EventTarget {
             case 'info':
                 let {left, top} = cell.getBoundingClientRect();
                 let button = cell.querySelector('i');
+
+                if (this._activeInfo) {                    
+                    this._activeInfo.classList.remove('search-info-off');
+                    this._activeInfo.classList.add('search-info-on');
+                }
+                                
+                this._activeInfo = button;
                                 
                 event.initEvent('info', false, false);
                 event.detail = {item: item, left, top, button};
@@ -390,11 +403,17 @@ class ResultList extends EventTarget {
     get items() {
         return this._grid.items;
     }    
-    hilite (id) {                
-        this._grid.getRow(id).classList.add('hilite');
+    hilite (id) {       
+        let row = this._grid.getRow(id);
+        if (row) {
+            row.classList.add('hilite');
+        }        
     }
     dim (id) {        
-        this._grid.getRow(id).classList.remove('hilite');
+        let row = this._grid.getRow(id);
+        if (row) {
+            row.classList.remove('hilite');
+        }        
     }    
     resize(total) {
         let height = this._container.querySelector('.table-list-header').getBoundingClientRect().height;

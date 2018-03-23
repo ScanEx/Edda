@@ -15,6 +15,7 @@ T.addText('rus', {
         blackbridge: 'BlackBridge AG, ФРГ',
         usgs: 'United States Geological Survey, США',
         roskosmos: 'Роскосмос',
+        twentyfirst: 'Twenty First Century AT, China'
     }
 });
 
@@ -30,6 +31,7 @@ T.addText('eng', {
         blackbridge: 'BlackBridge AG, Germany',
         usgs: 'United States Geological Survey, USA',
         roskosmos: 'Roskosmos',
+        twentyfirst: 'Twenty First Century AT, China'
     }
 });
 
@@ -279,6 +281,23 @@ class RP_4MS extends RP {
     }
 }
 
+class Triplesat extends Satellite {
+    constructor () {
+        super({
+            id: '21AT',
+            platforms: ['TripleSat Constellation-1','TripleSat Constellation-2','TripleSat Constellation-3'],
+            name: 'TripleSat',
+            resolution: 1,
+            swath: 23,
+            arity: 3,
+            operator: T.getText('operator.twentyfirst'),
+            since: '2015',
+            ms: true,
+            restricted: true,
+        });
+    }    
+}
+
 const satellites = {
     ms: [
         new DG({id: 'WV04', platforms: ['WV04'], name: 'WorldView 4', resolution: 0.3, swath: 13.2, since: '2016'}),
@@ -292,6 +311,7 @@ const satellites = {
         new Satellite({id: 'IK', platforms: ['IK-2','IKONOS-2'], name: 'IKONOS', resolution: 0.8, swath: 11.3, operator: T.getText('operator.ge'), since: '1999 - 2015'}),
         new SpaceView({id: 'GF2', platforms: ['GF2'], name: 'GaoFen-2', resolution: 0.8, swath: 45, since: '2014'}),
         new KOMPSAT({id: 'KOMPSAT2', platforms: ['KOMPSAT2'], name: 'KOMPSAT-2', resolution: 1, swath: 15, since: '2006'}), 
+        new Triplesat(),
         new RP_1MS(),
         new SP6_7(),
         new Satellite({id: 'BKA', platforms: ['BKA'], name: 'БелКА', resolution: 2, swath: 20, operator: T.getText('operator.vniiem'), since: '2012', restricted: true}),
@@ -305,7 +325,7 @@ const satellites = {
         new Satellite({id: 'LANDSAT8', platforms: ['LANDSAT_8'], name: 'LANDSAT 8', resolution: 15, swath: 185, operator: T.getText('operator.usgs'), since: '2013', restricted: true}),
         new GF1({id: 'GF1_16m', platforms: ['GF1'], name: 'GaoFen-1 (16m)', resolution: 16, swath: 800, since: '2013', sensor: 'B'}),
         new SP6_7_1A(),
-        new PLD_1A(),
+        new PLD_1A(),        
     ],
     pc: [
         new DG({id: 'WV01', platforms: ['WV01'], name: 'WorldView 1', resolution: 0.5, swath: 17.6, since: '2007'}),

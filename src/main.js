@@ -32,8 +32,7 @@ import { About } from 'app/About/About.js';
 // import { Progress } from 'app/Progress/Progress.js';
 // import { FilterControl } from 'app/FilterControl/FilterControl.js';
 
-require('lib/IconSidebarControl/dist/iconSidebarControl.css');
-let IconSidebarControl = require('lib/IconSidebarControl/dist/iconSidebarControl.js');
+import IconSidebarControl from  'lib/IconSidebarControl/src/iconSidebarControl.js';
 
 require ('lib/Leaflet-IconLayers/dist/iconLayers.css');
 let IconLayers = require ('lib/Leaflet-IconLayers/dist/iconLayers.js');
@@ -130,7 +129,7 @@ T.addText('rus', {
         type: 'Состав',     
         file: 'Имя файла',
         borders: 'Границы поиска',
-        results: 'Результаты поиска',
+        results: 'Результаты поиска: контуры',
         cart: 'Корзина: контуры',
         quicklooks: 'Корзина: контуры и квиклуки',
         ok: 'Скачать',
@@ -138,7 +137,8 @@ T.addText('rus', {
         noname: 'Без имени',
         noresults: 'Нет объектов для скачивания',
         empty: "Нет объектов",
-        csv: 'Результаты поиска в формате csv'
+        rcsv: 'Результаты поиска: метаданные (csv)',
+        ccsv: 'Корзина: метаданные (csv)'
     },
     errors: {
         permalink: 'Произошла ошибка при загрузке ссылки',
@@ -220,7 +220,7 @@ T.addText('eng', {
         type: 'Download contents',
         file: 'File name',   
         borders: 'Search borders',
-        results: 'Results',
+        results: 'Results: contours',
         cart: 'Cart: contours',
         quicklooks: 'Cart: contours and quicklooks',
         ok: 'Download',
@@ -228,7 +228,8 @@ T.addText('eng', {
         noname: 'No name',
         noresults: 'No objects to download',
         empty: "Can't download. No objects",
-        csv: 'Results as .csv'
+        rcsv: 'Results: metadata as .csv',
+        ccsv: 'Cart: metadata as .csv'
     },
     errors: {
         permalink: 'Error while loading permalik',
@@ -252,20 +253,21 @@ let map = L.map(mapContainer, {
     zoomControl: false,
     squareUnit: 'km2',
     distanceUnit: 'km', 
-    maxBounds: L.latLngBounds(L.latLng(-90, -180), L.latLng(90, 180)),
+    maxBounds: L.latLngBounds(L.latLng(-100, -360), L.latLng(100, 360)),
 });
 
 map.options.svgSprite = false;
 
-resize_map();
+resize_containers();
 
-function resize_map(){    
+function resize_containers(){    
     let container = mapContainer;
     const bounds = document.body.getBoundingClientRect();
     let header = document.getElementById('header');
     const headerBounds = header.getBoundingClientRect();
-    container.style.height = `${bounds.height - headerBounds.height}px`;
-    map.invalidateSize();
+    let height = bounds.height - headerBounds.height;
+    container.style.height = `${height}px`;
+    map.invalidateSize();    
 }
 
 function load_locale (state) {
@@ -549,6 +551,7 @@ function init_sidebar (state) {
                 window.Catalog.notificationWidget.show();
             }
             else {
+                window.Catalog.resultsController.clear();
                 window.Catalog.searchSidebar.enable ('results', true);
                 window.Catalog.searchSidebar.open('results');
                 window.Catalog.resultsController.setLayer({fields,values,types});
@@ -571,9 +574,8 @@ function init_sidebar (state) {
             });
             let {fill, weight, opacity} = NON_EDIT_LINE_STYLE;
             if (features && features.length) {                                                            
-                features.map(geoJSON => {
-                    let center = map.getCenter();
-                    normalize_geometry(center.lng, geoJSON.geometry);
+                features.map(geoJSON => {                    
+                    normalize_geometry(geoJSON.geometry);
                     let [object] = map.gmxDrawing.addGeoJSON(
                         geoJSON,
                         {
@@ -785,7 +787,7 @@ function init_sidebar (state) {
         </div>`;        
   
         window.addEventListener('resize', e => {
-            resize_map();
+            resize_containers();
             resize_search_options(searchContainer);
             resize_results(window.Catalog.resultsContainer);
             resize_favorites(window.Catalog.favoritesContainer);
@@ -1379,7 +1381,7 @@ function init_upload (shapeLoader) {
                         let {fields, values, types, Count} = results;                        
                         if (Count){
                                                     
-                            const geometry_index = fields.length - 1;
+                            const geometry_index = values[0].length - 1;
                             values.forEach (item => {
                                 item[geometry_index] = L.gmxUtil.convertGeometry (item[geometry_index], false, true);
                             });
@@ -1415,8 +1417,9 @@ function init_download (shapeLoader) {
                     <select>                        
                         <option value="borders">${T.getText('download.borders')}</option>
                         <option value="results">${T.getText('download.results')}</option>
-                        <option value="csv">${T.getText('download.csv')}</option>
+                        <option value="rcsv">${T.getText('download.rcsv')}</option>
                         <option value="cart">${T.getText('download.cart')}</option>
+                        <option value="ccsv">${T.getText('download.ccsv')}</option>
                         <option value="quicklooks">${T.getText('download.quicklooks')}</option>
                     </select>
                 </td>
@@ -1447,12 +1450,13 @@ function init_download (shapeLoader) {
                 }
                 break;
             case 'results':
-            case 'csv':
+            case 'rcsv':
                 if (window.Catalog.resultsController.hasResults) {
                     valid = true;
                 }
                 break;
             case 'cart':
+            case 'ccsv':
             case 'quicklooks':
                 if (window.Catalog.resultsController.hasFavorites) {
                     valid = true;

@@ -1,5 +1,6 @@
 import { EventTarget } from 'lib/EventTarget/src/EventTarget.js';
-import { flatten, normalize_geometry, split_complex_id, normalize_geometry_type, chain } from 'app/Utils/Utils.js';
+import { flatten, split_complex_id, normalize_geometry_type, normalize_geometry, normalize_point, get_bbox, chain, make_close_to } from 'app/Utils/Utils.js';
+import { platform } from 'os';
 
 const Colors = {
     Default: 0x23a5cc,
@@ -12,15 +13,16 @@ function serialize (obj) {
     return Object.keys(obj).map(id => obj[id]);
 }
 
-const attributes = ["hover", "selected", "visible", "result", "cart", "clip_coords", "sceneid", "acqdate", "acqtime", "cloudness", "tilt", "sunelev", "stereo", "url", "x1", "y1", "x2", "y2", "x3", "y3", "x4", "y4", "volume", "platform", "spot5_a_exists", "spot5_b_exists", "islocal", "product", "gmx_id", "sensor", "local_exists", "spot5id", "stidx"];
-const attrTypes = ["boolean", "boolean", "string", "boolean", "boolean", "object", "string", "date", "time", "float", "float", "float", "string", "string", "float", "float", "float", "float", "float", "float", "float", "float", "string", "string", "boolean", "boolean", "boolean", "boolean", "integer", "string", "boolean", "string", "integer"];
+const attributes = ["hover", "selected", "visible", "clip_coords", "result", "cart", "sceneid", "acqdate", "acqtime", "cloudness", "tilt", "sunelev", "stereo", "url", "x1", "y1", "x2", "y2", "x3", "y3", "x4", "y4", "volume", "platform", "spot5_a_exists", "spot5_b_exists", "islocal", "product", "gmx_id", "sensor", "local_exists", "spot5id", "stidx"];
+const attrTypes = ["boolean", "boolean", "string", "object", "boolean", "boolean", "string", "date", "time", "float", "float", "float", "string", "string", "float", "float", "float", "float", "float", "float", "float", "float", "string", "string", "boolean", "boolean", "boolean", "boolean", "integer", "string", "boolean", "string", "integer"];
 
 class CompositeLayer extends EventTarget {
     constructor ({        
         minZoom = 3,
         maxZoom = 17,
         map,
-        qlUrl = 'http://wikimixer.kosmosnimki.ru/QuickLookImage.ashx',
+        qlUrl = '//search.kosmosnimki.ru/QuickLookImage.ashx',
+        // qlUrl = '//wikimixer.kosmosnimki.ru/QuickLookImage.ashx',
         qlSize = { width: 300, height: 300 },
         srs = 3857}) {
         super();
@@ -31,9 +33,11 @@ class CompositeLayer extends EventTarget {
         this._attrTypes = attrTypes;
         this._sceneid_index = this._attributes.indexOf('sceneid') + 1;
         this._result_index = this._attributes.indexOf('result') + 1;
+        this._platform_index = this._attributes.indexOf('platform') + 1;
         this._clip_coords_index = this._attributes.indexOf('clip_coords') + 1;
         this._cart_index = this._attributes.indexOf('cart') + 1;
         this._selected_index = this._attributes.indexOf('selected') + 1;
+        this._url_index = this._attributes.indexOf('url') + 1;
         this._visible_index = this._attributes.indexOf('visible') + 1;
         this._hover_index = this._attributes.indexOf('hover') + 1;
         this._x1_index = this._attributes.indexOf('x1') + 1;
@@ -122,10 +126,14 @@ class CompositeLayer extends EventTarget {
                 this.showQuicklook(id, show)
                 .then(() => {
                     let event = document.createEvent('Event');
-                    event.initEvent('click', false, false);
+                    event.initEvent('ready', false, false);
                     event.detail = {id, show};
                     this.dispatchEvent(event);
                 });
+                let event = document.createEvent('Event');
+                event.initEvent('click', false, false);
+                event.detail = {id, show};
+                this.dispatchEvent(event);
             }            
         })
         .on('mouseover', e => {
@@ -158,25 +166,37 @@ class CompositeLayer extends EventTarget {
             let {properties,quicklook} = this._vectors[id];            
             if (show) {
                 if (!quicklook) {
-                    let imageUrl = `${this._qlUrl}?id=${split_complex_id(properties[this._sceneid_index]).id}&width=${this._qlSize.width}&height=${this._qlSize.height}`;
-                    let clipCoords = properties[this._clip_coords_index];
+                    const sceneid = split_complex_id(properties[this._sceneid_index]).id;
+                    const platform = properties[this._platform_index];
+                    let imageUrl = `${this._qlUrl}?sceneid=${sceneid}&platform=${platform}&width=${this._qlSize.width}&height=${this._qlSize.height}`;
+                    const {lng} = this._map.getCenter();
+                    let clipCoords = normalize_geometry(properties[this._clip_coords_index], lng);
+                    let [ x1,y1, x2,y2, x3,y3, x4,y4 ] = properties.slice(this._x1_index, this._x1_index + 8);                    
                     const anchors = [
-                        properties.slice(this._x1_index, this._x1_index + 2),
-                        properties.slice(this._x1_index + 2, this._x1_index + 4),
-                        properties.slice(this._x1_index + 4, this._x1_index + 6),
-                        properties.slice(this._x1_index + 6, this._x1_index + 8)
+                        [make_close_to(lng, x1),y1],
+                        [make_close_to(lng, x2),y2],
+                        [make_close_to(lng, x3),y3], 
+                        [make_close_to(lng,x4),y4]
                     ];
-                    quicklook = L.imageTransform(imageUrl, flatten(anchors, true), { clip: clipCoords, disableSetClip: true }).addTo(this._map);
+                    quicklook = L.imageTransform(imageUrl, flatten(anchors, true), { 
+                        clip: clipCoords,
+                        disableSetClip: true,
+                        pane: 'tilePane'
+                    }).addTo(this._map);
                     this._vectors[id].quicklook = quicklook;
                     quicklook.on('load', e => {
-                        properties[this._visible_index] = 'visible';                                                  
-                        this._vectorLayer.bringToTopItem(id);
+                        properties[this._visible_index] = 'visible';
+                        const gmx_id = properties[0];
+                        this._vectorLayer.bringToTopItem(gmx_id);
                         resolve();                        
                     });
                     quicklook.on('error', e => {
                         properties[this._visible_index] = 'failed';
                         this._map.removeLayer(quicklook);    
-                        this._vectors[id].quicklook = null;
+                        const gmx_id = properties[0];
+                        if (this._vectors[gmx_id]) {
+                            this._vectors[gmx_id].quicklook = null;
+                        }
                         resolve();
                     });
                     quicklook.addTo(this._map);
@@ -241,8 +261,8 @@ class CompositeLayer extends EventTarget {
     }
     setData ({fields, values}, activeTabId = 'results') {
         const idx = fields.indexOf('gmx_id');        
-        let vectors = values.reduce((a,item) => {
-            let clipCoords = flatten(L.gmxUtil.geometryToGeoJSON(item[item.length - 1], true, true).coordinates, true);
+        let vectors = values.reduce((a,properties) => {
+            let clipCoords = normalize_geometry (L.gmxUtil.geometryToGeoJSON(properties[properties.length - 1], true, true));
             let value = this._attributes.reduce((b,k) => {
                 const i = fields.indexOf(k);
                 if (i < 0) {
@@ -266,34 +286,39 @@ class CompositeLayer extends EventTarget {
                             break;
                         default:
                             break;
-                    }                    
+                    }
                 }
                 else {
-                    if (k === 'visible') {
-                        switch (typeof item[i]) {                            
-                            case 'boolean':
-                                b.push(item[i] ? 'visible' : 'hidden');
-                                break;
-                            default:
-                            case 'string':
-                                b.push(item[i]);
-                                break;
-                        }                        
-                    }
-                    else {
-                        b.push(item[i]);                        
-                    }
+                    switch (k) {
+                        case 'visible':
+                            switch (typeof properties[i]) {                            
+                                case 'boolean':
+                                    b.push(properties[i] ? 'visible' : 'hidden');
+                                    break;
+                                default:
+                                case 'string':
+                                    b.push(properties[i]);
+                                    break;
+                            } 
+                            break;
+                        case 'clip_coords':
+                            b.push(clipCoords);
+                            break;                      
+                        default:
+                            b.push(properties[i]);
+                            break;
+                    }                   
                 } 
                 return b;               
             }, []);
-            value.unshift(item[idx]);            
-            value.push(item[item.length - 1]);
+            value.unshift(properties[idx]);            
+            value.push(properties[properties.length - 1]);
             a.push(value);            
             return a;
         },[]);        
         this._vectors = this._mergeResults (this._vectors, vectors);
         this._vectorLayer.removeData();
-        let items = serialize (this._vectors).map(({properties}) => properties);
+        let items = serialize(this._vectors).map(({properties}) => properties);
         this._vectorLayer.addData(items);
     }
 
@@ -346,7 +371,7 @@ class CompositeLayer extends EventTarget {
     get hasFavorites () {                
         return Object.keys(this._vectors).some(id =>  {
             const {properties} = this._vectors[id];
-            return properties[this._cart_index];
+            return properties[this._cart_index];            
         });
     }
 
@@ -375,7 +400,13 @@ class CompositeLayer extends EventTarget {
         return serialize (this._vectors).map(({properties}) => this._propertiesToItem(properties)).filter (filter);
     }
     getItem (id) {
-        return this._propertiesToItem(this._vectors[id].properties);
+        if (this._vectors[id]) {            
+            return this._propertiesToItem(this._vectors[id].properties);
+        }
+        else {
+            console.warn('vector layer item with id =', id, ' not found.');
+            return null;
+        }
     }
     redraw () {
         this._vectorLayer.repaint();
@@ -384,47 +415,63 @@ class CompositeLayer extends EventTarget {
         this._vectorLayer.redrawItem(id);
     }
     setHover (id, hover) {
-        this._vectors[id].properties[this._hover_index] = hover;
-        this.redrawItem(id);
-    }
-    setSelected (id, selected) {
-        this._vectors[id].properties[this._selected_index] = selected;
-        this.redrawItem(id);
-    }
-    setVisible (id, show) {
-        let {properties} = this._vectors[id];
-        let changed = false;
-        if (show) {
-            switch(properties[this._visible_index]) {
-                case 'hidden':
-                case 'failed':
-                    properties[this._visible_index] = 'loading';
-                    changed = true;
-                    break;
-                case 'loading':                
-                    properties[this._visible_index] = 'visible';
-                    changed = true;
-                    break;
-                case 'visible':
-                default:
-                    break;
-            }
+        if (this._vectors[id]) {            
+            this._vectors[id].properties[this._hover_index] = hover;
+            this.redrawItem(id);
         }
         else {
-            switch(properties[this._visible_index]) {
-                case 'failed':
-                case 'loading':
-                case 'visible':
-                    properties[this._visible_index] = 'hidden';
-                    changed = true;
-                    break;
-                case 'hidden':
-                default:
-                    break;
-            }
+            console.warn('vector layer item with id =', id, ' not found.');
         }
-        this._vectorLayer.redrawItem(id);
-        return changed;
+    }
+    setSelected (id, selected) {
+        if (this._vectors[id]) {
+            this._vectors[id].properties[this._selected_index] = selected;
+            this.redrawItem(id);
+        }
+        else {
+            console.warn('vector layer item with id =', id, ' not found.');
+        }
+    }
+    setVisible (id, show) {
+        if (this._vectors[id]) {
+            let {properties} = this._vectors[id];
+            let changed = false;
+            if (show) {
+                switch(properties[this._visible_index]) {
+                    case 'hidden':
+                    case 'failed':
+                        properties[this._visible_index] = 'loading';
+                        changed = true;
+                        break;
+                    case 'loading':                
+                        properties[this._visible_index] = 'visible';
+                        changed = true;
+                        break;
+                    case 'visible':
+                    default:
+                        break;
+                }
+            }
+            else {
+                switch(properties[this._visible_index]) {
+                    case 'failed':
+                    case 'loading':
+                    case 'visible':
+                        properties[this._visible_index] = 'hidden';
+                        changed = true;
+                        break;
+                    case 'hidden':
+                    default:
+                        break;
+                }
+            }
+            this._vectorLayer.redrawItem(id);
+            return changed;
+        }
+        else {
+            console.warn('vector layer item with id =', id, ' not found.');
+            return false;
+        }        
     }
 
     addAllToCart() {        
@@ -432,6 +479,7 @@ class CompositeLayer extends EventTarget {
             let {properties} = this._vectors[id];
             if (properties[this._result_index]) {
                 properties[this._cart_index] = true;
+                properties[this._selected_index] = true;
             }
         });
         this.redraw();
@@ -441,6 +489,7 @@ class CompositeLayer extends EventTarget {
         let {properties} = this._vectors[id];
         if (properties) {
             properties[this._cart_index] = !properties[this._cart_index];
+            properties[this._selected_index] = true;
             this._vectorLayer.redrawItem(id);
         }
         return this._propertiesToItem (properties);
@@ -455,7 +504,7 @@ class CompositeLayer extends EventTarget {
                 this.showQuicklook(id, false);
                 this._vectorLayer.redrawItem(id);
             }
-        });        
+        });
     }
 
     addVisibleToCart () {        
@@ -463,6 +512,7 @@ class CompositeLayer extends EventTarget {
             let {properties} = this._vectors[id];
             if (properties[this._visible_index] === 'visible') {
                 properties[this._cart_index] = true;
+                properties[this._selected_index] = true;
                 this._vectorLayer.redrawItem(id);
             }
         });
@@ -491,6 +541,53 @@ class CompositeLayer extends EventTarget {
             }
         });
     }
+
+    _normBounds (x2,x4) {
+        if (x2 < 0 && x4 > 0) {
+            return [x2 + 360, x4];
+        }
+        else if (x2 > 0 && x4 < 0) {
+            return [x2, x4 + 360];
+        }
+    }
+
+    getBounds (items) {        
+        let bounds = items.reduce((a,properties) => {
+            const geometry = L.gmxUtil.convertGeometry(properties[properties.length - 1], true, true);
+            let [[x1,y1],[x2,y2],[x3,y3],[x4,y4]] = get_bbox(geometry);            
+            let ne = L.latLng(y2,x2);
+            let sw = L.latLng(y4,x4);
+            let b = L.latLngBounds(ne, sw);
+            if (a === null) {            
+                a = b;
+            }
+            else {
+                a.extend(b);
+            }
+            return a;
+        }, null);
+        let ne = bounds.getNorthEast();
+        let sw = bounds.getSouthWest();
+        const lng = ne.lng;
+        ne = L.latLng (ne.lat, make_close_to(lng, ne.lng));
+        sw = L.latLng (sw.lat, make_close_to(lng, sw.lng));
+        return L.latLngBounds(ne, sw);
+    }
+
+    zoomToResults () {
+        let items = serialize(this._vectors).map(({properties}) => properties).filter(properties => properties[this._result_index]);
+        let bounds = this.getBounds(items);      
+        if (bounds) {                        
+            this._map.fitBounds(bounds, { animate: false });
+        }
+    } 
+    zoomToFavorites () {
+        let items = serialize(this._vectors).map(({properties}) => properties).filter(properties => properties[this._cart_index]);
+        let bounds = this.getBounds(items);
+        if (bounds) {
+            this._map.fitBounds(bounds, { animate: false });        
+        }
+    } 
 }
 
 export { CompositeLayer, attributes, attrTypes };
