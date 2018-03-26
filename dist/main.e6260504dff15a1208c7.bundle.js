@@ -25078,8 +25078,8 @@ var CompositeLayer = function (_EventTarget) {
                     if (quicklook) {
                         _this2._map.removeLayer(quicklook);
                         _this2._vectors[id].quicklook = null;
-                        _this2._vectorLayer.bringToBottomItem(id);
                     }
+                    _this2._vectorLayer.bringToBottomItem(id);
                     resolve();
                 }
             });
@@ -32742,4 +32742,4 @@ module.exports = L;
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=main.88d1942f2dca19abf06d.bundle.js.map
+//# sourceMappingURL=main.e6260504dff15a1208c7.bundle.js.map

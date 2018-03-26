@@ -1202,7 +1202,7 @@
     padding: 10px;
     box-shadow: 0px 1px 7.84px 0.16px rgba(0, 0, 0, 0.16);
     border-radius: 4px;
-    z-index: 400;
+    z-index: 1000;
 }
 .image-info td {
     vertical-align: top;
@@ -2593,4 +2593,4 @@ html, body {
 .leaflet-iconLayers-layerCell_hidden { display: none; }
 .leaflet-iconLayers-layerCell_active .leaflet-iconLayers-layer { cursor: default; }
 .leaflet-iconLayers-layerCell_active .leaflet-iconLayers-layerCheckIcon { display: block; }
-/*# sourceMappingURL=f7dc926bb7311468c4bf878db6cbd128.bundle.css.map*/
+/*# sourceMappingURL=4caa04ac06b260fde870dd54833d69db.bundle.css.map*/

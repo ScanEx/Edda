@@ -188,7 +188,7 @@ class CompositeLayer extends EventTarget {
                         properties[this._visible_index] = 'visible';
                         const gmx_id = properties[0];
                         this._vectorLayer.bringToTopItem(gmx_id);
-                        resolve();                        
+                        resolve();
                     });
                     quicklook.on('error', e => {
                         properties[this._visible_index] = 'failed';
@@ -201,9 +201,9 @@ class CompositeLayer extends EventTarget {
                     });
                     quicklook.addTo(this._map);
                 }
-                else {                    
-                    properties[this._visible_index] = 'visible';                        
-                    quicklook.addTo(this._map);                    
+                else {
+                    properties[this._visible_index] = 'visible';
+                    quicklook.addTo(this._map);
                     this._vectorLayer.bringToTopItem(id);
                     resolve();
                 }
@@ -212,8 +212,8 @@ class CompositeLayer extends EventTarget {
                 if (quicklook) {
                     this._map.removeLayer(quicklook);
                     this._vectors[id].quicklook = null;
-                    this._vectorLayer.bringToBottomItem(id);  
                 }
+                this._vectorLayer.bringToBottomItem(id);  
                 resolve();
             }
         });        
