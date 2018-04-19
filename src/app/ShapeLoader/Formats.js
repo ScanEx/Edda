@@ -493,6 +493,38 @@ let Formats = {
         {'Name':'toprightlongitude', 'Type': 'Float'},
         {'Name':'rsid ', 'Type': 'String'},
     ],
+    'Resurs-P': [
+        {'Name': 'abstract', 'Type': 'String'},
+        {'Name': 'access_open', 'Type': 'Boolean'},
+        {'Name': 'access_order', 'Type': 'Boolean'},
+        {'Name': 'circuit_number', 'Type': 'Integer'},
+        {'Name': 'cloudiness', 'Type': 'Integer'},
+        {'Name': 'date_begin', 'Type': 'Date'},
+        {'Name': 'date_end', 'Type': 'Date'},
+        {'Name': 'date_instant', 'Type': 'Date'},
+        {'Name': 'file_identifier', 'Type': 'String'},
+        {'Name': 'last_modified', 'Type': 'Date'},
+        {'Name': 'metadata_full', 'Type': 'String'},
+        {'Name': 'metadata_id', 'Type': 'Integer'},
+        {'Name': 'metadata_xml', 'Type': 'String'},
+        {'Name': 'order_url', 'Type': 'String'},
+        {'Name': 'platform', 'Type': 'String'},
+        {'Name': 'platform_id', 'Type': 'Integer'},
+        {'Name': 'polygon', 'Type': 'String'},
+        {'Name': 'resolution', 'Type': 'Float'},
+        {'Name': 'row_count', 'Type': 'Integer'},
+        {'Name': 'row_number', 'Type': 'Integer'},
+        {'Name': 'scan_number', 'Type': 'Integer'},
+        {'Name': 'url', 'Type': 'String'},
+        {'Name': 'x1', 'Type': 'Float'},
+        {'Name': 'x2', 'Type': 'Float'},
+        {'Name': 'x3', 'Type': 'Float'},
+        {'Name': 'x4', 'Type': 'Float'},
+        {'Name': 'y1', 'Type': 'Float'},
+        {'Name': 'y2', 'Type': 'Float'},
+        {'Name': 'y3', 'Type': 'Float'},
+        {'Name': 'y4', 'Type': 'Float'}
+    ]
 };
 
 export { Formats };

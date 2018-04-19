@@ -24,22 +24,24 @@ public class GetMetadata : IHttpHandler
         if (!string.IsNullOrEmpty(query_id))
         {
             var ids = query_id.Split(',');
-            var kvs = GetKeyValues(ids);
-            var ips = GetImagesByPlatform(kvs);
+            var ips = GetImagesByPlatform(ids);
             var jo = new JObject();
 
             var dict = new Dictionary<string, List<JObject>>();
             foreach (var kv in ips)
             {
-                var tm = GetTableMetadata(kv.Key);
-                var file = GetArchiveFileName(kv.Key);
+                var platform = kv.Key;
+                var tm = GetTableMetadata(platform);
+                var file = GetArchiveFileName(platform);
                 List<JObject> images = null;
                 if (!dict.TryGetValue(file, out images))
                 {
                     images = new List<JObject>();
                     dict.Add(file, images);
                 }
-                images.AddRange(GetImagesMetadata(tm.Item1, tm.Item2, GetKeyValues(kv.Value)));
+                var tt = GetTableName(platform);
+                var platform_field = GetPlatformField(tt);
+                images.AddRange(GetImagesMetadata(tm.Item1, tm.Item2, platform_field, platform, GetKeyValues(kv.Value)));
             }
 
             foreach (var kv in dict)
@@ -51,7 +53,6 @@ public class GetMetadata : IHttpHandler
                 });
                 jo.Add(kv.Key, ja);
             }
-
             JsonResponse.WriteResultToResponse(jo, context);
         }
         else
@@ -110,15 +111,15 @@ public class GetMetadata : IHttpHandler
             case "WV01":
             case "WV01_L":
                 return "WV1";
-            case "GE01":            
+            case "GE01":
             case "GE-1":
-            case "QB02":            
+            case "QB02":
             case "WV02":
-            case "WV03":            
+            case "WV03":
             case "WV04":
                 return "DG_products";
             case "GE01_L":
-            case "QB02_L":            
+            case "QB02_L":
             case "WV02_L":
             case "WV03_L":
                 return "DG_products_L";
@@ -265,6 +266,30 @@ public class GetMetadata : IHttpHandler
         }
     }
 
+    string GetPlatformField(string table)
+    {
+        switch (table)
+        {
+            case "ast":
+                return "satel";
+            case "dg":
+            case "eros":
+                return "platform";
+            case "dg_a":
+            case "phr":
+            case "bka":
+            case "one_atlas":
+            case "triplesat":
+                return "satellite";
+            case "ik":
+                return "source";
+            case "gf":
+                return "satellitei";
+            default:
+                return null;
+        }
+    }
+
     Tuple<string, string> GetTableMetadata(string platform)
     {
         string table = GetTableName(platform);
@@ -272,7 +297,7 @@ public class GetMetadata : IHttpHandler
         {
             string id_field = GetIDField(table);
             if (!string.IsNullOrEmpty(id_field))
-            {
+            {                                
                 return new Tuple<string, string>(table, id_field);
             }
         }
@@ -336,12 +361,14 @@ public class GetMetadata : IHttpHandler
         return res;
     }
 
-    IEnumerable<JObject> GetImagesMetadata(string table, string id_field, Dictionary<string, string> kvs)
+    IEnumerable<JObject> GetImagesMetadata(string table, string id_field, string platform_field, string platform, Dictionary<string, string> kvs)
     {
         var list = new List<JObject>();
         using (var con = new NpgsqlConnection(ConfigurationManager.ConnectionStrings["Catalog"].ConnectionString))
         {
-            string stm = string.Format("SELECT * FROM dbo.\"{0}\" WHERE \"{1}\" IN({2})", table, id_field, string.Join(",", kvs.Keys));
+            string stm = string.IsNullOrEmpty (platform_field) || platform.Contains("_L") ?
+                    string.Format("SELECT * FROM dbo.\"{0}\" WHERE \"{1}\" IN({2})", table, id_field, string.Join(",", kvs.Keys)) :
+                    string.Format("SELECT * FROM dbo.\"{0}\" WHERE \"{1}\" IN({2}) AND \"{3}\" = '{4}'", table, id_field, string.Join(",", kvs.Keys), platform_field, platform);
 
             con.Open();
             using (var cmd = new NpgsqlCommand(stm, con))
@@ -390,27 +417,27 @@ public class GetMetadata : IHttpHandler
                                             { "order_url", "string" },
                                         };
                                         foreach (var t in fields)
-                                        {                                            
+                                        {
                                             switch (t.Value) {
-                                                case "integer":                                                    
+                                                case "integer":
                                                     a[t.Key] = new JValue (jo[t.Key].Value<int>());
                                                     break;
-                                                case "float":                                                    
+                                                case "float":
                                                     a[t.Key] = new JValue (jo[t.Key].Value<double>());
                                                     break;
-                                                case "date":                                                    
+                                                case "date":
                                                     a[t.Key] = new JValue (jo[t.Key].Value<DateTime?>());
-                                                    break;                                                
-                                                case "boolean":                                                    
+                                                    break;
+                                                case "boolean":
                                                     a[t.Key] = new JValue (jo[t.Key].Value<bool>());
                                                     break;
                                                 default:
-                                                case "string":                                                    
-                                                   a[t.Key] = new JValue (jo[t.Key].Value<string>());
+                                                case "string":
+                                                    a[t.Key] = new JValue (jo[t.Key].Value<string>());
                                                     break;
-                                            }                                            
+                                            }
                                         }
-                                    }                                    
+                                    }
                                     break;
                                 case DbType.String:
                                     switch (f)
@@ -541,36 +568,19 @@ public class GetMetadata : IHttpHandler
             .ToDictionary(kv => kv.k, kv => kv.v);
     }
 
-    Dictionary<string, List<string>> GetImagesByPlatform(Dictionary<string, string> kvs)
+    Dictionary<string, List<string>> GetImagesByPlatform(string[] ids)
     {
         var dict = new Dictionary<string, List<string>>();
-        using (var con = new NpgsqlConnection(ConfigurationManager.ConnectionStrings["Catalog"].ConnectionString))
-        {
-            string stm = string.Format("SELECT platform, sceneid, islocal FROM dbo.\"cat_img\" WHERE sceneid IN({0})", string.Join(",", kvs.Keys));
-
-            con.Open();
-            using (var cmd = new NpgsqlCommand(stm, con))
+        foreach (var id in ids) {
+            var parts = id.Split(';');
+            string key = string.Concat(parts[1], Boolean.Parse (parts[2]) ? "_L" : "");
+            List<string> list = null;
+            if (!dict.TryGetValue(key, out list))
             {
-                foreach (var kv in kvs)
-                {
-                    cmd.Parameters.AddWithValue(kv.Key, kv.Value);
-                }
-
-                var rd = cmd.ExecuteReader();
-
-                while (rd.Read())
-                {
-                    string key = string.Concat(rd.GetString(0), rd.GetBoolean(2) ? "_L" : "");
-                    List<string> list = null;
-                    if (!dict.TryGetValue(key, out list))
-                    {
-                        list = new List<string>();
-                        dict.Add(key, list);
-                    }
-                    list.Add(rd.GetString(1));
-                }
-
+                list = new List<string>();
+                dict.Add(key, list);
             }
+            list.Add(parts[0]);
         }
 
         return dict;

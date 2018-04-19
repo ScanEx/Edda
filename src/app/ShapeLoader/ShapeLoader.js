@@ -92,10 +92,10 @@ class ShapeLoader {
                 switch (type) {                      
                     case 'results':
                         if(this._resultsController.downloadCache && this._resultsController.downloadCache.length > 0) {
-                            ids = this._resultsController.downloadCache.map(item => item.sceneid);
+                            ids = this._resultsController.downloadCache.map(item => `${item.sceneid};${item.platform};${item.islocal}`);
                         }
                         else {
-                            ids = this._resultsController.results.map(item => item.sceneid);
+                            ids = this._resultsController.results.map(item => `${item.sceneid};${item.platform};${item.islocal}`);
                         }
                         break;
                     case 'rcsv':
@@ -109,10 +109,10 @@ class ShapeLoader {
                     case 'cart':
                     case 'quicklooks':
                         if(this._resultsController.downloadCache && this._resultsController.downloadCache.length > 0) {
-                            ids = this._resultsController.downloadCache.map(item => item.sceneid);
+                            ids = this._resultsController.downloadCache.map(item => `${item.sceneid};${item.platform};${item.islocal}`);
                         }
                         else {
-                            ids = this._resultsController.favorites.map(item => item.sceneid);
+                            ids = this._resultsController.favorites.map(item => `${item.sceneid};${item.platform};${item.islocal}`);
                         }                        
                         break;
                     case 'ccsv':

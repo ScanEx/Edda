@@ -304,6 +304,7 @@ html, body {
     background-color: #3ca1d0;
     color: #fff;
     font-weight: bold;
+    z-index: 2001;
 }
 .dialog-download .download-type,
 .dialog-download .download-file {
@@ -434,4 +435,10 @@ html, body {
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
     border: 1px solid #d9e1e6;
+}
+.leaflet-gmx-copyright {
+    z-index: 2001;
+}
+.leaflet-bottom {
+    z-index: auto;
 }

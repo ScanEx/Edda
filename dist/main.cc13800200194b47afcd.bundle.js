@@ -23476,11 +23476,11 @@ var ShapeLoader = function () {
                         case 'results':
                             if (_this2._resultsController.downloadCache && _this2._resultsController.downloadCache.length > 0) {
                                 ids = _this2._resultsController.downloadCache.map(function (item) {
-                                    return item.sceneid;
+                                    return item.sceneid + ';' + item.platform + ';' + item.islocal;
                                 });
                             } else {
                                 ids = _this2._resultsController.results.map(function (item) {
-                                    return item.sceneid;
+                                    return item.sceneid + ';' + item.platform + ';' + item.islocal;
                                 });
                             }
                             break;
@@ -23495,11 +23495,11 @@ var ShapeLoader = function () {
                         case 'quicklooks':
                             if (_this2._resultsController.downloadCache && _this2._resultsController.downloadCache.length > 0) {
                                 ids = _this2._resultsController.downloadCache.map(function (item) {
-                                    return item.sceneid;
+                                    return item.sceneid + ';' + item.platform + ';' + item.islocal;
                                 });
                             } else {
                                 ids = _this2._resultsController.favorites.map(function (item) {
-                                    return item.sceneid;
+                                    return item.sceneid + ';' + item.platform + ';' + item.islocal;
                                 });
                             }
                             break;
@@ -24954,60 +24954,68 @@ var CompositeLayer = function (_EventTarget) {
                 target = _e$gmx.target;
 
             var show = null;
-            var properties = _this._vectors[id].properties;
+            if (_this._vectors[id]) {
+                var properties = _this._vectors[id].properties;
 
-            if (properties) {
-                switch (properties[_this._visible_index]) {
-                    case 'visible':
-                    case 'loading':
-                        show = false;
-                        break;
-                    case 'hidden':
-                    default:
-                        show = true;
-                        break;
-                }
-                _this.setVisible(id, show);
-                _this.showQuicklook(id, show).then(function () {
+                if (properties) {
+                    switch (properties[_this._visible_index]) {
+                        case 'visible':
+                        case 'loading':
+                            show = false;
+                            break;
+                        case 'hidden':
+                        default:
+                            show = true;
+                            break;
+                    }
+                    _this.setVisible(id, show);
+                    _this.showQuicklook(id, show).then(function () {
+                        var event = document.createEvent('Event');
+                        event.initEvent('ready', false, false);
+                        event.detail = { id: id, show: show };
+                        _this.dispatchEvent(event);
+                    });
                     var event = document.createEvent('Event');
-                    event.initEvent('ready', false, false);
+                    event.initEvent('click', false, false);
                     event.detail = { id: id, show: show };
                     _this.dispatchEvent(event);
-                });
-                var event = document.createEvent('Event');
-                event.initEvent('click', false, false);
-                event.detail = { id: id, show: show };
-                _this.dispatchEvent(event);
+                }
             }
         }).on('mouseover', function (e) {
             var _e$gmx2 = e.gmx,
                 id = _e$gmx2.id,
                 layer = _e$gmx2.layer,
                 target = _e$gmx2.target;
-            var properties = _this._vectors[id].properties;
 
-            if (properties) {
-                properties[_this._hover_index] = true;
-                _this._vectorLayer.redrawItem(id);
-                var event = document.createEvent('Event');
-                event.initEvent('mouseover', false, false);
-                event.detail = id;
-                _this.dispatchEvent(event);
+            if (_this._vectors[id]) {
+                var properties = _this._vectors[id].properties;
+
+                if (properties) {
+                    properties[_this._hover_index] = true;
+                    _this._vectorLayer.redrawItem(id);
+                    var event = document.createEvent('Event');
+                    event.initEvent('mouseover', false, false);
+                    event.detail = id;
+                    _this.dispatchEvent(event);
+                }
             }
         }).on('mouseout', function (e) {
             var _e$gmx3 = e.gmx,
                 id = _e$gmx3.id,
                 layer = _e$gmx3.layer,
                 target = _e$gmx3.target;
-            var properties = _this._vectors[id].properties;
 
-            if (properties) {
-                properties[_this._hover_index] = false;
-                _this._vectorLayer.redrawItem(id);
-                var event = document.createEvent('Event');
-                event.initEvent('mouseout', false, false);
-                event.detail = id;
-                _this.dispatchEvent(event);
+            if (_this._vectors[id]) {
+                var properties = _this._vectors[id].properties;
+
+                if (properties) {
+                    properties[_this._hover_index] = false;
+                    _this._vectorLayer.redrawItem(id);
+                    var event = document.createEvent('Event');
+                    event.initEvent('mouseout', false, false);
+                    event.detail = id;
+                    _this.dispatchEvent(event);
+                }
             }
         });
         return _this;
@@ -26225,7 +26233,8 @@ var Formats = {
     { 'Name': 'x1', 'Type': 'Float' }, { 'Name': 'y1', 'Type': 'Float' }, { 'Name': 'x2', 'Type': 'Float' }, { 'Name': 'y2', 'Type': 'Float' }, { 'Name': 'x3', 'Type': 'Float' }, { 'Name': 'y3', 'Type': 'Float' }, { 'Name': 'x4', 'Type': 'Float' }, { 'Name': 'y4', 'Type': 'Float' }],
     'SPOT-6_7_L': [{ 'Name': 'id', 'Type': 'Integer' }, { 'Name': 'row', 'Type': 'Integer' }, { 'Name': 'nbound', 'Type': 'Float' }, { 'Name': 'sbound', 'Type': 'Float' }, { 'Name': 'wbound', 'Type': 'Float' }, { 'Name': 'ebound', 'Type': 'Float' }, { 'Name': 'platform', 'Type': 'String' }, { 'Name': 'sceneid', 'Type': 'String' }, { 'Name': 'acdate', 'Type': 'String' }, { 'Name': 'filename', 'Type': 'String' }, { 'Name': 'volume', 'Type': 'String' }, { 'Name': 'cld', 'Type': 'Integer' }, { 'Name': 'url', 'Type': 'String' }, { 'Name': 'x1', 'Type': 'Float' }, { 'Name': 'y1', 'Type': 'Float' }, { 'Name': 'x2', 'Type': 'Float' }, { 'Name': 'y2', 'Type': 'Float' }, { 'Name': 'x3', 'Type': 'Float' }, { 'Name': 'y3', 'Type': 'Float' }, { 'Name': 'x4', 'Type': 'Float' }, { 'Name': 'y4', 'Type': 'Float' }],
     ONE_ATLAS: [{ 'Name': 'num_points', 'Type': 'String' }, { 'Name': 'scene_id', 'Type': 'String' }, { 'Name': 'ds_id', 'Type': 'String' }, { 'Name': 'satellite', 'Type': 'String' }, { 'Name': 'sensor_mod', 'Type': 'String' }, { 'Name': 'cloudsp', 'Type': 'String' }, { 'Name': 'sun_azimut', 'Type': 'Float' }, { 'Name': 'sun_elevat', 'Type': 'Float' }, { 'Name': 'view_angle', 'Type': 'Float' }, { 'Name': 'azimuth', 'Type': 'Float' }, { 'Name': 'img_start', 'Type': 'Date' }, { 'Name': 'order_id', 'Type': 'String' }, { 'Name': 'pack_id', 'Type': 'String' }, { 'Name': 'qlurl', 'Type': 'String' }, { 'Name': 'x1', 'Type': 'Float' }, { 'Name': 'y1', 'Type': 'Float' }, { 'Name': 'x2', 'Type': 'Float' }, { 'Name': 'y2', 'Type': 'Float' }, { 'Name': 'x3', 'Type': 'Float' }, { 'Name': 'y3', 'Type': 'Float' }, { 'Name': 'x4', 'Type': 'Float' }, { 'Name': 'y4', 'Type': 'Float' }, { 'Name': 'shp_ts', 'Type': 'Date' }],
-    TRIPLESAT: [{ 'Name': 'thumbimg', 'Type': 'String' }, { 'Name': 'id', 'Type': 'String' }, { 'Name': 'satellite', 'Type': 'String' }, { 'Name': 'cloudcover', 'Type': 'Float' }, { 'Name': 'rollangle', 'Type': 'Float' }, { 'Name': 'centertime', 'Type': 'Date' }, { 'Name': 'browserimg ', 'Type': 'String' }, { 'Name': 'transformimg ', 'Type': 'String' }, { 'Name': 'bottomrightlatitude', 'Type': 'Float' }, { 'Name': 'bottomrightlongitude', 'Type': 'Float' }, { 'Name': 'bottomleftlatitude', 'Type': 'Float' }, { 'Name': 'bottomleftlongitude', 'Type': 'Float' }, { 'Name': 'topleftlatitude', 'Type': 'Float' }, { 'Name': 'topleftlongitude', 'Type': 'Float' }, { 'Name': 'toprightlatitude', 'Type': 'Float' }, { 'Name': 'toprightlongitude', 'Type': 'Float' }, { 'Name': 'rsid ', 'Type': 'String' }]
+    TRIPLESAT: [{ 'Name': 'thumbimg', 'Type': 'String' }, { 'Name': 'id', 'Type': 'String' }, { 'Name': 'satellite', 'Type': 'String' }, { 'Name': 'cloudcover', 'Type': 'Float' }, { 'Name': 'rollangle', 'Type': 'Float' }, { 'Name': 'centertime', 'Type': 'Date' }, { 'Name': 'browserimg ', 'Type': 'String' }, { 'Name': 'transformimg ', 'Type': 'String' }, { 'Name': 'bottomrightlatitude', 'Type': 'Float' }, { 'Name': 'bottomrightlongitude', 'Type': 'Float' }, { 'Name': 'bottomleftlatitude', 'Type': 'Float' }, { 'Name': 'bottomleftlongitude', 'Type': 'Float' }, { 'Name': 'topleftlatitude', 'Type': 'Float' }, { 'Name': 'topleftlongitude', 'Type': 'Float' }, { 'Name': 'toprightlatitude', 'Type': 'Float' }, { 'Name': 'toprightlongitude', 'Type': 'Float' }, { 'Name': 'rsid ', 'Type': 'String' }],
+    'Resurs-P': [{ 'Name': 'abstract', 'Type': 'String' }, { 'Name': 'access_open', 'Type': 'Boolean' }, { 'Name': 'access_order', 'Type': 'Boolean' }, { 'Name': 'circuit_number', 'Type': 'Integer' }, { 'Name': 'cloudiness', 'Type': 'Integer' }, { 'Name': 'date_begin', 'Type': 'Date' }, { 'Name': 'date_end', 'Type': 'Date' }, { 'Name': 'date_instant', 'Type': 'Date' }, { 'Name': 'file_identifier', 'Type': 'String' }, { 'Name': 'last_modified', 'Type': 'Date' }, { 'Name': 'metadata_full', 'Type': 'String' }, { 'Name': 'metadata_id', 'Type': 'Integer' }, { 'Name': 'metadata_xml', 'Type': 'String' }, { 'Name': 'order_url', 'Type': 'String' }, { 'Name': 'platform', 'Type': 'String' }, { 'Name': 'platform_id', 'Type': 'Integer' }, { 'Name': 'polygon', 'Type': 'String' }, { 'Name': 'resolution', 'Type': 'Float' }, { 'Name': 'row_count', 'Type': 'Integer' }, { 'Name': 'row_number', 'Type': 'Integer' }, { 'Name': 'scan_number', 'Type': 'Integer' }, { 'Name': 'url', 'Type': 'String' }, { 'Name': 'x1', 'Type': 'Float' }, { 'Name': 'x2', 'Type': 'Float' }, { 'Name': 'x3', 'Type': 'Float' }, { 'Name': 'x4', 'Type': 'Float' }, { 'Name': 'y1', 'Type': 'Float' }, { 'Name': 'y2', 'Type': 'Float' }, { 'Name': 'y3', 'Type': 'Float' }, { 'Name': 'y4', 'Type': 'Float' }]
 };
 
 exports.Formats = Formats;
@@ -29676,7 +29685,7 @@ function init_boxzoom() {
 }
 
 function init_zoom() {
-    var zoomControl = L.control.zoom({ position: 'bottomright' });
+    var zoomControl = L.control.gmxZoom({ position: 'bottomright' });
     map.gmxControlsManager.add(zoomControl);
     map.addControl(zoomControl);
 }
@@ -32742,4 +32751,4 @@ module.exports = L;
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=main.e6260504dff15a1208c7.bundle.js.map
+//# sourceMappingURL=main.cc13800200194b47afcd.bundle.js.map

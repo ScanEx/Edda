@@ -1325,7 +1325,7 @@ function init_boxzoom() {
 }
 
 function init_zoom (){
-    let zoomControl = L.control.zoom({position: 'bottomright'});
+    let zoomControl = L.control.gmxZoom ({position: 'bottomright'});
     map.gmxControlsManager.add(zoomControl);
     map.addControl(zoomControl);
 }
@@ -1342,7 +1342,7 @@ function init_upload (shapeLoader) {
         stateChange: control => {            
             shapeLoader.upload()
             .then(({type, results}) => {                
-                switch (type) {                    
+                switch (type) {
                     case 'shapefile':
                         let bounds = null;
                         const count = results.reduce((a,item) => {

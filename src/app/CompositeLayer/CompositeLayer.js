@@ -109,56 +109,62 @@ class CompositeLayer extends EventTarget {
         this._vectorLayer
         .on('click', e => {
             let { gmx: {id, layer, target} } = e;            
-            let show = null;         
-            let {properties} = this._vectors[id];
-            if (properties) {
-                switch (properties[this._visible_index]) {
-                    case 'visible':
-                    case 'loading':
-                        show = false;
-                        break;                
-                    case 'hidden':
-                    default:
-                        show = true;
-                        break;
-                }
-                this.setVisible(id, show);            
-                this.showQuicklook(id, show)
-                .then(() => {
+            let show = null;
+            if(this._vectors[id]) {
+                let {properties} = this._vectors[id];
+                if (properties) {
+                    switch (properties[this._visible_index]) {
+                        case 'visible':
+                        case 'loading':
+                            show = false;
+                            break;                
+                        case 'hidden':
+                        default:
+                            show = true;
+                            break;
+                    }
+                    this.setVisible(id, show);            
+                    this.showQuicklook(id, show)
+                    .then(() => {
+                        let event = document.createEvent('Event');
+                        event.initEvent('ready', false, false);
+                        event.detail = {id, show};
+                        this.dispatchEvent(event);
+                    });
                     let event = document.createEvent('Event');
-                    event.initEvent('ready', false, false);
+                    event.initEvent('click', false, false);
                     event.detail = {id, show};
                     this.dispatchEvent(event);
-                });
-                let event = document.createEvent('Event');
-                event.initEvent('click', false, false);
-                event.detail = {id, show};
-                this.dispatchEvent(event);
-            }            
+                }
+            }
         })
         .on('mouseover', e => {
             let { gmx: {id, layer, target} } = e;
-            let {properties} = this._vectors[id];
-            if(properties) {
-                properties[this._hover_index] = true;
-                this._vectorLayer.redrawItem(id);
-                let event = document.createEvent('Event');
-                event.initEvent('mouseover', false, false);
-                event.detail = id;
-                this.dispatchEvent(event);
-            }            
+            if (this._vectors[id]) {
+                let {properties} = this._vectors[id];
+                if(properties) {
+                    properties[this._hover_index] = true;
+                    this._vectorLayer.redrawItem(id);
+                    let event = document.createEvent('Event');
+                    event.initEvent('mouseover', false, false);
+                    event.detail = id;
+                    this.dispatchEvent(event);
+                }
+            }
         })
         .on('mouseout', e => {
             let { gmx: {id, layer, target} } = e;
-            let {properties} = this._vectors[id];
-            if (properties) {
-                properties[this._hover_index] = false;                
-                this._vectorLayer.redrawItem(id);
-                let event = document.createEvent('Event');
-                event.initEvent('mouseout', false, false);
-                event.detail = id;
-                this.dispatchEvent(event);
-            }                                             
+            if (this._vectors[id]) {
+                let {properties} = this._vectors[id];
+                if (properties) {
+                    properties[this._hover_index] = false;                
+                    this._vectorLayer.redrawItem(id);
+                    let event = document.createEvent('Event');
+                    event.initEvent('mouseout', false, false);
+                    event.detail = id;
+                    this.dispatchEvent(event);
+                }
+            }            
         });
     }
     showQuicklook (id, show) {
@@ -171,7 +177,7 @@ class CompositeLayer extends EventTarget {
                     let imageUrl = `${this._qlUrl}?sceneid=${sceneid}&platform=${platform}&width=${this._qlSize.width}&height=${this._qlSize.height}`;
                     const {lng} = this._map.getCenter();
                     let clipCoords = normalize_geometry(properties[this._clip_coords_index], lng);
-                    let [ x1,y1, x2,y2, x3,y3, x4,y4 ] = properties.slice(this._x1_index, this._x1_index + 8);                    
+                    let [ x1,y1, x2,y2, x3,y3, x4,y4 ] = properties.slice(this._x1_index, this._x1_index + 8);
                     const anchors = [
                         [make_close_to(lng, x1),y1],
                         [make_close_to(lng, x2),y2],

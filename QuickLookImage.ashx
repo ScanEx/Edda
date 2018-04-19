@@ -204,7 +204,7 @@ public class QuickLookImage : IHttpHandler
         if (q != null)
         {
             var url = q["url"].ToString();   
-            if (string.IsNullOrEmpty("platform")) {
+            if (string.IsNullOrEmpty(platform)) {
                 platform = q["platform"].ToString();
             }
             var acqdate = FromUnixDate(Convert.ToDouble(q["acqdate"]) * 1000);
