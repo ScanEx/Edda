@@ -41,7 +41,10 @@ public class GetMetadata : IHttpHandler
                 }
                 var tt = GetTableName(platform);
                 var platform_field = GetPlatformField(tt);
-                images.AddRange(GetImagesMetadata(tm.Item1, tm.Item2, platform_field, platform, GetKeyValues(kv.Value)));
+
+                foreach (var sceneid in kv.Value) {
+                    images.AddRange(GetImagesMetadata(tm.Item1, tm.Item2, platform_field, platform, sceneid));
+                }
             }
 
             foreach (var kv in dict)
@@ -122,6 +125,7 @@ public class GetMetadata : IHttpHandler
             case "QB02_L":
             case "WV02_L":
             case "WV03_L":
+            case "WV04_L":
                 return "DG_products_L";
             case "BKA":
                 return "BKA";
@@ -203,6 +207,7 @@ public class GetMetadata : IHttpHandler
             case "WV01_L":
             case "WV02_L":
             case "WV03_L":
+            case "WV04_L":
                 return "dg_a";
             case "BKA":
                 return "bka";
@@ -282,7 +287,7 @@ public class GetMetadata : IHttpHandler
             case "triplesat":
                 return "satellite";
             case "ik":
-                return "source";
+                return "source_abr";
             case "gf":
                 return "satellitei";
             default:
@@ -297,25 +302,32 @@ public class GetMetadata : IHttpHandler
         {
             string id_field = GetIDField(table);
             if (!string.IsNullOrEmpty(id_field))
-            {                                
+            {
                 return new Tuple<string, string>(table, id_field);
             }
         }
         return null;
     }
 
-    JObject GetCommonMetadata(string sceneid)
+    JObject GetCommonMetadata(string sceneid, string platform)
     {
         JObject res = null;
         using (var con = new NpgsqlConnection(ConfigurationManager.ConnectionStrings["Catalog"].ConnectionString))
         {
             //string stm = "SELECT sceneid id, platform sat_name, acqdate date, url, x1, y1, x2, y2, x3, y3, x4, y4 FROM dbo.cat_img WHERE sceneid = @sceneid";
-            string stm = "SELECT url, x1, y1, x2, y2, x3, y3, x4, y4, st_asgeojson(st_astext(wkb_geometry)) geomixergeojson FROM dbo.cat_img WHERE sceneid = @sceneid";
+
+            string stm = platform.Contains("_L") ?
+                    "SELECT url, x1, y1, x2, y2, x3, y3, x4, y4, st_asgeojson(st_astext(wkb_geometry)) geomixergeojson FROM dbo.cat_img WHERE sceneid = @sceneid" :
+                    "SELECT url, x1, y1, x2, y2, x3, y3, x4, y4, st_asgeojson(st_astext(wkb_geometry)) geomixergeojson FROM dbo.cat_img WHERE sceneid = @sceneid AND platform = @platform";
 
             con.Open();
             using (var cmd = new NpgsqlCommand(stm, con))
             {
                 cmd.Parameters.AddWithValue("@sceneid", sceneid);
+                if (!platform.Contains("_L"))
+                {
+                    cmd.Parameters.AddWithValue("@platform", platform);
+                }
 
                 var rd = cmd.ExecuteReader();
 
@@ -361,23 +373,18 @@ public class GetMetadata : IHttpHandler
         return res;
     }
 
-    IEnumerable<JObject> GetImagesMetadata(string table, string id_field, string platform_field, string platform, Dictionary<string, string> kvs)
+    IEnumerable<JObject> GetImagesMetadata(string table, string id_field, string platform_field, string platform, string sceneid)
     {
         var list = new List<JObject>();
         using (var con = new NpgsqlConnection(ConfigurationManager.ConnectionStrings["Catalog"].ConnectionString))
         {
             string stm = string.IsNullOrEmpty (platform_field) || platform.Contains("_L") ?
-                    string.Format("SELECT * FROM dbo.\"{0}\" WHERE \"{1}\" IN({2})", table, id_field, string.Join(",", kvs.Keys)) :
-                    string.Format("SELECT * FROM dbo.\"{0}\" WHERE \"{1}\" IN({2}) AND \"{3}\" = '{4}'", table, id_field, string.Join(",", kvs.Keys), platform_field, platform);
+                    string.Format("SELECT * FROM dbo.\"{0}\" WHERE \"{1}\" =  '{2}'", table, id_field, sceneid) :
+                    string.Format("SELECT * FROM dbo.\"{0}\" WHERE \"{1}\" = '{2}' AND \"{3}\" = '{4}'", table, id_field, sceneid, platform_field, platform);
 
             con.Open();
             using (var cmd = new NpgsqlCommand(stm, con))
             {
-                foreach (var kv in kvs)
-                {
-                    cmd.Parameters.AddWithValue(kv.Key, kv.Value);
-                }
-
                 var rd = cmd.ExecuteReader();
 
                 while (rd.Read())
@@ -452,7 +459,7 @@ public class GetMetadata : IHttpHandler
                                             }
                                             if (f == id_field)
                                             {
-                                                var cm = GetCommonMetadata(v);
+                                                var cm = GetCommonMetadata(v, platform);
                                                 a.Merge(cm);
                                             }
                                             break;
@@ -466,7 +473,7 @@ public class GetMetadata : IHttpHandler
                                     }
                                     if (f == id_field)
                                     {
-                                        var cm = GetCommonMetadata(z.ToString());
+                                        var cm = GetCommonMetadata(z.ToString(), platform);
                                         a.Merge(cm);
                                     }
                                     break;

@@ -1,14 +1,15 @@
-import { EventTarget } from 'lib/EventTarget/src/EventTarget.js';
-import { Quicklook } from 'app/Quicklook/Quicklook.js';
-import { ENUM_ID } from 'lib/DataGrid/src/DataGrid.js';
+import EventTarget from 'scanex-event-target';
+import Translations from 'scanex-translations';
+import Quicklook from 'app/Quicklook/Quicklook.js';
 import { CompositeLayer, attributes as layerAttributes, attrTypes as layerAttrTypes } from 'app/CompositeLayer/CompositeLayer.js';
-import { Translations } from 'lib/Translations/src/Translations.js';
-import { is_geojson_feature, from_gmx, normalize_geometry, split180, normalize_geometry_type, get_bbox, chain } from 'app/Utils/Utils.js';
-import { copy } from 'lib/Object.Extensions/src/Extensions.js';
+import { chain } from 'scanex-async';
+import { is_geojson_feature, from_gmx, normalize_geometry, split180, normalize_geometry_type, get_bbox } from 'app/Utils/Utils.js';
+
+require('object-assign');
+
 import './ResultsController.css';
 
-window.Catalog.translations = window.Catalog.translations || new Translations();
-let T = window.Catalog.translations
+let T = Translations;
 
 const Colors = {
     Default: 0x23a5cc,
@@ -17,7 +18,7 @@ const Colors = {
     CartHilite: 0xef4e70,
 };
 
-function properties_to_item (properties) {
+const properties_to_item = properties => {
     return properties.slice(1, properties.length - 1).reduce((a,v,i) => {
         let f = layerAttributes[i];
         switch (layerAttrTypes[i]){
@@ -39,7 +40,7 @@ function properties_to_item (properties) {
         }           
         return a;
     },{});
-}
+};
 
 const sceneid_index = layerAttributes.indexOf('sceneid') + 1;
 const result_index = layerAttributes.indexOf('result') + 1;
@@ -172,11 +173,19 @@ class ResultsController extends EventTarget {
         });
 
         this._resultList.addEventListener('click', e => {
-            let {item: {gmx_id}} = e.detail;
-            const {properties} = this._compositeLayer.vectors[gmx_id];            
+            let {item: {gmx_id}} = e.detail;            
+
+            const {properties} = this._compositeLayer.vectors[gmx_id]; 
             const bounds  = this._compositeLayer.getBounds([properties]);
             this._map.fitBounds(bounds, { animate: false });
-            this._show_ql(gmx_id, true);
+                        
+            this._show_ql(gmx_id, true)
+            .then(() => {                
+                let event = document.createEvent('Event');
+                event.initEvent('visible', false, false);
+                this.dispatchEvent(event);
+            });
+            
         });        
 
         this._resultList.addEventListener('cart:all', e => {
@@ -204,7 +213,6 @@ class ResultsController extends EventTarget {
             event.detail = e.detail;
             this.dispatchEvent(event);
         });
-
 
         this._favoritesList.addEventListener('visible', e => {
             let {gmx_id, visible} = e.detail;

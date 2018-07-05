@@ -114,6 +114,12 @@
     color: darkgray;
     padding-bottom: 10px;
 }
+.cart .cart-order-form .cart-order-warning .link {
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+}
+
 .cart .cart-order-form label {
     font-family: 'Roboto', sans-serif;
     font-size: 14px;

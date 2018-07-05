@@ -1,11 +1,13 @@
 import './Cart.css';
-import { Panel } from 'lib/Leaflet.Panel/src/Panel.js';
-import { getSatelliteName } from 'res/Satellites.js';
-import { Translations } from 'lib/Translations/src/Translations.js';
-import { create_container } from 'app/Utils/Utils.js';
 
-window.Catalog.translations = window.Catalog.translations || new Translations();
-let T = window.Catalog.translations
+import 'scanex-float-panel/dist/bundle.css';
+import FloatingPanel from 'scanex-float-panel';
+
+import { getSatelliteName } from 'res/Satellites.js';
+import Translations from 'scanex-translations';
+import { create_container, read_permalink } from 'app/Utils/Utils.js';
+
+let T = Translations;
 
 T.addText ('rus', {
     cart: {
@@ -13,7 +15,7 @@ T.addText ('rus', {
         clear: 'Очистить корзину',
         back: 'Назад',
         order: 'Перейти к оформлению заказа',        
-        warning: 'Для редактирования контактной информации воспользуйтесь <a href="#">ссылкой</a>.\r\nПосле этого необходимо снова зайти в систему.',
+        warning: 'Для редактирования контактной информации воспользуйтесь <label class="link">ссылкой</label>.\r\nПосле этого необходимо снова зайти в систему.',
         customer: 'Организация (заказчик)',
         project: {
             name: 'Название проекта',
@@ -75,14 +77,14 @@ T.addText ('eng', {
     }
 });
 
-class Cart extends Panel {
+class Cart extends FloatingPanel {
     constructor (container, {catalogResourceServer, left, top, cols = 2, imageWidth = 250, imageHeight = 250, internal = true }) {
         super(container, {id: 'panel.cart', title: T.getText('cart.header'), left, top, modal: true});
         this._catalogResourceServer = catalogResourceServer;
         this._body.classList.add('cart');
         this._cols = cols;
         this._internal = internal;
-        this._link = 'http://my.kosmosnimki.ru/Home/Settings';              
+        this._link = '//my.kosmosnimki.ru/Home/Settings';
         this._submit = this._submit.bind(this);
         this._imageWidth = imageWidth;
         this._imageHeight = imageHeight;
@@ -91,13 +93,8 @@ class Cart extends Panel {
         this.hide();
 
         let dlgCartContainer = create_container();
-        dlgCartContainer.classList.add('cart-dialog');
-        this._dlgCart = new Panel(dlgCartContainer, {
-            id: 'cart.dialog', 
-            left: window.DIALOG_PLACE.left, 
-            top: window.DIALOG_PLACE.top,
-            modal: true
-        });
+        dlgCartContainer.classList.add('cart-dialog');        
+        this._dlgCart = new FloatingPanel(dlgCartContainer, { id: 'cart.dialog', left, top, modal: true });
         this._dlgCart.hide();
         this._dlgCart.content.innerHTML = 
         `<div>${T.getText('cart.success.header')}</div>
@@ -130,7 +127,7 @@ class Cart extends Panel {
     }     
     _view() {
         this._updateItemsNumber();
-        const warning = T.getText('cart.warning').replace('#', this._link).replace(/\r\n/, '<br />');
+        const warning = T.getText('cart.warning').replace(/\r\n/, '<br />');
         const userInfo = window.Catalog.userInfo;        
         this._content.innerHTML = `<div class="cart-order">
             <div class="cart-order-form">
@@ -226,7 +223,25 @@ class Cart extends Panel {
             <div class="cart-order-footer">                
                 <button class="cart-order-submit">${T.getText('cart.submit')}</button>
             </div>
-        </div>`;            
+        </div>`;     
+        
+        this._content.querySelector('.cart-order-warning .link').addEventListener('click', e => {
+            let matches = /link=([^&]+)/g.exec(this.permalink);
+            if (Array.isArray (matches) && matches.length > 0) {
+                let [link,id,] = matches;
+                read_permalink(id)
+                .then (response => {                    
+                    localStorage.setItem('view_state', JSON.stringify(response));    
+                    window.location = this._link;
+                })
+                .catch(e => {
+                    console.log(e);
+                });
+            }
+            else {
+                console.log('Permalink not set:', this._permalink);
+            }
+        });
 
         this._submitButton = this._content.querySelector('.cart-order-submit');        
         this._submitButton.addEventListener('click', this._submit);
@@ -381,4 +396,4 @@ class Cart extends Panel {
     }
 }
 
-export { Cart };
+export default Cart;

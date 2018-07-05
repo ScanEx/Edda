@@ -1,9 +1,10 @@
-import { EventTarget } from 'lib/EventTarget/src/EventTarget.js';
-import { RangeWidget } from 'lib/SliderWidget/src/RangeWidget/RangeWidget.js';
+import EventTarget from 'scanex-event-target';
+import { RangeWidget } from 'scanex-slider-widget';
+import Translations from 'scanex-translations';
 import { getSatelliteName } from 'res/Satellites.js';
 import './FilterControl.css';
 
-let T = window.Catalog.translations;
+let T = Translations;
 
 class CompactRangeWidget extends RangeWidget {
     constructor(container, options) {
@@ -75,4 +76,4 @@ let FilterControl = L.Control.extend({
     onRemove: function(map) { },
 });
 
-export { FilterControl };
+export default FilterControl;

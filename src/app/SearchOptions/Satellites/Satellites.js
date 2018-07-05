@@ -1,12 +1,11 @@
 import './Satellites.css';
-import { EventTarget } from 'lib/EventTarget/src/EventTarget.js';
-import { Translations } from 'lib/Translations/src/Translations.js';
-import { Tristate } from 'lib/TristateCheckbox/src/Tristate.js';
-import { Info } from './Info.js';
+import EventTarget from 'scanex-event-target';
+import Translations from 'scanex-translations';
+import Tristate from 'scanex-tristate';
+import Info from './Info.js';
 import { create_container } from 'app/Utils/Utils.js';
 
-window.Catalog.translations = window.Catalog.translations || new Translations();
-let T = window.Catalog.translations
+let T = Translations;
 
 T.addText('rus', {
     satellite: {
@@ -195,4 +194,4 @@ class Satellites extends EventTarget {
     // }
 }
 
-export { Satellites };
+export default Satellites;

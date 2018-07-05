@@ -1,8 +1,7 @@
 import './Info.css';
-import { Translations } from 'lib/Translations/src/Translations.js';
+import Translations from 'scanex-translations';
 
-window.Catalog.translations = window.Catalog.translations || new Translations();
-let T = window.Catalog.translations
+let T = Translations;
 
 class Info {
     constructor (container) {
@@ -55,4 +54,4 @@ class Info {
     }
 }
 
-export { Info };
+export default Info;

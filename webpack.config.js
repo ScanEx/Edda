@@ -1,7 +1,5 @@
-﻿var ExtractTextPlugin = require ("extract-text-webpack-plugin");
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-
-const path = require('path');
+﻿const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {    
     entry: "./src/main.js",
@@ -11,14 +9,15 @@ module.exports = {
     },
 
     // Enable sourcemaps for debugging webpack"s output.
-    devtool: "source-map",
+    devtool: "inline-source-map",
+
+    mode: 'development',
 
     resolve: {
         extensions: [".webpack.js", ".web.js", ".js", ".jsx"],
         alias: {
             app: path.resolve(__dirname, "src/app/"),
-            assets: path.resolve(__dirname, "src/assets/"),
-            lib: path.resolve(__dirname, "src/lib/"),
+            assets: path.resolve(__dirname, "src/assets/"),            
             res: path.resolve(__dirname, "src/res/"),
         },
     },
@@ -26,69 +25,42 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /.jsx?$/,
-                loader: "babel-loader",
-                exclude: /node_modules/,
-                query: {
-                    presets: ["es2015"]
+              test: /\.css$/,
+              use: [
+                { loader: 'style-loader' },
+                { loader: 'css-loader'},
+              ]
+            },
+            {
+              test: /\.js$/,
+              exclude: /(node_modules|bower_components)/,
+              use: {
+                loader: 'babel-loader',
+                options: {
+                  presets: ['env','flow'],
                 }
+              }
             },
             {
-                test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: "css-loader",                    
-                }),
-            },                
-            {
-                test: /\.(jpe?g|png|gif|svg)$/i,
-                use: [                    
-                    {
-                        loader: "file-loader",
-                        options: {
-                            hash: "sha512",
-                            digest: "hex",
-                            name: "[hash].[ext]",                            
-                        },                        
-                    },
-                    {
-                        loader: "image-webpack-loader",
-                        options: {
-                            bypassOnDebug: true,                            
-                        }
-                    }
-                ],
-                // loaders: [
-                //     "file?hash=sha512&digest=hex&name=[hash].[ext]",
-                //     "image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false"
-                // ]
-            },
-            {
-                test: /\.(eot|svg|ttf|woff|woff2)$/,
-                use: [
-                    {
-                        loader: "file-loader",
-                        options: {
-                            hash: "sha512",
-                            digest: "hex",
-                            name: "[hash].[ext]",                            
-                        },
-                    }
-                ]
-                
+              test: /\.(png|jpg|gif|woff)$/,
+              use: [
+                {
+                  loader: 'file-loader',
+                  options: {
+                    publicPath: 'dist'
+                  }  
+                }
+              ]
             }
-        ],               
+        ]
     },
-
     externals: {
-        "leaflet": "L",
-        //   "leaflet-geomixer": "L.gmx",
-        //   "leaflet-tilelayer-mercator": "L.TileLayer.Mercator",
-        //   "./initBaseLayerManager" : "L.gmxBaseLayersManager"
+        'leaflet': 'L'
     },
-
-    plugins: [   
-        new ExtractTextPlugin("[contenthash].bundle.css"),
-        new CopyWebpackPlugin([{ from: './src/assets/leaflet/' }, {from: './src/version/'}])
-    ]
+    plugins: [
+      new CopyWebpackPlugin([
+          { from: 'src/version/*', flatten: true },
+          { from: 'upgrade/dist/*', flatten: true },
+      ])
+   ]
 };

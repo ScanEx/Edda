@@ -46,9 +46,9 @@ public class QuickLookImage : IHttpHandler
     static void ScaleImage(Stream src, Stream dst, int width, int height)
     {
         var image = Image.FromStream(src);
-        if (width <= image.Width && height <= image.Height) {
-            image.Save(dst, ImageFormat.Jpeg);            
-        }
+        if (image.Width <= width && image.Height <= height) {
+            image.Save(dst, ImageFormat.Jpeg);
+        }        
         else {
             var ratioX = (double)width / image.Width;
             var ratioY = (double)height / image.Height;
@@ -59,11 +59,12 @@ public class QuickLookImage : IHttpHandler
 
             var newImage = new Bitmap(newWidth, newHeight);
 
-            using (var graphics = Graphics.FromImage(newImage))
+            using (var graphics = Graphics.FromImage(newImage)) {
                 graphics.DrawImage(image, 0, 0, newWidth, newHeight);
+            }
 
             newImage.Save(dst, ImageFormat.Jpeg);
-        }
+        }        
     }
 
     byte[] GetImage(string sceneid, string platform, DateTime date, string url)
@@ -92,7 +93,7 @@ public class QuickLookImage : IHttpHandler
                 // }
                 // catch {
                     imageContent = WebHelper.ReadContent(url, 30);
-                // }               
+                // }
                                 
                 var imageRoot = new DirectoryInfo(DownloadedImagesCatalog);
                 imageRoot.CreateDirIfNotExists();
@@ -211,8 +212,7 @@ public class QuickLookImage : IHttpHandler
             try {
                 Trace.TraceInformation("Getting image url={0}", url);
                 var img = GetImage(sceneid, platform, acqdate, url);
-                if (img != null)
-                {
+                if (img != null) {
                     int width = 0;
                     int height = 0;
                     if (Int32.TryParse(context.Request.GetValue("width"), out width) && Int32.TryParse (context.Request.GetValue("height"), out height))
@@ -225,7 +225,7 @@ public class QuickLookImage : IHttpHandler
                         context.Response.WriteImage(dst.ToArray());
                     }
                     else {
-                        context.Response.WriteImage(img);                   
+                        context.Response.WriteImage(img);
                     }
                     
                 }

@@ -4,53 +4,65 @@ import 'assets/sidebar/sidebar.css';
 
 import './fonts/fonts.css';
 
-import { Translations } from 'lib/Translations/src/Translations.js';
-import { SearchOptions } from 'app/SearchOptions/SearchOptions.js';
-import { ImageDetails } from 'app/ImageDetails/ImageDetails.js';
+import Translations from 'scanex-translations';
+import SearchOptions from 'app/SearchOptions/SearchOptions.js';
+import ImageDetails from 'app/ImageDetails/ImageDetails.js';
 import { DrawnObjects, DrawnObjectsControl } from 'app/DrawnObjects/DrawnObjects.js';
-import { Cart } from 'app/Cart/Cart.js';
-import { ResultList } from 'app/ResultList/ResultList.js';
-import { FavoritesList } from 'app/FavoritesList/FavoritesList.js';
+import Cart from 'app/Cart/Cart.js';
+import ResultList from 'app/ResultList/ResultList.js';
+import FavoritesList from 'app/FavoritesList/FavoritesList.js';
 import { satellites, getSatelliteName } from 'res/Satellites.js';
-import { AuthWidget } from 'lib/Authentication/src/AuthWidget/AuthWidget.js';
-import { AuthManager } from 'lib/Authentication/src/AuthManager/AuthManager.js';
-import { ResourceServer } from 'lib/Authentication/src/AuthManager/ResourceServer';
-import { getAuthManager, getResourceServer } from 'lib/Authentication/src/AuthManager/api.js';
-import { Panel } from 'lib/Leaflet.Panel/src/Panel.js';
-import { RequestAdapter } from 'app/RequestAdapter/RequestAdapter.js';
+
+import 'scanex-auth/dist/bundle.css';
+import { AuthWidget, AuthManager, ResourceServer, getAuthManager, getResourceServer } from 'scanex-auth';
+
+import 'scanex-float-panel/dist/bundle.css';
+import FloatingPanel from 'scanex-float-panel';
+
+import RequestAdapter from 'app/RequestAdapter/RequestAdapter.js';
 import { ResultsController, layerAttributes, layerAttrTypes } from 'app/ResultsController/ResultsController.js';
 import { createTab } from 'app/TabFactory/TabFactory.js';
-import { chain, create_container, hex, unhex, from_gmx, normalize_geometry } from 'app/Utils/Utils.js';
-import { NotificationWidget } from 'lib/NotificationWidget/src/NotificationWidget.js';
-import { LoaderWidget } from 'lib/LoaderWidget/src/LoaderWidget.js';
-import { ShapeLoader } from 'app/ShapeLoader/ShapeLoader.js';
-import { copy } from 'lib/Object.Extensions/src/Extensions.js';
-import { GmxLayerDataProvider } from 'app/GmxLayerDataProvider/GmxLayerDataProvider.js';
-import { LanguageWidget } from 'lib/LanguageWidget/src/LanguageWidget.js';
-import { About } from 'app/About/About.js';
+import { create_container, hex, unhex, from_gmx, normalize_geometry, get_window_center, read_permalink, is_mobile } from 'app/Utils/Utils.js';
+import { chain } from 'scanex-async';
+
+import 'scanex-notify-widget/dist/bundle.css';
+import NotificationWidget from 'scanex-notify-widget';
+
+import 'scanex-loader-widget/dist/bundle.css';
+import LoaderWidget from 'scanex-loader-widget';
+
+import ShapeLoader from 'app/ShapeLoader/ShapeLoader.js';
+import GmxLayerDataProvider from 'app/GmxLayerDataProvider/GmxLayerDataProvider.js';
+
+import 'scanex-lang-widget/dist/bundle.css';
+import LanguageWidget from 'scanex-lang-widget';
+
+import About from 'app/About/About.js';
+
+import 'scanex-search-input/dist/bundle.css';
+import { SearchWidget, OsmDataProvider, CoordinatesDataProvider } from 'scanex-search-input';
 
 // import { Progress } from 'app/Progress/Progress.js';
 // import { FilterControl } from 'app/FilterControl/FilterControl.js';
 
-import IconSidebarControl from  'lib/IconSidebarControl/src/iconSidebarControl.js';
+import 'scanex-sidebar/dist/bundle.css';
+import { IconSidebarControl } from  'scanex-sidebar';
 
-require ('lib/Leaflet-IconLayers/dist/iconLayers.css');
-let IconLayers = require ('lib/Leaflet-IconLayers/dist/iconLayers.js');
+// require ('leaflet-iconlayers/iconLayers.css');
 
-// import './animate.css';
+import 'leaflet-iconlayers/dist/iconLayers.css';
+import IconLayers from 'leaflet-iconlayers';
+
 import './main.css';
 
-// window.L.Icon.Default.imagePath = './dist/';
-
-window.DIALOG_PLACE = {left: 600, top: 150};
 window.RESULT_MAX_COUNT = 1000;
 window.MAX_CART_SIZE = 200;
 window.MAX_UPLOAD_POINTS = 100000;
-window.Catalog.VERSION = '2.2.2';
-window.Catalog.VERSION_DATE = new Date(2018, 1, 15);
+window.Catalog = window.Catalog || {};
+window.Catalog.VERSION = '2.2.5';
+window.Catalog.VERSION_DATE = new Date(2018, 6, 27);
 
-window.Catalog.translations = window.Catalog.translations || new Translations();
-let T = window.Catalog.translations;
+let T = Translations;
 
 const DEFAULT_LANGUAGE = 'rus';
 const NON_EDIT_LINE_STYLE = {
@@ -58,6 +70,8 @@ const NON_EDIT_LINE_STYLE = {
     weight: 2,
     opacity: 1,
 };
+
+window.IS_MOBILE = is_mobile();
 
 let ignoreResults = false;
 
@@ -258,6 +272,12 @@ let map = L.map(mapContainer, {
 
 map.options.svgSprite = false;
 
+function get_map_center () {    
+    const headerBounds = document.getElementById('header').getBoundingClientRect();
+    const {top, left} = get_window_center ();
+    return {top: top + headerBounds.top + headerBounds.height, left};
+}
+
 resize_containers();
 
 function resize_containers(){    
@@ -342,12 +362,8 @@ function authenticate(state){
         });
         let dlgAuthContainer = create_container();
         dlgAuthContainer.classList.add('auth-dialog');
-        window.Catalog.dlgAuth = new Panel(dlgAuthContainer, {
-            id: 'auth.dialog',
-            left: window.DIALOG_PLACE.left,
-            top: window.DIALOG_PLACE.top, 
-            modal: true
-        });
+        const {left, top} = get_map_center();
+        window.Catalog.dlgAuth = new FloatingPanel(dlgAuthContainer, { id: 'auth.dialog', left, top, modal: true });
         window.Catalog.dlgAuth.hide();
         window.Catalog.dlgAuth.content.innerHTML = `${T.getText('alerts.authenticate')}`;
         window.Catalog.dlgAuth.footer.innerHTML = `<button class="dialog-login-button">${T.getText('alerts.login')}</button>`;
@@ -481,7 +497,7 @@ function resize_favorites (container) {
 function init_sidebar (state) {
     return new Promise(resolve => {
         const restricted = (window.Catalog.userInfo.IsAuthenticated && window.Catalog.userInfo.Role === 'scanex');
-        
+        const {left, top} = get_map_center();
         // set default search criteria
         const now = new Date();
         let select_satellites = (group, flag) => {
@@ -526,7 +542,7 @@ function init_sidebar (state) {
         
         let cadastreLayerGroup = null;
 
-        let crds = new nsGmx.CoordinatesDataProvider({showOnMap: false});
+        let crds = new CoordinatesDataProvider({showOnMap: false});
         crds.addEventListener ('fetch', e => {
             let result = e.detail;            
             let geoJSON = result.feature;
@@ -559,9 +575,9 @@ function init_sidebar (state) {
             }
         });
 
-        let osm = new nsGmx.OsmDataProvider({
+        let osm = new OsmDataProvider({
             showOnMap: false,
-            serverBase: 'http://maps.kosmosnimki.ru',
+            serverBase: '//maps.kosmosnimki.ru',
             suggestionLimit: 10
         });
 
@@ -597,37 +613,37 @@ function init_sidebar (state) {
             }
         });
 
-        let cadastre = new nsGmx.CadastreDataProvider({
-            serverBase: 'http://pkk5.kosmosnimki.ru/api',
-            suggestionLimit: 10,
-            tolerance: 2048,
-            showOnMap: true,
-        });
-        cadastre.addEventListener ('fetch', e => {
-            let response = e.detail;
-            if (response && response.features) {
-                var feature = response.features[0];
-                if (cadastreLayerGroup) {
-                    if (!map.hasLayer(cadastreLayerGroup)) {
-                        cadastreLayerGroup.addTo(map);
-                    }
-                    cadastreModule.searchHook(feature.attrs.cn);
-                } else {
-                    var R = 6378137,
-                        crs = L.Projection.SphericalMercator,
-                        bounds = map.getPixelBounds(),
-                        ne = map.options.crs.project(map.unproject(bounds.getTopRight())),
-                        sw = map.options.crs.project(map.unproject(bounds.getBottomLeft())),
-                        latLngBounds = L.latLngBounds(
-                            crs.unproject(L.point(feature.extent.xmin, feature.extent.ymin).divideBy(R)),
-                            crs.unproject(L.point(feature.extent.xmax, feature.extent.ymax).divideBy(R))
-                        );
-                    map.fitBounds(latLngBounds, { reset: true });
-                }
-            }
-        });
+        // let cadastre = new CadastreDataProvider({
+        //     serverBase: '//pkk5.kosmosnimki.ru/api',
+        //     suggestionLimit: 10,
+        //     tolerance: 2048,
+        //     showOnMap: true,
+        // });
+        // cadastre.addEventListener ('fetch', e => {
+        //     let response = e.detail;
+        //     if (response && response.features) {
+        //         var feature = response.features[0];
+        //         if (cadastreLayerGroup) {
+        //             if (!map.hasLayer(cadastreLayerGroup)) {
+        //                 cadastreLayerGroup.addTo(map);
+        //             }
+        //             cadastreModule.searchHook(feature.attrs.cn);
+        //         } else {
+        //             var R = 6378137,
+        //                 crs = L.Projection.SphericalMercator,
+        //                 bounds = map.getPixelBounds(),
+        //                 ne = map.options.crs.project(map.unproject(bounds.getTopRight())),
+        //                 sw = map.options.crs.project(map.unproject(bounds.getBottomLeft())),
+        //                 latLngBounds = L.latLngBounds(
+        //                     crs.unproject(L.point(feature.extent.xmin, feature.extent.ymin).divideBy(R)),
+        //                     crs.unproject(L.point(feature.extent.xmax, feature.extent.ymax).divideBy(R))
+        //                 );
+        //             map.fitBounds(latLngBounds, { reset: true });
+        //         }
+        //     }
+        // });
 
-        let searchControl = new nsGmx.SearchWidget(
+        let searchControl = new SearchWidget(
             searchContainer.querySelector('.search-pane'),
             {            
                 placeHolder: T.getText('controls.search'),
@@ -669,13 +685,8 @@ function init_sidebar (state) {
         
         let dlgDownloadResultContainer = create_container();
         dlgDownloadResultContainer.classList.add('download-result-dialog');
-        window.Catalog.dlgDownloadResult = new Panel(dlgDownloadResultContainer, {
-            id: 'download.result.dialog',
-            left: window.DIALOG_PLACE.left,
-            top: window.DIALOG_PLACE.top, 
-            modal: true,
-            header: false,
-        });
+        
+        window.Catalog.dlgDownloadResult = new FloatingPanel(dlgDownloadResultContainer, { id: 'download.result.dialog', left, top, modal: true, header: false });
         window.Catalog.dlgDownloadResult.hide();        
         window.Catalog.dlgDownloadResult.content.innerHTML = `${T.getText('results.download')}`;
         window.Catalog.dlgDownloadResult.footer.innerHTML = 
@@ -701,13 +712,9 @@ function init_sidebar (state) {
         });
 
         let dlgErrorMessageContainer = create_container();
-        dlgErrorMessageContainer.classList.add('error-message-dialog');        
-        window.Catalog.dlgErrorMessage = new Panel (dlgErrorMessageContainer, {
-            id: 'error.message.dialog',
-            left: window.DIALOG_PLACE.left,
-            top: window.DIALOG_PLACE.top, 
-            modal: true,
-            header: false,
+        dlgErrorMessageContainer.classList.add('error-message-dialog');                
+        window.Catalog.dlgErrorMessage = new FloatingPanel (dlgErrorMessageContainer, {
+            id: 'error.message.dialog', left, top, modal: true, header: false,
         });
         window.Catalog.dlgErrorMessage.footer.innerHTML = `<button class="dialog-close-button">${T.getText('alerts.close')}</button>`;
         window.Catalog.dlgErrorMessage.footer.querySelector('button.dialog-close-button')
@@ -725,12 +732,8 @@ function init_sidebar (state) {
 
         let dlgChangeResultContainer = create_container();
         dlgChangeResultContainer.classList.add('download-change-dialog');
-        window.Catalog.dlgChangeResult = new Panel(dlgChangeResultContainer, {
-            id: 'download.change.dialog',
-            left: window.DIALOG_PLACE.left,
-            top: window.DIALOG_PLACE.top, 
-            modal: true,
-            header: false,
+        window.Catalog.dlgChangeResult = new FloatingPanel(dlgChangeResultContainer, {
+            id: 'download.change.dialog', left, top, modal: true, header: false,
         });
         window.Catalog.dlgChangeResult.hide();
         window.Catalog.dlgChangeResult.content.innerHTML = `${T.getText('results.change')}`;
@@ -819,12 +822,10 @@ function init_sidebar (state) {
         let dlgCartLimitContainer = create_container();
         dlgCartLimitContainer.classList.add('cart-limit-dialog');
         
-        window.Catalog.dlgCartLimit = new Panel(dlgCartLimitContainer, {
+        window.Catalog.dlgCartLimit = new FloatingPanel(dlgCartLimitContainer, {
             id: 'cart.limit.dialog',
             left: Math.round (mapContainer.getBoundingClientRect().width / 2),
-            top: window.DIALOG_PLACE.top,
-            modal: true,
-            header: false,
+            top, modal: true, header: false,
         });
         window.Catalog.dlgCartLimit.hide();
         window.Catalog.dlgCartLimit.content.innerHTML = `${T.getText('favorites.limit')}`;
@@ -1218,7 +1219,8 @@ function init_drawing () {
         svgSprite: false,
     });
 
-    let drawControls  = ['point','polyline','polygon','rectangle'].map(id => {
+
+    let drawControls  = (window.IS_MOBILE ? ['point'] : ['point','polyline','polygon','rectangle']).map(id => {
         let control = new L.Control.gmxIcon({
             id, 
             position: 'drawControls', 
@@ -1251,7 +1253,7 @@ function init_print () {
         position: 'searchControls',
         title: T.getText('controls.print'),            
         stateChange: () => {
-            window.open('http://search.kosmosnimki.ru/print-iframe_leaflet.html', '_blank');
+            window.open('//search.kosmosnimki.ru/print-iframe_leaflet.html', '_blank');
         }
     });
     map.gmxControlsManager.add(printControl);
@@ -1264,12 +1266,13 @@ function init_permalink () {
     dlgPermalink.classList.add('dialog-permalink');    
     dlgPermalink.innerHTML = `<input type="text" value=""/><button class="copy-button">${T.getText('alerts.clipboard')}</button>`;
     dlgPermalink.querySelector('.copy-button').addEventListener('click', e => {        
-        dlgPermalink.querySelector('input[type="text"]').select();
-        if (document.execCommand('copy')) {            
-            dlgPermalink.style.display = 'none';
-            window.Catalog.notificationWidget.content.innerText = T.getText('alerts.permalink');
-            window.Catalog.notificationWidget.show();
-        }
+        let input = dlgPermalink.querySelector('input[type="text"]');
+        input.focus();
+        input.select();
+        document.execCommand('copy');
+        dlgPermalink.style.display = 'none';
+        window.Catalog.notificationWidget.content.innerText = T.getText('alerts.permalink');
+        window.Catalog.notificationWidget.show();
     });
     let permalinkControl = new L.Control.gmxIcon({
         id: 'link',
@@ -1526,16 +1529,18 @@ function init_controls(state) {
         init_drawing ();
         // init_print();
         init_permalink();
-        init_boxzoom();
         init_zoom();
-        window.Catalog.shapeLoader = new ShapeLoader({
-            gmxResourceServer: window.Catalog.gmxResourceServer,
-            resultsController: window.Catalog.resultsController,
-            catalogResourceServer: window.Catalog.catalogResourceServer,
-            drawnObjects: window.Catalog.drawnObjectsControl.widget,
-        });
-        init_upload(window.Catalog.shapeLoader);
-        init_download(window.Catalog.shapeLoader);
+        if (!window.IS_MOBILE) {
+            init_boxzoom();            
+            window.Catalog.shapeLoader = new ShapeLoader({
+                gmxResourceServer: window.Catalog.gmxResourceServer,
+                resultsController: window.Catalog.resultsController,
+                catalogResourceServer: window.Catalog.catalogResourceServer,
+                drawnObjects: window.Catalog.drawnObjectsControl.widget,
+            });
+            init_upload(window.Catalog.shapeLoader);
+            init_download(window.Catalog.shapeLoader);
+        }        
         init_base_layers();    
         window.Catalog.notificationWidget = new NotificationWidget (map._controlCorners.right, {timeout: 2000});
         window.Catalog.loaderWidget = new LoaderWidget ();
@@ -1547,30 +1552,14 @@ function init_controls(state) {
     });
 }
 
-function read_permalink (id) {
-    return new Promise((resolve, reject) => {        
-        window.Catalog.gmxResourceServer.sendGetRequest('TinyReference/Get.ashx', { id: id })
-        .then(response => {
-            if (response.Status == 'ok') {
-                try {                    
-                    resolve(JSON.parse(response.Result));
-                }
-                catch (e) {
-                    reject(e);
-                }				        
-            }
-            else {
-                reject(response.Result);
-            }
-        })
-        .catch(e => reject(e));
-    });
-}
-
 function init_cart (state) {
     return new Promise(resolve => {
         const restricted = (window.Catalog.userInfo.Role === 'scanex');
-        window.Catalog.cartPanel = new Cart(create_container(), {catalogResourceServer: window.Catalog.catalogResourceServer, left: 400, top: 200, modal: true, internal: restricted});        
+        const {left, top} = get_map_center();
+        window.Catalog.cartPanel = new Cart(create_container(), {
+            catalogResourceServer: window.Catalog.catalogResourceServer, 
+            left, top, modal: true, internal: restricted
+        }); 
         
         update_cart_number(0);    
 

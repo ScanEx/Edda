@@ -1,7 +1,7 @@
+import Translations from 'scanex-translations';
 import './Progress.css';
 
-window.Catalog.translations = window.Catalog.translations || new Translations();
-let T = window.Catalog.translations;
+let T = Translations;
 T.addText ('rus', {
     progress: 'Загрузка...'
 });
@@ -22,3 +22,5 @@ class Progress {
         this._container.querySelector('i').classList.remove('progress-on');
     }
 }
+
+export default Progress;

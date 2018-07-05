@@ -28,6 +28,31 @@ let PLEIADES = [
     {'Name':'y4','Type':'Float'},
  ];
 
+ let PLEIADES_L = [
+    {'Name': 'scene_id', 'Type': 'String'},
+    {'Name': 'url', 'Type': 'String'},
+    {'Name': 'x1', 'Type': 'Float'},
+    {'Name': 'y1', 'Type': 'Float'},
+    {'Name': 'x2', 'Type': 'Float'},
+    {'Name': 'y2', 'Type': 'Float'},
+    {'Name': 'x3', 'Type': 'Float'},
+    {'Name': 'y3', 'Type': 'Float'},
+    {'Name': 'x4', 'Type': 'Float'},
+    {'Name': 'y4', 'Type': 'Float'},
+    {'Name': 'ds_id', 'Type': 'String'},
+    {'Name': 'satellite', 'Type': 'String'},
+    {'Name': 'sensor_mod', 'Type': 'String'},
+    {'Name': 'sun_azimut', 'Type': 'Float'},
+    {'Name': 'sun_elevat', 'Type': 'Float'},
+    {'Name': 'view_angle', 'Type': 'Float'},
+    {'Name': 'img_start', 'Type': 'Date'},
+    {'Name': 'order_id', 'Type': 'String'},
+    {'Name': 'pack_id', 'Type': 'String'},
+    {'Name': 'del_id', 'Type': 'String'},
+    {'Name': 'com_id', 'Type': 'String'},
+    {'Name': 'qlurl', 'Type': 'String'},
+ ]
+
  let DG_products = [
     {'Name':'catalogid','Type':'String'},    
     {'Name':'acqdate','Type':'Date'},
@@ -388,6 +413,7 @@ let Formats = {
     DG_products, 
     DG_products_L,
     PLEIADES, 
+    PLEIADES_L,
     RAPIDEYE,
     EROS,
     GF_ZY,
@@ -527,4 +553,4 @@ let Formats = {
     ]
 };
 
-export { Formats };
+export default Formats;

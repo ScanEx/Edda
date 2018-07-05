@@ -1,6 +1,7 @@
-import { copy } from 'lib/Object.Extensions/src/Extensions.js';
-import { chain, from_gmx } from 'app/Utils/Utils.js';
-import { Formats } from './Formats.js';
+import { copy } from 'scanex-object-extensions';
+import { chain } from 'scanex-async';
+import { from_gmx } from 'app/Utils/Utils.js';
+import Formats from './Formats.js';
 
 class ShapeLoader {
     constructor ({
@@ -8,7 +9,7 @@ class ShapeLoader {
         catalogResourceServer,
         resultsController,
         drawnObjects,
-        shapeLoaderUrl = 'http://maps.kosmosnimki.ru/ShapeLoader',        
+        shapeLoaderUrl = '//maps.kosmosnimki.ru/ShapeLoader',
         metadataUrl = 'GetMetadata.ashx',
         fileMakerUrl = 'VectorFileMaker',
         fileDownloaderUrl = 'DownloadFile',
@@ -289,4 +290,4 @@ class ShapeLoader {
     }    
 }
 
-export { ShapeLoader };
+export default ShapeLoader;

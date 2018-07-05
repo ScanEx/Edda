@@ -1,13 +1,21 @@
-import { DataGrid, ENUM_ID } from 'lib/DataGrid/src/DataGrid.js';
 import './DrawnObjects.css';
-import { EventTarget } from 'lib/EventTarget/src/EventTarget.js';
-import { Panel } from 'lib/Leaflet.Panel/src/Panel.js';
-import { Translations } from 'lib/Translations/src/Translations.js';
-import { ColorPicker } from 'lib/ColorPicker/src/ColorPicker/ColorPicker.js';
+
+import 'scanex-datagrid/dist/bundle.css';
+import { DataGrid, ENUM_ID } from 'scanex-datagrid';
+
+import EventTarget from 'scanex-event-target';
+
+import 'scanex-float-panel/dist/bundle.css';
+import FloatingPanel from 'scanex-float-panel';
+
+import Translations from 'scanex-translations';
+
+import 'scanex-color-picker/dist/bundle.css';
+import ColorPicker from 'scanex-color-picker';
+
 import { create_container } from 'app/Utils/Utils.js';
 
-window.Catalog.translations = window.Catalog.translations || new Translations();
-let T = window.Catalog.translations
+let T = Translations;
 
 T.addText ('rus', {
     objects: {

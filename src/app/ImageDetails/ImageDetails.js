@@ -1,9 +1,9 @@
-import { EventTarget } from 'lib/EventTarget/src/EventTarget.js';
+import EventTarget from 'scanex-event-target';
+import Translations from 'scanex-translations';
 import './ImageDetails.css';
-import { Translations } from 'lib/Translations/src/Translations.js';
 
-window.Catalog.translations = window.Catalog.translations || new Translations();
-let T = window.Catalog.translations;
+let T = Translations;
+
 T.addText('rus', {
     quicklook: 'Открыть квиклук'
 });
@@ -101,4 +101,4 @@ class ImageDetails extends EventTarget {
     }
 }
 
-export { ImageDetails };
+export default ImageDetails;

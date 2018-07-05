@@ -1,18 +1,20 @@
 import './SearchOptions.css';
-import { RangeWidget } from 'lib/SliderWidget/src/RangeWidget/RangeWidget.js';
-import { ResultList } from 'app/ResultList/ResultList.js';
+
+import 'scanex-slider-widget/dist/bundle.css';
+import { RangeWidget } from 'scanex-slider-widget';
+
+import ResultList from 'app/ResultList/ResultList.js';
 import { DrawnObjects } from 'app/DrawnObjects/DrawnObjects.js';
-import { Cart } from 'app/Cart/Cart.js';
-import { ImageDetails } from 'app/ImageDetails/ImageDetails.js';
-import { Satellites } from './Satellites/Satellites.js';
-import { EventTarget } from 'lib/EventTarget/src/EventTarget.js';
-import { Translations } from 'lib/Translations/src/Translations.js';
+import Cart from 'app/Cart/Cart.js';
+import ImageDetails from 'app/ImageDetails/ImageDetails.js';
+import Satellites from './Satellites/Satellites.js';
+import EventTarget from 'scanex-event-target';
+import Translations from 'scanex-translations';
 
-require ('../../../node_modules/pikaday/css/pikaday.css');
-let Pikaday = require ('../../../node_modules/pikaday/pikaday.js');
+require ('pikaday/css/pikaday.css');
+let Pikaday = require ('pikaday');
 
-window.Catalog.translations = window.Catalog.translations || new Translations();
-let T = window.Catalog.translations
+let T = Translations;
 
 T.addText('rus', {  
   period: {
@@ -27,7 +29,7 @@ T.addText('rus', {
     title: 'Детальность, м/пкс',
     unit: 'м/пкс',
   },
-  satellites: 'Типы данных',
+  satellites: 'Спутники',
   archive: {
         title: 'Архив',
         local: 'внутренний',
@@ -298,7 +300,4 @@ class SearchOptions extends EventTarget {
   }
 }
 
-window.Catalog = window.Catalog || {};
-window.Catalog.SearchOptions = SearchOptions;
-
-export { SearchOptions, ResultList, DrawnObjects };
+export default SearchOptions;

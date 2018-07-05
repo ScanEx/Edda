@@ -7,6 +7,24 @@
     //    CatalogSettings.InitLayerSettings();        
     //}
 
+    protected void Application_BeginRequest(object sender, EventArgs args)
+    {
+        var context = ((HttpApplication) sender).Context;
+		
+		/*
+        if (context.Request.Url.Scheme.ToLower() == "http" && 
+           !context.Request.FilePath.Contains("QuickLookImage.ashx") && 
+           !context.Request.FilePath.Contains("GetMetadata.ashx") &&
+		   !context.Request.FilePath.Contains("CreateOrder.ashx"))
+        {
+            string s = context.Request.Url.ToString();
+            s = string.Concat ("https", s.Substring(4));
+            Response.Redirect(s);
+            return;
+        }
+		*/
+    }
+
     void Application_PostAuthorizeRequest(object sender, EventArgs args)
     {
         try

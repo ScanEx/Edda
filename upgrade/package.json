@@ -1,0 +1,33 @@
+{
+  "name": "upgrade",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "clean": "del /F /S /Q dist",
+    "build": "npm run clean && webpack && node upgrade.js",
+    "update": "npm update & npm run build"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-flow": "^6.23.0",
+    "copy-webpack-plugin": "latest",
+    "css-loader": "^0.28.11",
+    "file-loader": "^1.1.11",
+    "image-loader": "0.0.1",
+    "object-assign": "^4.1.1",
+    "style-loader": "^0.21.0",
+    "webpack": "^4.13.0",
+    "webpack-cli": "^2.1.5"
+  },
+  "dependencies": {
+    "scanex-jsonp-request": "git+https://github.com/Scanex/Request.git",
+    "scanex-auth": "git+https://github.com/Scanex/Authentication.git",
+    "scanex-async": "git+https://github.com/Scanex/Async.git"
+  }
+}

@@ -1,4 +1,4 @@
-import { EventTarget } from 'lib/EventTarget/src/EventTarget.js';
+import EventTarget from 'scanex-event-target';
 import { flatten, split_complex_id } from 'app/Utils/Utils.js';
 
 class Quicklook extends EventTarget {
@@ -158,4 +158,4 @@ class Quicklook extends EventTarget {
     }
 }
 
-export { Quicklook };
+export default Quicklook;

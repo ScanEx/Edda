@@ -1,8 +1,11 @@
-import { Panel } from 'lib/Leaflet.Panel/src/Panel.js';
+import 'scanex-float-panel/dist/bundle.css';
+import FloatingPanel from 'scanex-float-panel';
+
+import Translations from 'scanex-translations';
+import { get_window_center } from 'app/Utils/Utils.js';
 import './About.css';
 
-window.Catalog.translations = window.Catalog.translations || new Translations();
-let T = window.Catalog.translations;
+let T = Translations;
 
 T.addText('rus', {
     about: {
@@ -22,14 +25,10 @@ T.addText('eng', {
     
 });
 
-class About extends Panel {
+class About extends FloatingPanel {
     constructor (container, {text}) {
-        super(container, {
-            id: 'about.dialog',
-            left: window.DIALOG_PLACE.left,
-            top: window.DIALOG_PLACE.top,
-            modal: true
-        });
+        const {left, top} = get_window_center();
+        super(container, {id: 'about.dialog', left, top, modal: true});
         this._text = text;
         this._container.classList.add('about-dialog');
         this._content.innerHTML = `<div class="logo-symbol-about"></div>        
@@ -51,4 +50,4 @@ class About extends Panel {
     }
 }
 
-export { About };
+export default About;

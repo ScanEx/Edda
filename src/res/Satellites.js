@@ -1,7 +1,6 @@
-import { Translations } from 'lib/Translations/src/Translations.js';
+import Translations from 'scanex-translations';
 
-window.Catalog = window.Catalog || {};
-const T = window.Catalog.Translations = window.Catalog.Translations || new Translations ();
+const T = Translations;
 
 T.addText('rus', {
     operator: {

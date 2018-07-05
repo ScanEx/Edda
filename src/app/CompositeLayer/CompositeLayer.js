@@ -1,6 +1,6 @@
-import { EventTarget } from 'lib/EventTarget/src/EventTarget.js';
-import { flatten, split_complex_id, normalize_geometry_type, normalize_geometry, normalize_point, get_bbox, chain, make_close_to } from 'app/Utils/Utils.js';
-import { platform } from 'os';
+import EventTarget from 'scanex-event-target';
+import { chain } from 'scanex-async';
+import { flatten, split_complex_id, normalize_geometry_type, normalize_geometry, normalize_point, get_bbox, make_close_to } from 'app/Utils/Utils.js';
 
 const Colors = {
     Default: 0x23a5cc,
@@ -9,9 +9,7 @@ const Colors = {
     CartHilite: 0xef4e70,
 };
 
-function serialize (obj) {
-    return Object.keys(obj).map(id => obj[id]);
-}
+const serialize = obj => Object.keys(obj).map(id => obj[id]);
 
 const attributes = ["hover", "selected", "visible", "clip_coords", "result", "cart", "sceneid", "acqdate", "acqtime", "cloudness", "tilt", "sunelev", "stereo", "url", "x1", "y1", "x2", "y2", "x3", "y3", "x4", "y4", "volume", "platform", "spot5_a_exists", "spot5_b_exists", "islocal", "product", "gmx_id", "sensor", "local_exists", "spot5id", "stidx"];
 const attrTypes = ["boolean", "boolean", "string", "object", "boolean", "boolean", "string", "date", "time", "float", "float", "float", "string", "string", "float", "float", "float", "float", "float", "float", "float", "float", "string", "string", "boolean", "boolean", "boolean", "boolean", "integer", "string", "boolean", "string", "integer"];
@@ -23,7 +21,7 @@ class CompositeLayer extends EventTarget {
         map,
         qlUrl = '//search.kosmosnimki.ru/QuickLookImage.ashx',
         // qlUrl = '//wikimixer.kosmosnimki.ru/QuickLookImage.ashx',
-        qlSize = { width: 300, height: 300 },
+        qlSize = { width: 600, height: 600 },
         srs = 3857}) {
         super();
         this._currentTab = '';
@@ -175,6 +173,7 @@ class CompositeLayer extends EventTarget {
                     const sceneid = split_complex_id(properties[this._sceneid_index]).id;
                     const platform = properties[this._platform_index];
                     let imageUrl = `${this._qlUrl}?sceneid=${sceneid}&platform=${platform}&width=${this._qlSize.width}&height=${this._qlSize.height}`;
+                    // let imageUrl = `${this._qlUrl}?sceneid=${sceneid}&platform=${platform}`;
                     const {lng} = this._map.getCenter();
                     let clipCoords = normalize_geometry(properties[this._clip_coords_index], lng);
                     let [ x1,y1, x2,y2, x3,y3, x4,y4 ] = properties.slice(this._x1_index, this._x1_index + 8);

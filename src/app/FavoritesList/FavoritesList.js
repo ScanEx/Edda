@@ -1,13 +1,15 @@
 import './FavoritesList.css';
-import { DataGrid } from 'lib/DataGrid/src/DataGrid.js';
-import { getSatelliteName } from 'res/Satellites.js';
-import { EventTarget } from 'lib/EventTarget/src/EventTarget.js';
-import { create_container } from 'app/Utils/Utils.js';
-import { Translations } from 'lib/Translations/src/Translations.js';
-import { ENUM_ID } from '../../lib/DataGrid/src/DataGrid';
+import EventTarget from 'scanex-event-target';
 
-window.Catalog.translations = window.Catalog.translations || new Translations();
-let T = window.Catalog.translations
+import 'scanex-datagrid/dist/bundle.css';
+import { DataGrid, ENUM_ID } from 'scanex-datagrid';
+
+import Translations from 'scanex-translations';
+
+import { getSatelliteName } from 'res/Satellites.js';
+import { create_container } from 'app/Utils/Utils.js';
+
+let T = Translations;
 
 class FavoritesList extends EventTarget {
     constructor(container, { restricted }) {
@@ -368,4 +370,4 @@ class FavoritesList extends EventTarget {
     }
 }
 
-export { FavoritesList };
+export default FavoritesList;

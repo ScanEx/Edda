@@ -143,4 +143,4 @@ class RequestAdapter {
     }
 }
 
-export { RequestAdapter };
+export default RequestAdapter;

@@ -1,4 +1,4 @@
-import { EventTarget } from 'lib/EventTarget/src/EventTarget.js';
+import EventTarget from 'scanex-event-target';
 
 class GmxLayerDataProvider extends EventTarget {
     constructor ({gmxResourceServer, map}) {
@@ -65,4 +65,4 @@ class GmxLayerDataProvider extends EventTarget {
     }
 }
 
-export { GmxLayerDataProvider };
+export default GmxLayerDataProvider;
