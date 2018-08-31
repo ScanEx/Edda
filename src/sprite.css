@@ -1,0 +1,44 @@
+.leaflet-gmx-icon {
+    background-image: url('assets/sprite.png');
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 25px;
+    display: inline-block;    
+    background-color: transparent;
+}
+
+.leaflet-gmx-icon-boxzoom {
+    background-position: 0 0;
+}
+
+.leaflet-gmx-icon-download {
+    background-position: 0 -25px;
+}
+
+.leaflet-gmx-icon-link {
+    background-position: 0 -50px;
+}
+
+.leaflet-gmx-icon-point {
+    background-position: 0 -75px;
+}
+
+.leaflet-gmx-icon-polygon {
+    background-position: 0 -100px;
+}
+
+.leaflet-gmx-icon-polyline {
+    background-position: 0 -125px;
+}
+
+.leaflet-gmx-icon-print {
+    background-position: 0 -150px;
+}
+
+.leaflet-gmx-icon-rectangle {
+    background-position: 0 -175px;
+}
+
+.leaflet-gmx-icon-upload {
+    background-position: 0 -200px;
+}

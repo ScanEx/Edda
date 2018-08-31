@@ -113,8 +113,8 @@ class KOMPSAT extends Satellite {
 }
 
 class SpaceView extends Satellite {
-    constructor({id, platforms, name, resolution, swath, since}){
-        super({id, platforms, name, resolution, swath, operator: T.getText('operator.spaceview'), since, restricted: true});
+    constructor({id, platforms, name, resolution, swath, arity, since}){
+        super({id, platforms, name, resolution, swath, operator: T.getText('operator.spaceview'), arity, since, restricted: true});
     }
 }
 
@@ -129,6 +129,12 @@ class GF1 extends SpaceView {
     condition (archive) {
         return `${super.condition(archive)} AND sensor = '${this.sensor}'`;
     }
+}
+
+class SV1 extends SpaceView {
+    constructor(){
+        super({id: 'SV1', platforms: ['GJ1A', 'GJ1B', 'GJ1C', 'GJ1D'], name: 'Superview-1', resolution: 0.5, swath: 12, arity: 4, since: '26.12.2016, 09.01.2018'});
+    }    
 }
 
 class Airbus extends Satellite {
@@ -237,6 +243,18 @@ class SP6_7_1A extends Airbus {
     }
 }
 
+class SP67_P extends Airbus {
+    constructor(){
+        super({id: 'SP67_P', platforms: ['SPOT-6','SPOT-7'],  name: 'SPOT-6/7-P', resolution: 1.5, swath: 60, since: '2012, 2014', arity: 2});
+    }
+    get restricted () {
+        return true;
+    }
+    condition(archive, authorized) {
+        return "platform IN ('SPOT-6','SPOT-7') AND product = TRUE";
+    }
+}
+
 class EROS extends Satellite {
     constructor({id, platforms, name, resolution, swath, since }){
         super({id,  platforms, name, resolution, swath, operator: T.getText('operator.iinv'), restricted: true, since, ms: false });
@@ -306,7 +324,8 @@ const satellites = {
         new PHR(),
         new DG({id: 'QB02', platforms: ['QB02'], name: 'Quickbird', resolution: 0.5, swath: 16.5, since: '2001 - 2015'}),
         new KOMPSAT({id: 'KOMPSAT3A', platforms: ['KOMPSAT3A'], name: 'KOMPSAT-3A', resolution: 0.5, swath: 12, since: '2015'}),
-        new KOMPSAT({id: 'KOMPSAT3', platforms: ['KOMPSAT3'], name: 'KOMPSAT-3', resolution: 0.7, swath: 16, since: '2012'}),                
+        new KOMPSAT({id: 'KOMPSAT3', platforms: ['KOMPSAT3'], name: 'KOMPSAT-3', resolution: 0.7, swath: 16, since: '2012'}),
+        new SV1(),            
         new Satellite({id: 'IK', platforms: ['IK-2','IKONOS-2'], name: 'IKONOS', resolution: 0.8, swath: 11.3, operator: T.getText('operator.ge'), since: '1999 - 2015'}),
         new SpaceView({id: 'GF2', platforms: ['GF2'], name: 'GaoFen-2', resolution: 0.8, swath: 45, since: '2014'}),
         new KOMPSAT({id: 'KOMPSAT2', platforms: ['KOMPSAT2'], name: 'KOMPSAT-2', resolution: 1, swath: 15, since: '2006'}), 
@@ -314,7 +333,7 @@ const satellites = {
         new RP_1MS(),
         new SP6_7(),
         new Satellite({id: 'BKA', platforms: ['BKA'], name: 'БелКА', resolution: 2, swath: 20, operator: T.getText('operator.vniiem'), since: '2012', restricted: true}),
-        new GF1({id: 'GF1_2m', platforms: ['GF1'], name: 'GaoFen-1 (2m)', resolution: 2, swath: 60, since: '2013', sensor: 'A'}),
+        new GF1({id: 'GF1_2m', platforms: ['GF1'], name: 'GaoFen-1 (2m)', resolution: 2, swath: 60, since: '2013', sensor: 'A'}),        
         new SpaceView({id: 'ZY3', platforms: ['ZY3','ZY302'], name: 'ZiYuan-3', resolution: 2.1, swath: 51, since: '2012'}),
         // new SP5_2MS(),
         new RP_4MS(),
@@ -325,6 +344,7 @@ const satellites = {
         new GF1({id: 'GF1_16m', platforms: ['GF1'], name: 'GaoFen-1 (16m)', resolution: 16, swath: 800, since: '2013', sensor: 'B'}),
         new SP6_7_1A(),
         new PLD_1A(),        
+        new SP67_P(),
     ],
     pc: [
         new DG({id: 'WV01', platforms: ['WV01'], name: 'WorldView 1', resolution: 0.5, swath: 17.6, since: '2007'}),

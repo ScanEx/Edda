@@ -1,13 +1,11 @@
 import './FavoritesList.css';
 import EventTarget from 'scanex-event-target';
 
-import 'scanex-datagrid/dist/bundle.css';
-import { DataGrid, ENUM_ID } from 'scanex-datagrid';
+import 'scanex-datagrid/dist/scanex-datagrid.css';
+import { DataGrid } from 'scanex-datagrid';
 
 import Translations from 'scanex-translations';
-
-import { getSatelliteName } from 'res/Satellites.js';
-import { create_container } from 'app/Utils/Utils.js';
+import { getSatelliteName } from '../../res/Satellites.js';
 
 let T = Translations;
 
@@ -25,6 +23,7 @@ class FavoritesList extends EventTarget {
         this._onSort = this._onSort.bind(this);
         this._activeInfo = null;
         this._disableMouseHover = false;
+        this._indexBy = 'gmx_id';
         this._fields = {  
             'selected': {
                 type: 'selector',
@@ -68,7 +67,7 @@ class FavoritesList extends EventTarget {
                             return false;
                     }
                 },
-            },                               
+            },
             'platform': {
                 type: 'string',
                 name: T.getText('results.satellite'),
@@ -81,6 +80,10 @@ class FavoritesList extends EventTarget {
                         case 'SPOT7':
                         case 'SPOT 7':
                             return item.islocal ? 'SPOT 7' : 'SPOT 7 (A)';
+                        case 'SPOT-6':
+                            return item.product ? 'SPOT 6 (P)' : 'SPOT 6';
+                        case 'SPOT-7':
+                            return item.product ? 'SPOT 7 (P)' : 'SPOT 7';
                         case 'SPOT 5':
                             let sp5 = 'SPOT 5';
                             if (item.sensor === 'J') {
@@ -136,6 +139,14 @@ class FavoritesList extends EventTarget {
                             return 'Triplesat-2';
                         case 'TripleSat Constellation-3':
                             return 'Triplesat-3';
+                            case 'GJ1A':
+                            return 'Superview-1 01';
+                        case 'GJ1B':
+                            return 'Superview-1 02';
+                        case 'GJ1C':
+                            return 'Superview-1 03';
+                        case 'GJ1D':
+                            return 'Superview-1 04';
                         default:
                             return `${getSatelliteName(item.platform)}${item.islocal ? ' (L)': ''}`;
                     }
@@ -172,12 +183,12 @@ class FavoritesList extends EventTarget {
             
         };
 
-        this._grid = new DataGrid(
+        this._grid = new DataGrid(            
             this._container,
             {
                 fields: this.fields,
                 sortBy: {field: 'acqdate', asc: false},
-                indexBy: 'gmx_id'
+                indexBy: this._indexBy,
             }
         );
         this._grid.addEventListener('cell:click', this._onCellClick);        
@@ -306,6 +317,9 @@ class FavoritesList extends EventTarget {
             event.detail = e.detail;
             this.dispatchEvent(event);
         }
+    }
+    get indexBy () {
+        return this._indexBy;
     }
     set items (value) {
         if(Array.isArray(value)) {

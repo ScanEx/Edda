@@ -24,10 +24,10 @@
 }
 
 .favorites-header .favorites-delete-button-active {
-    background-image: url('../../assets/results/delete-active.png');
+    background-image: url('assets/delete-active.png');
 }
 .favorites-header .favorites-delete-button-passive {
-    background-image: url('../../assets/results/delete-passive.png');
+    background-image: url('assets/delete-passive.png');
 }
 
 .favorites-list {
@@ -55,7 +55,7 @@
     width: 395px;
 }
 .iconSidebarControl [data-pane-id=favorites] .favorites-select-quicklooks-normal {
-    background-image: url('../../assets/search.png');
+    background-image: url('assets/search.png');
     background-repeat: no-repeat;
     display: inline-block;
     width: 20px;
@@ -63,7 +63,7 @@
     background-position: -512px -5px;
 }
 .iconSidebarControl [data-pane-id=favorites] .favorites-select-quicklooks-active {    
-    background-image: url('../../assets/search.png');
+    background-image: url('assets/search.png');
     background-repeat: no-repeat;
     display: inline-block;
     width: 20px;
@@ -71,7 +71,7 @@
     background-position: -512px -5px;
 }
 .iconSidebarControl [data-pane-id=favorites] .favorites-select-quicklooks-passive {
-    background-image: url('../../assets/search.png');
+    background-image: url('assets/search.png');
     background-repeat: no-repeat;
     display: inline-block;
     width: 20px;

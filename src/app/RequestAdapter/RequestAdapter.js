@@ -1,8 +1,8 @@
-import { st_range, to_query } from 'app/Utils/Index.js';
-import { get_bbox } from 'app/Utils/Utils.js';
+import { st_range, to_query } from '../../app/Utils/Index.js';
+import { get_bbox } from '../../app/Utils/Utils.js';
 
 class RequestAdapter {
-    constructor({layer = 'AFB4D363768E4C5FAC71C9B0C6F7B2F4', gmxResourceServer, authorized}){
+    constructor({layer, gmxResourceServer, authorized}){
         this._layer = layer;
         this._gmxResourceServer = gmxResourceServer;
         this._geometries = [];

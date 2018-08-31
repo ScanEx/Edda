@@ -31,11 +31,11 @@
 }
 .result-list .table-list-col .cart-add-active,
 .result-list .table-list-body .cart-add-active {
-    background-image: url('../../assets/results/cart-active.png');
+    background-image: url('assets/list-cart-active.png');
 }
 .result-list .table-list-col .cart-add-passive,
 .result-list .table-list-body .cart-add-passive {
-    background-image: url('../../assets/results/cart-passive.png');
+    background-image: url('assets/list-cart-passive.png');
 }
 .results-header > * {
     display: inline-block;
@@ -54,16 +54,16 @@
 }
 
 .results-header .quicklooks-cart-active {
-    background-image: url('../../assets/results/add-quicklook-active.png');
+    background-image: url('assets/add-quicklook-active.png');
 }
 
 .results-header .quicklooks-cart-passive {
-    background-image: url('../../assets/results/add-quicklook-passive.png');
+    background-image: url('assets/add-quicklook-passive.png');
     cursor: default !important;
 }
 
 .results-header .results-clear{
-    background-image: url('../../assets/results/delete-active.png');
+    background-image: url('assets/delete-active.png');
 }
 
 .result-list .table-list-header .results-stereo-normal {
@@ -73,11 +73,11 @@
     height: 14px;
     background-repeat: no-repeat;    
     background-color: transparent;
-    background-image: url('../../assets/results/stereo-filter-default.png');
+    background-image: url('assets/stereo-filter-default.png');
 }
 
 .iconSidebarControl [data-pane-id=results] .results-select-quicklooks-normal {
-    background-image: url('../../assets/search.png');
+    background-image: url('assets/search.png');
     background-repeat: no-repeat;
     display: inline-block;
     width: 20px;
@@ -85,7 +85,7 @@
     background-position: -512px -5px;
 }
 .iconSidebarControl [data-pane-id=results] .results-select-quicklooks-active {    
-    background-image: url('../../assets/search.png');
+    background-image: url('assets/search.png');
     background-repeat: no-repeat;
     display: inline-block;
     width: 20px;
@@ -93,7 +93,7 @@
     background-position: -512px -5px;
 }
 .iconSidebarControl [data-pane-id=results] .results-select-quicklooks-passive {
-    background-image: url('../../assets/search.png');
+    background-image: url('assets/search.png');
     background-repeat: no-repeat;
     display: inline-block;
     width: 20px;

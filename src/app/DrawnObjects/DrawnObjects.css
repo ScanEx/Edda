@@ -54,7 +54,7 @@
     z-index: 3003;
 }
 .drawn-objects .table-list-header .delete-all {
-    background-image: url('../../assets/results/delete-active.png');
+    background-image: url('assets/delete-active.png');
     display: inline-block;
     cursor: pointer;
     width: 16px;
@@ -73,7 +73,7 @@
     margin-left: 5px;
 }
 .drawn-objects .table-list-body td i.drawing-edit {
-    background-image: url('../../assets/edit.png');    
+    background-image: url('assets/edit.png');
     cursor: pointer;    
     background-repeat: no-repeat;
     background-color: transparent;
@@ -84,7 +84,7 @@
 }
 
 .drawn-objects .table-list-header .drawn-objects-visible {
-    background-image: url('../../assets/search.png');
+    background-image: url('assets/search.png');
     background-repeat: no-repeat;
     display: inline-block;
     width: 20px;
@@ -93,7 +93,7 @@
 }
 
 .drawn-objects .table-list-header .drawn-objects-hidden {
-    background-image: url('../../assets/search.png');
+    background-image: url('assets/search.png');
     background-repeat: no-repeat;
     display: inline-block;
     width: 20px;

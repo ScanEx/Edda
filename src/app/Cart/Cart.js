@@ -1,11 +1,10 @@
 import './Cart.css';
 
-import 'scanex-float-panel/dist/bundle.css';
+import 'scanex-float-panel/dist/scanex-float-panel.css';
 import FloatingPanel from 'scanex-float-panel';
 
-import { getSatelliteName } from 'res/Satellites.js';
 import Translations from 'scanex-translations';
-import { create_container, read_permalink } from 'app/Utils/Utils.js';
+import { create_container, read_permalink } from '../../app/Utils/Utils.js';
 
 let T = Translations;
 

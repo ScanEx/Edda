@@ -1,4 +1,4 @@
-import { isNumber } from "util";
+const isNumber = n => !isNaN (new Number(n));
 
 function chain (tasks, state) {
     return tasks.reduce(

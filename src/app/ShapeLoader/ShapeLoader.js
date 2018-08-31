@@ -1,6 +1,6 @@
 import { copy } from 'scanex-object-extensions';
 import { chain } from 'scanex-async';
-import { from_gmx } from 'app/Utils/Utils.js';
+import { from_gmx } from '../../app/Utils/Utils.js';
 import Formats from './Formats.js';
 
 class ShapeLoader {

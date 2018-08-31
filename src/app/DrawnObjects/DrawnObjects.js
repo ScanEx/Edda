@@ -1,19 +1,15 @@
 import './DrawnObjects.css';
 
-import 'scanex-datagrid/dist/bundle.css';
-import { DataGrid, ENUM_ID } from 'scanex-datagrid';
+import 'scanex-datagrid/dist/scanex-datagrid.css';
+import { DataGrid, get_hash } from 'scanex-datagrid';
 
 import EventTarget from 'scanex-event-target';
-
-import 'scanex-float-panel/dist/bundle.css';
-import FloatingPanel from 'scanex-float-panel';
-
 import Translations from 'scanex-translations';
 
-import 'scanex-color-picker/dist/bundle.css';
+import 'scanex-color-picker/dist/scanex-color-picker.css';
 import ColorPicker from 'scanex-color-picker';
 
-import { create_container } from 'app/Utils/Utils.js';
+import { create_container } from '../../app/Utils/Utils.js';
 
 let T = Translations;
 
@@ -77,7 +73,9 @@ class DrawnObjects extends EventTarget {
         this._onCellClick = this._onCellClick.bind(this);
         this._onCellEdit = this._onCellEdit.bind(this);
         this._onColumnClick = this._onColumnClick.bind(this);
+        this._indexBy = 'id';
         this._grid = new DataGrid(this._container.querySelector('.drawn-objects-list'), {
+            indexBy: this._indexBy,
             fields: {
                 'visible': {
                     type: 'boolean',
@@ -183,8 +181,8 @@ class DrawnObjects extends EventTarget {
                 //     btn.classList.add('search-visibility-off');
                     
                 // }   
-                item.visible = !item.visible;                
-                const id = item[ENUM_ID];
+                item.visible = !item.visible;                 
+                const id = item[this._indexBy];
                 this._grid.redrawRow(id, item);
                 
                 event.initEvent('check', false, false);

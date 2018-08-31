@@ -30,7 +30,7 @@ class GmxLayerDataProvider extends EventTarget {
         var query = value.split(/[\s,]+/).map(x => "(sceneid = '" + x + "')").join(' OR ');
         return new Promise((resolve, reject) => {
             var rq = {
-                layer: 'AFB4D363768E4C5FAC71C9B0C6F7B2F4',
+                layer: window.LAYER_ID,
                 geometry: true,
                 pagesize: 0,
                 query: query,

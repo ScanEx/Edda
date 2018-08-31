@@ -1,7 +1,6 @@
-import EventTarget from 'scanex-event-target';
 import { RangeWidget } from 'scanex-slider-widget';
 import Translations from 'scanex-translations';
-import { getSatelliteName } from 'res/Satellites.js';
+import { getSatelliteName } from '../../res/Satellites.js';
 import './FilterControl.css';
 
 let T = Translations;

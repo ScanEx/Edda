@@ -3,7 +3,7 @@ import EventTarget from 'scanex-event-target';
 import Translations from 'scanex-translations';
 import Tristate from 'scanex-tristate';
 import Info from './Info.js';
-import { create_container } from 'app/Utils/Utils.js';
+import { create_container } from '../../../app/Utils/Utils.js';
 
 let T = Translations;
 
@@ -70,6 +70,9 @@ class Satellites extends EventTarget {
                 case 'RP_PC':
                 case 'RP_MS':
                     a.RP = 3;
+                    break;
+                case 'SV1':
+                    a.SV1 = 4;
                     break;
                 default:
                     a[x.id] = 1;

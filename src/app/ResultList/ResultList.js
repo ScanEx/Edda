@@ -1,11 +1,10 @@
 import './ResultList.css';
 
-import 'scanex-datagrid/dist/bundle.css';
+import 'scanex-datagrid/dist/scanex-datagrid.css';
 import { DataGrid, ENUM_ID } from 'scanex-datagrid';
 
-import { getSatelliteName } from 'res/Satellites.js';
+import { getSatelliteName } from '../../res/Satellites.js';
 import EventTarget from 'scanex-event-target';
-import { create_container } from 'app/Utils/Utils.js';
 import Translations from 'scanex-translations';
 
 let T = Translations;
@@ -58,6 +57,7 @@ class ResultList extends EventTarget {
         this._onSort = this._onSort.bind(this);
         this._activeInfo = null;
         this._disableMouseHover = false;
+        this._indexBy = 'gmx_id';
         this._fields = {             
             'visible': {                
                 type: 'string',                    
@@ -111,6 +111,10 @@ class ResultList extends EventTarget {
                         case 'SPOT7':
                         case 'SPOT 7':
                             return item.islocal ? 'SPOT 7' : 'SPOT 7 (A)';
+                        case 'SPOT-6':                        
+                            return item.product ? 'SPOT 6 (P)' : 'SPOT 6';
+                        case 'SPOT-7':
+                            return item.product ? 'SPOT 7 (P)' : 'SPOT 7';
                         case 'SPOT 5':
                             let sp5 = 'SPOT 5';
                             if (item.sensor === 'J') {
@@ -166,6 +170,14 @@ class ResultList extends EventTarget {
                             return 'Triplesat-2';
                         case 'TripleSat Constellation-3':
                             return 'Triplesat-3';
+                        case 'GJ1A':
+                            return 'Superview-1 01';
+                        case 'GJ1B':
+                            return 'Superview-1 02';
+                        case 'GJ1C':
+                            return 'Superview-1 03';
+                        case 'GJ1D':
+                            return 'Superview-1 04';
                         default:
                             return `${getSatelliteName(item.platform)}${item.islocal ? ' (L)': ''}`;
                     }
@@ -227,7 +239,7 @@ class ResultList extends EventTarget {
                 fields: this.fields, 
                 filter: item => Boolean (item.checked),
                 sortBy: {field: 'acqdate', asc: false},
-                indexBy: 'gmx_id'
+                indexBy: this._indexBy,
             }
         );
         this._grid.addEventListener('cell:click', this._onCellClick);
@@ -303,15 +315,15 @@ class ResultList extends EventTarget {
                 this.dispatchEvent(event);
                 break;
             default:        
-                k = Object.keys(this._fields).indexOf('visible');
-                btn = row.querySelectorAll('td')[k].querySelector('i');
-                btn.classList.remove('search-visibility-on');
-                btn.classList.add('search-visibility-off');
-                // item.visible = 'visible';
+                // k = Object.keys(this._fields).indexOf('visible');
+                // btn = row.querySelectorAll('td')[k].querySelector('i');
+                // btn.classList.remove('search-visibility-on');
+                // btn.classList.add('search-visibility-off');
+                // // item.visible = 'visible';
 
-                event.initEvent('visible', false, false);
-                event.detail = item;
-                this.dispatchEvent(event);                                     
+                // event.initEvent('visible', false, false);
+                // event.detail = item;
+                // this.dispatchEvent(event);
                 break;
         }
         switch (name) {
@@ -395,6 +407,9 @@ class ResultList extends EventTarget {
             event.detail = e.detail;
             this.dispatchEvent(event);
         }   
+    }
+    get indexBy () {
+        return this._indexBy;
     }
     set items (value) {
         if(Array.isArray(value)) {            

@@ -1,51 +1,51 @@
-import 'assets/search.css';
-import 'assets/sprite.css';
-import 'assets/sidebar/sidebar.css';
+import './search.css';
+import './sprite.css';
+import './sidebar.css';
 
 import './fonts/fonts.css';
 
 import Translations from 'scanex-translations';
-import SearchOptions from 'app/SearchOptions/SearchOptions.js';
-import ImageDetails from 'app/ImageDetails/ImageDetails.js';
-import { DrawnObjects, DrawnObjectsControl } from 'app/DrawnObjects/DrawnObjects.js';
-import Cart from 'app/Cart/Cart.js';
-import ResultList from 'app/ResultList/ResultList.js';
-import FavoritesList from 'app/FavoritesList/FavoritesList.js';
-import { satellites, getSatelliteName } from 'res/Satellites.js';
+import SearchOptions from './app/SearchOptions/SearchOptions.js';
+import ImageDetails from './app/ImageDetails/ImageDetails.js';
+import { DrawnObjects, DrawnObjectsControl } from './app/DrawnObjects/DrawnObjects.js';
+import Cart from './app/Cart/Cart.js';
+import ResultList from './app/ResultList/ResultList.js';
+import FavoritesList from './app/FavoritesList/FavoritesList.js';
+import { satellites, getSatelliteName } from './res/Satellites.js';
 
-import 'scanex-auth/dist/bundle.css';
+import 'scanex-auth/dist/scanex-auth.css';
 import { AuthWidget, AuthManager, ResourceServer, getAuthManager, getResourceServer } from 'scanex-auth';
 
-import 'scanex-float-panel/dist/bundle.css';
+import 'scanex-float-panel/dist/scanex-float-panel.css';
 import FloatingPanel from 'scanex-float-panel';
 
-import RequestAdapter from 'app/RequestAdapter/RequestAdapter.js';
-import { ResultsController, layerAttributes, layerAttrTypes } from 'app/ResultsController/ResultsController.js';
-import { createTab } from 'app/TabFactory/TabFactory.js';
-import { create_container, hex, unhex, from_gmx, normalize_geometry, get_window_center, read_permalink, is_mobile } from 'app/Utils/Utils.js';
+import RequestAdapter from './app/RequestAdapter/RequestAdapter.js';
+import { ResultsController, layerAttributes, layerAttrTypes } from './app/ResultsController/ResultsController.js';
+import { createTab } from './app/TabFactory/TabFactory.js';
+import { create_container, hex, unhex, from_gmx, normalize_geometry, get_window_center, read_permalink, is_mobile } from './app/Utils/Utils.js';
 import { chain } from 'scanex-async';
 
-import 'scanex-notify-widget/dist/bundle.css';
+import 'scanex-notify-widget/dist/scanex-notify-widget.css';
 import NotificationWidget from 'scanex-notify-widget';
 
-import 'scanex-loader-widget/dist/bundle.css';
+import 'scanex-loader-widget/dist/scanex-loader-widget.css';
 import LoaderWidget from 'scanex-loader-widget';
 
-import ShapeLoader from 'app/ShapeLoader/ShapeLoader.js';
-import GmxLayerDataProvider from 'app/GmxLayerDataProvider/GmxLayerDataProvider.js';
+import ShapeLoader from './app/ShapeLoader/ShapeLoader.js';
+import GmxLayerDataProvider from './app/GmxLayerDataProvider/GmxLayerDataProvider.js';
 
-import 'scanex-lang-widget/dist/bundle.css';
+import 'scanex-lang-widget/dist/scanex-lang-widget.css';
 import LanguageWidget from 'scanex-lang-widget';
 
-import About from 'app/About/About.js';
+import About from './app/About/About.js';
 
-import 'scanex-search-input/dist/bundle.css';
+import 'scanex-search-input/dist/scanex-search-input.css';
 import { SearchWidget, OsmDataProvider, CoordinatesDataProvider } from 'scanex-search-input';
 
 // import { Progress } from 'app/Progress/Progress.js';
 // import { FilterControl } from 'app/FilterControl/FilterControl.js';
 
-import 'scanex-sidebar/dist/bundle.css';
+import 'scanex-sidebar/dist/scanex-sidebar.css';
 import { IconSidebarControl } from  'scanex-sidebar';
 
 // require ('leaflet-iconlayers/iconLayers.css');
@@ -61,6 +61,8 @@ window.MAX_UPLOAD_POINTS = 100000;
 window.Catalog = window.Catalog || {};
 window.Catalog.VERSION = '2.2.5';
 window.Catalog.VERSION_DATE = new Date(2018, 6, 27);
+
+window.LAYER_ID = '9B4733A8CBE942CE9F5E70DCAA6C1FBE'; // 'AFB4D363768E4C5FAC71C9B0C6F7B2F4'
 
 let T = Translations;
 
@@ -678,7 +680,7 @@ function init_sidebar (state) {
         });
         
         window.Catalog.requestAdapter = new RequestAdapter({
-            layer: 'AFB4D363768E4C5FAC71C9B0C6F7B2F4',
+            layer: LAYER_ID,
             gmxResourceServer: window.Catalog.gmxResourceServer,
             authorized: restricted,
         });

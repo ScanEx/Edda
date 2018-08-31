@@ -1,11 +1,8 @@
 import EventTarget from 'scanex-event-target';
 import Translations from 'scanex-translations';
-import Quicklook from 'app/Quicklook/Quicklook.js';
-import { CompositeLayer, attributes as layerAttributes, attrTypes as layerAttrTypes } from 'app/CompositeLayer/CompositeLayer.js';
-import { chain } from 'scanex-async';
-import { is_geojson_feature, from_gmx, normalize_geometry, split180, normalize_geometry_type, get_bbox } from 'app/Utils/Utils.js';
-
-require('object-assign');
+import { CompositeLayer, attributes as layerAttributes, attrTypes as layerAttrTypes } from '../../app/CompositeLayer/CompositeLayer.js';
+import { is_geojson_feature, from_gmx, split180, normalize_geometry_type, hex } from '../../app/Utils/Utils.js';
+import { get_hash } from 'scanex-datagrid';
 
 import './ResultsController.css';
 
@@ -67,9 +64,9 @@ class ResultsController extends EventTarget {
 
         this._compositeLayer = new CompositeLayer({ map: this._map});
         this._compositeLayer.addEventListener('click', e => {
-            let {id, show} = e.detail;
+            let {id, show} = e.detail;    
             let obj = this._compositeLayer.getItem (id);
-            this._update_list_item (id, obj);
+            this._update_list_item (id, obj);        
             switch (this._currentTab) {
                 case 'results':                        
                     if (show) {                            
@@ -99,13 +96,16 @@ class ResultsController extends EventTarget {
                     break;
                 default:
                     break;
-            }
-        });
-        this._compositeLayer.addEventListener('ready', e => {
-            let {id, show} = e.detail;
+            }            
+        });   
+        this._compositeLayer.addEventListener('ready', e => { 
+            let {id} = e.detail;
             let obj = this._compositeLayer.getItem (id);
             this._update_list_item (id, obj);
-        });
+            let event = document.createEvent('Event');
+            event.initEvent('visible', false, false);            
+            this.dispatchEvent(event);
+        });     
         this._compositeLayer.addEventListener('mouseover', e => {
             const id = e.detail;            
             this._highlight(id, true);

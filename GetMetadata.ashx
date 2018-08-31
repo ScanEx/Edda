@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Xml;
 using System.Globalization;
+using System.Diagnostics;
 using Field = System.Tuple<string, string, string>;
 
 public class GetMetadata : IHttpHandler
@@ -66,6 +67,7 @@ public class GetMetadata : IHttpHandler
 
     string GetArchiveFileName(string platform)
     {
+        Trace.TraceInformation(platform);
         switch (platform)
         {
             case "EROS-A1":
@@ -111,6 +113,11 @@ public class GetMetadata : IHttpHandler
             case "SPOT7_L":
             case "SPOT 7_L":
                 return "SPOT-6_7_L";
+            case "SPOT-6":
+            case "SPOT-7":
+            case "SPOT-6_L":
+            case "SPOT-7_L":
+                return "SPOT-6_7_products";
             case "WV01":
             case "WV01_L":
                 return "WV1";
@@ -146,6 +153,11 @@ public class GetMetadata : IHttpHandler
             case "TripleSat Constellation-2":
             case "TripleSat Constellation-3":
                 return "TRIPLESAT";
+            case "GJ1A":
+            case "GJ1B":
+            case "GJ1C":
+            case "GJ1D":
+                return "SV1";
             default:
                 return null;
         }
@@ -167,6 +179,11 @@ public class GetMetadata : IHttpHandler
             case "SPOT 6_L":
             case "SPOT 7_L":
                 return "eros";
+            case "SPOT-6":
+            case "SPOT-7":
+            case "SPOT-6_L":
+            case "SPOT-7_L":
+                return "sp67_prod";
             case "IK-2":
             case "IK-2_L":
                 return "ik";
@@ -228,6 +245,11 @@ public class GetMetadata : IHttpHandler
             case "TripleSat Constellation-2":
             case "TripleSat Constellation-3":
                 return "triplesat";
+            case "GJ1A":
+            case "GJ1B":
+            case "GJ1C":
+            case "GJ1D":
+                return "sv";
             default:
                 return null;
 
@@ -241,15 +263,17 @@ public class GetMetadata : IHttpHandler
             case "ast":
                 return "datastrip";
             case "dg":
-                return "catalogid";
-            case "eros":
-                return "sceneid";
+                return "catalogid";                            
             case "dg_a":
             case "ik":
             case "phr":
+            case "one_atlas":
+            case "sp67_prod":
                 return "scene_id";
             case "k3":
                 return "productid";
+            case "eros":                
+            case "sv":
             case "ls8":
                 return "sceneid";
             case "re":
@@ -261,11 +285,9 @@ public class GetMetadata : IHttpHandler
             case "gf":
                 return "jh";
             case "resource":
-                return "metadata_id";
-            case "one_atlas":
-                return "scene_id";
+                return "metadata_id";            
             case "triplesat":
-                return "id";
+                return "id";                            
             default:
                 return null;
         }
@@ -285,11 +307,14 @@ public class GetMetadata : IHttpHandler
             case "bka":
             case "one_atlas":
             case "triplesat":
+            case "sp67_prod":
                 return "satellite";
             case "ik":
                 return "source_abr";
             case "gf":
                 return "satellitei";
+            case "sv":
+                return "satelliteid";
             default:
                 return null;
         }

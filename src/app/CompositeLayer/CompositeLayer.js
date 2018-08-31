@@ -1,6 +1,5 @@
 import EventTarget from 'scanex-event-target';
-import { chain } from 'scanex-async';
-import { flatten, split_complex_id, normalize_geometry_type, normalize_geometry, normalize_point, get_bbox, make_close_to } from 'app/Utils/Utils.js';
+import { flatten, split_complex_id, normalize_geometry_type, normalize_geometry, normalize_point, get_bbox, make_close_to } from '../../app/Utils/Utils.js';
 
 const Colors = {
     Default: 0x23a5cc,
@@ -183,12 +182,12 @@ class CompositeLayer extends EventTarget {
                         [make_close_to(lng, x3),y3], 
                         [make_close_to(lng,x4),y4]
                     ];
+                    
                     quicklook = L.imageTransform(imageUrl, flatten(anchors, true), { 
                         clip: clipCoords,
                         disableSetClip: true,
                         pane: 'tilePane'
-                    }).addTo(this._map);
-                    this._vectors[id].quicklook = quicklook;
+                    });                    
                     quicklook.on('load', e => {
                         properties[this._visible_index] = 'visible';
                         const gmx_id = properties[0];
@@ -205,6 +204,8 @@ class CompositeLayer extends EventTarget {
                         resolve();
                     });
                     quicklook.addTo(this._map);
+                    this._vectors[id].quicklook = quicklook;
+                    
                 }
                 else {
                     properties[this._visible_index] = 'visible';
@@ -362,7 +363,7 @@ class CompositeLayer extends EventTarget {
     get hasVisibleResults () {        
         return Object.keys(this._vectors).some(id =>  {
             const {properties} = this._vectors[id];
-            return properties[this._result_index] && properties[this._visible_index];
+            return properties[this._result_index] && properties[this._visible_index] === 'visible';
         });
     }
 

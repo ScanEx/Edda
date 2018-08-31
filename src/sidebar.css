@@ -1,0 +1,30 @@
+.iconSidebarControl .iconSidebarControl-tab .sidebar-search,
+.iconSidebarControl .iconSidebarControl-tab .sidebar-image,
+.iconSidebarControl .iconSidebarControl-tab .sidebar-cart {   
+    background-position: center; 
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    left: -4px;
+    position: relative;
+}
+.iconSidebarControl .iconSidebarControl-tab .sidebar-search-active {
+    background-image: url('assets/search-active.png');
+}
+.iconSidebarControl .iconSidebarControl-tab .sidebar-search-passive {
+    background-image: url('assets/search-passive.png');
+}
+.iconSidebarControl .iconSidebarControl-tab .sidebar-image-active {
+    background-image: url('assets/image-active.png');
+}
+.iconSidebarControl .iconSidebarControl-tab .sidebar-image-passive {
+    background-image: url('assets/image-passive.png');
+}
+.iconSidebarControl .iconSidebarControl-tab .sidebar-cart-active {
+    background-image: url('assets/cart-active.png');
+}
+.iconSidebarControl .iconSidebarControl-tab .sidebar-cart-passive {
+    background-image: url('assets/cart-passive.png');
+}

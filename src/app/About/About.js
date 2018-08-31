@@ -1,8 +1,8 @@
-import 'scanex-float-panel/dist/bundle.css';
+import 'scanex-float-panel/dist/scanex-float-panel.css';
 import FloatingPanel from 'scanex-float-panel';
 
 import Translations from 'scanex-translations';
-import { get_window_center } from 'app/Utils/Utils.js';
+import { get_window_center } from '../../app/Utils/Utils.js';
 import './About.css';
 
 let T = Translations;

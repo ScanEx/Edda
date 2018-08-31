@@ -8,7 +8,7 @@
     text-align: center;
 }
 .about-dialog .logo-symbol-about {
-    background-image: url('../../assets/logo-symbol-about.png');
+    background-image: url('assets/logo-symbol-about.png');
     display: inline-block;        
     background-repeat: no-repeat;
     background-color: transparent;        

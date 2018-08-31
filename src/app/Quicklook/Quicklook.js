@@ -1,5 +1,5 @@
 import EventTarget from 'scanex-event-target';
-import { flatten, split_complex_id } from 'app/Utils/Utils.js';
+import { flatten, split_complex_id } from '../../app/Utils/Utils.js';
 
 class Quicklook extends EventTarget {
     constructor ({map, data, url}) {

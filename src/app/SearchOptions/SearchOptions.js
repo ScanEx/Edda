@@ -1,18 +1,14 @@
 import './SearchOptions.css';
 
-import 'scanex-slider-widget/dist/bundle.css';
+import 'scanex-slider-widget/dist/scanex-slider-widget.css';
 import { RangeWidget } from 'scanex-slider-widget';
 
-import ResultList from 'app/ResultList/ResultList.js';
-import { DrawnObjects } from 'app/DrawnObjects/DrawnObjects.js';
-import Cart from 'app/Cart/Cart.js';
-import ImageDetails from 'app/ImageDetails/ImageDetails.js';
 import Satellites from './Satellites/Satellites.js';
 import EventTarget from 'scanex-event-target';
 import Translations from 'scanex-translations';
 
-require ('pikaday/css/pikaday.css');
-let Pikaday = require ('pikaday');
+import 'pikaday/css/pikaday.css';
+import Pikaday  from 'pikaday';
 
 let T = Translations;
 
