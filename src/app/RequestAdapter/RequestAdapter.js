@@ -138,7 +138,11 @@ class RequestAdapter {
                     reject(response);
                 }
             })
-            .catch(e => reject(e));
+            .catch(e => {
+                const {ErrorInfo: {ErrorMessage = ''}} = e;
+                const exceptError = new Error(ErrorMessage);
+                reject(exceptError);
+            });
         });
     }
 }
