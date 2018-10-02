@@ -432,7 +432,7 @@ class ResultList extends EventTarget {
         }        
     }    
     resize(total) {
-        let height = this._container.querySelector('.table-list-header').getBoundingClientRect().height;
+        const height = this._container.querySelector('.table-list-header').getBoundingClientRect().height;
         this._container.querySelector('.table-list-body').style.maxHeight = `${total - height}px`;
     }
     refresh() {

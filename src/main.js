@@ -485,9 +485,9 @@ function resize_map_container () {
 
 function resize_containers () {
     resize_map_container();
-    const height = resize_sidebar(); 
+    resize_sidebar(); 
     resize_search_options();
-    // resize_results();
+    resize_results();
     // resize_favorites();
 }
 
@@ -503,8 +503,8 @@ function resize_search_options () {
     window.Catalog.searchOptions.resize(total);
 }
 
-function resize_results (container) {
-    let total = get_panel_height(document.body.querySelector(''), [ '.results-header' ]);
+function resize_results () {
+    const total = get_panel_height(document.body.querySelector('.scanex-sidebar'), [ '.results-header' ]);
     window.Catalog.resultList.resize(total);
     window.Catalog.resultList.adjustWidth();
 }
@@ -1037,7 +1037,7 @@ function init_sidebar (state) {
                     break;
                 case 'results':
                     window.Catalog.resultsController.showResults();
-                    // resize_results(window.Catalog.resultsContainer);  
+                    resize_results(window.Catalog.resultsContainer);  
                     // show_filter();
                     break;
                 case 'favorites':
@@ -1151,7 +1151,7 @@ function init_sidebar (state) {
                 .catch(e => {
                     console.log(e);
                     window.Catalog.loaderWidget.hide();
-                    window.Catalog.dlgErrorMessage.content.innerHTML = `${e.toString()}<br/>${e.StackTrace}`;
+                    window.Catalog.dlgErrorMessage.content.innerHTML = `${e.toString()}`;
                     window.Catalog.dlgErrorMessage.show();
                 });
             }             
