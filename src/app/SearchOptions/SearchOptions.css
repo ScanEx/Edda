@@ -10,9 +10,11 @@
 }
 .leaflet-ext-search input {
     display: inline-block;
-    width: 323px;    
+    height: 46px;
+    width: 323px;
     font-family: 'Roboto', sans-serif;
     font-size: 15px;    
+    vertical-align: middle;
 }
 .leaflet-ext-search .leaflet-ext-search-button {
     display: inline-block;
@@ -159,6 +161,7 @@
     cursor: default;
     overflow-y: auto;
 }
+
 .search-options-satellites .satellite-col {
     margin-top: 8px;
 }

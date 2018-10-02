@@ -54,7 +54,7 @@
     height: 75px;
     width: 395px;
 }
-.iconSidebarControl [data-pane-id=favorites] .favorites-select-quicklooks-normal {
+.scanex-sidebar [data-pane-id=favorites] .favorites-select-quicklooks-normal {
     background-image: url('assets/search.png');
     background-repeat: no-repeat;
     display: inline-block;
@@ -62,7 +62,7 @@
     height: 20px;
     background-position: -512px -5px;
 }
-.iconSidebarControl [data-pane-id=favorites] .favorites-select-quicklooks-active {    
+.scanex-sidebar [data-pane-id=favorites] .favorites-select-quicklooks-active {    
     background-image: url('assets/search.png');
     background-repeat: no-repeat;
     display: inline-block;
@@ -70,11 +70,23 @@
     height: 20px;
     background-position: -512px -5px;
 }
-.iconSidebarControl [data-pane-id=favorites] .favorites-select-quicklooks-passive {
+.scanex-sidebar [data-pane-id=favorites] .favorites-select-quicklooks-passive {
     background-image: url('assets/search.png');
     background-repeat: no-repeat;
     display: inline-block;
     width: 20px;
     height: 20px;
     background-position: -512px -5px;
+}
+.scanex-sidebar [data-tab-id=favorites] .fav-sidebar{
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+}
+.scanex-sidebar [data-tab-id=favorites] .fav-sidebar-active{
+    background-image: url('assets/cart-sidebar-active.png');
+}
+.scanex-sidebar [data-tab-id=favorites] .fav-sidebar-passive{
+    background-image: url('assets/cart-sidebar-active.png');
 }

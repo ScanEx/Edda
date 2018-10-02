@@ -295,8 +295,8 @@ function get_bbox (geometry) {
         case 'LINESTRING':
             return rings (coordinates);
         case 'POLYGON':
-            return rings (coordinates[0]);
         case 'MULTILINESTRING':
+            return rings (coordinates[0]);        
         case 'MULTIPOLYGON':
             let {xs, ys} = coordinates.reduce ((a, coords) => {
                 let [[x1,y1],[x2,y2],[x3,y3],[x4,y4]] = rings (coords[0]);

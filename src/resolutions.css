@@ -1,0 +1,68 @@
+@media screen and (max-height: 1050px) {
+    .scanex-sidebar {
+        height: 985px;
+    }
+    .search-options-satellites {
+        max-height: 477px;
+        height: 477px;
+    }
+    .result-list .table-list-body {
+        max-height: 897px;
+        height: 477px;        
+    }
+    .favorites-list .table-list-body {
+        max-height: 821px;
+        height: 821px;
+    }
+}
+@media screen and (max-height: 1024px) {
+    .scanex-sidebar {
+        height: 959px;
+    }
+    .search-options-satellites {
+        max-height: 451px;
+        height: 451px;
+    }
+    .result-list .table-list-body {
+        max-height: 871px;
+        height: 871px;
+    }
+    .favorites-list .table-list-body {
+        max-height: 795px;
+        height: 795px;
+    }
+}
+@media screen and (max-height: 900px) {
+    .scanex-sidebar {
+        height: 835px;
+    }
+    .search-options-satellites {
+        max-height: 327px;
+        height: 327px;
+    }
+    .result-list .table-list-body {
+        max-height: 747px;
+        height: 747px;
+    }
+    .favorites-list .table-list-body {
+        max-height: 671px;
+        height: 671px;
+    }
+}
+@media screen and (max-height: 768px) {
+    .scanex-sidebar {
+        height: 703px;
+    }
+    .search-options-satellites {
+        max-height: 195px;
+        height: 195px;
+    }
+    .result-list .table-list-body {
+        max-height: 615px;
+        height: 615px;
+    }
+    .favorites-list .table-list-body {
+        max-height: 539px;
+        height: 539px;
+    }
+}
