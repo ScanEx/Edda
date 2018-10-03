@@ -155,7 +155,11 @@ class Satellites extends EventTarget {
     }
     _getSatelliteList(cache) {
         return cache.map((x, i) => {
-            return `<div class="satellite-col"><input type="checkbox" id="sat_${x.id}" value="${x.id}" /><label for="sat_${x.id}">${x.name}</label></div>`;
+            const {id, name, endingDate = null} = x;
+            return `<div class="satellite-col">
+                        <input type="checkbox" id="sat_${id}" value="${id}" />
+                        <label for="sat_${id}">${name} ${endingDate ? '(' + endingDate + ')' : ''}</label>
+                    </div>`;
         }).join('');
     }
     _getTooltip(obj){

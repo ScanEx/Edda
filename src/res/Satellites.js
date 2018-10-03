@@ -35,7 +35,7 @@ T.addText('eng', {
 });
 
 class Satellite {
-    constructor({id, platforms, name, resolution, swath, operator, since, ms = true, arity = 1, restricted = false, checked = false}) {
+    constructor({id, platforms, name, resolution, swath, operator, since, ms = true, arity = 1, restricted = false, checked = false, endingDate = null}) {
         this._id = id;
         this._platforms = platforms;
         this._name = name;
@@ -47,6 +47,7 @@ class Satellite {
         this._ms = ms;
         this._restricted = restricted;
         this._checked = checked;
+        this._endingDate = endingDate;
     }
     get id() {
         return this._id;
@@ -81,8 +82,14 @@ class Satellite {
     get checked() {
         return this._checked;
     }
+    get endingDate() {
+        return this._endingDate;
+    }
     set checked(value) {
         this._checked = value;
+    }
+    set endingDate(value) {
+        this._endingDate = value;
     }
     islocal (archive) {
         switch(archive){ 
@@ -101,8 +108,8 @@ class Satellite {
 }
 
 class DG extends Satellite{
-    constructor ({id, platforms, name, resolution, swath, since, ms}){
-        super({id, platforms, name, resolution, swath, operator: T.getText('operator.dg'), since, ms});
+    constructor ({id, platforms, name, resolution, swath, since, ms, endingDate}){
+        super({id, platforms, name, resolution, swath, operator: T.getText('operator.dg'), since, ms, endingDate});
     }
 }
 
@@ -138,8 +145,8 @@ class SV1 extends SpaceView {
 }
 
 class Airbus extends Satellite {
-    constructor({id, platforms, name, resolution, swath, since, arity, ms}){
-        super({id, platforms, name, resolution, swath, operator: T.getText('operator.airbus'), since, arity, ms});
+    constructor({id, platforms, name, resolution, swath, since, arity, ms, endingDate}){
+        super({id, platforms, name, resolution, swath, operator: T.getText('operator.airbus'), since, arity, ms, endingDate});
     }
 }
 
@@ -175,7 +182,7 @@ class PLD_1A extends Airbus{
 
 class SP5_10MS extends Airbus {
     constructor(){
-        super({id: 'SP5_10MS', platforms: ['SPOT 5'], name: 'SPOT 5 (10m)', resolution: 10, swath: 20, since: '2002 - 2015'});
+        super({id: 'SP5_10MS', platforms: ['SPOT 5'], name: 'SPOT 5 (10m)', resolution: 10, swath: 20, since: '2002 - 2015', endingDate: '2015'});
     }
     condition (archive, authorized) {
         return `platform = 'SPOT 5' AND sensor = 'J'${authorized ? this.islocal(archive) : ''}`;
@@ -322,11 +329,11 @@ const satellites = {
         new DG({id: 'WV02', platforms: ['WV02'], name: 'WorldView 2', resolution: 0.4, swath: 16.4, since: '2009'}),        
         new DG({id: 'GE01', platforms: ['GE01'], name: 'GeoEye-1', resolution: 0.4, swath: 15.2, since: '2008'}),
         new PHR(),
-        new DG({id: 'QB02', platforms: ['QB02'], name: 'Quickbird', resolution: 0.5, swath: 16.5, since: '2001 - 2015'}),
+        new DG({id: 'QB02', platforms: ['QB02'], name: 'Quickbird', resolution: 0.5, swath: 16.5, since: '2001 - 2015', endingDate: '2015'}),
         new KOMPSAT({id: 'KOMPSAT3A', platforms: ['KOMPSAT3A'], name: 'KOMPSAT-3A', resolution: 0.5, swath: 12, since: '2015'}),
         new KOMPSAT({id: 'KOMPSAT3', platforms: ['KOMPSAT3'], name: 'KOMPSAT-3', resolution: 0.7, swath: 16, since: '2012'}),
         new SV1(),            
-        new Satellite({id: 'IK', platforms: ['IK-2','IKONOS-2'], name: 'IKONOS', resolution: 0.8, swath: 11.3, operator: T.getText('operator.ge'), since: '1999 - 2015'}),
+        new Satellite({id: 'IK', platforms: ['IK-2','IKONOS-2'], name: 'IKONOS', resolution: 0.8, swath: 11.3, operator: T.getText('operator.ge'), since: '1999 - 2015', endingDate: '2015'}),
         new SpaceView({id: 'GF2', platforms: ['GF2'], name: 'GaoFen-2', resolution: 0.8, swath: 45, since: '2014'}),
         new KOMPSAT({id: 'KOMPSAT2', platforms: ['KOMPSAT2'], name: 'KOMPSAT-2', resolution: 1, swath: 15, since: '2006'}), 
         new Triplesat(),
