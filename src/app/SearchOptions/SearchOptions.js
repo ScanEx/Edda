@@ -22,8 +22,8 @@ T.addText('rus', {
   clouds: 'Облачность, %',
   angle: 'Угол съемки, °',
   resolution: {
-    title: 'Детальность, м/пкс',
-    unit: 'м/пкс',
+    title: 'Детальность, м/пиксель',
+    unit: 'м/пиксель',
   },
   satellites: 'Спутники',
   archive: {
