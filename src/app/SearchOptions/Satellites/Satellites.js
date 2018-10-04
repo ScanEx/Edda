@@ -158,7 +158,7 @@ class Satellites extends EventTarget {
             const {id, name, endingDate = null} = x;
             return `<div class="satellite-col">
                         <input type="checkbox" id="sat_${id}" value="${id}" />
-                        <label for="sat_${id}">${name} ${endingDate ? '(' + endingDate + ')' : ''}</label>
+                        <label for="sat_${id}">${name}</label>
                     </div>`;
         }).join('');
     }
