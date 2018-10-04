@@ -33,6 +33,7 @@ import 'scanex-loader-widget/dist/scanex-loader-widget.css';
 import LoaderWidget from 'scanex-loader-widget';
 
 import ShapeLoader from './app/ShapeLoader/ShapeLoader.js';
+import UploadDialog from './app/ShapeLoader/UploadDialog';
 import GmxLayerDataProvider from './app/GmxLayerDataProvider/GmxLayerDataProvider.js';
 
 import 'scanex-lang-widget/dist/scanex-lang-widget.css';
@@ -137,6 +138,8 @@ T.addText('rus', {
         clipboard: 'Копировать ссылку',
         permalink: 'Постоянная ссылка скопирована в буфер обмена',
         nothing: 'Ничего не найдено',
+        addToDrawingsHeader: 'Выберите названия',
+        addToDrawings: 'Отобразить объекты'
     },
     search: {
         title: 'Параметры поиска',
@@ -1457,33 +1460,52 @@ function init_upload (shapeLoader) {
             .then(({type, results}) => {                
                 switch (type) {
                     case 'shapefile':
-                        let bounds = null;
                         const count = results.reduce((a,item) => {
                             const {geometry: {coordinates}} = item;
                             return a + npoints(coordinates);
                         }, 0);
                         if (count <= window.MAX_UPLOAD_POINTS) {
+
+                            let drawingsProperties = [];
+
                             results.forEach(item => {
-                                let {name, color, editable, visible, geoJSON: {geometry, properties}} = window.Catalog.resultsController.getObject ({geoJSON: item});
-                                const drawing = window.Catalog.resultsController.addDrawing ({
-                                    name,
-                                    color,
-                                    geoJSON: {type: 'Feature', properties, geometry},
-                                    visible,
-                                    editable,
+                                const {name, color, editable, visible, geoJSON: {geometry, properties}} = window.Catalog.resultsController.getObject ({geoJSON: item});
+                                drawingsProperties.push({
+                                    name, color, editable, visible, geoJSON: {geometry, properties}, selectedName: name
                                 });
-                                if (drawing) {
-                                    if (bounds) {
-                                        bounds.extend(drawing.getBounds());
+                            });
+
+                            const clickCallback = (data = []) => {
+
+                                let bounds = null;
+
+                                data.forEach(item => {
+                                    
+                                    const {selectedName, color, editable, visible, geoJSON: {geometry, properties}} = item;
+                                    const drawing = window.Catalog.resultsController.addDrawing ({
+                                        name: selectedName,
+                                        color,
+                                        geoJSON: {type: 'Feature', properties, geometry},
+                                        visible,
+                                        editable,
+                                    });
+
+                                    if (drawing) {
+                                        if (bounds) {
+                                            bounds.extend(drawing.getBounds());
+                                        }
+                                        else {
+                                            bounds = drawing.getBounds();
+                                        }                                            
                                     }
-                                    else {
-                                        bounds = drawing.getBounds();
-                                    }                                            
-                                }                    
-                            }); 
-                            let { height } =  mapContainer.getBoundingClientRect();
-                            window.Catalog.drawnObjectsControl.widget.resize(height - 150);
-                            map.fitBounds(bounds, { animate: false });
+                                });
+
+                                const { height } =  mapContainer.getBoundingClientRect();
+                                window.Catalog.drawnObjectsControl.widget.resize(height - 150);
+                                map.fitBounds(bounds, { animate: false });
+                            }
+
+                            new UploadDialog({drawingsProperties, clickCallback});
                         }
                         else {
                             window.Catalog.dlgErrorMessage.content.innerHTML = `${T.getText('errors.upload')}<br>${T.getText('errors.points')}`;

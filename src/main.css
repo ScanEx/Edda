@@ -114,6 +114,7 @@ html, body {
 .dialog-permalink button,
 .dialog-download button,
 .dialog-login-button,
+.dialog-upload-button,
 .cart-close-button {
     border-style: none;
     font-family: 'Roboto', sans-serif;
@@ -316,6 +317,37 @@ html, body {
     text-align: center;
     padding: 25px;
 }
+
+.upload-dialog .panel-body {
+    background-color: #eef2f5;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    width: 250px;
+}
+.upload-dialog .panel-header {
+    font-weight: bold;
+    text-align: center;
+}
+.upload-dialog .panel-content {
+    padding: 0px 10px 5px;
+}
+.upload-dialog .item-data {
+    padding: 5px 5px;
+    border: 1px solid #a6b6c3;
+    border-radius: 3px;
+    margin-top: 5px;
+}
+.upload-dialog .item-container input, .upload-dialog .item-container span {
+    vertical-align: middle;
+}
+.upload-dialog .item-container span:last-child {
+    color: #666666;
+}
+.upload-dialog .panel-footer {
+    text-align: center;
+    padding: 10px;
+}
+
 .download-result-dialog .panel-body,
 .download-change-dialog .panel-body,
 .cart-limit-dialog .panel-body,
