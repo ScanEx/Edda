@@ -139,7 +139,8 @@ T.addText('rus', {
         permalink: 'Постоянная ссылка скопирована в буфер обмена',
         nothing: 'Ничего не найдено',
         addToDrawingsHeader: 'Выберите названия',
-        addToDrawings: 'Отобразить объекты'
+        wrongDrawings: 'Загруженные данные некорректны',
+
     },
     search: {
         title: 'Параметры поиска',
