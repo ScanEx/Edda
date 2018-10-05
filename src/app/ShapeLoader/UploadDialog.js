@@ -21,14 +21,13 @@ class UploadDialog {
     _init() {
 
         const dlgUploadContainer = create_container();
-        const {_drawingsProperties: drawingsProperties = []} = this;
 
         dlgUploadContainer.classList.add('upload-dialog');
         const {left, top} = this._get_map_center();
         this._dialog = new FloatingPanel(dlgUploadContainer, { id: 'upload.dialog', left, top, modal: true });
-        this._dialog.header.innerHTML = `<div class="header">${T.getText('alerts.addToDrawingsHeader')}</div>`;
-        this._dialog.content.innerHTML = `<div class="content">${drawingsProperties.map((item) => this._renderItem(item))}</div>`;
-        this._dialog.footer.innerHTML = `<button class="dialog-upload-button">${T.getText('alerts.addToDrawings')}</button>`;
+        this._dialog.header.innerHTML = this._renderHeader();
+        this._dialog.content.innerHTML = this._renderContent();
+        this._dialog.footer.innerHTML = this._renderFooter();
 
         this._addDomEvents();
     
@@ -77,7 +76,10 @@ class UploadDialog {
 
         const data = this._drawingsProperties;
 
-        this._clickCallback(data);
+        if (data.length > 0) {
+            this._clickCallback(data);
+        }
+    
         this._dialog.hide();
         this._destroy();
     }
@@ -101,6 +103,21 @@ class UploadDialog {
         const headerBounds = document.getElementById('header').getBoundingClientRect();
         const {top, left} = get_window_center ();
         return {top: top + headerBounds.top + headerBounds.height, left};
+    }
+
+    _renderHeader () {
+
+        const {_drawingsProperties: drawingsProperties = []} = this;
+
+        return `<div class="header">${T.getText('alerts.' + (drawingsProperties.length > 0 ? 'addToDrawingsHeader' : 'wrongDrawings'))}</div>`;
+    }
+
+    _renderContent() {
+
+        const {_drawingsProperties: drawingsProperties = []} = this;
+        const content = drawingsProperties.length > 0 ? drawingsProperties.map((item) => this._renderItem(item)) : '';
+
+        return `<div class="content">${content}</div>`
     }
 
     _renderItem(item) {
@@ -136,6 +153,13 @@ class UploadDialog {
         }
 
         return result.join('');
+    }
+
+    _renderFooter() {
+
+        const {_drawingsProperties: drawingsProperties = []} = this;
+
+        return `<button class="dialog-upload-button">${T.getText('alerts.' + (drawingsProperties.length > 0 ? 'addToDrawings' : 'cancel'))}</button>`;
     }
 
 }
