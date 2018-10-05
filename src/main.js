@@ -491,7 +491,7 @@ function resize_containers () {
     resize_sidebar(); 
     resize_search_options();
     resize_results();
-    // resize_favorites();
+    resize_favorites();
 }
 
 function resize_sidebar () {    
@@ -512,8 +512,8 @@ function resize_results () {
     window.Catalog.resultList.adjustWidth();
 }
 
-function resize_favorites (container) {
-    let total = get_panel_height(container, [ '.favorites-header', '.favorites-footer' ]);
+function resize_favorites () {
+    const total = get_panel_height(document.body.querySelector('.scanex-sidebar'), [ '.favorites-header', '.favorites-footer' ]);
     window.Catalog.favoritesList.resize(total);
     window.Catalog.favoritesList.adjustWidth();
 }
@@ -1045,7 +1045,7 @@ function init_sidebar (state) {
                     break;
                 case 'favorites':
                     window.Catalog.resultsController.showFavorites();                    
-                    // resize_favorites(window.Catalog.favoritesContainer);                    
+                    resize_favorites(window.Catalog.favoritesContainer);                    
                     enable_cart (window.Catalog.resultsController.hasFavoritesSelected);
                     // show_filter();
                     break;
@@ -1885,7 +1885,8 @@ chain([
     load_presets,
     load_version_info,
 ], {})
-.then (state => {       
+.then (state => {    
+    console.log('FFFFFFFFFFFFFFFFFFFFFFFFFFFFF')   ;
     let btnLogin = window.Catalog.authContainer.querySelector('.authWidget-loginButton');
     if (btnLogin) {
         btnLogin.addEventListener('click', e => {
