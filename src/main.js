@@ -61,6 +61,7 @@ import IconLayers from 'leaflet-iconlayers';
 import './main.css';
 
 window.RESULT_MAX_COUNT = 1000;
+window.RESULT_MAX_COUNT_PLUS_ONE = window.RESULT_MAX_COUNT + 1;
 window.MAX_CART_SIZE = 200;
 window.MAX_UPLOAD_POINTS = 100000;
 window.Catalog = window.Catalog || {};
@@ -1124,21 +1125,25 @@ function init_sidebar (state) {
                 if(window.Catalog.drawnObjectsControl.widget.count === 0){
                     window.Catalog.requestAdapter.geometries = [get_bounds()];
                 }
-                window.Catalog.requestAdapter.search(window.RESULT_MAX_COUNT)
-                .then(({Count, fields, values, types}) => {                
+                window.Catalog.requestAdapter.search(window.RESULT_MAX_COUNT_PLUS_ONE)
+                .then(({Count, fields, values = [], types}) => {
+
                     window.Catalog.loaderWidget.hide();
+
+                    const sizeOfValues = values.length;
+                    
                     if (!ignoreResults) {
-                        if (Count === 0) {                    
+                        if (sizeOfValues === 0) {                    
                             // window.Catalog.searchSidebar.enable ('results', false);
                             window.Catalog.searchSidebar.disable('results');
                             update_results_number(0);
                             window.Catalog.notificationWidget.content.innerText = T.getText('alerts.nothing');
                             window.Catalog.notificationWidget.show();
                         }
-                        else if(0 < Count && Count <= window.RESULT_MAX_COUNT) {                        
+                        else if(0 < sizeOfValues && sizeOfValues < window.RESULT_MAX_COUNT_PLUS_ONE) {                        
                            
                             window.Catalog.resultsController.setLayer({fields,values,types});
-                            update_results_number(Count);                        
+                            update_results_number(sizeOfValues);                        
                         }                
                         else {  
                             // window.Catalog.searchSidebar.enable ('results', false);

@@ -120,7 +120,7 @@ class RequestAdapter {
             geometry: true,
             page: 0,
             pagesize: 0,
-            count: 'add',
+            count: false,
             out_cs: 'EPSG:3857',
             query: this.query,
         };
