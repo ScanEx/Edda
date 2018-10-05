@@ -1885,8 +1885,7 @@ chain([
     load_presets,
     load_version_info,
 ], {})
-.then (state => {    
-    console.log('FFFFFFFFFFFFFFFFFFFFFFFFFFFFF')   ;
+.then (state => {
     let btnLogin = window.Catalog.authContainer.querySelector('.authWidget-loginButton');
     if (btnLogin) {
         btnLogin.addEventListener('click', e => {
