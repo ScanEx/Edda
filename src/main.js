@@ -59,6 +59,7 @@ import 'leaflet-iconlayers/dist/iconLayers.css';
 import IconLayers from 'leaflet-iconlayers';
 
 import './main.css';
+//import { ResultFilterControl } from './app/ResultFilter/ResultFilter.js';
 
 window.RESULT_MAX_COUNT = 1000;
 window.RESULT_MAX_COUNT_PLUS_ONE = window.RESULT_MAX_COUNT + 1;
@@ -849,6 +850,12 @@ function init_sidebar (state) {
         window.Catalog.drawnObjectsControl = new DrawnObjectsControl({position: 'topright'});
         map.addControl(window.Catalog.drawnObjectsControl);
 
+        /*window.Catalog.resultFilterControl = new ResultFilterControl({position: 'topright'});
+        window.Catalog.resultFilterControl.criteria = {
+            clouds: [0, 100]
+        };
+        map.addControl(window.Catalog.resultFilterControl);*/
+
         window.Catalog.resultList = new ResultList(window.Catalog.resultsContainer.querySelector('.results-pane'), { restricted });
         window.Catalog.favoritesList = new FavoritesList(window.Catalog.favoritesContainer.querySelector('.favorites-pane'), { restricted });
 
@@ -1452,6 +1459,24 @@ function init_zoom (){
     map.addControl(zoomControl);
 }
 
+function get_shapefile_object(item, key) {
+
+    const {name} = window.Catalog.resultsController.getObject ({geoJSON: item});
+    const {properties = {}} = item;
+    
+    const itemId = '_item' + key;
+
+    return Object.assign(
+        {},
+        {
+            itemId,
+            name,
+            selectedName: name
+        },
+        properties
+    );
+}
+
 function init_upload (shapeLoader) {
     let npoints = coordinates => {
         const m = /\[(-?\d+(\.\d+)?)\s*,\s*(-?\d+(\.\d+)?)\]/g.exec(JSON.stringify(coordinates));
@@ -1463,22 +1488,22 @@ function init_upload (shapeLoader) {
         title: T.getText('controls.upload'),
         stateChange: control => {            
             shapeLoader.upload()
-            .then(({type, results}) => {                
+            .then(({type, results}) => {
                 switch (type) {
                     case 'shapefile':
                         const count = results.reduce((a,item) => {
                             const {geometry: {coordinates}} = item;
                             return a + npoints(coordinates);
                         }, 0);
+                        console.log(window.MAX_UPLOAD_POINTS, count);
                         if (count <= window.MAX_UPLOAD_POINTS) {
 
                             let drawingsProperties = [];
 
-                            results.forEach(item => {
-                                const {name, color, editable, visible, geoJSON: {geometry, properties}} = window.Catalog.resultsController.getObject ({geoJSON: item});
-                                drawingsProperties.push({
-                                    name, color, editable, visible, geoJSON: {geometry, properties}, selectedName: name
-                                });
+                            results.forEach((item, key) => {
+                                //const {name, color, editable, visible, geoJSON: {geometry, properties}} = window.Catalog.resultsController.getObject ({geoJSON: item});
+                                const currentObject = get_shapefile_object(item, key);
+                                drawingsProperties.push(currentObject);
                             });
 
                             const clickCallback = (data = []) => {
