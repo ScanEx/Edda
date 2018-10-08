@@ -77,6 +77,7 @@ class UploadDialog {
         const data = this._drawingsProperties;
 
         if (data.length > 0) {
+            console.log(data);
             this._clickCallback(data);
         }
     
@@ -90,7 +91,7 @@ class UploadDialog {
 
         for (let i = 0; i < drawings.length; i++) {
             let currentItem = drawings[i];
-            if (currentItem['name'] === name) {
+            if (currentItem['itemId'] === name) {
                 currentItem['selectedName'] = value;
                 this._drawingsProperties[i] = currentItem;
                 return;
@@ -115,7 +116,16 @@ class UploadDialog {
     _renderContent() {
 
         const {_drawingsProperties: drawingsProperties = []} = this;
-        const content = drawingsProperties.length > 0 ? drawingsProperties.map((item) => this._renderItem(item)) : '';
+
+        let renderedDrawingProperties = [];
+
+        for (let i = 0; i < drawingsProperties.length; i++) {
+
+            const currentItem = drawingsProperties[i];
+            renderedDrawingProperties.push(this._renderItem(currentItem));
+        }
+
+        const content = drawingsProperties.length > 0 ? renderedDrawingProperties.join('') : '';
 
         return `<div class="content">${content}</div>`
     }
@@ -129,23 +139,26 @@ class UploadDialog {
 
     _renderFields(item) {
 
-        const {name} = item;
+        const {itemId, geoJSON: {properties} = {}, name} = item;
+        const fullProperties = Object.assign({'geometry': name}, properties);
 
         let result = [];
 
         let isFirst = true;
-        for (let index in item) {
+        for (let index in fullProperties) {
 
-            const currentItem = item[index];
-            const isSelected = isFirst ? 'checked="checked"' : '';
-            if (isFirst) {
-                isFirst = false;
-            }
+            const currentItem = fullProperties[index];
+            
+            if ( typeof (currentItem) !== 'object' ) {
 
-            if ( typeof (currentItem) !== 'object' && index !== 'selectedName' ) {
+                const isSelected = isFirst ? 'checked="checked"' : '';
+                if (isFirst) {
+                    isFirst = false;
+                }
+
                 result.push(
                     `<div class="item-container">
-                        <input class="item-radio" value="${currentItem}" ${isSelected} type="radio" name="${name}" />
+                        <input class="item-radio" value="${currentItem}" ${isSelected} type="radio" name="${itemId}" />
                         <span>${index}:</span>&nbsp;<span>${currentItem}</span>
                     </div>`
                 );

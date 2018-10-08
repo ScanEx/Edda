@@ -140,7 +140,8 @@ T.addText('rus', {
         clipboard: 'Копировать ссылку',
         permalink: 'Постоянная ссылка скопирована в буфер обмена',
         nothing: 'Ничего не найдено',
-        addToDrawingsHeader: 'Выберите названия',
+        addToDrawingsHeader: 'Выберите колонку для названия объектов',
+        addToDrawings: 'Добавить',
         wrongDrawings: 'Загруженные данные некорректны',
 
     },
@@ -234,6 +235,9 @@ T.addText('eng', {
         clipboard: 'Copy to to clipboard',
         permalink: 'Permalink saved to clipboard',
         nothing: 'Nothing found',
+        addToDrawingsHeader: 'Select column as an object name',
+        addToDrawings: 'Add',
+        wrongDrawings: 'Wrong data was loaded'
     },
     search: {
         title: 'Search options', 
@@ -1461,19 +1465,21 @@ function init_zoom (){
 
 function get_shapefile_object(item, key) {
 
-    const {name} = window.Catalog.resultsController.getObject ({geoJSON: item});
-    const {properties = {}} = item;
+    const {name, color, editable, visible, geoJSON: {geometry, properties}} = window.Catalog.resultsController.getObject ({geoJSON: item});
     
     const itemId = '_item' + key;
 
     return Object.assign(
         {},
         {
+            selectedName: name,
             itemId,
             name,
-            selectedName: name
+            color,
+            editable,
+            visible
         },
-        properties
+        {geoJSON: {geometry, properties}}
     );
 }
 

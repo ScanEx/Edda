@@ -322,7 +322,8 @@ html, body {
     background-color: #eef2f5;
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
-    width: 250px;
+    min-width: 250px;
+    max-width: 350px;
 }
 .upload-dialog .panel-header {
     font-weight: bold;
@@ -330,6 +331,11 @@ html, body {
 }
 .upload-dialog .panel-content {
     padding: 0px 10px 5px;
+    overflow-y: auto;
+    max-height: 300px;
+}
+.upload-dialog .panel-content .item-header {
+    padding-top: 10px;
 }
 .upload-dialog .item-data {
     padding: 5px 5px;
