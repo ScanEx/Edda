@@ -67,9 +67,9 @@ class UploadDialog {
 
         const {target} = ev;
         const radioName = target.getAttribute('name');
-        const radioValue = target.value;
+        const radioIndex = target.getAttribute('index');
 
-        this._changeDrawingData(radioName, radioValue);
+        this._changeDrawingData(radioName, radioIndex);
     }
 
     _onClickHandler() {
@@ -77,7 +77,6 @@ class UploadDialog {
         const data = this._drawingsProperties;
 
         if (data.length > 0) {
-            console.log(data);
             this._clickCallback(data);
         }
     
@@ -85,17 +84,19 @@ class UploadDialog {
         this._destroy();
     }
 
-    _changeDrawingData(name, value) {
+    _changeDrawingData(name, index) {
 
         const drawings = this._drawingsProperties;
 
+        const correctIndex = index === 'geometry' ? 'name' : index;
+
         for (let i = 0; i < drawings.length; i++) {
             let currentItem = drawings[i];
-            if (currentItem['itemId'] === name) {
-                currentItem['selectedName'] = value;
-                this._drawingsProperties[i] = currentItem;
-                return;
-            }
+                
+            const {geoJSON: {properties = {}}} = currentItem;
+
+            currentItem['selectedName'] = properties[correctIndex];
+            this._drawingsProperties[i] = currentItem;
         }
     }
 
@@ -120,6 +121,10 @@ class UploadDialog {
         let renderedDrawingProperties = [];
 
         for (let i = 0; i < drawingsProperties.length; i++) {
+
+            if (i > 0) {
+                break;
+            }
 
             const currentItem = drawingsProperties[i];
             renderedDrawingProperties.push(this._renderItem(currentItem));
@@ -158,7 +163,7 @@ class UploadDialog {
 
                 result.push(
                     `<div class="item-container">
-                        <input class="item-radio" value="${currentItem}" ${isSelected} type="radio" name="${itemId}" />
+                        <input class="item-radio" index="${index}" value="${currentItem}" ${isSelected} type="radio" name="${itemId}" />
                         <span>${index}:</span>&nbsp;<span>${currentItem}</span>
                     </div>`
                 );

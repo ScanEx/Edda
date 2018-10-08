@@ -140,7 +140,7 @@ T.addText('rus', {
         clipboard: 'Копировать ссылку',
         permalink: 'Постоянная ссылка скопирована в буфер обмена',
         nothing: 'Ничего не найдено',
-        addToDrawingsHeader: 'Выберите колонку для названия объектов',
+        addToDrawingsHeader: 'Выберите колонку для названий объектов',
         addToDrawings: 'Добавить',
         wrongDrawings: 'Загруженные данные некорректны',
 
@@ -1501,7 +1501,7 @@ function init_upload (shapeLoader) {
                             const {geometry: {coordinates}} = item;
                             return a + npoints(coordinates);
                         }, 0);
-                        console.log(window.MAX_UPLOAD_POINTS, count);
+
                         if (count <= window.MAX_UPLOAD_POINTS) {
 
                             let drawingsProperties = [];
