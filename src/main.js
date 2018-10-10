@@ -64,6 +64,7 @@ import './main.css';
 window.RESULT_MAX_COUNT = 1000;
 window.RESULT_MAX_COUNT_PLUS_ONE = window.RESULT_MAX_COUNT + 1;
 window.MAX_CART_SIZE = 200;
+window.MAX_UPLOAD_OBJECTS = 200;
 window.MAX_UPLOAD_POINTS = 100000;
 window.Catalog = window.Catalog || {};
 window.Catalog.VERSION = '2.2.5';
@@ -170,7 +171,7 @@ T.addText('rus', {
     errors: {
         permalink: 'Произошла ошибка при загрузке ссылки',
         upload: 'Произошла ошибка при загрузке файла',
-        points: `Геометрия содержит более ${window.MAX_UPLOAD_POINTS} точек`
+        points: `Геометрия содержит более ${window.MAX_UPLOAD_OBJECTS} и/или более ${window.MAX_UPLOAD_POINTS} точек`
     }
 });
 
@@ -264,7 +265,7 @@ T.addText('eng', {
     errors: {
         permalink: 'Error while loading permalik',
         upload: 'Error while uploading file',
-        points: `Geometry contains more than ${window.MAX_UPLOAD_POINTS} points`
+        points: `Geometry contains more than ${window.MAX_UPLOAD_OBJECTS} objects or/and more than ${window.MAX_UPLOAD_POINTS} points`
     }
 });
 
@@ -1484,9 +1485,33 @@ function get_shapefile_object(item, key) {
 }
 
 function init_upload (shapeLoader) {
-    let npoints = coordinates => {
+    /*let npoints = coordinates => {
         const m = /\[(-?\d+(\.\d+)?)\s*,\s*(-?\d+(\.\d+)?)\]/g.exec(JSON.stringify(coordinates));
         return m && m.length || 0;
+    };*/
+    const coordinatesCount = results => {
+
+        let numOfCoordinates = 0;
+
+        const recursiveArrayLength = data => {
+            for (let i = 0; i < data.length; i++) {
+                const currentArray = data[i];
+                if (currentArray instanceof Array) {
+                    recursiveArrayLength(currentArray);
+                }
+                else {
+                    numOfCoordinates++;
+                }
+            }
+        };
+
+        for (let i = 0; i < results.length; i++) {
+            const currentItem = results[i];
+            const {geometry: {coordinates = []}} = currentItem;
+            recursiveArrayLength(coordinates);
+        }
+
+        return numOfCoordinates;
     };
     let uploadControl = new L.Control.gmxIcon({
         id: 'upload',
@@ -1497,12 +1522,15 @@ function init_upload (shapeLoader) {
             .then(({type, results}) => {
                 switch (type) {
                     case 'shapefile':
-                        const count = results.reduce((a,item) => {
+                        /*const count = results.reduce((a,item) => {
                             const {geometry: {coordinates}} = item;
                             return a + npoints(coordinates);
-                        }, 0);
+                        }, 0);*/
 
-                        if (count <= window.MAX_UPLOAD_POINTS) {
+                        const objectsCount = results.length;
+                        const pointsCount = coordinatesCount(results);
+
+                        if (objectsCount <= window.MAX_UPLOAD_OBJECTS && pointsCount < window.MAX_UPLOAD_POINTS) {
 
                             let drawingsProperties = [];
 
