@@ -170,8 +170,8 @@ T.addText('rus', {
     },
     errors: {
         permalink: 'Произошла ошибка при загрузке ссылки',
-        upload: 'Произошла ошибка при загрузке файла',
-        points: `Геометрия содержит более ${window.MAX_UPLOAD_OBJECTS} и/или более ${window.MAX_UPLOAD_POINTS} точек`
+        upload: 'Произошла ошибка при загрузке файла.',
+        points: `Файл содержит более ${window.MAX_UPLOAD_OBJECTS} и/или более ${window.MAX_UPLOAD_POINTS} точек`
     }
 });
 
@@ -264,8 +264,8 @@ T.addText('eng', {
     },
     errors: {
         permalink: 'Error while loading permalik',
-        upload: 'Error while uploading file',
-        points: `Geometry contains more than ${window.MAX_UPLOAD_OBJECTS} objects or/and more than ${window.MAX_UPLOAD_POINTS} points`
+        upload: 'Vector data upload error:',
+        points: `there are more than ${window.MAX_UPLOAD_OBJECTS} objects or/and more than ${window.MAX_UPLOAD_POINTS} points in the file`
     }
 });
 
