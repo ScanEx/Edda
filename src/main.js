@@ -171,7 +171,7 @@ T.addText('rus', {
     errors: {
         permalink: 'Произошла ошибка при загрузке ссылки',
         upload: 'Произошла ошибка при загрузке файла.',
-        points: `Файл содержит более ${window.MAX_UPLOAD_OBJECTS} и/или более ${window.MAX_UPLOAD_POINTS} точек`
+        points: `Файл содержит более ${window.MAX_UPLOAD_OBJECTS} объектов и/или более ${window.MAX_UPLOAD_POINTS} точек`
     }
 });
 
