@@ -65,7 +65,7 @@ window.RESULT_MAX_COUNT = 1000;
 window.RESULT_MAX_COUNT_PLUS_ONE = window.RESULT_MAX_COUNT + 1;
 window.MAX_CART_SIZE = 200;
 window.MAX_UPLOAD_OBJECTS = 200;
-window.MAX_UPLOAD_POINTS = 100000;
+window.MAX_UPLOAD_POINTS = 150000;
 window.Catalog = window.Catalog || {};
 window.Catalog.VERSION = '2.2.5';
 window.Catalog.VERSION_DATE = new Date(2018, 6, 27);
@@ -388,6 +388,7 @@ function get_user(state) {
     return new Promise(resolve => {
         window.Catalog.authManager.getUserInfo()
         .then(response => {
+            debugger;
             let { ID, FullName, Email, Phone, Organization } = response.Result;
             window.Catalog.userInfo = {
                 IsAuthenticated: true,
@@ -1139,7 +1140,7 @@ function init_sidebar (state) {
                 }
                 window.Catalog.requestAdapter.search(window.RESULT_MAX_COUNT_PLUS_ONE)
                 .then(({Count, fields, values = [], types}) => {
-
+console.log(values);
                     window.Catalog.loaderWidget.hide();
 
                     const sizeOfValues = values.length;
