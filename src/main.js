@@ -388,7 +388,6 @@ function get_user(state) {
     return new Promise(resolve => {
         window.Catalog.authManager.getUserInfo()
         .then(response => {
-            debugger;
             let { ID, FullName, Email, Phone, Organization } = response.Result;
             window.Catalog.userInfo = {
                 IsAuthenticated: true,
@@ -1805,7 +1804,7 @@ function load_state (state) {
             }
         }
         return item;        
-    }; 
+    };
 
     let items = state.items.reduce ((a,item) => {
         const {gmx_id} = item;
@@ -1822,7 +1821,8 @@ function load_state (state) {
                 a[gmx_id].selected = item.selected;
             }                
             if (item.hasOwnProperty('visible')) {
-                a[gmx_id].visible = item.visible;
+                const visibleValue = ['visible', 'failed'].indexOf(item.visible) !== -1 ? 'visible' : item.visible;
+                a[gmx_id].visible = visibleValue;
             }            
             else if (item.hasOwnProperty('quicklook')) {
                 a[gmx_id].visible = item.quicklook;                
