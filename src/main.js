@@ -691,7 +691,7 @@ function init_sidebar (state) {
             {            
                 placeHolder: T.getText('controls.search'),
                 suggestionLimit: 10,
-                providers: [crds, gmx, osm ],
+                providers: [crds ],
                 replaceInputOnEnter: true,
                 style: {
                     editable: false,
@@ -1745,7 +1745,7 @@ function init_controls(state) {
             ignoreResults = true;
         });
 
-        resize_sidebar();
+        //resize_sidebar();
         resolve(state);
     });
 }
@@ -1810,11 +1810,17 @@ function load_state (state) {
         const {gmx_id} = item;
         a[gmx_id] = item;
         a[gmx_id].result = true;
+
+        if (item.hasOwnProperty('visible')) {
+            const visibleValue = ['visible', 'failed'].indexOf(item.visible) !== -1 ? 'visible' : item.visible;
+            a[gmx_id].visible = visibleValue;
+        }
+
         return a;
     }, {});
 
     items = state.cart.reduce((a,item) => {
-        const {gmx_id} = item;        
+        const {gmx_id} = item; 
         if (a[gmx_id]) {
             a[gmx_id].cart = true;
             if (item.hasOwnProperty('selected')) {
