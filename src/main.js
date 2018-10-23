@@ -1139,7 +1139,7 @@ function init_sidebar (state) {
                 }
                 window.Catalog.requestAdapter.search(window.RESULT_MAX_COUNT_PLUS_ONE)
                 .then(({Count, fields, values = [], types}) => {
-console.log(values);
+
                     window.Catalog.loaderWidget.hide();
 
                     const sizeOfValues = values.length;
@@ -1745,7 +1745,7 @@ function init_controls(state) {
             ignoreResults = true;
         });
 
-        //resize_sidebar();
+        resize_sidebar();
         resolve(state);
     });
 }
