@@ -130,7 +130,7 @@ class RequestAdapter {
             let rq = this.request;
             rq.pagesize = limit;
             this._gmxResourceServer.sendPostRequest('VectorLayer/Search.ashx', rq)
-            .then(response => {                 
+            .then(response => {   
                 if(response.Status === 'ok'){
                     resolve(response.Result);
                 }

@@ -691,7 +691,7 @@ function init_sidebar (state) {
             {            
                 placeHolder: T.getText('controls.search'),
                 suggestionLimit: 10,
-                providers: [crds ],
+                providers: [crds, gmx, osm ],
                 replaceInputOnEnter: true,
                 style: {
                     editable: false,
