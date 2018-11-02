@@ -62,6 +62,11 @@
     margin-left: 5px;
     color: #3ca1d0;
 }
+.scanex-sidebar [data-pane-id=results] .results-clear-filter {
+    color: red;
+    font-size:13px;
+    cursor: pointer;
+}
 .scanex-sidebar [data-tab-id=favorites] .cart-number{
     background-color: #ef4e70;
     color: #ffffff;

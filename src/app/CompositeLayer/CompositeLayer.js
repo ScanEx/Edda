@@ -29,11 +29,14 @@ class CompositeLayer extends EventTarget {
         this._attributes = attributes;
         this._attrTypes = attrTypes;
         this._sceneid_index = this._attributes.indexOf('sceneid') + 1;
+        this._cloudness_index = this._attributes.indexOf('cloudness') + 1;
+        this._tilt_index = this._attributes.indexOf('tilt') + 1;
         this._result_index = this._attributes.indexOf('result') + 1;
         this._platform_index = this._attributes.indexOf('platform') + 1;
         this._clip_coords_index = this._attributes.indexOf('clip_coords') + 1;
         this._cart_index = this._attributes.indexOf('cart') + 1;
         this._selected_index = this._attributes.indexOf('selected') + 1;
+        this._acqdate_index = this._attributes.indexOf('acqdate') + 1;
         this._url_index = this._attributes.indexOf('url') + 1;
         this._visible_index = this._attributes.indexOf('visible') + 1;
         this._hover_index = this._attributes.indexOf('hover') + 1;
@@ -47,10 +50,42 @@ class CompositeLayer extends EventTarget {
             let filtered = true;            
             if(typeof this._filter === 'function') {
                 filtered = this._filter(obj);
-            }                                  
+            }
+            
+            let resultsClientFilter = window.Catalog.resultList.clientFilter;
+            let unChecked = window.Catalog.resultList.unChecked;
+            let {satellites, clouds, angle, date} = resultsClientFilter;
+
+            let propertiesValue = properties[this._acqdate_index];
+            let propertiesDate;
+            switch (typeof propertiesValue) {
+                case 'string':
+                    propertiesDate = new Date(propertiesValue);
+                    break;
+                case 'number':
+                    propertiesDate = new Date(propertiesValue * 1000);
+                    break;
+                default:
+                    break;
+            }     
+
+            let satellitePlatforms = [];
+            satellites.forEach(item => {
+                const {_platforms: platforms} = item;
+                platforms.forEach(platform => {
+                    if (satellitePlatforms.indexOf(platform) === -1 && unChecked.indexOf(platform) === -1) {
+                        satellitePlatforms.push(platform);
+                    }
+                });
+            });
+
             switch (this._currentTab) {
-                case 'results':            
-                    return filtered && properties[this._result_index];
+                case 'results':
+                    let satellitesCriteria = satellitePlatforms.indexOf(properties[this._platform_index]) !== -1;
+                    let cloudsCriteria = clouds[0] <= properties[this._cloudness_index] && properties[this._cloudness_index] <= clouds[1];
+                    let angleCriteria = angle[0] <= properties[this._tilt_index] && properties[this._tilt_index] <= angle[1];
+                    let dateCriteria = date[0].getTime() <= propertiesDate.getTime() && propertiesDate.getTime() <= date[1].getTime();
+                    return filtered && properties[this._result_index] && satellitesCriteria && cloudsCriteria && angleCriteria && dateCriteria;
                 case 'favorites':                                     
                     return filtered && properties[this._cart_index];
                 case 'search':

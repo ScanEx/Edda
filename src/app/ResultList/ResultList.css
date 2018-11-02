@@ -3,9 +3,10 @@
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
     font-weight: 500;
+    padding-bottom: 0;
 }
 .result-list {
-    width: 395px;
+    width: 410px;
 }
 .result-list td {
     font-family: 'Roboto', sans-serif;

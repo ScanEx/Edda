@@ -1,7 +1,8 @@
 import './ResultList.css';
 
-import 'scanex-datagrid/dist/scanex-datagrid.css';
-import { DataGrid, ENUM_ID } from 'scanex-datagrid';
+//import 'scanex-datagrid/dist/scanex-datagrid.css';
+//import { DataGrid, ENUM_ID } from 'scanex-datagrid';
+import ExtendedDataGrid from '../extendedDataGrid/ExtendedDataGrid';
 
 import { getSatelliteName } from '../../res/Satellites.js';
 import EventTarget from 'scanex-event-target';
@@ -51,6 +52,7 @@ class ResultList extends EventTarget {
         this._container = container;
         this._container.classList.add('result-list');
         this._onColumnClick = this._onColumnClick.bind(this);
+        this._onFilterApply = this._onFilterApply.bind(this);
         this._onCellClick = this._onCellClick.bind(this);
         this._onRowMouseOver = this._onRowMouseOver.bind(this);
         this._onRowMouseOut = this._onRowMouseOut.bind(this);
@@ -233,7 +235,7 @@ class ResultList extends EventTarget {
             },
         };
 
-        this._grid = new DataGrid(
+        this._grid = new ExtendedDataGrid(
             this._container,
             {
                 fields: this.fields, 
@@ -242,6 +244,7 @@ class ResultList extends EventTarget {
                 indexBy: this._indexBy,
             }
         );
+        this._grid.addEventListener('clientFilter:apply', this._onFilterApply)
         this._grid.addEventListener('cell:click', this._onCellClick);
         this._grid.addEventListener('column:click', this._onColumnClick);
         this._grid.addEventListener('row:mouseover', this._onRowMouseOver);
@@ -260,6 +263,33 @@ class ResultList extends EventTarget {
 
     get fields () {
         return this._fields;
+    }
+
+    get unChecked() {
+
+        return this._grid.unChecked;
+    }
+
+    get sortBy() {
+
+        return this._grid._sortBy;
+    }
+
+    get clientFilter() {
+
+        return this._grid.clientFilter;
+    }
+
+    set clientFilter(data) {
+
+        this._grid._clientFilter = data;
+    }
+
+    _onFilterApply () {
+        let event = document.createEvent('Event');
+        event.initEvent('clientFilter:apply', false, false);
+        event.detail = this._grid.clientFilter;
+        this.dispatchEvent(event);
     }
 
     _onSort (e) {
@@ -441,6 +471,9 @@ class ResultList extends EventTarget {
         let event = document.createEvent('Event');
         event.initEvent('refreshed', false, false);
         this.dispatchEvent(event);
+    }
+    clearFilter() {
+        this._grid.clearFilter(); 
     }
     scrollToRow(id) {
         this._grid.scrollToRow(id);

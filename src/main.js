@@ -805,8 +805,9 @@ function init_sidebar (state) {
 
         window.Catalog.resultsContainer.innerHTML = 
         `<div class="results-header">
-            <span class="results-title">${T.getText('results.title')}</span>
-            <span class="results-number">0</span>
+            <span class="results-title">${T.getText('results.title')}</span>` +
+            `<span class="results-number"><span class="filtered-results-number">0</span>/<span class="all-results-number">0</span></span>
+            <span class="results-clear-filter">Очистить фильтр</span>
             <div class="results-buttons">                
                 <i title="${T.getText('results.quicklooks.cart')}" class="quicklooks-cart"></i>
                 <i title="${T.getText('results.clear')}" class="results-clear"></i>
@@ -814,7 +815,12 @@ function init_sidebar (state) {
         </div>
         <div class="results-pane"></div>`;
 
-        window.Catalog.resultsNumberContainer = window.Catalog.resultsContainer.querySelector('.results-number');        
+        window.Catalog.resultsFilteredNumberContainer = window.Catalog.resultsContainer.querySelector('.filtered-results-number');
+        window.Catalog.resultsAllNumberContainer = window.Catalog.resultsContainer.querySelector('.all-results-number');
+        window.Catalog.resultsClearFilter = window.Catalog.resultsContainer.querySelector('.results-clear-filter');  
+        window.Catalog.resultsClearFilter.addEventListener('click', () => {
+            window.Catalog.resultsController.clearResultsFilter();
+        });
 
         // window.Catalog.favoritesContainer = window.Catalog.searchSidebar.setPane('favorites', {
         //     createTab: createTab({
@@ -1179,6 +1185,46 @@ function init_sidebar (state) {
         });
         enable_search();
 
+        let apply_filter = (satellites, clouds, angle, date) => {
+
+            let unChecked = window.Catalog.resultList.unChecked;
+
+            let satellitePlatforms = [];
+            satellites.forEach(item => {
+                const platforms = item['_platforms'];
+                platforms.forEach(platform => {
+                    if (satellitePlatforms.indexOf(platform) === -1 && unChecked.indexOf(platform) === -1) {
+                        satellitePlatforms.push(platform);
+                    }
+                });
+            });
+
+            window.Catalog.resultsController.filter = item => {
+
+                const satellitesCriteria = satellitePlatforms.indexOf(item['platform']) !== -1;
+                const cloudsCriteria = clouds[0] <= item.cloudness && item.cloudness <= clouds[1];
+                const angleCriteria = angle[0] <= item.tilt && item.tilt <= angle[1];
+                const dateCriteria = date[0].getTime() <= item.acqdate.getTime() && item.acqdate.getTime() <= date[1].getTime();
+
+                return satellitesCriteria && cloudsCriteria && angleCriteria && dateCriteria;
+            };
+            window.Catalog.resultsController.enableFilter(true);
+            resize_results(window.Catalog.resultsContainer);
+            update_results_number(window.Catalog.resultList.count, true);
+            update_cart_number(window.Catalog.favoritesList.count);
+        };
+        window.Catalog.resultList.addEventListener('clientFilter:apply', (e) => {
+
+            const {detail: clientFilter} = e;
+            const {satellites, clouds, angle, date} = clientFilter;
+
+            window.Catalog.resultList.clientFilter = clientFilter;
+
+            apply_filter(satellites, clouds, angle, date);
+
+            window.Catalog.resultsController.redrawCompositeLayer();
+        })
+
         let sidebarWidth = sidebarContainer.getBoundingClientRect().width;                
         map.options.paddingTopLeft = [sidebarWidth, 0];
 
@@ -1265,9 +1311,15 @@ function update_cart_number (num) {
     }
 }
 
-function update_results_number(num) {
+function update_results_number(num, isFiltered = false) {
     // document.querySelector('[data-pane-id=results] .results-number').innerText = num;
-    window.Catalog.resultsNumberContainer.innerText = num;
+    if (!isFiltered) {
+        window.Catalog.resultsFilteredNumberContainer.innerText = num;
+        window.Catalog.resultsAllNumberContainer.innerText = num;
+    }
+    else {
+        window.Catalog.resultsFilteredNumberContainer.innerText = num;
+    }
 }
 
 function add_to_order () {
