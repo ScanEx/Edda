@@ -62,8 +62,6 @@ export default class ExtendedDataGrid extends DataGrid {
 
         super(...props);
 
-        const now = new Date();
-
         const {criteria: {clouds, angle, date}} = window.Catalog.searchOptions;
 
         this._clientFilter = {
@@ -75,19 +73,23 @@ export default class ExtendedDataGrid extends DataGrid {
 
         this._platformConstructor = new Platform({
             field: this._fields['platform'],
-            setClientFilter: this._setSatellites.bind(this)
+            setClientFilter: this._setSatellites.bind(this),
+            closeAll: this._closeAllToggableContent.bind(this)
         });
         this._cloudnessConstructor = new Cloudness({
             field: this._fields['cloudness'],
-            setClientFilter: this._setCloudness.bind(this)
+            setClientFilter: this._setCloudness.bind(this),
+            closeAll: this._closeAllToggableContent.bind(this)
         });
         this._angleConstructor = new Angle({
             field: this._fields['tilt'],
-            setClientFilter: this._setAngle.bind(this)
+            setClientFilter: this._setAngle.bind(this),
+            closeAll: this._closeAllToggableContent.bind(this)
         });
         this._acqdateConstructor = new AcqDate({
             field: this._fields['acqdate'],
-            setClientFilter: this._setDate.bind(this)
+            setClientFilter: this._setDate.bind(this),
+            closeAll: this._closeAllToggableContent.bind(this)
         });
 
         this._platformConstructor.addEventListener('clientFilter:apply', () => {
@@ -113,6 +115,25 @@ export default class ExtendedDataGrid extends DataGrid {
             let event = document.createEvent('Event');
             event.initEvent('clientFilter:apply', false, false);
             this.dispatchEvent(event);
+        });
+    }
+
+    _closeAllToggableContent(name) {
+
+        const header  = this._header;
+
+        const filterableHeaders = header.querySelectorAll('.filterable-header');
+        filterableHeaders.forEach(item => {
+            if (!item.classList.contains(`filterable-header-${name}`)) {
+                item.classList.remove('active');
+            }
+        });
+
+        const toggableContents = header.querySelectorAll('.togglable-content');
+        toggableContents.forEach(item => {
+            if (!item.classList.contains(`togglable-content-${name}`)) {
+                item.style.visibility = 'hidden';
+            }
         });
     }
 

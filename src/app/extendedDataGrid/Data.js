@@ -13,10 +13,11 @@ export default class DateFilter extends EventTarget {
 
         super();
 
-        const {field, setClientFilter} = config;
+        const {field, setClientFilter, closeAll} = config;
 
         this._field = field;
         this._setClientFilter = setClientFilter;
+        this._closeAll = closeAll;
 
         const now = new Date();
 
@@ -53,10 +54,10 @@ export default class DateFilter extends EventTarget {
                             <span class="date-diff">${datesDiff}</span>
                         </div>
                     </div>
-                    <span class="filterable-header${appliedClass}">${this._field['name']}</span>
+                    <span class="filterable-header-date filterable-header${appliedClass}">${this._field['name']}</span>
                     <i class="table-list-sort"${sortIconDisplay}></i>
                 </div>
-                <div style="visibility: hidden;" class="togglable-content filterable-date-container">
+                <div style="visibility: hidden;" class="togglable-content-date togglable-content filterable-date-container">
                     <div class="search-options-period-section" style="padding-left: 5px; padding-right: 5px;">
                     <div class="search-options-period">
                         <div>
@@ -200,6 +201,8 @@ export default class DateFilter extends EventTarget {
     }
 
     _onColumnClick(e) {
+
+        this._closeAll('date');
 
         const {target} = e;
 

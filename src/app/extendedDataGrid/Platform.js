@@ -8,10 +8,11 @@ export default class PlatformFilter extends EventTarget {
 
         super();
 
-        const {field, setClientFilter} = config;
+        const {field, setClientFilter, closeAll} = config;
 
         this._field = field;
         this._setClientFilter = setClientFilter;
+        this._closeAll = closeAll;
 
         this._unChecked = [];
     }
@@ -43,10 +44,10 @@ export default class PlatformFilter extends EventTarget {
                             <span class="checked">${this._satellites.length - this._unChecked.length}</span>/<span class="all">${this._satellites.length}</span>
                         </div>
                     </div>
-                    <span class="filterable-header${appliedClass}">${this._field['name']}</span>
+                    <span class="filterable-header-platform filterable-header${appliedClass}">${this._field['name']}</span>
                     <i class="table-list-sort"${sortIconDisplay}></i>
                 </div>
-                <div style="display: none;" class="togglable-content filterable-satellites-container">
+                <div style="visibility: hidden;" class="togglable-content-platform togglable-content filterable-satellites-container">
                     <fieldset class="search-options-satellites-ms">
                         ${this._getSatelliteList(this._satellites)}
                     </fieldset>
@@ -118,6 +119,8 @@ export default class PlatformFilter extends EventTarget {
 
     _onColumnClick(e) {
 
+        this._closeAll('platform');
+
         const {target} = e;
 
         if (target) {
@@ -127,11 +130,11 @@ export default class PlatformFilter extends EventTarget {
 
             if (!hasActiveClass) {
                 target.classList.add('active');
-                filterContainer.style.display = 'block';
+                filterContainer.style.visibility = 'visible';
             }
             else {
                 target.classList.remove('active');
-                filterContainer.style.display = 'none';
+                filterContainer.style.visibility = 'hidden';
             }
         }
     }

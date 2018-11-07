@@ -9,10 +9,11 @@ export default class AngleFilter extends EventTarget {
 
         super();
 
-        const {field, setClientFilter} = config;
+        const {field, setClientFilter, closeAll} = config;
 
         this._field = field;
         this._setClientFilter = setClientFilter;
+        this._closeAll = closeAll;
 
         this._minMaxValues = [0, 0];
         this._values = false;
@@ -54,10 +55,10 @@ export default class AngleFilter extends EventTarget {
                             <span class="min">${minValue}</span>-<span class="max">${maxValue}</span>
                         </div>
                     </div>
-                    <span class="filterable-header${appliedClass}">${this._field['name']}</span>
+                    <span class="filterable-header-angle filterable-header${appliedClass}">${this._field['name']}</span>
                     <i class="table-list-sort"${sortIconDisplay}></i>
                 </div>
-                <div style="visibility: hidden;" class="togglable-content filterable-cloudness-container">
+                <div style="visibility: hidden;" class="togglable-content-angle togglable-content filterable-cloudness-container">
                     <div class="results-angle-slider-container"></div>
                     <div class="min-value">${minValue}</div>
                     <div class="max-value">${maxValue}</div>
@@ -141,6 +142,8 @@ export default class AngleFilter extends EventTarget {
     }
 
     _onColumnClick(e) {
+
+        this._closeAll('angle');
 
         const {target} = e;
 
