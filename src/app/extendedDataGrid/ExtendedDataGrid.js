@@ -218,7 +218,7 @@ export default class ExtendedDataGrid extends DataGrid {
         if (col === 'platform') {
 
             return (
-                `<td${field.tooltip ? ` title="${field.tooltip}"` : ''} class="table-list-col" data-field="${col}">
+                `<td style="padding-left:0;" ${field.tooltip ? ` title="${field.tooltip}"` : ''} class="table-list-col" data-field="${col}">
                    ${this._platformConstructor.renderHeader()}
                 </td>`
             );
@@ -227,7 +227,7 @@ export default class ExtendedDataGrid extends DataGrid {
         if (col === 'cloudness') {
 
             return (
-                `<td${field.tooltip ? ` title="${field.tooltip}"` : ''} class="table-list-col" data-field="${col}">
+                `<td style="padding-left:3px;" ${field.tooltip ? ` title="${field.tooltip}"` : ''} class="table-list-col" data-field="${col}">
                    ${this._cloudnessConstructor.renderHeader()}
                 </td>`
             );
@@ -236,7 +236,7 @@ export default class ExtendedDataGrid extends DataGrid {
         if (col === 'tilt') {
 
             return (
-                `<td${field.tooltip ? ` title="${field.tooltip}"` : ''} class="table-list-col" data-field="${col}">
+                `<td style="padding-left:4px;" ${field.tooltip ? ` title="${field.tooltip}"` : ''} class="table-list-col" data-field="${col}">
                    ${this._angleConstructor.renderHeader()}
                 </td>`
             );
@@ -245,7 +245,7 @@ export default class ExtendedDataGrid extends DataGrid {
         if (col === 'acqdate') {
 
             return (
-                `<td${field.tooltip ? ` title="${field.tooltip}"` : ''} class="table-list-col" data-field="${col}">
+                `<td style="padding-left:10px;" ${field.tooltip ? ` title="${field.tooltip}"` : ''} class="table-list-col" data-field="${col}">
                    ${this._acqdateConstructor.renderHeader()}
                 </td>`
             );

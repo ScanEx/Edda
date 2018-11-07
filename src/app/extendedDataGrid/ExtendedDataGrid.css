@@ -2,6 +2,13 @@
     position: relative;
 }
 
+.extended-slider-input {
+    width: 25px;
+    font-size: 10px;
+    text-align: center;
+    outline: none;
+}
+
 .filterable-field-container .table-list-sort {
     display: inline-block;
 
@@ -12,8 +19,8 @@
     border-radius: 8px;
     display:inline-block;
     padding:2px 3px;
-    padding-left: 1px;
-    padding-right: 2px;
+    padding-left: 2px;
+    padding-right: 4px;
     vertical-align: middle;
 }
 

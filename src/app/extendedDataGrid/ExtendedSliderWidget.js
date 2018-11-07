@@ -9,12 +9,12 @@ export default class ExtendedSliderWidget extends SliderWidget {
 
         const parent = this._container.parentNode;
 
-        this._leftNumber = parent.querySelector('.min-value');
-        this._rightNumber = parent.querySelector('.max-value');
+        this._leftNumber = parent.querySelector('.min-input');
+        this._rightNumber = parent.querySelector('.max-input');
 
         this.addEventListener('change', () => {
-            this._leftNumber.innerText = this._lo;
-            this._rightNumber.innerText = this._hi;
+            this._leftNumber.value = this._lo;
+            this._rightNumber.value = this._hi;
         });
     }
 
