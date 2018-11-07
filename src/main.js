@@ -1138,6 +1138,7 @@ function init_sidebar (state) {
             if (window.Catalog.btnSearch.classList.contains('search-options-search-button-active')) {
                 ignoreResults = false;
                 window.Catalog.loaderWidget.show();
+                window.Catalog.resultsController.clearResultsFilter();
                 window.Catalog.resultsController.clear();
                 window.Catalog.requestAdapter.criteria = window.Catalog.searchOptions.criteria;
                 if(window.Catalog.drawnObjectsControl.widget.count === 0){
