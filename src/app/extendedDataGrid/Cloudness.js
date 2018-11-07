@@ -1,5 +1,5 @@
 import EventTarget from 'scanex-event-target';
-import {SliderWidget} from 'scanex-slider-widget';
+import ExtendedSliderWidget from './ExtendedSliderWidget';
 
 
 
@@ -20,7 +20,7 @@ export default class CloudnessFilter extends EventTarget {
 
     initSlider() {
 
-        this._cloudSlider = new SliderWidget(
+        this._cloudSlider = new ExtendedSliderWidget(
             document.querySelector('.results-cloudness-slider-container'),
             {min: this._minMaxValues[0], max: this._minMaxValues[1]}
         );
@@ -59,8 +59,8 @@ export default class CloudnessFilter extends EventTarget {
                 </div>
                 <div style="visibility: hidden;" class="togglable-content filterable-cloudness-container">
                     <div class="results-cloudness-slider-container"></div>
-                    <div class="min-value">${this._minMaxValues[0]}</div>
-                    <div class="max-value">${this._minMaxValues[1]}</div>
+                    <div class="min-value">${minValue}</div>
+                    <div class="max-value">${maxValue}</div>
                     <div style="clear: both;"></div>
                     <div class="apply">Применить</div>
                 </div>

@@ -119,6 +119,8 @@
 .filterable-cloudness-container .slider-widget-tick-left,
 .filterable-cloudness-container .slider-widget-tick-right {
     border-radius: 3px !important;
+    width: 13px;
+    height: 13px;
 }
 .filterable-cloudness-container .min-value {
     float: left;
