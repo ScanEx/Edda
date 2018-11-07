@@ -1049,27 +1049,43 @@ function init_sidebar (state) {
         //     shift_base_layers_control();
         // });
 
+        let searchTab = document.body.querySelector('[data-tab-id=search]');
+        let resultsTab = document.body.querySelector('[data-tab-id=results]');
+        let favoritesTab = document.body.querySelector('[data-tab-id=favorites]');
+
         window.Catalog.searchSidebar.on('change', e => {
             const {detail: {current}} = e;            
             switch(current) {
                 case 'search':
                     window.Catalog.searchOptions.refresh();
                     resize_search_options();
-                    window.Catalog.resultsController.hideContours(); 
+                    window.Catalog.resultsController.hideContours();
+                    searchTab.classList.add('active-sidebar-tab');
+                    resultsTab.classList.remove('active-sidebar-tab');
+                    favoritesTab.classList.remove('active-sidebar-tab');
                     // hide_filter();
                     break;
                 case 'results':
                     window.Catalog.resultsController.showResults();
                     resize_results(window.Catalog.resultsContainer);  
+                    searchTab.classList.remove('active-sidebar-tab');
+                    resultsTab.classList.add('active-sidebar-tab');
+                    favoritesTab.classList.remove('active-sidebar-tab');
                     // show_filter();
                     break;
                 case 'favorites':
                     window.Catalog.resultsController.showFavorites();                    
                     resize_favorites(window.Catalog.favoritesContainer);                    
                     enable_cart (window.Catalog.resultsController.hasFavoritesSelected);
+                    searchTab.classList.remove('active-sidebar-tab');
+                    resultsTab.classList.remove('active-sidebar-tab');
+                    favoritesTab.classList.add('active-sidebar-tab');
                     // show_filter();
                     break;
                 default:
+                    searchTab.classList.remove('active-sidebar-tab');
+                    resultsTab.classList.remove('active-sidebar-tab');
+                    favoritesTab.classList.remove('active-sidebar-tab');
                     update_cart_number(window.Catalog.favoritesList.items.length);         
                     shift_base_layers_control();
                     break;
