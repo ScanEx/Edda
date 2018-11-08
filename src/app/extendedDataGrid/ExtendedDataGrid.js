@@ -120,7 +120,7 @@ export default class ExtendedDataGrid extends DataGrid {
 
     _closeAllToggableContent(name) {
 
-        const header  = this._header;
+        const header = this._header;
 
         const filterableHeaders = header.querySelectorAll('.filterable-header');
         filterableHeaders.forEach(item => {
@@ -166,22 +166,66 @@ export default class ExtendedDataGrid extends DataGrid {
         return this._clientFilter;
     }
 
+    _setClearButtonVisible() {
+
+        const clientFilter = this.clientFilter;
+        const {criteria} = window.Catalog.searchOptions;
+
+        let platformIsModified = false;
+        if (this.unChecked.length > 0) {
+            platformIsModified = true;
+        }
+
+        let cloudnessIsModified = false;
+        const [minClientCloudness, maxClientCloudness] = clientFilter.clouds;
+        const [minCriteriaCloudness, maxCriteriaCloudness] = criteria.clouds;
+        if (minClientCloudness !== minCriteriaCloudness || maxClientCloudness !== maxCriteriaCloudness) {
+            cloudnessIsModified = true;
+        }
+
+        let angleIsModified = false;
+        const [minClientAngle, maxClientAngle] = clientFilter.angle;
+        const [minCriteriaAngle, maxCriteriaAngle] = criteria.angle;
+        if (minClientAngle !== minCriteriaAngle || maxClientAngle !== maxCriteriaAngle) {
+            angleIsModified = true;
+        }
+
+        let dateIsModified = false;
+        const [minClientDate, maxClientDate] = clientFilter.date;
+        const [minCriteriaDate, maxCriteriaDate] = criteria.date;
+        if (minClientDate.getTime() !== minCriteriaDate.getTime() || maxClientDate.getTime() !== maxCriteriaDate.getTime()) {
+            dateIsModified = true;
+        }
+
+        const displayStyle = platformIsModified || cloudnessIsModified || angleIsModified || dateIsModified ? 'inline' : 'none';
+
+        window.Catalog.resultsContainer.querySelector('.results-clear-filter').style.display = displayStyle;
+    }
+
     _setSatellites(satellites) {
+
+        this._setClearButtonVisible();
 
         this._clientFilter['satellites'] = satellites;
     }
 
     _setCloudness(clouds) {
 
+        this._setClearButtonVisible();
+
         this._clientFilter['clouds'] = clouds;
     }
 
     _setAngle(angle) {
 
+        this._setClearButtonVisible();
+
         this._clientFilter['angle'] = angle;
     }
 
     _setDate(date) {
+
+        this._setClearButtonVisible();
 
         this._clientFilter['date'] = date;
     }

@@ -110,6 +110,7 @@ T.addText('rus', {
         stereo: 'Стерео',
         clear: 'Очистить список',
         selected: 'Показывать выбранные / все',
+        clearFilter: 'Очистить фильтр',
         quicklooks: {
             select: 'Выбрать квиклуки',
             toggle:'Показать / скрыть выбранные квиклуки',
@@ -205,6 +206,7 @@ T.addText('eng', {
         },    
         clear: 'Clear results',
         selected: 'Show selected / all',
+        clearFilter: 'Clear filter',
         quicklooks: {
             select: 'Select quicklooks',
             toggle: 'Show / hide selected quicklooks',
@@ -807,7 +809,7 @@ function init_sidebar (state) {
         `<div class="results-header">
             <span class="results-title">${T.getText('results.title')}</span>` +
             `<span class="results-number"><span class="filtered-results-number">0</span>/<span class="all-results-number">0</span></span>
-            <span class="results-clear-filter">Очистить фильтр</span>
+            <span class="results-clear-filter">${T.getText('results.clearFilter')}</span>
             <div class="results-buttons">                
                 <i title="${T.getText('results.quicklooks.cart')}" class="quicklooks-cart"></i>
                 <i title="${T.getText('results.clear')}" class="results-clear"></i>
@@ -820,6 +822,7 @@ function init_sidebar (state) {
         window.Catalog.resultsClearFilter = window.Catalog.resultsContainer.querySelector('.results-clear-filter');  
         window.Catalog.resultsClearFilter.addEventListener('click', () => {
             window.Catalog.resultsController.clearResultsFilter();
+            window.Catalog.resultsContainer.querySelector('.results-clear-filter').style.display = 'none';
         });
 
         // window.Catalog.favoritesContainer = window.Catalog.searchSidebar.setPane('favorites', {
@@ -1154,9 +1157,9 @@ function init_sidebar (state) {
             if (window.Catalog.btnSearch.classList.contains('search-options-search-button-active')) {
                 ignoreResults = false;
                 window.Catalog.loaderWidget.show();
-                window.Catalog.resultsController.clearResultsFilter();
                 window.Catalog.resultsController.clear();
                 window.Catalog.requestAdapter.criteria = window.Catalog.searchOptions.criteria;
+                window.Catalog.resultsController.clearResultsFilter();
                 if(window.Catalog.drawnObjectsControl.widget.count === 0){
                     window.Catalog.requestAdapter.geometries = [get_bounds()];
                 }

@@ -125,16 +125,25 @@ class CompositeLayer extends EventTarget {
         this._vectorLayer.disableFlip();
         this._vectorLayer.setFilter (tab_filter);
         this._vectorLayer.setStyleHook (item => {
+            
+            const currentTab = this._currentTab;
+
             let {properties} = item;
             let color = Colors.Default;
             let lineWidth = 1;
+
+            if (currentTab === 'results' && properties[this._cart_index]) {
+                lineWidth = 3;
+            }
+
             if (properties[this._hover_index]) {
                 color = properties[this._cart_index] ? Colors.CartHilite : Colors.Hilite;
-                lineWidth = 3;
+                lineWidth = 5;
             }
             else {
                 color = properties[this._cart_index] ? Colors.Cart : Colors.Default;
             }
+
             return { skipRasters: true, strokeStyle: color, lineWidth };
         });
         this._vectorLayer.addTo(this._map);
