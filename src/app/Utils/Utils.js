@@ -433,11 +433,11 @@ function get_difference_between_dates(startDate, endDate) {
 
     const startYear = startDate.getFullYear();
     const startMonth = startDate.getMonth();
-    const startDay = startDate.getDay();
+    const startDay = startDate.getDate();
 
     const endYear = endDate.getFullYear();
     const endMonth = endDate.getMonth();
-    const endDay = endDate.getDay();/**/
+    const endDay = endDate.getDate();
 
     const startMomentDate = moment([startYear, startMonth, startDay]);
     const endMomentDate = moment([endYear, endMonth, endDay]);

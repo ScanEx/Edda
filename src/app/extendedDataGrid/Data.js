@@ -2,6 +2,8 @@ import EventTarget from 'scanex-event-target';
 import Translations from 'scanex-translations';
 import Pikaday from 'pikaday';
 
+import ExtendedSliderWidget from './ExtendedDateSliderWidget';
+
 import {get_difference_between_dates} from '../Utils/Utils';
 
 const T = Translations;
@@ -58,22 +60,30 @@ export default class DateFilter extends EventTarget {
                     <i class="table-list-sort"${sortIconDisplay}></i>
                 </div>
                 <div style="visibility: hidden;" class="togglable-content-date togglable-content filterable-date-container">
-                    <div class="search-options-period-section" style="padding-left: 5px; padding-right: 5px;">
-                    <div class="search-options-period">
-                        <div>
-                            <div class="search-options-period-from label">${T.getText('period.from')}</div>
-                            <input class="search-options-period-from-value results-filter-date-start-container" style="" type="text"/>
-                        </div>
-                        <div style="margin-top: 10px;">
-                            <div class="search-options-period-to label">${T.getText('period.to')}</div>
-                            <input class="search-options-period-to-value results-filter-date-end-container" type="text" />
-                        </div>
+                    <div style="text-align: left; padding-top: 10px;">
+                        <input class="search-options-period-from-value min-input results-filter-date-start-container" type="text" value="${minValue}" />
+                        -
+                        <input class="search-options-period-to-value  max-input results-filter-date-end-container" type="text" value="${maxValue}" />
                     </div>
-                    </div>
-                    <div class="apply">Применить</div>
+                    <div class="results-date-slider-container"></div>
+                    <div class="min-value">${this._getMonthName(minValue.getMonth())} ${minValue.getFullYear()}</div>
+                    <div class="max-value">${this._getMonthName(maxValue.getMonth())} ${maxValue.getFullYear()}</div>
+                    <div class="apply" style="margin-top:25px;">Применить</div>
                 </div>
             </div>`
         );
+    }
+
+    initSlider() {
+
+        const minTime = this._minMaxValues[0].getTime();
+        const maxTime = this._minMaxValues[1].getTime();
+
+        this._dateSlider = new ExtendedSliderWidget(
+            document.querySelector('.results-date-slider-container'),
+            {min: minTime, max: maxTime, mode: 'date', startDate: this._startDate, endDate: this._endDate}
+        );
+        this._dateSlider.values = this._values;
     }
 
     attachEvents(column) {
@@ -119,29 +129,48 @@ export default class DateFilter extends EventTarget {
         const [minValue, maxValue] = this._values;
         
         this._startDate = new Pikaday ({
-          field: document.querySelector('.results-filter-date-start-container'),
-          // format: 'L', 
-          format: 'DD.MM.YYYY',
-          yearRange: 20,
-          i18n: i18n,
-          keyboardInput: false,
-          blurFieldOnSelect: false,
+            field: document.querySelector('.results-filter-date-start-container'),
+            // format: 'L', 
+            format: 'DD.MM.YYYY',
+            yearRange: 20,
+            i18n: i18n,
+            keyboardInput: false,
+            blurFieldOnSelect: false,
         });    
         
         this._endDate = new Pikaday ({
-          field: document.querySelector('.results-filter-date-end-container'),
-          // format: 'L', 
-          format: 'DD.MM.YYYY',
-          yearRange: 20,
-          i18n: i18n,
-          keyboardInput: false,
-          blurFieldOnSelect: false,
+            field: document.querySelector('.results-filter-date-end-container'),
+            // format: 'L', 
+            format: 'DD.MM.YYYY',
+            yearRange: 20,
+            i18n: i18n,
+            keyboardInput: false,
+            blurFieldOnSelect: false,
         });  
-    
+
         this._startDate.setDate(minValue);
         this._endDate.setDate(maxValue);
+    }
 
-      }
+    _getMonthName(month) {
+
+        const monthObject = {
+            0: 'янв',
+            1: 'фев',
+            2: 'мар',
+            3: 'апр',
+            4: 'май',
+            5: 'июн',
+            6: 'июл',
+            7: 'авг',
+            8: 'сен',
+            9: 'окт',
+            10: 'ноя',
+            11: 'дек'
+        }
+
+        return monthObject[parseInt(month)];
+    }
 
     _prepareMinMaxValues() {
 

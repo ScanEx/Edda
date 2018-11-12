@@ -59,10 +59,10 @@ export default class AngleFilter extends EventTarget {
                     <i class="table-list-sort"${sortIconDisplay}></i>
                 </div>
                 <div style="visibility: hidden; padding-top:10px;" class="togglable-content-angle togglable-content filterable-cloudness-container">
-                    <div style="text-align: right;">
-                        <input disabled="true" class="extended-slider-input min-input" type="text" value="${minValue}" />
+                    <div style="text-align: left;">
+                        <input class="extended-slider-input min-input" type="text" value="${minValue}" />
                         -
-                        <input disabled="true" class="extended-slider-input max-input" type="text" value="${maxValue}" />
+                        <input class="extended-slider-input max-input" type="text" value="${maxValue}" />
                     </div>
                     <div class="results-angle-slider-container"></div>
                     <div class="min-value">${minValue}</div>

@@ -13,24 +13,43 @@ export default class ExtendedSliderWidget extends SliderWidget {
         this._rightInput = parent.querySelector('.max-input');
 
         this._leftInput.addEventListener('change', this._handleLeftInput.bind(this));
-        this._leftInput.addEventListener('focus', e => this._leftInput.select());
         this._rightInput.addEventListener('change', this._handleRightInput.bind(this));
-        this._rightInput.addEventListener('focus', e => this._rightInput.select());
+
+        this._startDate = this.options.startDate || null;
+        this._endDate = this.options.endDate || null;
 
         this.addEventListener('change', () => {
-            this._leftInput.value = this._lo;
-            this._rightInput.value = this._hi;
+            this._startDate.setDate(new Date(this._lo));
+            this._endDate.setDate(new Date(this._hi));
         });
     }
 
+    _compareDates(one, two) {
+
+        const oneDate = new Date(one);
+        const twoDate = new Date(two);
+
+        return oneDate.getDay() === twoDate.getDay() && oneDate.getMonth() === twoDate.getMonth() && oneDate.getYear() === twoDate.getYear();
+    }
+
     _handleLeftInput(e){
-        const lo = this.options.mode === 'integer' ? parseInt(this._leftInput.value, 10) : new Date(this._leftInput.value.getTime());
-        const hi = this.options.mode === 'integer' ? parseInt(this._rightInput.value, 10) : new Date(this._rightInput.value.getTime());
-        if(!isNaN(lo) && this.options.min <= lo && lo <= this.options.max){
-            this.values = [lo, hi];
+        const lo = this._startDate.getDate();
+        const hi = this._endDate.getDate();
+        const loTime = lo.getTime();
+        const hiTime = hi.getTime();
+
+        if (this._compareDates(this._lo, loTime)) {
+            return;
+        }
+
+        if (!isNaN(loTime) && this.options.min <= loTime && lo <= this.options.max) {
+            this.values = [loTime, hiTime];
         }
         else {
-            this._leftInput.value = this.options.mode === 'integer' ? Math.round (this._lo) : this._lo.toFixed(1);
+            const prevLo = this._lo;
+            const prevLoDate = new Date(prevLo);
+
+            this._startDate.setDate(prevLoDate);
         }
 
         // this.dispatchEvent(new CustomEvent('change', { detail: [this._lo, this._hi]}));
@@ -46,13 +65,23 @@ export default class ExtendedSliderWidget extends SliderWidget {
 
     }
     _handleRightInput(e){
-        const lo = this.options.mode === 'integer' ? parseInt(this._leftInput.value, 10) : parseFloat(this._leftInput.value);
-        const hi = this.options.mode === 'integer' ? parseInt(this._rightInput.value, 10) : parseFloat(this._rightInput.value);
-        if(!isNaN(hi) && this.options.min <= hi && hi <= this.options.max){
-            this.values = [lo, hi];
+        const lo = this._startDate.getDate();
+        const hi = this._endDate.getDate();
+        const loTime = lo.getTime();
+        const hiTime = hi.getTime();
+        
+        if (this._compareDates(this._hi, hiTime)) {
+            return;
+        }
+
+        if(!isNaN(hiTime) && this.options.min <= hiTime && hiTime <= this.options.max){
+            this.values = [loTime, hiTime];
         }
         else {
-            this._rightInput.value = this.options.mode === 'integer' ?  Math.round (this._hi) : this._hi.toFixed(1);
+            const prevHi = this._hi;
+            const prevHiDate = new Date(prevHi);
+
+            this._endDate.setDate(prevHiDate);
         }
 
         // this.dispatchEvent(new CustomEvent('change', { detail: [this._lo, this._hi]}));

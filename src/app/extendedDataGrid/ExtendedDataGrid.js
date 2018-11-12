@@ -235,6 +235,7 @@ export default class ExtendedDataGrid extends DataGrid {
         this._cloudnessConstructor.initSlider();
         this._angleConstructor.initSlider();
         this._acqdateConstructor.initDatePicker();
+        this._acqdateConstructor.initSlider();
     }
 
     _render (items) {
