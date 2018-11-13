@@ -1511,6 +1511,8 @@ function init_upload (shapeLoader) {
             recursiveArrayLength(coordinates);
         }
 
+        numOfCoordinates = Math.round(numOfCoordinates/2);
+
         return numOfCoordinates;
     };
     let uploadControl = new L.Control.gmxIcon({
