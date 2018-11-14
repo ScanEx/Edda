@@ -68,4 +68,12 @@ export default class ExtendedSliderWidget extends SliderWidget {
         
     }
 
+    setValues(values) {
+
+        this.values = values;
+
+        this._leftInput.value = values[0];
+        this._rightInput.value = values[1];
+    }
+
 }

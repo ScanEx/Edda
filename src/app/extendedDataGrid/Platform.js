@@ -15,6 +15,7 @@ export default class PlatformFilter extends EventTarget {
         this._closeAll = closeAll;
 
         this._unChecked = [];
+        this._tmpUnchecked = [];
     }
 
     get unChecked() {
@@ -28,6 +29,10 @@ export default class PlatformFilter extends EventTarget {
 
         if (clear) {
             this._unChecked = [];
+            this._tmpUnchecked = [];
+        }
+        else {
+            this._tmpUnchecked = [...this._unChecked];
         }
 
         this.prepareSatellites();
@@ -62,6 +67,8 @@ export default class PlatformFilter extends EventTarget {
         const filterableHeader = column.querySelector('.filterable-header');
         const satelliteCheckboxes = column.querySelectorAll('input[type="checkbox"]');
         const applyButton = column.querySelector('.apply');
+
+        this._container = column;
 
         column.querySelector('.on-hover-div').addEventListener('mouseover', this._onSortMouseOver.bind(this));
         column.querySelector('.on-hover-div').addEventListener('mouseout', this._onSortMouseOut.bind(this));
@@ -135,6 +142,13 @@ export default class PlatformFilter extends EventTarget {
             else {
                 target.classList.remove('active');
                 filterContainer.style.visibility = 'hidden';
+                this._tmpUnchecked = [...this._unChecked];
+                const satellitesContainer = this._container.querySelector('.search-options-satellites-ms');
+                satellitesContainer.innerHTML = this._getSatelliteList(this._satellites);
+                const satelliteCheckboxes = this._container.querySelectorAll('input[type="checkbox"]');
+                satelliteCheckboxes.forEach(item => {
+                    item.addEventListener('click', this._onCheckboxClick.bind(this));
+                });
             }
         }
     }
@@ -198,14 +212,14 @@ export default class PlatformFilter extends EventTarget {
         const currentPlatforms = this._getSatellitePlatformsById(correctId);
 
         currentPlatforms.forEach(platform => {
-            const unCheckedIndex = this._unChecked.indexOf(platform);
+            const unCheckedIndex = this._tmpUnchecked.indexOf(platform);
             if (!checked) {
                 if (unCheckedIndex === -1) {
-                    this._unChecked.push(platform);
+                    this._tmpUnchecked.push(platform);
                 }
             }
             else {
-                this._unChecked.splice(platform, 1);
+                this._tmpUnchecked.splice(platform, 1);
             }
         });
     }
@@ -217,6 +231,8 @@ export default class PlatformFilter extends EventTarget {
         const filterableHeader = parent.querySelector('.filterable-header');
         const togglableContent = parent.querySelector('.togglable-content');
         const filterableApplied = parent.querySelector('.filterable-applied > div');
+
+        this._unChecked = [...this._tmpUnchecked];
 
         filterableHeader.classList.remove('active');
 

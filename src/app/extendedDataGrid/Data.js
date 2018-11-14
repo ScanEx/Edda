@@ -66,8 +66,8 @@ export default class DateFilter extends EventTarget {
                         <input class="search-options-period-to-value  max-input results-filter-date-end-container" type="text" value="${maxValue}" />
                     </div>
                     <div class="results-date-slider-container"></div>
-                    <div class="min-value">${this._getMonthName(minValue.getMonth())} ${minValue.getFullYear()}</div>
-                    <div class="max-value">${this._getMonthName(maxValue.getMonth())} ${maxValue.getFullYear()}</div>
+                    <div class="min-value">${this._getMonthName(minDate.getMonth())} ${minDate.getFullYear()}</div>
+                    <div class="max-value">${this._getMonthName(maxDate.getMonth())} ${maxDate.getFullYear()}</div>
                     <div class="apply" style="margin-top:25px;">Применить</div>
                 </div>
             </div>`
@@ -83,7 +83,11 @@ export default class DateFilter extends EventTarget {
             document.querySelector('.results-date-slider-container'),
             {min: minTime, max: maxTime, mode: 'date', startDate: this._startDate, endDate: this._endDate}
         );
-        this._dateSlider.values = this._values;
+
+        const [minValue, maxValue] = this._values;
+        const intValues = [minValue.getTime(), maxValue.getTime()];
+
+        this._dateSlider.values = intValues;
     }
 
     attachEvents(column) {
@@ -247,6 +251,9 @@ export default class DateFilter extends EventTarget {
             else {
                 target.classList.remove('active');
                 filterContainer.style.visibility = 'hidden';
+                const [minValue, maxValue] = this._values;
+                this._startDate.setDate(minValue);
+                this._endDate.setDate(maxValue);
             }
         }
     }

@@ -1228,10 +1228,9 @@ function init_sidebar (state) {
 
                 return satellitesCriteria && cloudsCriteria && angleCriteria && dateCriteria;
             };
-            window.Catalog.resultsController.enableFilter(true);
+            window.Catalog.resultsController.enableResultsFilter(true);
             resize_results(window.Catalog.resultsContainer);
             update_results_number(window.Catalog.resultList.count, true);
-            update_cart_number(window.Catalog.favoritesList.count);
         };
         window.Catalog.resultList.addEventListener('clientFilter:apply', (e) => {
 

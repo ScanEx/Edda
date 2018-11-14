@@ -18,7 +18,7 @@ export default class ExtendedSliderWidget extends SliderWidget {
         this._startDate = this.options.startDate || null;
         this._endDate = this.options.endDate || null;
 
-        this.addEventListener('change', () => {
+        this.addEventListener('stop', () => {
             this._startDate.setDate(new Date(this._lo));
             this._endDate.setDate(new Date(this._hi));
         });
@@ -95,6 +95,18 @@ export default class ExtendedSliderWidget extends SliderWidget {
         event.detail = [this._lo, this._hi];
         this.dispatchEvent(event);
         
+    }
+
+    _updateBounds() {        
+        const {width, left} = this._bar.getBoundingClientRect();        
+        const leftRect = this._leftTick.getBoundingClientRect();
+        const rightRect = this._rightTick.getBoundingClientRect();
+
+        const k = (this.options.max - this.options.min) / (width - leftRect.width - rightRect.width);
+        const lo = leftRect.left - left;
+        this._lo = this.options.min + (lo * k) < this.options.min ? this.options.min : this.options.min + (lo * k);
+        const hi = rightRect.left - rightRect.width - left;
+        this._hi = this.options.min + (hi * k) > this.options.max ? this.options.max : this.options.min + (hi * k);
     }
 
 }

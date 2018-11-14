@@ -85,9 +85,9 @@ export default class CloudnessFilter extends EventTarget {
         column.querySelector('.on-hover-div').addEventListener('mouseover', this._onSortMouseOver.bind(this));
         column.querySelector('.on-hover-div').addEventListener('mouseout', this._onSortMouseOut.bind(this));
 
-        this._cloudSlider.addEventListener('stop', () => {
+        /*this._cloudSlider.addEventListener('stop', () => {
             this._values = this._cloudSlider.values;
-        });
+        });*/
     }
 
     _prepareMinMaxValues() {
@@ -165,6 +165,7 @@ export default class CloudnessFilter extends EventTarget {
             else {
                 target.classList.remove('active');
                 filterContainer.style.visibility = 'hidden';
+                this._cloudSlider.setValues(this._values);
             }
         }
     }
@@ -176,6 +177,8 @@ export default class CloudnessFilter extends EventTarget {
         const filterableHeader = parent.querySelector('.filterable-header');
         const togglableContent = parent.querySelector('.togglable-content');
         const filterableApplied = parent.querySelector('.filterable-applied > div');
+
+        this._values = this._cloudSlider.values;
 
         filterableHeader.classList.remove('active');
 

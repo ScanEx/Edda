@@ -524,10 +524,14 @@ class CompositeLayer extends EventTarget {
         }        
     }
 
-    addAllToCart() {        
+    addAllToCart() {
+        
+        const resultFiltered = window.Catalog.resultList.filteredItems;
+        const gmxIdList = resultFiltered.map(item => item['gmx_id']);
+
         Object.keys(this._vectors).forEach(id => {
             let {properties} = this._vectors[id];
-            if (properties[this._result_index]) {
+            if (properties[this._result_index] && gmxIdList.indexOf(parseInt(id)) !== -1) {
                 properties[this._cart_index] = true;
                 properties[this._selected_index] = true;
             }

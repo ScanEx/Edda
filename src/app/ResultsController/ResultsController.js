@@ -761,6 +761,9 @@ class ResultsController extends EventTarget {
         this._resultList.enableFilter (enable);
         this._favoritesList.enableFilter (enable);
     }
+    enableResultsFilter (enable) {
+        this._resultList.enableFilter (enable);
+    }
     set filter (value) {
         this._filter = value;
         this._resultList.filter = value;

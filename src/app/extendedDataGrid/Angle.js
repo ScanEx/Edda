@@ -84,9 +84,9 @@ export default class AngleFilter extends EventTarget {
         column.querySelector('.on-hover-div').addEventListener('mouseover', this._onSortMouseOver.bind(this));
         column.querySelector('.on-hover-div').addEventListener('mouseout', this._onSortMouseOut.bind(this));
 
-        this._angleSlider.addEventListener('stop', () => {
+        /*this._angleSlider.addEventListener('stop', () => {
             this._values = this._angleSlider.values;
-        });
+        });*/
     }
 
     _prepareMinMaxValues() {
@@ -164,6 +164,7 @@ export default class AngleFilter extends EventTarget {
             else {
                 target.classList.remove('active');
                 filterContainer.style.visibility = 'hidden';
+                this._angleSlider.setValues(this._values);
             }
         }
     }
@@ -175,6 +176,8 @@ export default class AngleFilter extends EventTarget {
         const filterableHeader = parent.querySelector('.filterable-header');
         const togglableContent = parent.querySelector('.togglable-content');
         const filterableApplied = parent.querySelector('.filterable-applied > div');
+
+        this._values = this._angleSlider.values;
 
         filterableHeader.classList.remove('active');
 
