@@ -398,7 +398,7 @@ class ResultList extends EventTarget {
         let event = document.createEvent('Event');
         switch (name) {
             case 'cart':
-                let newItems = this._grid.items.filter(item => !item.cart);
+                let newItems = this.filteredItems.filter(item => !item.cart);
                 // let state = !this._getChecked();
                 let state = true;
                 if (newItems.length + window.Catalog.favoritesList.items.length <= window.MAX_CART_SIZE) {                    
