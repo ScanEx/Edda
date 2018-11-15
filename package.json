@@ -34,6 +34,7 @@
   "dependencies": {
     "leaflet-geomixer": "git+https://github.com/ScanEx/Leaflet-GeoMixer.git",
     "leaflet-iconlayers": "git+https://github.com/ScanEx/Leaflet-IconLayers.git",
+    "nodelist-foreach-polyfill": "^1.2.0",
     "pikaday": "^1.7.0",
     "scanex-async": "git+https://git@github.com/Scanex/Async.git",
     "scanex-auth": "git+https://git@github.com/Scanex/Authentication.git",

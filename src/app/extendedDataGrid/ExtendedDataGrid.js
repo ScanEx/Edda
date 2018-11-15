@@ -1,3 +1,5 @@
+import 'nodelist-foreach-polyfill';
+
 import './ExtendedDataGrid.css';
 
 import { DataGrid } from 'scanex-datagrid';

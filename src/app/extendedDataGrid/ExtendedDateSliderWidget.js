@@ -18,7 +18,7 @@ export default class ExtendedSliderWidget extends SliderWidget {
         this._startDate = this.options.startDate || null;
         this._endDate = this.options.endDate || null;
 
-        this.addEventListener('stop', () => {
+        this.addEventListener('change', () => {
             this._startDate.setDate(new Date(this._lo));
             this._endDate.setDate(new Date(this._hi));
         });
