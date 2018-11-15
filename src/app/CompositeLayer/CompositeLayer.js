@@ -85,7 +85,7 @@ class CompositeLayer extends EventTarget {
                     let cloudsCriteria = clouds[0] <= properties[this._cloudness_index] && properties[this._cloudness_index] <= clouds[1];
                     let angleCriteria = angle[0] <= properties[this._tilt_index] && properties[this._tilt_index] <= angle[1];
                     let dateCriteria = date[0].getTime() <= propertiesDate.getTime() && propertiesDate.getTime() <= date[1].getTime();
-                    return filtered && properties[this._result_index] && satellitesCriteria && cloudsCriteria && angleCriteria && dateCriteria;
+                    return filtered && ( (properties[this._result_index] && satellitesCriteria && cloudsCriteria && angleCriteria && dateCriteria) || (properties[this._result_index] && properties[this._cart_index]));
                 case 'favorites':                                     
                     return filtered && properties[this._cart_index];
                 case 'search':

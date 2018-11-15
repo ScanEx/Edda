@@ -1226,7 +1226,7 @@ function init_sidebar (state) {
                 const angleCriteria = angle[0] <= item.tilt && item.tilt <= angle[1];
                 const dateCriteria = date[0].getTime() <= item.acqdate.getTime() && item.acqdate.getTime() <= date[1].getTime();
 
-                return satellitesCriteria && cloudsCriteria && angleCriteria && dateCriteria;
+                return ((satellitesCriteria && cloudsCriteria && angleCriteria && dateCriteria) || (item.result && item.cart));
             };
             window.Catalog.resultsController.enableResultsFilter(true);
             resize_results(window.Catalog.resultsContainer);
