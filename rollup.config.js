@@ -6,6 +6,7 @@ import cpy from 'rollup-plugin-cpy';
 import copy from 'rollup-plugin-copy-assets';
 import hash from 'rollup-plugin-hash';
 import { terser } from 'rollup-plugin-terser';
+import svelte from 'rollup-plugin-svelte';
 import pkg from './package.json';
 
 export default [
@@ -22,6 +23,7 @@ export default [
         },   
         external: ['leaflet', 'leaflet-geomixer', 'moment'], 
         plugins: [
+            svelte(),
             resolve({jsnext: true, main: true, module: false, browser: false}),
             commonjs(),
             css({dest: 'dist/scanex-edda.css', minified: true}),
@@ -43,11 +45,11 @@ export default [
                 ],
                 dest: 'dist',                
             }),
-            hash({
+            /*hash({
                 dest: 'dist/scanex-edda.[hash].min.js',
                 replace: true,                
-            }),
-            babel(),            
+            }),*/
+            babel()
             // terser(),
         ],
     },
@@ -63,10 +65,10 @@ export default [
             resolve({jsnext: true, main: true, module: false, browser: false}),
             commonjs(),  
             css({dest: 'dist/permalink.css', minified: true}), 
-            hash({
+            /*hash({
                 dest: 'dist/permalink.[hash].min.js',
                 replace: true,                
-            }),
+            }),*/
             babel(),         
         ],
     }   

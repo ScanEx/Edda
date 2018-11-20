@@ -29,3 +29,69 @@ div.satellite-col {
     float: left;
     width: 113px;
 }
+
+.search-options div.toggleControl {
+    height: 16px;
+    width: 16px;
+    position: absolute;
+    cursor: pointer;
+    top:13px;
+    left: 5px;
+}
+.search-options div.toggleControl.opened {
+    background: url('assets/down.gif');
+}
+.search-options div.toggleControl.closed {
+    background: url('assets/right.gif');
+}
+.search-options .satellite-segment-container {
+    border:1px solid #ddd;
+    margin-top:5px;
+    width:335px;
+    background: #fff;
+    border-radius: 3px;
+}
+.search-options .satellite-header {
+    padding:10px 5px 10px 25px;
+    position: relative;
+    font-size: 13px;
+    cursor: pointer;
+}
+.search-options .satellite-header span {
+    vertical-align: middle;
+    display: inline-block;
+}
+.search-options .satellite-header div.count {
+    background-color:#dddddd;
+    font-weight: normal;
+    font-size: 12px;
+    width:20px;
+    position: absolute;
+    top:11px;
+    right: 10px;
+    color:#555;
+    border-radius: 3px;
+    text-align: center;
+}
+.search-options .satellite-header span input {
+    margin-right: 5px;
+}
+.search-options .satellite-header.opened {
+    border-bottom: 1px solid #ccc;
+}
+.search-options .satellite-header.closed {
+    border-bottom: 0px solid #ccc;
+}
+
+.search-options div.all-count {
+    background-color:#3ca1d0;
+    font-weight: normal;
+    font-size: 12px;
+    width:20px;
+    position: absolute;
+    top:225px;
+    right: 45px;
+    color:#ffffff;
+    border-radius: 3px;
+    text-align: center;
+}
