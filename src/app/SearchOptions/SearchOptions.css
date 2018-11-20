@@ -199,13 +199,13 @@
 }
 
 .search-options-annually-control {
-    width: 32px;
-    height: 32px;
+    width: 16px;
+    height: 16px;
     cursor: pointer;
 }
 .search-options-annually-control.annually-unchecked {
-    background: red;
+    background: url('assets/annually-unchecked.png');
 }
 .search-options-annually-control.annually-checked {
-    background: blue;
+    background: url('assets/annually-checked.png');
 }

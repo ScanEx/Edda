@@ -80,7 +80,7 @@ class SearchOptions extends EventTarget {
           <div class="search-options-period-to">${T.getText('period.to')}</div>
           <input class="search-options-period-to-value" type="text" />
         </div>
-        <div class="search-options-annually-container" style="position: absolute; top:13px; right:30px;"></div>
+        <div class="search-options-annually-container" style="position: absolute; top:23px; right:30px;"></div>
         <!--<div class="search-options-period-annually">
           <input id="period_annually" class="search-options-period-annually-value" type="checkbox" />
           <label for="period_annually" class="search-options-period-annually-title">${T.getText('period.annually')}</label>
