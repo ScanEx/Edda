@@ -204,6 +204,26 @@ export default class ExtendedDataGrid extends DataGrid {
         window.Catalog.resultsContainer.querySelector('.results-clear-filter').style.display = displayStyle;
     }
 
+    _renderRow (item) {
+
+        const itemClass = item.cart ? ' style="background:#E7ECF0;"' : '';
+
+        if (typeof this._filter !== 'function' || !this._filtered || this._filter (item)) {
+            let idx = null;
+            if (Array.isArray (this._indexBy) && this._indexBy.length > 0 && this._indexBy.every(k => item.hasOwnProperty(k))) {
+                let values = this._indexBy.map(k => item[k]);
+                idx = get_hash (values);
+            }
+            else if (typeof this._indexBy === 'string' && item.hasOwnProperty(this._indexBy)) {
+                idx = item[this._indexBy];
+            }
+            else {
+                idx = item[ENUM_ID];
+            }
+            return `<tr${itemClass} data-item-id="${idx}">${Object.keys(this._fields).map(this._renderCell.bind(this, item)).join('')}</tr>`;
+        }
+    }
+
     _setSatellites(satellites) {
 
         this._setClearButtonVisible();
