@@ -9,6 +9,7 @@ import Angle from './Angle';
 import AcqDate from './Data';
 
 
+
 const sort = (items, field, asc) => {
     if (field) {
         return items
@@ -142,6 +143,8 @@ export default class ExtendedDataGrid extends DataGrid {
     clearFilter() {
 
         const {criteria: {clouds, angle, date}} = window.Catalog.searchOptions;
+
+        this._sortBy = {field: 'acqdate', asc: false};
 
         this._clientFilter = {
             satellites: this._platformConstructor.prepareSatellites(true),
