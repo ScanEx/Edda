@@ -21,10 +21,18 @@ export default class AngleFilter extends EventTarget {
 
     initSlider() {
 
+        if (this._angleSlider) {
+            const sliderContainer = this._angleSlider._container;
+            sliderContainer.removeChild(sliderContainer.querySelector('.slider-widget-bar'));
+            sliderContainer.classList.remove('slider-widget');
+            sliderContainer.classList.remove('no-select');
+        }
+
         this._angleSlider = new ExtendedSliderWidget(
             document.querySelector('.results-angle-slider-container'),
             {min: this._minMaxValues[0], max: this._minMaxValues[1]}
         );
+
         this._angleSlider.values = this._values;
     }
 

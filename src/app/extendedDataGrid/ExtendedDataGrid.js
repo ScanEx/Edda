@@ -209,7 +209,7 @@ export default class ExtendedDataGrid extends DataGrid {
 
     _renderRow (item) {
 
-        const itemClass = item.cart ? ' style="background:#E7ECF0;"' : '';
+        const itemClass = item.cart ? ' class="cart-in-result"' : '';
 
         if (typeof this._filter !== 'function' || !this._filtered || this._filter (item)) {
             let idx = null;
@@ -255,12 +255,12 @@ export default class ExtendedDataGrid extends DataGrid {
         this._clientFilter['date'] = date;
     }
 
-    _initWidgets() {
+    _initWidgets(init = true) {
 
-        this._cloudnessConstructor.initSlider();
-        this._angleConstructor.initSlider();
+        this._cloudnessConstructor.initSlider(init);
+        this._angleConstructor.initSlider(init);
         this._acqdateConstructor.initDatePicker();
-        this._acqdateConstructor.initSlider();
+        this._acqdateConstructor.initSlider(init);
     }
 
     _render (items) {
@@ -277,7 +277,7 @@ export default class ExtendedDataGrid extends DataGrid {
         this._renderBody (sort(this.items, name, asc));
         this.adjustHeader();
         this._updateSelector();
-        this._initWidgets();
+        this._initWidgets(false);
     }
 
     _renderHeaderColumn(col) {

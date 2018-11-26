@@ -41,12 +41,18 @@ export default class PlatformFilter extends EventTarget {
         const appliedClass = this._unChecked.length > 0 ? ' applied' : '';
         const sortIconDisplay = sortBy['field'] === 'platform' ? ''  : ' style="visibility: hidden"';
 
+        let platformsCount = 0;
+        this._satellites.forEach(satellite => {
+            const {platforms} = satellite;
+            platformsCount += platforms.length;
+        });
+
         return (
             `<div class="filterable-field-container">
                 <div class="on-hover-div">
                     <div class="filterable-applied">
                         <div style="display: ${appliedDisplay};">
-                            <span class="checked">${this._satellites.length - this._unChecked.length}</span>/<span class="all">${this._satellites.length}</span>
+                            <span class="checked">${platformsCount - this._unChecked.length}</span>/<span class="all">${platformsCount}</span>
                         </div>
                     </div>
                     <span class="filterable-header-platform filterable-header${appliedClass}">${this._field['name']}</span>

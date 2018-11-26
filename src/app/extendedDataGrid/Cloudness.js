@@ -21,10 +21,18 @@ export default class CloudnessFilter extends EventTarget {
 
     initSlider() {
 
+        if (this._cloudSlider) {
+            const sliderContainer = this._cloudSlider._container;
+            sliderContainer.removeChild(sliderContainer.querySelector('.slider-widget-bar'));
+            sliderContainer.classList.remove('slider-widget');
+            sliderContainer.classList.remove('no-select');
+        }
+
         this._cloudSlider = new ExtendedSliderWidget(
             document.querySelector('.results-cloudness-slider-container'),
             {min: this._minMaxValues[0], max: this._minMaxValues[1]}
         );
+        
         this._cloudSlider.values = this._values;
     }
 
@@ -39,7 +47,7 @@ export default class CloudnessFilter extends EventTarget {
         this._prepareMinMaxValues();
 
         const [minLimit, maxLimit] = this._minMaxValues;
-        const [minValue, maxValue] = this._values;
+        let [minValue, maxValue] = this._values;
 
         const isChanged = minLimit !== minValue || maxLimit !== maxValue;
         const appliedDisplay = isChanged ? 'block' : 'none';

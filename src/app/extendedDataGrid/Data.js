@@ -76,6 +76,13 @@ export default class DateFilter extends EventTarget {
 
     initSlider() {
 
+        if (this._dateSlider) {
+            const sliderContainer = this._dateSlider._container;
+            sliderContainer.removeChild(sliderContainer.querySelector('.slider-widget-bar'));
+            sliderContainer.classList.remove('slider-widget');
+            sliderContainer.classList.remove('no-select');
+        }
+
         const minTime = this._minMaxValues[0].getTime();
         const maxTime = this._minMaxValues[1].getTime();
 
@@ -102,55 +109,63 @@ export default class DateFilter extends EventTarget {
     }
 
     initDatePicker() {
-        this._dateFormat = 'dd.mm.yy';
-        let i18n = {
-            previousMonth : 'Предыдущий месяц',
-            nextMonth     : 'Следующий месяц',
-            months        : ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
-            weekdays      : ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'],
-            weekdaysShort : ['Вс','Пн','Вт','Ср','Чт','Пт','Сб']
-        };
-        switch (T.getLanguage()){
-            default:
-            case 'rus':
-                moment.locale('ru');
-                break;
-            case 'eng':
-                moment.locale('en');
-                i18n = {
-                previousMonth : 'Previous Month',
-                nextMonth     : 'Next Month',
-                months        : ['January','February','March','April','May','June','July','August','September','October','November','December'],
-                weekdays      : ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
-                weekdaysShort : ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
-                };
-                break;
-        }
     
-        //const endDate = new Date();    
-        //const startDate = new Date(endDate.getFullYear(), 0, 1);
-
         const [minValue, maxValue] = this._values;
         
-        this._startDate = new Pikaday ({
-            field: document.querySelector('.results-filter-date-start-container'),
-            // format: 'L', 
-            format: 'DD.MM.YYYY',
-            yearRange: 20,
-            i18n: i18n,
-            keyboardInput: false,
-            blurFieldOnSelect: false,
-        });    
-        
-        this._endDate = new Pikaday ({
-            field: document.querySelector('.results-filter-date-end-container'),
-            // format: 'L', 
-            format: 'DD.MM.YYYY',
-            yearRange: 20,
-            i18n: i18n,
-            keyboardInput: false,
-            blurFieldOnSelect: false,
-        });  
+        this._dateFormat = 'dd.mm.yy';
+            let i18n = {
+                previousMonth : 'Предыдущий месяц',
+                nextMonth     : 'Следующий месяц',
+                months        : ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
+                weekdays      : ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'],
+                weekdaysShort : ['Вс','Пн','Вт','Ср','Чт','Пт','Сб']
+            };
+            switch (T.getLanguage()){
+                default:
+                case 'rus':
+                    moment.locale('ru');
+                    break;
+                case 'eng':
+                    moment.locale('en');
+                    i18n = {
+                    previousMonth : 'Previous Month',
+                    nextMonth     : 'Next Month',
+                    months        : ['January','February','March','April','May','June','July','August','September','October','November','December'],
+                    weekdays      : ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+                    weekdaysShort : ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+                    };
+                    break;
+            }
+
+            if (this._startDate) {
+                this._startDate.destroy();
+                this._startDate = null;
+            }
+
+            if (this._endDate) {
+                this._endDate.destroy();
+                this._endDate = null;
+            }
+
+            this._startDate = new Pikaday ({
+                field: document.querySelector('.results-filter-date-start-container'),
+                // format: 'L', 
+                format: 'DD.MM.YYYY',
+                yearRange: 20,
+                i18n: i18n,
+                keyboardInput: false,
+                blurFieldOnSelect: false,
+            });    
+            
+            this._endDate = new Pikaday ({
+                field: document.querySelector('.results-filter-date-end-container'),
+                // format: 'L', 
+                format: 'DD.MM.YYYY',
+                yearRange: 20,
+                i18n: i18n,
+                keyboardInput: false,
+                blurFieldOnSelect: false,
+            });  
 
         this._startDate.setDate(minValue);
         this._endDate.setDate(maxValue);
