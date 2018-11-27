@@ -433,3 +433,7 @@ html, body {
 .active-sidebar-tab{
     border-left: 3px solid #3ca1d0 !important;
 }
+
+#auth .dropdownMenuWidget-item a:hover {
+    color: #555;
+}
