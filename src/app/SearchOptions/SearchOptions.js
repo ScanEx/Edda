@@ -157,7 +157,7 @@ class SearchOptions extends EventTarget {
   }
   get criteria (){
 
-    const {_satellites: satellites} = this._satellites.get();
+    const {satellitesForCriteria: satellites} = this._satellites.get();
 
     return {
       date: [this._startDate.getDate(), this._endDate.getDate()],

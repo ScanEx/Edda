@@ -83,13 +83,13 @@
         }
     };
 
-    const prepareSatellites = (satellites, restricted) => {
+    const prepareSatellites = (satellites, restricted, forCriteria = false) => {
 
         const {ms = [], pc = []} = satellites;
         const msSatellites = restricted ? ms : ms.filter(x => !x.restricted);
         const pcSatellites = restricted ? pc : pc.filter(x => !x.restricted);
 
-        return [...msSatellites, ...pcSatellites];
+        return !forCriteria ? [...msSatellites, ...pcSatellites] : {ms: msSatellites, pc: pcSatellites};
     };
 
     const getSatelliteSegment = (satellite) => {
@@ -144,6 +144,11 @@
 		},
 
         computed: {
+
+            satellitesForCriteria: ({ _satellites, restricted }) => {
+
+                return prepareSatellites(_satellites, restricted, true);
+            },
 
             preparedSatellites: ({ _satellites, restricted }) => {
 
