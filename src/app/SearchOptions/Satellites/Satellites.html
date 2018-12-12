@@ -1,0 +1,287 @@
+{#each Object.keys(preparedSatellites) as segment}
+    <div class="satellite-segment-container">
+        <div on:click="toggleSection(segment)" class="satellite-header {hidden[segment] ? 'closed' : 'opened'}">
+            <span>
+                <input
+                    checked="{preparedSatellites[segment]['allChecked']}"
+                    indeterminate={!preparedSatellites[segment]['allChecked'] && preparedSatellites[segment]['count'] > 0}
+                    type="checkbox"
+                    on:click="checkAllSatellites(event, _satellites, segment)"
+                />
+            </span>
+            <span>{getCurrentName(segment)}</span> <div class="count">{preparedSatellites[segment]['count']}</div>
+            <div class="toggleControl {hidden[segment] ? 'closed' : 'opened'}" />
+        </div>
+        {#if !hidden[segment]}
+            {#each preparedSatellites[segment].data as satellite}
+                <div style="padding:5px 5px 5px 25px;">
+                    <input
+                        type="checkbox"
+                        id="sat_{satellite.id}"
+                        checked={satellite.checked}
+                        on:change="checkSatellite(_satellites, satellite.id)"
+                    />
+                    <label
+                        style="vertical-align: middle; font-size:13px;" for="sat_{satellite.id}"
+                        on:mouseover="showSatelliteInfo(event, satellite)"
+                        on:mouseout="hideSatelliteInfo()"
+                    >{satellite.name}</label>
+                </div>
+            {/each}
+        {/if}
+    </div>
+{/each}
+<div class="all-count">{allCheckedCount}</div>
+<div ref:info />
+
+<script>
+
+    import './Satellites.css';
+    import Info from './Info.js';
+    import Translations from 'scanex-translations';
+
+    let T = Translations;
+
+    T.addText('rus', {
+        satellite: {
+            global: 'Внешние',
+            local: 'Внутренние',
+            ms: 'Мультиспектр',
+            pc: 'Панхром',
+            resolution: 'Разрешение',
+            swath: 'Ширина полосы съемки',
+            since: 'На орбите:'
+        },    
+    });
+
+    T.addText('eng', {
+        satellite: {
+            global: 'Global',
+            local: 'Local',
+            ms: 'Multispectrum',
+            pc: 'Panchrome',
+            resolution: 'Resolution',
+            swath: 'Swath',
+            since: 'In orbit since'
+        },   
+    });
+
+    const PANCHROME_IDS = ['WV01', 'RP_PC', 'SP5_5PC', 'EROSB', 'EROSA'];
+
+    const satellitesMeta = {
+        first: {
+            name: '0,3 - 0,5 м/пикс'
+        },
+        second: {
+            name: '0,7 - 2 м/пикс'
+        },
+        third: {
+            name: '>2 м/пикс'
+        },
+        panchrome: {
+            name: 'Панхром (ч/б)'
+        }
+    };
+
+    const prepareSatellites = (satellites, restricted, forCriteria = false) => {
+
+        const {ms = [], pc = []} = satellites;
+        const msSatellites = restricted ? ms : ms.filter(x => !x.restricted);
+        const pcSatellites = restricted ? pc : pc.filter(x => !x.restricted);
+
+        return !forCriteria ? [...msSatellites, ...pcSatellites] : {ms: msSatellites, pc: pcSatellites};
+    };
+
+    const getSatelliteSegment = (satellite) => {
+
+        const {id, resolution} = satellite;
+
+        if (PANCHROME_IDS.indexOf(id) !== -1) {
+            return 'panchrome';
+        }
+
+        if (resolution <= 0.5) {
+            return 'first';
+        }
+
+        if(0.7 <= resolution && resolution <= 2) {
+            return 'second';
+        }
+
+        if(resolution > 2) {
+            return 'third';
+        }
+    }
+
+    export default {
+
+        data () {
+            return {
+                _satellites: {},
+
+                hidden: {
+                    first: true,
+                    second: true,
+                    third: true,
+                    panchrome: true
+                },
+
+                restricted: false
+            };
+        },
+
+        oncreate() {
+
+            this._info = new Info (this.refs.info);
+            this._info.hide();
+        },
+
+        onstate({ changed, current, previous }) {
+
+			if (changed['_satellites']) {
+                this.fire('change');
+            }
+		},
+
+        computed: {
+
+            satellitesForCriteria: ({ _satellites, restricted }) => {
+
+                return prepareSatellites(_satellites, restricted, true);
+            },
+
+            preparedSatellites: ({ _satellites, restricted }) => {
+
+                const rawSatellites = prepareSatellites(_satellites, restricted);
+
+                let satellites = {
+                    first: {data:[], count: 0, allChecked: true},
+                    second: {data:[], count: 0, allChecked: true},
+                    third: {data:[], count: 0, allChecked: true},
+                    panchrome: {data:[], count: 0, allChecked: true}
+                };
+
+                rawSatellites.forEach(satellite => {
+
+                    const {id, checked, platforms, resolution} = satellite;
+                    const {first, second, third, panchrome} = satellitesMeta;
+                    const segmentIndex = getSatelliteSegment(satellite);
+
+                    satellites[segmentIndex]['data'].push(satellite);
+                    checked && (satellites[segmentIndex]['count'] += 1);
+                    !checked && (satellites[segmentIndex]['allChecked'] = false);
+                });
+
+                return satellites;
+            },
+
+            allCheckedCount: ({ _satellites, restricted }) => {
+
+                const rawSatellites = prepareSatellites(_satellites, restricted);
+                const checkedSatellites = rawSatellites.filter(item => item.checked);
+
+                return checkedSatellites.length;
+            },
+
+            allVisible: ({ hidden }) => {
+
+                const { first, second, third, panchrome } = hidden;
+
+                const areAllVisible = !first && !second && !third && !panchrome;
+
+                return areAllVisible;
+            }
+
+        },
+
+        methods: {
+
+            toggleSection(segment) {
+
+                const {hidden} = this.get();
+                const currentHidden = hidden[segment];
+                hidden[segment] = !currentHidden;
+
+                this.set({hidden});
+            },
+
+            checkAllSatellites(e, satellites, segment = false) {
+
+                const setChecked = (satellite, segment, checkedState) => {
+                    if (!segment) {
+                        satellite.checked = checkedState;
+                    }
+                    else {
+                        const {ids} = satellitesMeta[segment];
+                        const {id} = satellite;
+                        if (segment === getSatelliteSegment(satellite)) {
+                            satellite.checked = checkedState;
+                        }
+                    }
+                    return satellite;
+                }
+
+                e.stopPropagation();
+
+                const {target: {checked: checkedState}} = e;
+                const {ms = [], pc = []} = satellites;
+
+                const checkedMs = ms.map(satellite => setChecked(satellite, segment, checkedState));
+                const checkedPc = pc.map(satellite => setChecked(satellite, segment, checkedState));
+
+                this.set({
+                    _satellites: {ms: checkedMs, pc: checkedPc}
+                });
+            },
+
+            checkSatellite(satellites, id) {
+                
+                const setChecked = (satellite) => {
+                    const {id: currentId, checked} = satellite;
+                    if (currentId === id) {
+                        satellite.checked = !checked;
+                    }
+                    return satellite;
+                }
+
+                const {ms = [], pc = []} = satellites;
+                const newMs = ms.map(satellite => setChecked(satellite));
+                const newPc = pc.map(satellite => setChecked(satellite));
+
+                this.set({
+                    _satellites: {ms: newMs, pc: newPc}
+                });
+            },
+
+            showSatelliteInfo(e, satellite) {
+
+                const {target} = e;
+                const {resolution, swath, operator, since } = satellite;
+                const {left, top, width} = target.getBoundingClientRect();
+
+                this._info.resolution = resolution;
+                this._info.swath = swath;
+                this._info.operator = operator;
+                this._info.since = since;
+
+                this._info.show(left + width, top - 100);
+            },
+
+            hideSatelliteInfo(e, satellite) {
+
+                this._info.hide();
+            }
+        },
+
+        helpers: {
+
+            getCurrentName(segment) {
+
+                return satellitesMeta[segment]['name'];
+            }
+
+        }
+
+    }
+
+</script>

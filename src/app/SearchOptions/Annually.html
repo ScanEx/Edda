@@ -1,0 +1,28 @@
+<div
+    title='Режим "Ежегодно" {checked ? "включен" : "выключен"}'
+    on:click="onClickHandler()"
+    class="search-options-annually-control {checked ? 'annually-checked' : 'annually-unchecked'}"
+/>
+
+<script>
+
+    export default {
+
+        data () {
+            return {
+                checked: false
+            };
+        },
+
+        methods: {
+            onClickHandler() {
+
+                const {checked} = this.get();
+                this.set({
+                    checked: !checked
+                });
+            }
+        }
+    }
+
+</script>

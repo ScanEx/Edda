@@ -429,9 +429,35 @@ function is_mobile () {
     return check;
 }
 
+function get_difference_between_dates(startDate, endDate) {
+
+    const startYear = startDate.getFullYear();
+    const startMonth = startDate.getMonth();
+    const startDay = startDate.getDate();
+
+    const endYear = endDate.getFullYear();
+    const endMonth = endDate.getMonth();
+    const endDay = endDate.getDate();
+
+    const startMomentDate = moment([startYear, startMonth, startDay]);
+    const endMomentDate = moment([endYear, endMonth, endDay]);
+
+    const monthDiff = startMomentDate.diff(endMomentDate, 'months');
+    const absMonthDiff = Math.abs(monthDiff);
+
+    if (absMonthDiff > 0) {
+        return `${absMonthDiff} мес`;
+    }
+
+    const dayDiff = startMomentDate.diff(endMomentDate, 'days');
+    const absDayDiff = Math.abs(dayDiff);
+
+    return `${absDayDiff} дн`;
+}
+
 export {
     chain, create_container, flatten, split_complex_id, unhex, hex, is_geojson_feature, is_geometry,
     get_type_of_value, from_gmx, get_bbox, normalize_geometry_type,
     normalize_geometry, normalize_polygon, normalize_ring, normalize_point, split180, make_close_to,
-    get_window_center, read_permalink, is_mobile
+    get_window_center, read_permalink, is_mobile, get_difference_between_dates
 };

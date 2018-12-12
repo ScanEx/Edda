@@ -426,3 +426,14 @@ html, body {
 .leaflet-bottom {
     z-index: auto;
 }
+
+.tabs > div {
+    border-left: 3px solid #4c5567;
+}
+.active-sidebar-tab{
+    border-left: 3px solid #3ca1d0 !important;
+}
+
+#auth .dropdownMenuWidget-item a:hover {
+    color: #555;
+}

@@ -480,7 +480,16 @@ class ResultsController extends EventTarget {
             default:
                 return 0;
         }
-    }   
+    }
+    clearResultsFilter() {
+
+        this._resultList.clearFilter();
+        this._compositeLayer.redraw();
+    }
+    redrawCompositeLayer() {
+
+        this._compositeLayer.redraw();
+    }
     showResults () {
         this._currentTab = 'results';
         this._compositeLayer.currentTab = this._currentTab;
@@ -751,6 +760,9 @@ class ResultsController extends EventTarget {
     enableFilter (enable) {
         this._resultList.enableFilter (enable);
         this._favoritesList.enableFilter (enable);
+    }
+    enableResultsFilter (enable) {
+        this._resultList.enableFilter (enable);
     }
     set filter (value) {
         this._filter = value;

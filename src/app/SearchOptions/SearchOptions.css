@@ -43,6 +43,9 @@
     padding-left: 25px;
     padding-right: 25px;
 }
+.search-options-satellites {
+    background: #fff;
+}
 .search-options-period-section {
     margin-top: 15px;
 }
@@ -80,7 +83,7 @@
 .search-options-period-from-value,
 .search-options-period-to-value,
 .search-options-satellites-archive select {    
-    width: 115px;
+    width: 100px;
     text-align: center;
     font-family: 'Roboto', sans-serif;
     font-size: 14px;    
@@ -103,6 +106,9 @@
 .search-options-satellites-number-section {
     margin-top: 20px;
     border-top: 1px solid #d9e1e6;
+}
+.search-options-satellites-number-section {
+    background: #fff;
 }
 .search-options-period {
     cursor: default;
@@ -190,4 +196,16 @@
 }
 .table-list-body {    
     overflow-y: auto;
+}
+
+.search-options-annually-control {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+.search-options-annually-control.annually-unchecked {
+    background: url('assets/annually-unchecked.png');
+}
+.search-options-annually-control.annually-checked {
+    background: url('assets/annually-checked.png');
 }

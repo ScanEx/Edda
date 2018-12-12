@@ -3,9 +3,10 @@
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
     font-weight: 500;
+    padding-bottom: 0;
 }
 .result-list {
-    width: 395px;
+    width: 410px;
 }
 .result-list td {
     font-family: 'Roboto', sans-serif;
@@ -28,6 +29,10 @@
     display: inline-block;
     width: 12px;
     height: 12px;
+}
+.result-list .table-list-col .cart-add:hover{
+    border-radius: 3px;
+    box-shadow: 0px 1px 7.84px 0.16px rgba(0, 0, 0, 0.5);
 }
 .result-list .table-list-col .cart-add-active,
 .result-list .table-list-body .cart-add-active {
@@ -52,8 +57,11 @@
     background-color: transparent;
     margin-left: 10px;
 }
-
+.results-header .quicklooks-cart-active:hover {
+    box-shadow: 0px 1px 7.84px 0.16px rgba(0, 0, 0, 0.5);
+}
 .results-header .quicklooks-cart-active {
+    border-radius: 3px;
     background-image: url('assets/add-quicklook-active.png');
 }
 

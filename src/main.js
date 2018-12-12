@@ -110,6 +110,7 @@ T.addText('rus', {
         stereo: 'Стерео',
         clear: 'Очистить список',
         selected: 'Показывать выбранные / все',
+        clearFilter: 'Очистить фильтр',
         quicklooks: {
             select: 'Выбрать квиклуки',
             toggle:'Показать / скрыть выбранные квиклуки',
@@ -205,6 +206,7 @@ T.addText('eng', {
         },    
         clear: 'Clear results',
         selected: 'Show selected / all',
+        clearFilter: 'Clear filter',
         quicklooks: {
             select: 'Select quicklooks',
             toggle: 'Show / hide selected quicklooks',
@@ -535,7 +537,9 @@ function init_sidebar (state) {
         let select_satellites = (group, flag) => {
             for (let key in group) {      
                 let s = group[key];
-                s.checked = flag;
+                if (s['resolution'] <= 0.5 && ['WV01', 'RP_PC', 'SP5_5PC', 'EROSB', 'EROSA'].indexOf(s['id']) === -1) {
+                    s['checked'] = flag;
+                }
             }
         };
         select_satellites(satellites.ms, true);
@@ -805,8 +809,9 @@ function init_sidebar (state) {
 
         window.Catalog.resultsContainer.innerHTML = 
         `<div class="results-header">
-            <span class="results-title">${T.getText('results.title')}</span>
-            <span class="results-number">0</span>
+            <span class="results-title">${T.getText('results.title')}</span>` +
+            `<span class="results-number"><span class="filtered-results-number">0</span>/<span class="all-results-number">0</span></span>
+            <span class="results-clear-filter">${T.getText('results.clearFilter')}</span>
             <div class="results-buttons">                
                 <i title="${T.getText('results.quicklooks.cart')}" class="quicklooks-cart"></i>
                 <i title="${T.getText('results.clear')}" class="results-clear"></i>
@@ -814,7 +819,13 @@ function init_sidebar (state) {
         </div>
         <div class="results-pane"></div>`;
 
-        window.Catalog.resultsNumberContainer = window.Catalog.resultsContainer.querySelector('.results-number');        
+        window.Catalog.resultsFilteredNumberContainer = window.Catalog.resultsContainer.querySelector('.filtered-results-number');
+        window.Catalog.resultsAllNumberContainer = window.Catalog.resultsContainer.querySelector('.all-results-number');
+        window.Catalog.resultsClearFilter = window.Catalog.resultsContainer.querySelector('.results-clear-filter');  
+        window.Catalog.resultsClearFilter.addEventListener('click', () => {
+            window.Catalog.resultsController.clearResultsFilter();
+            window.Catalog.resultsContainer.querySelector('.results-clear-filter').style.display = 'none';
+        });
 
         // window.Catalog.favoritesContainer = window.Catalog.searchSidebar.setPane('favorites', {
         //     createTab: createTab({
@@ -1043,27 +1054,43 @@ function init_sidebar (state) {
         //     shift_base_layers_control();
         // });
 
+        let searchTab = document.body.querySelector('[data-tab-id=search]');
+        let resultsTab = document.body.querySelector('[data-tab-id=results]');
+        let favoritesTab = document.body.querySelector('[data-tab-id=favorites]');
+
         window.Catalog.searchSidebar.on('change', e => {
             const {detail: {current}} = e;            
             switch(current) {
                 case 'search':
                     window.Catalog.searchOptions.refresh();
                     resize_search_options();
-                    window.Catalog.resultsController.hideContours(); 
+                    window.Catalog.resultsController.hideContours();
+                    searchTab.classList.add('active-sidebar-tab');
+                    resultsTab.classList.remove('active-sidebar-tab');
+                    favoritesTab.classList.remove('active-sidebar-tab');
                     // hide_filter();
                     break;
                 case 'results':
                     window.Catalog.resultsController.showResults();
                     resize_results(window.Catalog.resultsContainer);  
+                    searchTab.classList.remove('active-sidebar-tab');
+                    resultsTab.classList.add('active-sidebar-tab');
+                    favoritesTab.classList.remove('active-sidebar-tab');
                     // show_filter();
                     break;
                 case 'favorites':
                     window.Catalog.resultsController.showFavorites();                    
                     resize_favorites(window.Catalog.favoritesContainer);                    
                     enable_cart (window.Catalog.resultsController.hasFavoritesSelected);
+                    searchTab.classList.remove('active-sidebar-tab');
+                    resultsTab.classList.remove('active-sidebar-tab');
+                    favoritesTab.classList.add('active-sidebar-tab');
                     // show_filter();
                     break;
                 default:
+                    searchTab.classList.remove('active-sidebar-tab');
+                    resultsTab.classList.remove('active-sidebar-tab');
+                    favoritesTab.classList.remove('active-sidebar-tab');
                     update_cart_number(window.Catalog.favoritesList.items.length);         
                     shift_base_layers_control();
                     break;
@@ -1134,6 +1161,7 @@ function init_sidebar (state) {
                 window.Catalog.loaderWidget.show();
                 window.Catalog.resultsController.clear();
                 window.Catalog.requestAdapter.criteria = window.Catalog.searchOptions.criteria;
+                window.Catalog.resultsController.clearResultsFilter();
                 if(window.Catalog.drawnObjectsControl.widget.count === 0){
                     window.Catalog.requestAdapter.geometries = [get_bounds()];
                 }
@@ -1178,6 +1206,46 @@ function init_sidebar (state) {
             }             
         });
         enable_search();
+
+        let apply_filter = (satellites, clouds, angle, date) => {
+
+            let unChecked = window.Catalog.resultList.unChecked;
+
+            let satellitePlatforms = [];
+            satellites.forEach(item => {
+                const platforms = item['_platforms'];
+                platforms.forEach(platform => {
+                    if (satellitePlatforms.indexOf(platform) === -1 && unChecked.indexOf(platform) === -1) {
+                        satellitePlatforms.push(platform);
+                    }
+                });
+            });
+
+            window.Catalog.resultsController.filter = item => {
+
+                let unChecked = window.Catalog.resultList.unChecked;
+                const satellitesCriteria = unChecked.indexOf(item['platform']) === -1;
+                const cloudsCriteria = clouds[0] <= item.cloudness && item.cloudness <= clouds[1];
+                const angleCriteria = angle[0] <= item.tilt && item.tilt <= angle[1];
+                const dateCriteria = date[0].getTime() <= item.acqdate.getTime() && item.acqdate.getTime() <= date[1].getTime();
+
+                return ((satellitesCriteria && cloudsCriteria && angleCriteria && dateCriteria) || (item.result && item.cart));
+            };
+            window.Catalog.resultsController.enableResultsFilter(true);
+            resize_results(window.Catalog.resultsContainer);
+            update_results_number(window.Catalog.resultList.count, true);
+        };
+        window.Catalog.resultList.addEventListener('clientFilter:apply', (e) => {
+
+            const {detail: clientFilter} = e;
+            const {satellites, clouds, angle, date} = clientFilter;
+
+            window.Catalog.resultList.clientFilter = clientFilter;
+
+            apply_filter(satellites, clouds, angle, date);
+
+            window.Catalog.resultsController.redrawCompositeLayer();
+        })
 
         let sidebarWidth = sidebarContainer.getBoundingClientRect().width;                
         map.options.paddingTopLeft = [sidebarWidth, 0];
@@ -1265,9 +1333,15 @@ function update_cart_number (num) {
     }
 }
 
-function update_results_number(num) {
+function update_results_number(num, isFiltered = false) {
     // document.querySelector('[data-pane-id=results] .results-number').innerText = num;
-    window.Catalog.resultsNumberContainer.innerText = num;
+    if (!isFiltered) {
+        window.Catalog.resultsFilteredNumberContainer.innerText = num;
+        window.Catalog.resultsAllNumberContainer.innerText = num;
+    }
+    else {
+        window.Catalog.resultsFilteredNumberContainer.innerText = num;
+    }
 }
 
 function add_to_order () {
