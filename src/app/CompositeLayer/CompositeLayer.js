@@ -54,7 +54,7 @@ class CompositeLayer extends EventTarget {
             
             let resultsClientFilter = window.Catalog.resultList.clientFilter;
             let unChecked = window.Catalog.resultList.unChecked;
-            let {satellites, clouds, angle, date} = resultsClientFilter;
+            let {clouds, angle, date} = resultsClientFilter;
 
             let propertiesValue = properties[this._acqdate_index];
             let propertiesDate;
@@ -67,21 +67,11 @@ class CompositeLayer extends EventTarget {
                     break;
                 default:
                     break;
-            }     
-
-            let satellitePlatforms = [];
-            satellites.forEach(item => {
-                const {_platforms: platforms} = item;
-                platforms.forEach(platform => {
-                    if (satellitePlatforms.indexOf(platform) === -1 && unChecked.indexOf(platform) === -1) {
-                        satellitePlatforms.push(platform);
-                    }
-                });
-            });
+            }
 
             switch (this._currentTab) {
                 case 'results':
-                    let satellitesCriteria = satellitePlatforms.indexOf(properties[this._platform_index]) !== -1;
+                    let satellitesCriteria = unChecked.indexOf(properties[this._platform_index]) === -1;
                     let cloudsCriteria = clouds[0] <= properties[this._cloudness_index] && properties[this._cloudness_index] <= clouds[1];
                     let angleCriteria = angle[0] <= properties[this._tilt_index] && properties[this._tilt_index] <= angle[1];
                     let dateCriteria = date[0].getTime() <= propertiesDate.getTime() && propertiesDate.getTime() <= date[1].getTime();
