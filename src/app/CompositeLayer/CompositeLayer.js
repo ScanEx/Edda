@@ -261,7 +261,7 @@ class CompositeLayer extends EventTarget {
             else {
                 if (quicklook) {
                     this._map.removeLayer(quicklook);
-                    this._vectors[id].quicklook = null;
+                    //this._vectors[id].quicklook = null;
                 }
                 this._vectorLayer.bringToBottomItem(id);  
                 resolve();
@@ -581,7 +581,7 @@ class CompositeLayer extends EventTarget {
                 filtered = this._filter(this._propertiesToItem(properties));
             }
             switch (this._currentTab) {
-                case 'results':                
+                case 'results':
                     this.showQuicklook(id, filtered && properties[this._result_index] && properties[this._visible_index] === 'visible');
                     break;
                 case 'favorites':                

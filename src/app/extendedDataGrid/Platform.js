@@ -41,10 +41,12 @@ export default class PlatformFilter extends EventTarget {
         const appliedClass = this._unChecked.length > 0 ? ' applied' : '';
         const sortIconDisplay = sortBy['field'] === 'platform' ? ''  : ' style="visibility: hidden"';
 
-        let platformsCount = 0;
+        let checkedCount = 0;
         this._satellites.forEach(satellite => {
             const {platforms} = satellite;
-            platformsCount += platforms.length;
+            if (platforms.some(platform => this._unChecked.indexOf(platform) === -1)) {
+                checkedCount += 1;
+            }
         });
 
         return (
@@ -52,7 +54,7 @@ export default class PlatformFilter extends EventTarget {
                 <div class="on-hover-div">
                     <div class="filterable-applied">
                         <div style="display: ${appliedDisplay};">
-                            <span class="checked">${platformsCount - this._unChecked.length}</span>/<span class="all">${platformsCount}</span>
+                            <span class="checked">${checkedCount}</span>/<span class="all">${this._satellites.length}</span>
                         </div>
                     </div>
                     <span class="filterable-header-platform filterable-header${appliedClass}">${this._field['name']}</span>
@@ -71,7 +73,8 @@ export default class PlatformFilter extends EventTarget {
     attachEvents(column) {
 
         const filterableHeader = column.querySelector('.filterable-header');
-        const satelliteCheckboxes = column.querySelectorAll('input[type="checkbox"]');
+        const satelliteCheckboxes = column.querySelectorAll('input[class="s-checkbox"]');
+        const allCheckbox = column.querySelector('input[class="all-checkbox"]');
         const applyButton = column.querySelector('.apply');
 
         this._container = column;
@@ -83,7 +86,10 @@ export default class PlatformFilter extends EventTarget {
         
         satelliteCheckboxes.forEach(item => {
             item.addEventListener('click', this._onCheckboxClick.bind(this));
-        })
+        });
+        if (allCheckbox) {
+            allCheckbox.addEventListener('click', this._onAllCheckboxClick.bind(this));
+        }
     }
 
     prepareSatellites(forReturn = false) {
@@ -93,11 +99,22 @@ export default class PlatformFilter extends EventTarget {
         const {criteria} = window.Catalog.searchOptions;
         const {satellites} = criteria;
 
+        const results = window.Catalog.resultList.items;
+        let resultPlatforms = [];
+        results.forEach(item => {
+            const platform = item['platform'];
+            if (resultPlatforms.indexOf(platform) === -1) {
+                resultPlatforms.push(platform);
+            }
+        });
+
         satellites.ms.forEach(item => {
-            item.checked && this._satellites.push(item);
+            const hasInResults = item.platforms.some(item => resultPlatforms.indexOf(item) !== -1);
+            item.checked && hasInResults && this._satellites.push(item);
         });
         satellites.pc.forEach(item => {
-            item.checked && this._satellites.push(item);
+            const hasInResults = item.platforms.some(item => resultPlatforms.indexOf(item) !== -1);
+            item.checked && hasInResults && this._satellites.push(item);
         });
 
         this._setClientFilter(this._satellites);
@@ -119,12 +136,21 @@ export default class PlatformFilter extends EventTarget {
             return 0;
         });
 
-        return cache.map((x) => {
+        let checkAll = '';
+        if (cache.length > 3) {
+            const checkedParametr = this._tmpUnchecked.length < 1 ? 'checked="checked"' : '';
+            checkAll = `<div class="satellite-col">
+                <input ${checkedParametr} type="checkbox" id="sat_check_all" class="all-checkbox" />
+                <strong>Все спутники</strong>
+            </div>`;
+        }
+
+        return checkAll + cache.map((x) => {
             const {id, name,platforms} = x;
             const isInUnchecked = platforms.some(platform => this._unChecked.indexOf(platform) !== -1 );
             const checkedParam = !isInUnchecked ? 'checked="checked"' : '';
             return `<div class="satellite-col">
-                        <input ${checkedParam} type="checkbox" id="sat_${id}" value="${id}" />
+                        <input ${checkedParam} type="checkbox" id="sat_${id}" value="${id}" class="s-checkbox" />
                         <label for="sat_${id}">${name}</label>
                     </div>`;
         }).join('');
@@ -207,6 +233,18 @@ export default class PlatformFilter extends EventTarget {
         }
     }
 
+    _onAllCheckboxClick() {
+
+        const state = !(this._tmpUnchecked.length < 1);
+        const allCheckboxes = this._container.querySelectorAll('input.s-checkbox');
+
+        allCheckboxes.forEach(item => {
+            item.checked = state;
+            const event = {target: {checked: state, id: item.getAttribute('id')}};
+            this._onCheckboxClick(event);
+        });
+    }
+
     _onCheckboxClick(e) {
 
         const {target} = e;
@@ -225,9 +263,14 @@ export default class PlatformFilter extends EventTarget {
                 }
             }
             else {
-                this._tmpUnchecked.splice(platform, 1);
+                this._tmpUnchecked.splice(unCheckedIndex, 1);
             }
         });
+
+        const allCheckbox = this._container.querySelector('input.all-checkbox');
+        if (allCheckbox) {
+            allCheckbox.checked = this._tmpUnchecked.length < 1;
+        }
     }
 
     _onApplyClick(e) {

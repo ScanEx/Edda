@@ -537,7 +537,9 @@ function init_sidebar (state) {
         let select_satellites = (group, flag) => {
             for (let key in group) {      
                 let s = group[key];
-                s.checked = flag;
+                if (s['resolution'] <= 0.5 && ['WV01', 'RP_PC', 'SP5_5PC', 'EROSB', 'EROSA'].indexOf(s['id']) === -1) {
+                    s['checked'] = flag;
+                }
             }
         };
         select_satellites(satellites.ms, true);
@@ -1221,7 +1223,8 @@ function init_sidebar (state) {
 
             window.Catalog.resultsController.filter = item => {
 
-                const satellitesCriteria = satellitePlatforms.indexOf(item['platform']) !== -1;
+                let unChecked = window.Catalog.resultList.unChecked;
+                const satellitesCriteria = unChecked.indexOf(item['platform']) === -1;
                 const cloudsCriteria = clouds[0] <= item.cloudness && item.cloudness <= clouds[1];
                 const angleCriteria = angle[0] <= item.tilt && item.tilt <= angle[1];
                 const dateCriteria = date[0].getTime() <= item.acqdate.getTime() && item.acqdate.getTime() <= date[1].getTime();

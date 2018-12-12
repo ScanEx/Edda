@@ -56,6 +56,7 @@ div.satellite-col {
     position: relative;
     font-size: 13px;
     cursor: pointer;
+    background: #eef2f5;
 }
 .search-options .satellite-header span {
     vertical-align: middle;
@@ -77,10 +78,10 @@ div.satellite-col {
     margin-right: 5px;
 }
 .search-options .satellite-header.opened {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #ddd;
 }
 .search-options .satellite-header.closed {
-    border-bottom: 0px solid #ccc;
+    border-bottom: 0px solid #ddd;
 }
 
 .search-options div.all-count {

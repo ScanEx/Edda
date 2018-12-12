@@ -1,6 +1,6 @@
 {#each Object.keys(preparedSatellites) as segment}
     <div class="satellite-segment-container">
-        <div on:click="toggleSection(segment)" class="satellite-header">
+        <div on:click="toggleSection(segment)" class="satellite-header {hidden[segment] ? 'closed' : 'opened'}">
             <span>
                 <input
                     checked="{preparedSatellites[segment]['allChecked']}"
