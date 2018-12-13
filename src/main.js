@@ -1209,24 +1209,13 @@ function init_sidebar (state) {
 
         let apply_filter = (satellites, clouds, angle, date) => {
 
-            let unChecked = window.Catalog.resultList.unChecked;
-
-            let satellitePlatforms = [];
-            satellites.forEach(item => {
-                const platforms = item['_platforms'];
-                platforms.forEach(platform => {
-                    if (satellitePlatforms.indexOf(platform) === -1 && unChecked.indexOf(platform) === -1) {
-                        satellitePlatforms.push(platform);
-                    }
-                });
-            });
-
             window.Catalog.resultsController.filter = item => {
 
                 let unChecked = window.Catalog.resultList.unChecked;
+                let absAngle = Math.abs(item.tilt);
                 const satellitesCriteria = unChecked.indexOf(item['platform']) === -1;
                 const cloudsCriteria = clouds[0] <= item.cloudness && item.cloudness <= clouds[1];
-                const angleCriteria = angle[0] <= item.tilt && item.tilt <= angle[1];
+                const angleCriteria = angle[0] <= absAngle && absAngle <= angle[1];
                 const dateCriteria = date[0].getTime() <= item.acqdate.getTime() && item.acqdate.getTime() <= date[1].getTime();
 
                 return ((satellitesCriteria && cloudsCriteria && angleCriteria && dateCriteria) || (item.result && item.cart));
@@ -1245,6 +1234,7 @@ function init_sidebar (state) {
             apply_filter(satellites, clouds, angle, date);
 
             window.Catalog.resultsController.redrawCompositeLayer();
+            window.Catalog.resultsController.toggleQuicklooks();
         })
 
         let sidebarWidth = sidebarContainer.getBoundingClientRect().width;                

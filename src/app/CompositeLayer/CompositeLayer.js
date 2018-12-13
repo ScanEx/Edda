@@ -71,9 +71,10 @@ class CompositeLayer extends EventTarget {
 
             switch (this._currentTab) {
                 case 'results':
+                    let absAngle = Math.abs(properties[this._tilt_index]);
                     let satellitesCriteria = unChecked.indexOf(properties[this._platform_index]) === -1;
                     let cloudsCriteria = clouds[0] <= properties[this._cloudness_index] && properties[this._cloudness_index] <= clouds[1];
-                    let angleCriteria = angle[0] <= properties[this._tilt_index] && properties[this._tilt_index] <= angle[1];
+                    let angleCriteria = angle[0] <= absAngle && absAngle <= angle[1];
                     let dateCriteria = date[0].getTime() <= propertiesDate.getTime() && propertiesDate.getTime() <= date[1].getTime();
                     return filtered && ( (properties[this._result_index] && satellitesCriteria && cloudsCriteria && angleCriteria && dateCriteria) || (properties[this._result_index] && properties[this._cart_index]));
                 case 'favorites':                                     
@@ -378,6 +379,7 @@ class CompositeLayer extends EventTarget {
             let {quicklook} = this._vectors[id];
             if(quicklook) {
                 this._map.removeLayer(quicklook);
+                quicklook = null;
             }
             delete this._vectors[id];
         });        
@@ -563,7 +565,18 @@ class CompositeLayer extends EventTarget {
     }
 
     set currentTab (value) {
+
         this._currentTab = value;
+
+        this._toggleQuicklooks();
+    }
+
+    _toggleQuicklooks() {
+
+        let resultsClientFilter = window.Catalog.resultList.clientFilter;
+        let unChecked = window.Catalog.resultList.unChecked;
+        let {clouds, angle, date} = resultsClientFilter;
+
         Object.keys(this._vectors).forEach(id => {
             let {properties} = this._vectors[id];
             let filtered = true;
@@ -572,7 +585,29 @@ class CompositeLayer extends EventTarget {
             }
             switch (this._currentTab) {
                 case 'results':
-                    this.showQuicklook(id, filtered && properties[this._result_index] && properties[this._visible_index] === 'visible');
+
+                    let propertiesValue = properties[this._acqdate_index];
+                    let propertiesDate;
+                    switch (typeof propertiesValue) {
+                        case 'string':
+                            propertiesDate = new Date(propertiesValue);
+                            break;
+                        case 'number':
+                            propertiesDate = new Date(propertiesValue * 1000);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    let absAngle = Math.abs(properties[this._tilt_index]);
+                    let satellitesCriteria = unChecked.indexOf(properties[this._platform_index]) === -1;
+                    let cloudsCriteria = clouds[0] <= properties[this._cloudness_index] && properties[this._cloudness_index] <= clouds[1];
+                    let angleCriteria = angle[0] <= absAngle && absAngle <= angle[1];
+                    let dateCriteria = date[0].getTime() <= propertiesDate.getTime() && propertiesDate.getTime() <= date[1].getTime();
+
+                    let isVisible = filtered && properties[this._visible_index] === 'visible' && ( (properties[this._result_index] && satellitesCriteria && cloudsCriteria && angleCriteria && dateCriteria) || (properties[this._result_index] && properties[this._cart_index]));
+
+                    this.showQuicklook(id, isVisible);
                     break;
                 case 'favorites':                
                     this.showQuicklook(id, filtered && properties[this._cart_index] && properties[this._visible_index] === 'visible');

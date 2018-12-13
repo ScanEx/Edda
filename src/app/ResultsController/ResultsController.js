@@ -764,6 +764,9 @@ class ResultsController extends EventTarget {
     enableResultsFilter (enable) {
         this._resultList.enableFilter (enable);
     }
+    toggleQuicklooks() {
+        this._compositeLayer._toggleQuicklooks();
+    }
     set filter (value) {
         this._filter = value;
         this._resultList.filter = value;
