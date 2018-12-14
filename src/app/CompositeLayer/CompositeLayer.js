@@ -13,6 +13,14 @@ const serialize = obj => Object.keys(obj).map(id => obj[id]);
 const attributes = ["hover", "selected", "visible", "clip_coords", "result", "cart", "sceneid", "acqdate", "acqtime", "cloudness", "tilt", "sunelev", "stereo", "url", "x1", "y1", "x2", "y2", "x3", "y3", "x4", "y4", "volume", "platform", "spot5_a_exists", "spot5_b_exists", "islocal", "product", "gmx_id", "sensor", "local_exists", "spot5id", "stidx"];
 const attrTypes = ["boolean", "boolean", "string", "object", "boolean", "boolean", "string", "date", "time", "float", "float", "float", "string", "string", "float", "float", "float", "float", "float", "float", "float", "float", "string", "string", "boolean", "boolean", "boolean", "boolean", "integer", "string", "boolean", "string", "integer"];
 
+const prepare_date = date => {
+    const newDate = date;
+    newDate.setHours(0);
+    newDate.setMinutes(0);
+    newDate.setSeconds(0);
+    return newDate;
+}
+
 class CompositeLayer extends EventTarget {
     constructor ({        
         minZoom = 3,
@@ -45,6 +53,7 @@ class CompositeLayer extends EventTarget {
         this._propertiesToItem = this._propertiesToItem.bind(this);
 
         this._map = map;
+
         let tab_filter = ({properties}) => {
             let obj = this._propertiesToItem(properties);
             let filtered = true;            
@@ -72,10 +81,11 @@ class CompositeLayer extends EventTarget {
             switch (this._currentTab) {
                 case 'results':
                     let absAngle = Math.abs(properties[this._tilt_index]);
+                    let preparedDate = prepare_date(propertiesDate);
                     let satellitesCriteria = unChecked.indexOf(properties[this._platform_index]) === -1;
-                    let cloudsCriteria = clouds[0] <= properties[this._cloudness_index] && properties[this._cloudness_index] <= clouds[1];
+                    let cloudsCriteria = properties[this._cloudness_index] > 0 ? clouds[0] <= properties[this._cloudness_index] && properties[this._cloudness_index] <= clouds[1] : true;
                     let angleCriteria = angle[0] <= absAngle && absAngle <= angle[1];
-                    let dateCriteria = date[0].getTime() <= propertiesDate.getTime() && propertiesDate.getTime() <= date[1].getTime();
+                    let dateCriteria = date[0].getTime() <= preparedDate.getTime() && preparedDate.getTime() <= date[1].getTime();
                     return filtered && ( (properties[this._result_index] && satellitesCriteria && cloudsCriteria && angleCriteria && dateCriteria) || (properties[this._result_index] && properties[this._cart_index]));
                 case 'favorites':                                     
                     return filtered && properties[this._cart_index];
@@ -600,10 +610,11 @@ class CompositeLayer extends EventTarget {
                     }
 
                     let absAngle = Math.abs(properties[this._tilt_index]);
+                    let preparedDate = prepare_date(propertiesDate);
                     let satellitesCriteria = unChecked.indexOf(properties[this._platform_index]) === -1;
-                    let cloudsCriteria = clouds[0] <= properties[this._cloudness_index] && properties[this._cloudness_index] <= clouds[1];
+                    let cloudsCriteria = properties[this._cloudness_index] > 0 ? clouds[0] <= properties[this._cloudness_index] && properties[this._cloudness_index] <= clouds[1] : true;
                     let angleCriteria = angle[0] <= absAngle && absAngle <= angle[1];
-                    let dateCriteria = date[0].getTime() <= propertiesDate.getTime() && propertiesDate.getTime() <= date[1].getTime();
+                    let dateCriteria = date[0].getTime() <= preparedDate.getTime() && preparedDate.getTime() <= date[1].getTime();
 
                     let isVisible = filtered && properties[this._visible_index] === 'visible' && ( (properties[this._result_index] && satellitesCriteria && cloudsCriteria && angleCriteria && dateCriteria) || (properties[this._result_index] && properties[this._cart_index]));
 

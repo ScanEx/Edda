@@ -617,6 +617,7 @@ function init_sidebar (state) {
                 // window.Catalog.searchSidebar.open('results');
                 window.Catalog.searchSidebar.enable ('results');
                 window.Catalog.searchSidebar.setCurrent('results');
+                window.Catalog.resultsController.clearResultsFilter();
                 window.Catalog.resultsController.setLayer({fields,values,types});
                 update_results_number(count);
             }
@@ -1207,16 +1208,25 @@ function init_sidebar (state) {
         });
         enable_search();
 
+        let prepare_date = date => {
+            const newDate = date;
+            newDate.setHours(0);
+            newDate.setMinutes(0);
+            newDate.setSeconds(0);
+            return newDate;
+        }
+
         let apply_filter = (satellites, clouds, angle, date) => {
 
             window.Catalog.resultsController.filter = item => {
 
                 let unChecked = window.Catalog.resultList.unChecked;
                 let absAngle = Math.abs(item.tilt);
+                let preparedDate = prepare_date(item.acqdate);
                 const satellitesCriteria = unChecked.indexOf(item['platform']) === -1;
-                const cloudsCriteria = clouds[0] <= item.cloudness && item.cloudness <= clouds[1];
+                const cloudsCriteria = item.cloudness > 0 ? clouds[0] <= item.cloudness && item.cloudness <= clouds[1] : true;
                 const angleCriteria = angle[0] <= absAngle && absAngle <= angle[1];
-                const dateCriteria = date[0].getTime() <= item.acqdate.getTime() && item.acqdate.getTime() <= date[1].getTime();
+                const dateCriteria = date[0].getTime() <= preparedDate.getTime() && preparedDate.getTime() <= date[1].getTime();
 
                 return ((satellitesCriteria && cloudsCriteria && angleCriteria && dateCriteria) || (item.result && item.cart));
             };
@@ -1652,6 +1662,7 @@ function init_upload (shapeLoader) {
                                 item[geometry_index] = L.gmxUtil.convertGeometry (item[geometry_index], false, true);
                             });
 
+                            window.Catalog.resultsController.clearResultsFilter();
                             window.Catalog.resultsController.setLayer(results);
                             update_results_number(Count);
                         }                  
@@ -1858,7 +1869,7 @@ function load_state (state) {
     state.drawingObjects.forEach(item => {        
         window.Catalog.resultsController.addDrawing(item);
     });
-    update_results_number(state.items.length);    
+    //update_results_number(state.items.length);    
     
     update_cart_number(state.cart.length);  
     
@@ -1939,7 +1950,9 @@ function load_state (state) {
         return a;
     }, {fields: [], values: [], types: []});
     
+    window.Catalog.resultsController.clearResultsFilter();
     window.Catalog.resultsController.setLayer({fields,values,types}, state.activeTabId);
+    update_results_number(state.items.length);
            
     update_quicklooks_cart();
 

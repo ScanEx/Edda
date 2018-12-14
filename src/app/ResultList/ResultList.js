@@ -105,18 +105,19 @@ class ResultList extends EventTarget {
                 type: 'string',
                 name: T.getText('results.satellite'),
                 sortable: true,
-                formatter: item =>  {                    
+                formatter: item =>  {
+                    let satelliteName = '';
                     switch(item.platform) {
                         case 'SPOT6':                        
                         case 'SPOT 6':
-                            return item.islocal ? 'SPOT 6' : 'SPOT 6 (A)';
+                            satelliteName = item.islocal ? 'SPOT 6' : 'SPOT 6 (A)';
                         case 'SPOT7':
                         case 'SPOT 7':
-                            return item.islocal ? 'SPOT 7' : 'SPOT 7 (A)';
+                            satelliteName = item.islocal ? 'SPOT 7' : 'SPOT 7 (A)';
                         case 'SPOT-6':                        
-                            return item.product ? 'SPOT 6 (P)' : 'SPOT 6';
+                            satelliteName = item.product ? 'SPOT 6 (P)' : 'SPOT 6';
                         case 'SPOT-7':
-                            return item.product ? 'SPOT 7 (P)' : 'SPOT 7';
+                            satelliteName = item.product ? 'SPOT 7 (P)' : 'SPOT 7';
                         case 'SPOT 5':
                             let sp5 = 'SPOT 5';
                             if (item.sensor === 'J') {
@@ -136,15 +137,15 @@ class ResultList extends EventTarget {
                             else if (item.sensor === 'A' && item.spot5_b_exists) {
                                 sp5 = 'SPOT 5 - 2.5pan';
                             }                            
-                            return `${sp5}${item.islocal ? '' : ' (A)'}`;
+                            satelliteName = `${sp5}${item.islocal ? '' : ' (A)'}`;
                         case 'Ресурс-П1':
                         case 'Ресурс-П2':
                         case 'Ресурс-П3':
                             if (item.spot5_a_exists && !item.spot5_b_exists) {
-                                return `${item.platform} pan`;
+                                satelliteName = `${item.platform} pan`;
                             }
                             else if (item.spot5_b_exists) {
-                                return `${item.platform} ms`;
+                                satelliteName = `${item.platform} ms`;
                             }
                             else {
                                 return item.platform;
@@ -152,37 +153,41 @@ class ResultList extends EventTarget {
                         case 'GF1':
                             switch (item.sensor) {
                                 case 'A':
-                                    return 'GaoFen-1 (2m)';
+                                    satelliteName = 'GaoFen-1 (2m)';
                                 case 'B':
-                                    return 'GaoFen-1 (16m)';
+                                    satelliteName = 'GaoFen-1 (16m)';
                                 default:
-                                    return 'GaoFen-1';
+                                    satelliteName = 'GaoFen-1';
                             }
                         case '1A-PHR-1A':
-                            return '1ATLAS (PHR-1A)';
+                            satelliteName = '1ATLAS (PHR-1A)';
                         case '1A-PHR-1B':
-                            return '1ATLAS (PHR-1B)';
+                            satelliteName = '1ATLAS (PHR-1B)';
                         case '1A-SPOT-6':
-                            return '1ATLAS (SP6)';
+                            satelliteName = '1ATLAS (SP6)';
                         case '1A-SPOT-7':
-                            return '1ATLAS (SP7)';
+                            satelliteName = '1ATLAS (SP7)';
                         case 'TripleSat Constellation-1':
-                            return 'Triplesat-1';
+                            satelliteName = 'Triplesat-1';
                         case 'TripleSat Constellation-2':
-                            return 'Triplesat-2';
+                            satelliteName = 'Triplesat-2';
                         case 'TripleSat Constellation-3':
-                            return 'Triplesat-3';
+                            satelliteName = 'Triplesat-3';
                         case 'GJ1A':
-                            return 'Superview-1 01';
+                            satelliteName = 'Superview-1 01';
                         case 'GJ1B':
-                            return 'Superview-1 02';
+                            satelliteName = 'Superview-1 02';
                         case 'GJ1C':
-                            return 'Superview-1 03';
+                            satelliteName = 'Superview-1 03';
                         case 'GJ1D':
-                            return 'Superview-1 04';
+                            satelliteName = 'Superview-1 04';
                         default:
-                            return `${getSatelliteName(item.platform)}${item.islocal ? ' (L)': ''}`;
+                            satelliteName = `${getSatelliteName(item.platform)}${item.islocal ? ' (L)': ''}`;
                     }
+
+                    const substredName = satelliteName.length > 11 ? satelliteName.substr(0, 11) + '...' : satelliteName;
+
+                    return `<span title="${satelliteName}">${substredName}</span>`;
                 },
                 width: 100,
             },
