@@ -211,7 +211,7 @@ class ResultList extends EventTarget {
                             satelliteName = `${getSatelliteName(item.platform)}${item.islocal ? ' (L)': ''}`;
                     }
 
-                    const substredName = satelliteName.length > 11 ? satelliteName.substr(0, 11) + '...' : satelliteName;
+                    const substredName = satelliteName.length > 14 ? satelliteName.substr(0, 12) + '..' : satelliteName;
 
                     return `<span title="${satelliteName}">${substredName}</span>`;
                 },

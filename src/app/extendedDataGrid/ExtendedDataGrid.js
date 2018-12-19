@@ -227,6 +227,36 @@ export default class ExtendedDataGrid extends DataGrid {
         }
     }
 
+    _renderCell (item, col) {
+        const field = this._fields[col];
+        const width = field.width;
+        const padding = col === 'platform' ? 'padding-right:0;' : '';
+        const align = this._align ? ` style="text-align: ${field.align || this._getCellAlign(field.type)};${padding}"` : '';
+        switch(field.type) {
+            case 'selector':
+                return Boolean(item[col]) ? `<td${align}><input type="checkbox" checked value="${col}" /></td>` : `<td${align}><input type="checkbox" value="${col}" /></td>`;
+            case 'button':
+                return `<td${align}><i class="table-list-button ${field.button}" /></td>`;
+            case 'boolean':
+                let val = typeof field.formatter === 'function' ? field.formatter (item) : item[col];
+                const cell = (field.yes || field.no) ? `<i class="table-list-button ${field.icon} ${val ? (field.yes || '') : (field.no || '')}"></i>` : `${val ? '+' : ''}`;
+                return `<td${align}>${cell}</td>`;
+            case 'color':
+                return `<td${align}>
+                        <div class="table-list-color" style="${ typeof item[col] !== 'undefined' ? `border-color: ${item[col]}` : 'border: none'} ">&nbsp;</div>
+                    </td>`;
+            default:                
+                if (typeof field.styler === 'function') {                    
+                    return `<td${align}><i class="${field.styler(item)}"></i></td>`;
+                }
+                else {
+                    let val = typeof field.formatter === 'function' ? field.formatter (item) : item[col];
+                    return `<td${align}><span>${val}</span>${field.edit ? '<i class="cell-edit"></i>' :''}</td>`;
+                }
+                
+        }
+    }
+
     _setSatellites(satellites) {
 
         this._setClearButtonVisible();
