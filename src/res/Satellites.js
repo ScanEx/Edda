@@ -140,7 +140,7 @@ class GF1 extends SpaceView {
 
 class SV1 extends SpaceView {
     constructor(){
-        super({id: 'SV1', platforms: ['GJ1A', 'GJ1B', 'GJ1C', 'GJ1D'], name: 'SuperView-1', resolution: 0.5, swath: 12, arity: 4, since: '26.12.2016, 09.01.2018'});
+        super({id: 'SV1', platforms: ['GJ1A', 'GJ1B', 'GJ1C', 'GJ1D'], name: 'SuperView-1 01-04', resolution: 0.5, swath: 12, arity: 4, since: '26.12.2016, 09.01.2018'});
     }    
 }
 
@@ -289,7 +289,7 @@ class RP_PC extends RP {
 
 class RP_1MS extends RP {
     constructor() {
-        super ({id: 'RP_1MS', platforms: ['Ресурс-П1','Ресурс-П2','Ресурс-П3'], name: 'Ресурс-П (1 м)', resolution: 1, ms: true, });
+        super ({id: 'RP_1MS', platforms: ['Ресурс-П1','Ресурс-П2','Ресурс-П3'], name: 'Ресурс-П 1-3 (1 м)', resolution: 1, ms: true, });
     }
     condition (archive) {
         return `${super.condition(archive)} AND spot5_a_exists = TRUE AND spot5_b_exists = TRUE`;
@@ -298,7 +298,8 @@ class RP_1MS extends RP {
 
 class RP_4MS extends RP {
     constructor() {
-        super ({id: 'RP_4MS', platforms: ['Ресурс-П1','Ресурс-П2','Ресурс-П3'], name: 'Ресурс-П (4 м)', resolution: 4, ms: true, });
+        super ({id: 'RP_4MS', platforms: ['Ресурс-П1','Ресурс-П2','Ресурс-П3'], name: 'Ресурс-П 1-3 (4 м)', resolution: 4, ms: true, });
+        this._resolution = 4;
     }
     condition (archive) {
         return `${super.condition(archive)} AND spot5_b_exists = TRUE`;

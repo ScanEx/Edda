@@ -111,13 +111,17 @@ class ResultList extends EventTarget {
                         case 'SPOT6':                        
                         case 'SPOT 6':
                             satelliteName = item.islocal ? 'SPOT 6' : 'SPOT 6 (A)';
+                            break;
                         case 'SPOT7':
                         case 'SPOT 7':
                             satelliteName = item.islocal ? 'SPOT 7' : 'SPOT 7 (A)';
+                            break;
                         case 'SPOT-6':                        
                             satelliteName = item.product ? 'SPOT 6 (P)' : 'SPOT 6';
+                            break;
                         case 'SPOT-7':
                             satelliteName = item.product ? 'SPOT 7 (P)' : 'SPOT 7';
+                            break;
                         case 'SPOT 5':
                             let sp5 = 'SPOT 5';
                             if (item.sensor === 'J') {
@@ -138,6 +142,7 @@ class ResultList extends EventTarget {
                                 sp5 = 'SPOT 5 - 2.5pan';
                             }                            
                             satelliteName = `${sp5}${item.islocal ? '' : ' (A)'}`;
+                            break;
                         case 'Ресурс-П1':
                         case 'Ресурс-П2':
                         case 'Ресурс-П3':
@@ -150,37 +155,58 @@ class ResultList extends EventTarget {
                             else {
                                 return item.platform;
                             }    
+                            break;
                         case 'GF1':
                             switch (item.sensor) {
                                 case 'A':
                                     satelliteName = 'GaoFen-1 (2m)';
+                                    break;
                                 case 'B':
                                     satelliteName = 'GaoFen-1 (16m)';
+                                    break;
                                 default:
                                     satelliteName = 'GaoFen-1';
                             }
+                            break;
                         case '1A-PHR-1A':
                             satelliteName = '1ATLAS (PHR-1A)';
+                            break;
                         case '1A-PHR-1B':
                             satelliteName = '1ATLAS (PHR-1B)';
+                            break;
                         case '1A-SPOT-6':
                             satelliteName = '1ATLAS (SP6)';
+                            break;
                         case '1A-SPOT-7':
                             satelliteName = '1ATLAS (SP7)';
+                            break;
                         case 'TripleSat Constellation-1':
                             satelliteName = 'Triplesat-1';
+                            break;
                         case 'TripleSat Constellation-2':
                             satelliteName = 'Triplesat-2';
+                            break;
                         case 'TripleSat Constellation-3':
                             satelliteName = 'Triplesat-3';
+                            break;
                         case 'GJ1A':
                             satelliteName = 'Superview-1 01';
+                            break;
                         case 'GJ1B':
                             satelliteName = 'Superview-1 02';
+                            break;
                         case 'GJ1C':
                             satelliteName = 'Superview-1 03';
+                            break;
                         case 'GJ1D':
                             satelliteName = 'Superview-1 04';
+                            break;
+                        case 'PHR1A':
+                            satelliteName = 'Pléiades-1A';
+                            break;
+                        case 'PHR1B':
+                            satelliteName = 'Pléiades-1B';
+                            break;
                         default:
                             satelliteName = `${getSatelliteName(item.platform)}${item.islocal ? ' (L)': ''}`;
                     }
