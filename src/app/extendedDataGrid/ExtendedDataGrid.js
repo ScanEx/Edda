@@ -230,7 +230,13 @@ export default class ExtendedDataGrid extends DataGrid {
     _renderCell (item, col) {
         const field = this._fields[col];
         const width = field.width;
-        const padding = col === 'platform' ? 'padding-right:0;' : '';
+        let padding = '';
+        if (col === 'platform') {
+            padding = 'padding-right:0;'
+        }
+        else if (col === 'stereo') {
+            padding = 'padding-right:0;padding-left:0;';
+        }
         const align = this._align ? ` style="text-align: ${field.align || this._getCellAlign(field.type)};${padding}"` : '';
         switch(field.type) {
             case 'selector':
