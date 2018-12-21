@@ -202,9 +202,11 @@ class ResultList extends EventTarget {
                             satelliteName = 'Superview-1 04';
                             break;
                         case 'PHR1A':
+                        case 'PHR-1A':
                             satelliteName = 'Pléiades-1A';
                             break;
                         case 'PHR1B':
+                        case 'PHR-1B':
                             satelliteName = 'Pléiades-1B';
                             break;
                         default:
