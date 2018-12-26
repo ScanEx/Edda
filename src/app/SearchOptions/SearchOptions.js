@@ -313,6 +313,7 @@ class SearchOptions extends EventTarget {
   }
   resize(total) {
     let height = this._container.querySelector('.search-options-fixed-section').getBoundingClientRect().height;
+
     let satellites = this._container.querySelector('.search-options-satellites');
     satellites.style.maxHeight = `${total - height - 33 + 15}px`;
     satellites.style.height = satellites.style.maxHeight;

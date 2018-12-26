@@ -14,6 +14,8 @@ import ResultList from './app/ResultList/ResultList.js';
 import FavoritesList from './app/FavoritesList/FavoritesList.js';
 import { satellites, getSatelliteName } from './res/Satellites.js';
 
+import BaseLayersLegend from './app/BaseLayers/Legend.html';
+
 import 'scanex-auth/dist/scanex-auth.css';
 import { AuthWidget, AuthManager, ResourceServer, getAuthManager, getResourceServer } from 'scanex-auth';
 
@@ -451,7 +453,7 @@ function get_state () {
             y: y,
             z: 17 - map.getZoom()
         },
-        activeLayer: map.gmxBaseLayersManager.getCurrentID(),        
+        activeLayer: window.Catalog.BaseLayers._getActiveLayer().layer['id'],        
         bounds: map.getBounds(),
         searchCriteria,
         items: window.Catalog.resultsController.results,
@@ -1268,6 +1270,7 @@ function update_quicklooks_cart () {
 function shift_base_layers_control () {
     let { width } = window.Catalog.searchSidebar.getContainer().getBoundingClientRect();
     map.gmxControlsManager.get('iconLayers').getContainer().style.left = `${width + 30}px`;
+    window.Catalog.BaseLayersLegend.set({left: (width + 30)});
 }
 
 function enable_search () {    
@@ -1794,6 +1797,25 @@ function init_base_layers() {
     map.gmxControlsManager.add(baseLayersControl);
     map.addControl(baseLayersControl);
     
+    window.Catalog.BaseLayers = baseLayersControl;
+    window.Catalog.BaseLayersLegend = new BaseLayersLegend({
+        target: create_container()
+    });
+
+    const layerChangeCallback = () => {
+        const {layer = {}} = baseLayersControl._getActiveLayer();
+        if (layer['id'] === 'heatmap2018') {
+            window.Catalog.BaseLayersLegend.set({hidden: false});
+        }
+        else {
+            window.Catalog.BaseLayersLegend.set({hidden: true});
+        }
+    };
+
+    baseLayersControl.on('activelayerchange', () => layerChangeCallback());
+
+    layerChangeCallback();
+
     shift_base_layers_control();
 }
 
@@ -1974,6 +1996,15 @@ function load_state (state) {
     window.Catalog.searchSidebar.setCurrent(state.activeTabId);
     let { height } =  mapContainer.getBoundingClientRect();
     window.Catalog.drawnObjectsControl.widget.resize(height - 150);
+
+    map.gmxBaseLayersManager.setCurrentID(state['activeLayer']);
+
+    if (state['activeLayer'] === 'heatmap2018') {
+        window.Catalog.BaseLayersLegend.set({hidden: false});
+    }
+    else {
+        window.Catalog.BaseLayersLegend.set({hidden: true});
+    }
 }
 
 function load_presets (state) {

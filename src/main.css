@@ -437,3 +437,13 @@ html, body {
 #auth .dropdownMenuWidget-item a:hover {
     color: #555;
 }
+
+.iconlayers-legend {
+    width: 238px;
+    height: 83px;
+    background-image: url('assets/legend.png');
+    position: absolute;
+    bottom:125px;
+    z-index:800;
+    border: 1px solid #a6b6c3;
+}
