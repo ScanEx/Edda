@@ -141,6 +141,7 @@ class GF1 extends SpaceView {
 class SV1 extends SpaceView {
     constructor(){
         super({id: 'SV1', platforms: ['GJ1A', 'GJ1B', 'GJ1C', 'GJ1D'], name: 'SuperView-1 01-04', resolution: 0.5, swath: 12, arity: 4, since: '26.12.2016, 09.01.2018'});
+        this._restricted = false;
     }    
 }
 
