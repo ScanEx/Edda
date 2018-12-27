@@ -1997,14 +1997,15 @@ function load_state (state) {
     let { height } =  mapContainer.getBoundingClientRect();
     window.Catalog.drawnObjectsControl.widget.resize(height - 150);
 
-    map.gmxBaseLayersManager.setCurrentID(state['activeLayer']);
+    window.Catalog.BaseLayers.setActiveLayer(map.gmxBaseLayersManager.get(state['activeLayer']));
+    /*map.gmxBaseLayersManager.setCurrentID(state['activeLayer']);
 
     if (state['activeLayer'] === 'heatmap2018') {
         window.Catalog.BaseLayersLegend.set({hidden: false});
     }
     else {
         window.Catalog.BaseLayersLegend.set({hidden: true});
-    }
+    }*/
 }
 
 function load_presets (state) {
