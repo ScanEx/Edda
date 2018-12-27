@@ -277,7 +277,7 @@ let mapContainer = document.getElementById('map');
 
 let map = L.map(mapContainer, {
     center: new L.LatLng(55.634508, 37.433167),
-    minZoom: 3,
+    minZoom: 1,
     maxZoom: 17,
     zoom: 3,
     boxZoom: false,
